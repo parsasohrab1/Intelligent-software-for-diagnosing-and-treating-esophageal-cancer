@@ -217,11 +217,26 @@ async def list_models(
     status: str = "active",
     limit: int = 100,
 ):
-    """List all trained models"""
+    """List all trained models with caching"""
+    from app.core.cache import CacheManager
+    
+    cache_manager = CacheManager()
+    cache_key = cache_manager.generate_key("ml_models", "list", model_type=model_type, status=status, limit=limit)
+    
+    # Try to get from cache
+    cached_result = cache_manager.get(cache_key)
+    if cached_result is not None:
+        return cached_result
+    
     try:
         registry = ModelRegistry()
         models = registry.list_models(model_type=model_type, status=status, limit=limit)
-        return {"models": models, "count": len(models)}
+        result = {"models": models, "count": len(models)}
+        
+        # Cache for 5 minutes
+        cache_manager.set(cache_key, result, ttl=300)
+        
+        return result
 
     except Exception as e:
         raise HTTPException(
@@ -231,13 +246,26 @@ async def list_models(
 
 @router.get("/models/{model_id}")
 async def get_model_info(model_id: str):
-    """Get model information"""
+    """Get model information with caching"""
+    from app.core.cache import CacheManager
+    
+    cache_manager = CacheManager()
+    cache_key = cache_manager.generate_key("ml_models", "by_id", model_id=model_id)
+    
+    # Try to get from cache
+    cached_model = cache_manager.get(cache_key)
+    if cached_model is not None:
+        return cached_model
+    
     try:
         registry = ModelRegistry()
         model = registry.get_model(model_id)
 
         if not model:
             raise HTTPException(status_code=404, detail="Model not found")
+
+        # Cache for 10 minutes
+        cache_manager.set(cache_key, model, ttl=600)
 
         return model
 

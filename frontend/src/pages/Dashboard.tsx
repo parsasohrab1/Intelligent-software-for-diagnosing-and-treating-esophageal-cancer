@@ -36,20 +36,33 @@ export default function Dashboard() {
     try {
       // Fetch statistics from various endpoints
       const [patientsRes, datasetsRes, modelsRes] = await Promise.all([
-        api.get('/patients/'),
-        api.get('/data-collection/metadata/statistics'),
-        api.get('/ml-models/models'),
+        api.get('/patients/').catch(() => ({ data: [] })),
+        api.get('/data-collection/metadata/statistics').catch(() => ({ data: { total_datasets: 0 } })),
+        api.get('/ml-models/models').catch(() => ({ data: { count: 0 } })),
       ])
 
+      // Calculate cancer patients from patient data
+      const patients = Array.isArray(patientsRes.data) ? patientsRes.data : []
+      const cancerPatients = patients.filter((p: any) => p.has_cancer === true || p.has_cancer === 'true').length
+      const normalPatients = patients.length - cancerPatients
+
       setStats({
-        total_patients: patientsRes.data.length || 0,
-        cancer_patients: 0, // Calculate from data
-        normal_patients: 0,
+        total_patients: patients.length || 0,
+        cancer_patients: cancerPatients,
+        normal_patients: normalPatients,
         total_datasets: datasetsRes.data?.total_datasets || 0,
-        total_models: modelsRes.data?.count || 0,
+        total_models: modelsRes.data?.count || modelsRes.data?.models?.length || 0,
       })
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
+      // Set default values on error
+      setStats({
+        total_patients: 0,
+        cancer_patients: 0,
+        normal_patients: 0,
+        total_datasets: 0,
+        total_models: 0,
+      })
     } finally {
       setLoading(false)
     }

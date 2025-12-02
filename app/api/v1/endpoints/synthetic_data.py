@@ -117,17 +117,32 @@ async def validate_synthetic_data(
 
 @router.get("/statistics")
 async def get_generation_statistics(db: Session = Depends(get_db)):
-    """Get statistics about generated synthetic data"""
+    """Get statistics about generated synthetic data with caching"""
     from app.models.patient import Patient
-
+    from app.core.cache import CacheManager
+    
+    cache_manager = CacheManager()
+    cache_key = cache_manager.generate_key("synthetic_data", "statistics")
+    
+    # Try to get from cache
+    cached_stats = cache_manager.get(cache_key)
+    if cached_stats is not None:
+        return cached_stats
+    
+    # Query database
     total_patients = db.query(Patient).count()
     cancer_patients = db.query(Patient).filter(Patient.has_cancer == True).count()
     normal_patients = db.query(Patient).filter(Patient.has_cancer == False).count()
 
-    return {
+    stats = {
         "total_patients": total_patients,
         "cancer_patients": cancer_patients,
         "normal_patients": normal_patients,
         "cancer_ratio": round(cancer_patients / total_patients, 3) if total_patients > 0 else 0,
     }
+    
+    # Cache for 15 minutes
+    cache_manager.set(cache_key, stats, ttl=900)
+    
+    return stats
 

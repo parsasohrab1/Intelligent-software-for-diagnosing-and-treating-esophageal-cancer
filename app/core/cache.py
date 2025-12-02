@@ -57,7 +57,7 @@ class CacheManager:
         key_parts.extend(str(arg) for arg in args)
         key_parts.extend(f"{k}:{v}" for k, v in sorted(kwargs.items()))
         key_string = ":".join(key_parts)
-        return hashlib.md5(key_string.encode()).hexdigest()
+        return f"{prefix}:{hashlib.md5(key_string.encode()).hexdigest()}"
 
 
 def cached(ttl: int = 3600, key_prefix: str = "cache"):

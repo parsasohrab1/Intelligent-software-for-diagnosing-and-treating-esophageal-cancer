@@ -46,11 +46,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                 ip_address=client_ip,
             )
 
-        # Add security headers
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["X-XSS-Protection"] = "1; mode=block"
-        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        # Add comprehensive security headers using utility
+        from app.core.security_headers import apply_security_headers
+        apply_security_headers(response)
 
         return response
 

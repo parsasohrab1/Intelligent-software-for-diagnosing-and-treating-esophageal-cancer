@@ -8,13 +8,19 @@ from typing import Generator
 
 from app.core.config import settings
 
-# PostgreSQL engine
+# PostgreSQL engine with optimized connection pooling
 engine = create_engine(
     settings.DATABASE_URL,
     pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
+    pool_size=20,  # Increased from 10
+    max_overflow=40,  # Increased from 20
+    pool_recycle=3600,  # Recycle connections after 1 hour
+    pool_timeout=30,  # Timeout for getting connection from pool
     echo=settings.DEBUG,
+    connect_args={
+        "connect_timeout": 10,
+        "application_name": "inescape_api",
+    },
 )
 
 # Session factory

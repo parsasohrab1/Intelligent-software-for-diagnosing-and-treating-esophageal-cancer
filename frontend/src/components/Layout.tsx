@@ -20,6 +20,8 @@ import ScienceIcon from '@mui/icons-material/Science'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import PsychologyIcon from '@mui/icons-material/Psychology'
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
+import ImageIcon from '@mui/icons-material/Image'
+import MonitorIcon from '@mui/icons-material/MonitorHeart'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -36,6 +38,8 @@ const menuItems = [
   { text: 'Data Collection', icon: <CloudDownloadIcon />, path: '/data-collection' },
   { text: 'ML Models', icon: <PsychologyIcon />, path: '/ml-models' },
   { text: 'Clinical Decision Support', icon: <LocalHospitalIcon />, path: '/cds' },
+        { text: 'MRI Report', icon: <ImageIcon />, path: '/mri' },
+  { text: 'Patient Monitoring', icon: <MonitorIcon />, path: '/monitoring' },
   { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
 ]
 
