@@ -41,15 +41,37 @@ def get_db() -> Generator:
 
 async def init_db():
     """Initialize database (create tables if not exist)"""
-    # Import all models here to ensure they are registered
-    from app.models import (  # noqa: F401
-        patient,
-        clinical_data,
-        genomic_data,
-        imaging_data,
-        treatment_data,
-    )
+    import logging
+    from sqlalchemy.exc import OperationalError
+    
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Import all models here to ensure they are registered
+        from app.models import (  # noqa: F401
+            patient,
+            clinical_data,
+            genomic_data,
+            imaging_data,
+            treatment_data,
+        )
 
-    # Create all tables
-    Base.metadata.create_all(bind=engine)
+        # Test connection first
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        
+        # Create all tables
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database initialized successfully")
+    except OperationalError as e:
+        logger.error(f"Database connection failed: {e}")
+        logger.error("Please make sure:")
+        logger.error("  1. Docker Desktop is running")
+        logger.error("  2. Docker services are started: docker-compose up -d")
+        logger.error("  3. PostgreSQL is ready (wait 10-15 seconds)")
+        # Don't raise - let the app start but database operations will fail
+        # This allows health checks to report the issue
+    except Exception as e:
+        logger.error(f"Database initialization error: {e}")
+        # Don't raise - let the app start
 

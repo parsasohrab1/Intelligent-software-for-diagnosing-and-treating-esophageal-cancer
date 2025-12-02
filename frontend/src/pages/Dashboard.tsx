@@ -34,24 +34,38 @@ export default function Dashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      // Fetch statistics from various endpoints
-      const [patientsRes, datasetsRes, modelsRes] = await Promise.all([
-        api.get('/patients/').catch(() => ({ data: [] })),
-        api.get('/data-collection/metadata/statistics').catch(() => ({ data: { total_datasets: 0 } })),
-        api.get('/ml-models/models').catch(() => ({ data: { count: 0 } })),
+      // Fetch statistics from various endpoints with better error handling
+      const [patientsRes, datasetsRes, modelsRes] = await Promise.allSettled([
+        api.get('/patients/'),
+        api.get('/data-collection/metadata/statistics'),
+        api.get('/ml-models/models'),
       ])
 
+      // Extract data from settled promises
+      const patientsData = patientsRes.status === 'fulfilled' 
+        ? (Array.isArray(patientsRes.value.data) ? patientsRes.value.data : [])
+        : []
+      
+      const datasetsData = datasetsRes.status === 'fulfilled'
+        ? datasetsRes.value.data
+        : { total_datasets: 0 }
+      
+      const modelsData = modelsRes.status === 'fulfilled'
+        ? modelsRes.value.data
+        : { count: 0, models: [] }
+
       // Calculate cancer patients from patient data
-      const patients = Array.isArray(patientsRes.data) ? patientsRes.data : []
-      const cancerPatients = patients.filter((p: any) => p.has_cancer === true || p.has_cancer === 'true').length
-      const normalPatients = patients.length - cancerPatients
+      const cancerPatients = patientsData.filter((p: any) => 
+        p.has_cancer === true || p.has_cancer === 'true' || p.has_cancer === 1
+      ).length
+      const normalPatients = patientsData.length - cancerPatients
 
       setStats({
-        total_patients: patients.length || 0,
+        total_patients: patientsData.length || 0,
         cancer_patients: cancerPatients,
         normal_patients: normalPatients,
-        total_datasets: datasetsRes.data?.total_datasets || 0,
-        total_models: modelsRes.data?.count || modelsRes.data?.models?.length || 0,
+        total_datasets: datasetsData?.total_datasets || 0,
+        total_models: modelsData?.count || modelsData?.models?.length || 0,
       })
     } catch (error) {
       console.error('Error fetching dashboard data:', error)

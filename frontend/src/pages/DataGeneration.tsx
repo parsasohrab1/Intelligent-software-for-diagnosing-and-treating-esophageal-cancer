@@ -9,14 +9,17 @@ import {
   Alert,
   CircularProgress,
   Grid,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import api from '../services/api'
 
 export default function DataGeneration() {
-  const [nPatients, setNPatients] = useState(1000)
-  const [cancerRatio, setCancerRatio] = useState(0.3)
+  const [nPatients, setNPatients] = useState(100)
+  const [cancerRatio, setCancerRatio] = useState(0.4)
   const [seed, setSeed] = useState(42)
+  const [saveToDb, setSaveToDb] = useState(true)  // Default to true
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
 
@@ -28,7 +31,7 @@ export default function DataGeneration() {
         n_patients: nPatients,
         cancer_ratio: cancerRatio,
         seed: seed,
-        save_to_db: false,
+        save_to_db: saveToDb,
       })
       setResult(response.data)
     } catch (error) {
@@ -70,6 +73,16 @@ export default function DataGeneration() {
                   type="number"
                   value={seed}
                   onChange={(e) => setSeed(parseInt(e.target.value))}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={saveToDb}
+                      onChange={(e) => setSaveToDb(e.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label="Save to Database"
                 />
                 <Button
                   variant="contained"

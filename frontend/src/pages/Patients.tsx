@@ -14,6 +14,7 @@ import {
   CircularProgress,
   TextField,
   InputAdornment,
+  Alert,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
@@ -39,9 +40,18 @@ export default function Patients() {
   const fetchPatients = async () => {
     try {
       const response = await api.get('/patients/')
-      setPatients(response.data)
-    } catch (error) {
+      // Handle both array and object responses
+      if (Array.isArray(response.data)) {
+        setPatients(response.data)
+      } else if (response.data && Array.isArray(response.data.patients)) {
+        setPatients(response.data.patients)
+      } else {
+        setPatients([])
+      }
+    } catch (error: any) {
       console.error('Error fetching patients:', error)
+      // Set empty array on error to prevent UI issues
+      setPatients([])
     } finally {
       setLoading(false)
     }
@@ -56,6 +66,27 @@ export default function Patients() {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
         <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (patients.length === 0 && !loading) {
+    return (
+      <Box p={3}>
+        <Typography variant="h4" gutterBottom>
+          Patients
+        </Typography>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          No patients found. Please generate data first.
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => window.location.href = '/data-generation'}
+            >
+              Go to Data Generation
+            </Button>
+          </Box>
+        </Alert>
       </Box>
     )
   }
