@@ -1,0 +1,164 @@
+services:
+  # Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: inescape-app-staging
+    restart: unless-stopped
+    ports:
+      - "8001:8000"  # Different port for staging
+    environment:
+      - ENVIRONMENT=staging
+      - DEBUG=False
+      - LOG_LEVEL=INFO
+      - POSTGRES_HOST=postgres
+      - MONGODB_HOST=mongodb
+      - REDIS_HOST=redis
+      - SECRET_KEY=${STAGING_SECRET_KEY}
+      - ENCRYPTION_KEY=${STAGING_ENCRYPTION_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./data/staging:/app/data
+      - ./logs/staging:/app/logs
+    networks:
+      - inescape-staging-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: inescape-postgres-staging
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${STAGING_POSTGRES_DB:-inescape_staging}
+      - POSTGRES_USER=${STAGING_POSTGRES_USER:-inescape_staging_user}
+      - POSTGRES_PASSWORD=${STAGING_POSTGRES_PASSWORD}
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - inescape-staging-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${STAGING_POSTGRES_USER:-inescape_staging_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB
+  mongodb:
+    image: mongo:7
+    container_name: inescape-mongodb-staging
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${STAGING_MONGODB_USER:-inescape_staging_user}
+      - MONGO_INITDB_ROOT_PASSWORD=${STAGING_MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${STAGING_MONGODB_DB:-inescape_staging_metadata}
+    volumes:
+      - mongodb_staging_data:/data/db
+    networks:
+      - inescape-staging-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: inescape-redis-staging
+    restart: unless-stopped
+    command: redis-server --requirepass ${STAGING_REDIS_PASSWORD:-}
+    volumes:
+      - redis_staging_data:/data
+    networks:
+      - inescape-staging-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${STAGING_REDIS_PASSWORD:-}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO (Object Storage)
+  minio:
+    image: minio/minio:latest
+    container_name: inescape-minio-staging
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${STAGING_STORAGE_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${STAGING_STORAGE_SECRET_KEY:-minioadmin}
+    ports:
+      - "9002:9000"  # Different ports for staging
+      - "9003:9001"
+    volumes:
+      - minio_staging_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - inescape-staging-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Prometheus (Monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: inescape-prometheus-staging
+    restart: unless-stopped
+    ports:
+      - "9091:9090"  # Different port for staging
+    volumes:
+      - ./monitoring/prometheus.staging.yml:/etc/prometheus/prometheus.yml
+      - prometheus_staging_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - inescape-staging-network
+
+  # Grafana (Visualization)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: inescape-grafana-staging
+    restart: unless-stopped
+    ports:
+      - "3002:3000"  # Different port for staging
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${STAGING_GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=http://localhost:3002
+    volumes:
+      - grafana_staging_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - inescape-staging-network
+
+volumes:
+  postgres_staging_data:
+  mongodb_staging_data:
+  redis_staging_data:
+  minio_staging_data:
+  prometheus_staging_data:
+  grafana_staging_data:
+
+networks:
+  inescape-staging-network:
+    driver: bridge
+
