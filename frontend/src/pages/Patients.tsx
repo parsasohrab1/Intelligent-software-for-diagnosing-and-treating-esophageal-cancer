@@ -45,7 +45,10 @@ export default function Patients() {
 
   const fetchPatients = async () => {
     try {
-      const response = await api.get('/patients/')
+      const response = await api.get('/patients/', {
+        params: { limit: 100 },
+        timeout: 30000, // 30 seconds timeout
+      })
       // Handle both array and object responses
       if (Array.isArray(response.data)) {
         setPatients(response.data)
@@ -131,7 +134,7 @@ export default function Patients() {
               <Button
                 color="inherit"
                 size="small"
-                onClick={() => navigate('/data-generation')}
+                onClick={() => navigate('/patient-data')}
                 startIcon={<AddIcon />}
               >
                 Generate with Settings

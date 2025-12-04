@@ -15,12 +15,13 @@ cache_manager = CacheManager()
 
 @router.get("/")
 async def get_patients(
-    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+    skip: int = 0, limit: int = 10000, db: Session = Depends(get_db)
 ):
     """Get list of patients"""
     import logging
     import traceback
     from datetime import datetime
+    from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
     
     try:
         # Query database
@@ -67,10 +68,22 @@ async def get_patients(
                 continue
         
         return patient_list
+    except (OperationalError, DisconnectionError, SQLAlchemyError) as e:
+        # Database connection/operation errors - return empty list
+        logging.warning(f"Database error querying patients: {str(e)}")
+        try:
+            db.rollback()
+        except Exception:
+            pass
+        return []
     except Exception as e:
-        # If database is not available, return empty list
+        # Any other error - log and return empty list
         logging.error(f"Error querying patients: {str(e)}")
         logging.error(traceback.format_exc())
+        try:
+            db.rollback()
+        except Exception:
+            pass
         return []
 
 

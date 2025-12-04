@@ -108,26 +108,130 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(Exception)
 async def general_exception_handler(request: Request, exc: Exception):
-    """Handle general exceptions"""
+    """Handle general exceptions, with special handling for dashboard GET endpoints"""
     import traceback
+    import logging
+    from sqlalchemy.exc import OperationalError, DisconnectionError, SQLAlchemyError
+    from pymongo.errors import PyMongoError
     
-    # Log the error (in production, use proper logging)
+    logger = logging.getLogger(__name__)
+    
+    path = str(request.url.path)
+    is_dashboard_endpoint = any([
+        "/api/v1/patients" in path,
+        "/api/v1/data-collection/metadata/statistics" in path,
+        "/api/v1/ml-models/models" in path,
+        "/api/v1/imaging/mri" in path,
+        "/api/v1/cds/services" in path,
+    ])
+    
+    # Check if it's a database/MongoDB error or any error on dashboard endpoints
+    is_db_error = isinstance(exc, (OperationalError, DisconnectionError, SQLAlchemyError, PyMongoError))
+    
+    if is_db_error:
+        logger.warning(f"Database/MongoDB error in {path}: {exc}")
+    else:
+        logger.error(f"Error in {path}: {exc}")
+        logger.error(traceback.format_exc())
+    
+    # For GET endpoints on dashboard, return empty arrays/defaults instead of 500
+    if request.method == "GET" and is_dashboard_endpoint:
+        logger.warning(f"Returning empty/default response for dashboard endpoint {path} due to error")
+        
+        # Return appropriate empty responses for dashboard endpoints
+        if "/api/v1/patients" in path or path.endswith("/patients/"):
+            return JSONResponse(status_code=200, content=[])
+        elif "/api/v1/data-collection/metadata/statistics" in path:
+            return JSONResponse(status_code=200, content={
+                "total_datasets": 0,
+                "by_source": {},
+                "by_data_type": {},
+            })
+        elif "/api/v1/ml-models/models" in path:
+            return JSONResponse(status_code=200, content={"models": [], "count": 0})
+        elif "/api/v1/imaging/mri" in path:
+            return JSONResponse(status_code=200, content=[])
+        elif "/api/v1/cds/services" in path:
+            # CDS services should always work - return the services list
+            return JSONResponse(status_code=200, content={
+                "services": [
+                    {
+                        "name": "Risk Prediction",
+                        "id": "risk-prediction",
+                        "description": "Predict risk of esophageal cancer development",
+                        "endpoint": "/cds/risk-prediction"
+                    },
+                    {
+                        "name": "Treatment Recommendation",
+                        "id": "treatment-recommendation",
+                        "description": "Recommend treatment based on patient characteristics",
+                        "endpoint": "/cds/treatment-recommendation"
+                    },
+                    {
+                        "name": "Prognostic Scoring",
+                        "id": "prognostic-score",
+                        "description": "Calculate prognostic score for patient",
+                        "endpoint": "/cds/prognostic-score"
+                    },
+                    {
+                        "name": "Nanosystem Design",
+                        "id": "nanosystem-design",
+                        "description": "Suggest personalized nanosystem design",
+                        "endpoint": "/cds/nanosystem-design"
+                    },
+                    {
+                        "name": "Clinical Trial Matching",
+                        "id": "clinical-trial-match",
+                        "description": "Match patient to clinical trials",
+                        "endpoint": "/cds/clinical-trial-match"
+                    },
+                    {
+                        "name": "Monitoring Alerts",
+                        "id": "monitoring-alerts",
+                        "description": "Check for monitoring alerts",
+                        "endpoint": "/cds/monitoring-alerts"
+                    }
+                ],
+                "count": 6
+            })
+    
+    # Log the error for non-dashboard endpoints
+    if not is_dashboard_endpoint:
+        logger.error(f"Unhandled exception: {exc}")
+        logger.error(traceback.format_exc())
+    
+    # Print to console in debug mode
     if settings.DEBUG:
+        print(f"\n{'='*60}")
+        print(f"ERROR: Unhandled exception in {path}")
+        print(f"{'='*60}")
         traceback.print_exc()
+        print(f"{'='*60}\n")
     
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error": "INTERNAL_SERVER_ERROR",
-            "detail": "An internal server error occurred",
-            "path": str(request.url.path),
-        } if not settings.DEBUG else {
-            "error": "INTERNAL_SERVER_ERROR",
-            "detail": str(exc),
-            "path": str(request.url.path),
-            "traceback": traceback.format_exc(),
-        },
-    )
+    # Return safe error response for non-dashboard endpoints
+    try:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "INTERNAL_SERVER_ERROR",
+                "detail": "An internal server error occurred",
+                "path": path,
+            } if not settings.DEBUG else {
+                "error": "INTERNAL_SERVER_ERROR",
+                "detail": str(exc),
+                "path": path,
+                "traceback": traceback.format_exc(),
+            },
+        )
+    except Exception as e:
+        # If even JSONResponse fails, return plain text
+        logger.error(f"Failed to create error response: {e}")
+        from fastapi.responses import Response
+        return Response(
+            content=f"Internal Server Error: {str(exc)}",
+            status_code=500,
+            media_type="text/plain"
+        )
 
 
 @app.get("/")

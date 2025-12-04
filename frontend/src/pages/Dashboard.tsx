@@ -88,7 +88,7 @@ export default function Dashboard() {
     total_models: 0,
     total_cds_services: 0,
   })
-      const [patientAnalysis, setPatientAnalysis] = useState<PatientAnalysis[]>([])
+  const [patientAnalysis, setPatientAnalysis] = useState<PatientAnalysis[]>([])
   const [selectedPatient, setSelectedPatient] = useState<PatientAnalysis | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -98,13 +98,13 @@ export default function Dashboard() {
     setError(null)
 
     try {
-      // Fetch all data in parallel
+      // Fetch all data in parallel with individual timeouts
       const [patientsRes, datasetsRes, modelsRes, cdsRes, imagingRes] = await Promise.allSettled([
-        api.get('/patients/'),
-        api.get('/data-collection/metadata/statistics'),
-        api.get('/ml-models/models'),
-        api.get('/cds/services'),
-        api.get('/imaging/mri'),
+        api.get('/patients/', { params: { limit: 100 }, timeout: 30000 }),
+        api.get('/data-collection/metadata/statistics', { timeout: 30000 }),
+        api.get('/ml-models/models', { timeout: 30000 }),
+        api.get('/cds/services', { timeout: 30000 }),
+        api.get('/imaging/mri', { timeout: 30000 }),
       ])
 
       // Process patients data
@@ -122,6 +122,8 @@ export default function Dashboard() {
           p.has_cancer === true || p.has_cancer === 'true' || p.has_cancer === 1
         ).length
         normalPatients = totalPatients - cancerPatients
+      } else {
+        console.warn('Patients data fetch failed or timed out')
       }
 
       // Process datasets data
@@ -206,7 +208,17 @@ export default function Dashboard() {
       }
     } catch (err: any) {
       console.error('Error fetching dashboard data:', err)
-      setError('Error loading data. Please ensure the backend is running.')
+      setError('Some data could not be loaded. Please check backend connection.')
+      // Still set default stats so UI can render
+      setStats({
+        total_patients: 0,
+        cancer_patients: 0,
+        normal_patients: 0,
+        total_datasets: 0,
+        total_models: 0,
+        total_cds_services: 0,
+      })
+      setPatientAnalysis([])
     } finally {
       setLoading(false)
     }
@@ -430,6 +442,9 @@ export default function Dashboard() {
         <CircularProgress size={60} />
         <Typography variant="h6" color="textSecondary">
           Loading dashboard data...
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          This may take a few seconds
         </Typography>
       </Box>
     )
@@ -812,6 +827,37 @@ export default function Dashboard() {
           </Grid>
         </CardContent>
       </Card>
+
+      {/* Empty State */}
+      {stats.total_patients === 0 && !loading && !error && (
+        <Card sx={{ mt: 4 }}>
+          <CardContent>
+            <Box 
+              display="flex" 
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              sx={{ py: 6 }}
+            >
+              <PeopleIcon sx={{ fontSize: 80, color: 'text.secondary', mb: 2 }} />
+              <Typography variant="h5" gutterBottom>
+                No Data Available
+              </Typography>
+              <Typography variant="body1" color="textSecondary" align="center" sx={{ mb: 3 }}>
+                Start by generating or importing patient data to see dashboard statistics.
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<ScienceIcon />}
+                onClick={() => window.location.href = '/patient-data'}
+                sx={{ mr: 2 }}
+              >
+                Generate Data
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      )}
     </Box>
   )
 }

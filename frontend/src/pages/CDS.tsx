@@ -25,13 +25,26 @@ import {
 } from '@mui/material'
 import {
   LocalHospital as HospitalIcon,
-  Psychology as PsychologyIcon,
   Science as ScienceIcon,
   Assessment as AssessmentIcon,
   Visibility as VisibilityIcon,
+  Description as DescriptionIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material'
 import api from '../services/api'
 import SHAPVisualization from '../components/SHAPVisualization'
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -54,9 +67,37 @@ function TabPanel(props: TabPanelProps) {
   )
 }
 
+interface Patient {
+  patient_id: string
+  age: number
+  gender: string
+  has_cancer?: boolean
+  cancer_type?: string
+  bmi?: number
+  [key: string]: any
+}
+
+interface CDSService {
+  name: string
+  id: string
+  description: string
+  endpoint: string
+}
+
 export default function CDS() {
   const [activeStep, setActiveStep] = useState(0)
   const [tabValue, setTabValue] = useState(0)
+  
+  // Data fetching states
+  const [patients, setPatients] = useState<Patient[]>([])
+  const [cdsServices, setCdsServices] = useState<CDSService[]>([])
+  const [loadingPatients, setLoadingPatients] = useState(false)
+  const [loadingServices, setLoadingServices] = useState(false)
+  const [selectedPatientId, setSelectedPatientId] = useState<string>('')
+  
+  // Patient data for graphs (1-4 patients)
+  const [graphPatients, setGraphPatients] = useState<Patient[]>([])
+  const [loadingGraphPatients, setLoadingGraphPatients] = useState(false)
   
   const [patientData, setPatientData] = useState({
     age: 65,
@@ -82,23 +123,114 @@ export default function CDS() {
   const [riskResult, setRiskResult] = useState<any>(null)
   const [treatmentResult, setTreatmentResult] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch patients and CDS services on mount
+  useEffect(() => {
+    fetchPatients()
+    fetchCDSServices()
+  }, [])
+
+  // Load patient data when selected
+  useEffect(() => {
+    if (selectedPatientId) {
+      loadPatientData(selectedPatientId)
+    }
+  }, [selectedPatientId])
+
+  // Fetch 1-4 patients for graph display when Basic Patient Information step is active
+  useEffect(() => {
+    if (activeStep === 0) {
+      fetchGraphPatients()
+    }
+  }, [activeStep])
+
+  const fetchPatients = async () => {
+    setLoadingPatients(true)
+    try {
+      const response = await api.get('/patients/', {
+        params: { limit: 10000 },
+        timeout: 30000,
+      })
+      const patientsData = Array.isArray(response.data) ? response.data : []
+      setPatients(patientsData)
+      if (patientsData.length > 0 && !selectedPatientId) {
+        setSelectedPatientId(patientsData[0].patient_id)
+      }
+    } catch (error: any) {
+      console.error('Error fetching patients:', error)
+      setError('Failed to load patients. Please check backend connection.')
+      setPatients([])
+    } finally {
+      setLoadingPatients(false)
+    }
+  }
+
+  const fetchCDSServices = async () => {
+    setLoadingServices(true)
+    try {
+      const response = await api.get('/cds/services', {
+        timeout: 30000,
+      })
+      const services = response.data?.services || []
+      setCdsServices(services)
+    } catch (error: any) {
+      console.error('Error fetching CDS services:', error)
+      setCdsServices([])
+    } finally {
+      setLoadingServices(false)
+    }
+  }
+
+  const fetchGraphPatients = async () => {
+    setLoadingGraphPatients(true)
+    try {
+      const response = await api.get('/patients/', {
+        params: { limit: 4 },
+        timeout: 30000,
+      })
+      const patientsData = Array.isArray(response.data) ? response.data : []
+      // Take first 1-4 patients
+      setGraphPatients(patientsData.slice(0, 4))
+    } catch (error: any) {
+      console.error('Error fetching graph patients:', error)
+      setGraphPatients([])
+    } finally {
+      setLoadingGraphPatients(false)
+    }
+  }
+
+  const loadPatientData = async (patientId: string) => {
+    try {
+      const patient = patients.find((p) => p.patient_id === patientId)
+      if (patient) {
+        setPatientData({
+          ...patientData,
+          age: patient.age || 65,
+          gender: patient.gender || 'Male',
+        })
+      }
+    } catch (error) {
+      console.error('Error loading patient data:', error)
+    }
+  }
 
   const steps = [
     {
-      label: 'اطلاعات پایه بیمار',
-      description: 'سن، جنسیت و شاخص‌های اولیه',
+      label: 'Basic Patient Information',
+      description: 'Age, gender, and primary indicators',
     },
     {
-      label: 'عوامل خطر',
-      description: 'سیگار، الکل، GERD و سایر عوامل',
+      label: 'Risk Factors',
+      description: 'Smoking, alcohol, GERD, and other factors',
     },
     {
-      label: 'اطلاعات تومور',
-      description: 'مرحله، درجه و مشخصات تومور',
+      label: 'Tumor Information',
+      description: 'Stage, grade, and tumor characteristics',
     },
     {
-      label: 'پیش‌بینی و توصیه',
-      description: 'مشاهده نتایج و توصیه‌ها',
+      label: 'Prediction and Recommendation',
+      description: 'View results and recommendations',
     },
   ]
 
@@ -112,15 +244,19 @@ export default function CDS() {
 
   const handleRiskPrediction = async () => {
     setLoading(true)
+    setError(null)
     try {
       const response = await api.post('/cds/risk-prediction', {
         patient_data: patientData,
         include_explanation: true,
+      }, {
+        timeout: 60000,
       })
       setRiskResult(response.data)
-      setActiveStep(3) // Move to results step
-    } catch (error) {
+      setActiveStep(3)
+    } catch (error: any) {
       console.error('Error predicting risk:', error)
+      setError(error.response?.data?.detail || 'Failed to predict risk. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -128,31 +264,126 @@ export default function CDS() {
 
   const handleTreatmentRecommendation = async () => {
     setLoading(true)
+    setError(null)
     try {
       const response = await api.post('/cds/treatment-recommendation', {
         patient_data: patientData,
         cancer_data: cancerData,
+      }, {
+        timeout: 60000,
       })
       setTreatmentResult(response.data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getting recommendations:', error)
+      setError(error.response?.data?.detail || 'Failed to get treatment recommendations. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <Box>
+    <Box p={3}>
       <Typography variant="h4" gutterBottom>
-        پشتیبانی تصمیم‌گیری بالینی
+        Clinical Decision Support
       </Typography>
-      <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
-        این سیستم به شما کمک می‌کند تا بر اساس اطلاعات بیمار، ریسک و توصیه‌های درمانی را دریافت کنید
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+        This system helps you receive risk assessments and treatment recommendations based on patient information
       </Typography>
 
+      {/* CDS Services Overview */}
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h6">Available CDS Services</Typography>
+            <Button
+              size="small"
+              startIcon={<RefreshIcon />}
+              onClick={fetchCDSServices}
+              disabled={loadingServices}
+            >
+              Refresh
+            </Button>
+          </Box>
+          {loadingServices ? (
+            <Box display="flex" justifyContent="center" p={2}>
+              <CircularProgress />
+            </Box>
+          ) : cdsServices.length > 0 ? (
+            <Grid container spacing={2}>
+              {cdsServices.map((service) => (
+                <Grid item xs={12} sm={6} md={4} key={service.id}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <Typography variant="subtitle1" gutterBottom>
+                        {service.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {service.description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Alert severity="info">
+              No CDS services available. Please check backend connection.
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Patient Selection */}
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h6">Select Patient</Typography>
+            <Button
+              size="small"
+              startIcon={<RefreshIcon />}
+              onClick={fetchPatients}
+              disabled={loadingPatients}
+            >
+              Refresh
+            </Button>
+          </Box>
+          {loadingPatients ? (
+            <Box display="flex" justifyContent="center" p={2}>
+              <CircularProgress />
+            </Box>
+          ) : patients.length > 0 ? (
+            <FormControl fullWidth>
+              <InputLabel>Select Patient</InputLabel>
+              <Select
+                value={selectedPatientId}
+                onChange={(e) => setSelectedPatientId(e.target.value)}
+              >
+                {patients.map((patient) => (
+                  <MenuItem key={patient.patient_id} value={patient.patient_id}>
+                    {patient.patient_id} - {patient.gender}, Age {patient.age}
+                    {patient.has_cancer && ` (${patient.cancer_type || 'Cancer'})`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <Alert severity="info">
+              No patients found. Go to Patient Data page to generate or import patient data.
+            </Alert>
+          )}
+        </CardContent>
+      </Card>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
       <Tabs value={tabValue} onChange={(_e, newValue) => setTabValue(newValue)} sx={{ mb: 3 }}>
-        <Tab icon={<AssessmentIcon />} label="گردش کار بالینی" />
-        <Tab icon={<VisibilityIcon />} label="حالت شبیه‌سازی" />
+        <Tab icon={<AssessmentIcon />} label="Clinical Workflow" />
+        <Tab icon={<VisibilityIcon />} label="Sandbox Mode" />
+        <Tab icon={<DescriptionIcon />} label="Clinical Decision Report" />
       </Tabs>
 
       <TabPanel value={tabValue} index={0}>
@@ -161,36 +392,39 @@ export default function CDS() {
             <Step>
               <StepLabel>{steps[0].label}</StepLabel>
               <StepContent>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[0].description}
                 </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
+                
+                {/* Input Fields */}
+                <Grid container spacing={2} sx={{ mb: 4 }}>
+                  <Grid item xs={12} md={4}>
                     <TextField
                       fullWidth
-                      label="سن"
+                      label="Age"
                       type="number"
                       value={patientData.age}
                       onChange={(e) =>
                         setPatientData({ ...patientData, age: parseInt(e.target.value) || 0 })
                       }
+                      inputProps={{ min: 0, max: 120 }}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={4}>
                     <FormControl fullWidth>
-                      <InputLabel>جنسیت</InputLabel>
+                      <InputLabel>Gender</InputLabel>
                       <Select
                         value={patientData.gender}
                         onChange={(e) =>
                           setPatientData({ ...patientData, gender: e.target.value })
                         }
                       >
-                        <MenuItem value="Male">مرد</MenuItem>
-                        <MenuItem value="Female">زن</MenuItem>
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={4}>
                     <TextField
                       fullWidth
                       label="BMI"
@@ -199,12 +433,177 @@ export default function CDS() {
                       onChange={(e) =>
                         setPatientData({ ...patientData, bmi: parseFloat(e.target.value) || 0 })
                       }
+                      inputProps={{ min: 10, max: 50, step: 0.1 }}
                     />
                   </Grid>
                 </Grid>
+
+                <Divider sx={{ my: 3 }} />
+
+                {/* Patient Data Graphs */}
+                <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                  Patient Data Visualization (1-4 Patients)
+                </Typography>
+                
+                {loadingGraphPatients ? (
+                  <Box display="flex" justifyContent="center" sx={{ py: 4 }}>
+                    <CircularProgress />
+                  </Box>
+                ) : graphPatients.length > 0 ? (
+                  <Grid container spacing={3} sx={{ mb: 3 }}>
+                    {/* Graph 1: Age Comparison */}
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            Age Distribution
+                          </Typography>
+                          <ResponsiveContainer width="100%" height={250}>
+                            <BarChart data={graphPatients.map((p, idx) => ({
+                              patient: `P${idx + 1}`,
+                              age: p.age || 0,
+                            }))}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="patient" />
+                              <YAxis />
+                              <Tooltip />
+                              <Bar dataKey="age" fill="#1976d2" />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+
+                    {/* Graph 2: Gender Distribution */}
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            Gender Distribution
+                          </Typography>
+                          <ResponsiveContainer width="100%" height={250}>
+                            <PieChart>
+                              <Pie
+                                data={(() => {
+                                  const genderCount = graphPatients.reduce((acc, p) => {
+                                    const gender = p.gender || 'Unknown'
+                                    acc[gender] = (acc[gender] || 0) + 1
+                                    return acc
+                                  }, {} as Record<string, number>)
+                                  return Object.entries(genderCount).map(([name, value]) => ({
+                                    name,
+                                    value,
+                                  }))
+                                })()}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                                outerRadius={80}
+                                fill="#8884d8"
+                                dataKey="value"
+                              >
+                                {(() => {
+                                  const genderCount = graphPatients.reduce((acc, p) => {
+                                    const gender = p.gender || 'Unknown'
+                                    acc[gender] = (acc[gender] || 0) + 1
+                                    return acc
+                                  }, {} as Record<string, number>)
+                                  const colors = ['#1976d2', '#dc004e', '#9c27b0', '#ff9800']
+                                  return Object.keys(genderCount).map((_, index) => (
+                                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                  ))
+                                })()}
+                              </Pie>
+                              <Tooltip />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+
+                    {/* Graph 3: BMI Comparison (if available) */}
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            BMI Comparison
+                          </Typography>
+                          <ResponsiveContainer width="100%" height={250}>
+                            <BarChart data={graphPatients.map((p, idx) => ({
+                              patient: `P${idx + 1}`,
+                              bmi: (p as any).bmi || patientData.bmi || 0,
+                            }))}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis dataKey="patient" />
+                              <YAxis domain={[0, 50]} />
+                              <Tooltip />
+                              <Bar dataKey="bmi" fill="#ff9800" />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+
+                    {/* Graph 4: Cancer Status */}
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            Cancer Status Distribution
+                          </Typography>
+                          <ResponsiveContainer width="100%" height={250}>
+                            <PieChart>
+                              <Pie
+                                data={(() => {
+                                  const cancerCount = graphPatients.reduce((acc, p) => {
+                                    const status = p.has_cancer ? 'Has Cancer' : 'No Cancer'
+                                    acc[status] = (acc[status] || 0) + 1
+                                    return acc
+                                  }, {} as Record<string, number>)
+                                  return Object.entries(cancerCount).map(([name, value]) => ({
+                                    name,
+                                    value,
+                                  }))
+                                })()}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                                outerRadius={80}
+                                fill="#8884d8"
+                                dataKey="value"
+                              >
+                                {(() => {
+                                  const cancerCount = graphPatients.reduce((acc, p) => {
+                                    const status = p.has_cancer ? 'Has Cancer' : 'No Cancer'
+                                    acc[status] = (acc[status] || 0) + 1
+                                    return acc
+                                  }, {} as Record<string, number>)
+                                  return Object.keys(cancerCount).map((name, index) => (
+                                    <Cell 
+                                      key={`cell-${index}`} 
+                                      fill={name === 'Has Cancer' ? '#dc004e' : '#4caf50'} 
+                                    />
+                                  ))
+                                })()}
+                              </Pie>
+                              <Tooltip />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                ) : (
+                  <Alert severity="info" sx={{ mb: 3 }}>
+                    No patient data available for visualization. Generate or import patient data first.
+                  </Alert>
+                )}
+
                 <Box sx={{ mt: 2 }}>
                   <Button variant="contained" onClick={handleNext}>
-                    بعدی
+                    Next
                   </Button>
                 </Box>
               </StepContent>
@@ -213,7 +612,7 @@ export default function CDS() {
             <Step>
               <StepLabel>{steps[1].label}</StepLabel>
               <StepContent>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[1].description}
                 </Typography>
                 <Grid container spacing={2}>
@@ -226,7 +625,7 @@ export default function CDS() {
                         setPatientData({ ...patientData, smoking: !patientData.smoking })
                       }
                     >
-                      سیگار: {patientData.smoking ? 'بله' : 'خیر'}
+                      Smoking: {patientData.smoking ? 'Yes' : 'No'}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
@@ -238,7 +637,7 @@ export default function CDS() {
                         setPatientData({ ...patientData, alcohol: !patientData.alcohol })
                       }
                     >
-                      الکل: {patientData.alcohol ? 'بله' : 'خیر'}
+                      Alcohol: {patientData.alcohol ? 'Yes' : 'No'}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
@@ -250,7 +649,7 @@ export default function CDS() {
                         setPatientData({ ...patientData, gerd: !patientData.gerd })
                       }
                     >
-                      GERD: {patientData.gerd ? 'بله' : 'خیر'}
+                      GERD: {patientData.gerd ? 'Yes' : 'No'}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
@@ -262,7 +661,7 @@ export default function CDS() {
                         setPatientData({ ...patientData, barretts_esophagus: !patientData.barretts_esophagus })
                       }
                     >
-                      Barrett's Esophagus: {patientData.barretts_esophagus ? 'بله' : 'خیر'}
+                      Barrett's Esophagus: {patientData.barretts_esophagus ? 'Yes' : 'No'}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
@@ -274,16 +673,16 @@ export default function CDS() {
                         setPatientData({ ...patientData, family_history: !patientData.family_history })
                       }
                     >
-                      سابقه خانوادگی: {patientData.family_history ? 'بله' : 'خیر'}
+                      Family History: {patientData.family_history ? 'Yes' : 'No'}
                     </Button>
                   </Grid>
                 </Grid>
                 <Box sx={{ mt: 2 }}>
                   <Button onClick={handleBack} sx={{ mr: 1 }}>
-                    قبلی
+                    Back
                   </Button>
                   <Button variant="contained" onClick={handleNext}>
-                    بعدی
+                    Next
                   </Button>
                 </Box>
               </StepContent>
@@ -292,7 +691,7 @@ export default function CDS() {
             <Step>
               <StepLabel>{steps[2].label}</StepLabel>
               <StepContent>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[2].description}
                 </Typography>
                 <Grid container spacing={2}>
@@ -346,21 +745,22 @@ export default function CDS() {
                   <Grid item xs={12} md={6}>
                     <TextField
                       fullWidth
-                      label="طول تومور (cm)"
+                      label="Tumor Length (cm)"
                       type="number"
                       value={cancerData.tumor_length_cm}
                       onChange={(e) =>
                         setCancerData({ ...cancerData, tumor_length_cm: parseFloat(e.target.value) || 0 })
                       }
+                      inputProps={{ min: 0, max: 20, step: 0.1 }}
                     />
                   </Grid>
                 </Grid>
                 <Box sx={{ mt: 2 }}>
                   <Button onClick={handleBack} sx={{ mr: 1 }}>
-                    قبلی
+                    Back
                   </Button>
                   <Button variant="contained" onClick={handleNext}>
-                    بعدی
+                    Next
                   </Button>
                 </Box>
               </StepContent>
@@ -369,7 +769,7 @@ export default function CDS() {
             <Step>
               <StepLabel>{steps[3].label}</StepLabel>
               <StepContent>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[3].description}
                 </Typography>
                 <Box display="flex" gap={2} sx={{ mb: 3 }}>
@@ -379,7 +779,7 @@ export default function CDS() {
                     onClick={handleRiskPrediction}
                     disabled={loading}
                   >
-                    پیش‌بینی ریسک
+                    Predict Risk
                   </Button>
                   <Button
                     variant="contained"
@@ -387,7 +787,7 @@ export default function CDS() {
                     onClick={handleTreatmentRecommendation}
                     disabled={loading}
                   >
-                    دریافت توصیه‌های درمانی
+                    Get Treatment Recommendations
                   </Button>
                 </Box>
 
@@ -410,7 +810,7 @@ export default function CDS() {
                       sx={{ mb: 2 }}
                     >
                       <Typography variant="h6">
-                        امتیاز ریسک: {riskResult.risk_score} ({riskResult.risk_category})
+                        Risk Score: {riskResult.risk_score} ({riskResult.risk_category})
                       </Typography>
                       <Typography>{riskResult.recommendation}</Typography>
                     </Alert>
@@ -430,7 +830,7 @@ export default function CDS() {
                 {treatmentResult && (
                   <Box sx={{ mt: 3 }}>
                     <Typography variant="h6" gutterBottom>
-                      توصیه‌های درمانی
+                      Treatment Recommendations
                     </Typography>
                     {treatmentResult.recommendations?.slice(0, 5).map((rec: any, idx: number) => (
                       <Card key={idx} sx={{ mt: 1 }}>
@@ -438,7 +838,7 @@ export default function CDS() {
                           <Typography variant="subtitle1">
                             {rec.type}: {rec.regimen}
                           </Typography>
-                          <Typography variant="body2" color="textSecondary">
+                          <Typography variant="body2" color="text.secondary">
                             {rec.rationale}
                           </Typography>
                         </CardContent>
@@ -449,10 +849,10 @@ export default function CDS() {
 
                 <Box sx={{ mt: 2 }}>
                   <Button onClick={handleBack} sx={{ mr: 1 }}>
-                    قبلی
+                    Back
                   </Button>
                   <Button variant="outlined" onClick={() => setActiveStep(0)}>
-                    شروع مجدد
+                    Restart
                   </Button>
                 </Box>
               </StepContent>
@@ -467,6 +867,15 @@ export default function CDS() {
           setPatientData={setPatientData}
           cancerData={cancerData}
           setCancerData={setCancerData}
+        />
+      </TabPanel>
+
+      <TabPanel value={tabValue} index={2}>
+        <ClinicalDecisionReport 
+          patientData={patientData}
+          cancerData={cancerData}
+          riskResult={riskResult}
+          treatmentResult={treatmentResult}
         />
       </TabPanel>
     </Box>
@@ -495,21 +904,22 @@ function SandboxMode({
       const response = await api.post('/cds/risk-prediction', {
         patient_data: patientData,
         include_explanation: true,
+      }, {
+        timeout: 60000,
       })
       setRiskResult(response.data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error predicting risk:', error)
     } finally {
       setLoading(false)
     }
   }, [patientData])
 
-  // Auto-update when autoUpdate is enabled
   useEffect(() => {
     if (autoUpdate && !loading) {
       const timer = setTimeout(() => {
         handleRiskPrediction()
-      }, 500) // Debounce 500ms
+      }, 500)
       return () => clearTimeout(timer)
     }
   }, [patientData, cancerData, autoUpdate, handleRiskPrediction, loading])
@@ -517,10 +927,10 @@ function SandboxMode({
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
-        محیط شبیه‌سازی (Sandbox)
+        Sandbox Mode
       </Typography>
-      <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-        در این محیط می‌توانید با تغییر پارامترهای مختلف بیمار، تأثیر آن‌ها را بر پیش‌بینی ریسک مشاهده کنید
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        In this environment, you can change various patient parameters and observe their impact on risk prediction
       </Typography>
 
       <Box sx={{ mb: 2 }}>
@@ -529,11 +939,11 @@ function SandboxMode({
           onClick={() => setAutoUpdate(!autoUpdate)}
           sx={{ mb: 2 }}
         >
-          {autoUpdate ? 'غیرفعال کردن به‌روزرسانی خودکار' : 'فعال کردن به‌روزرسانی خودکار'}
+          {autoUpdate ? 'Disable Auto-Update' : 'Enable Auto-Update'}
         </Button>
         {!autoUpdate && (
           <Button variant="contained" onClick={handleRiskPrediction} disabled={loading} sx={{ ml: 2 }}>
-            محاسبه ریسک
+            Calculate Risk
           </Button>
         )}
       </Box>
@@ -543,13 +953,13 @@ function SandboxMode({
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                اطلاعات بیمار
+                Patient Information
               </Typography>
               <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="سن"
+                    label="Age"
                     type="number"
                     value={patientData.age}
                     onChange={(e) =>
@@ -560,15 +970,15 @@ function SandboxMode({
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel>جنسیت</InputLabel>
+                    <InputLabel>Gender</InputLabel>
                     <Select
                       value={patientData.gender}
                       onChange={(e) =>
                         setPatientData({ ...patientData, gender: e.target.value })
                       }
                     >
-                      <MenuItem value="Male">مرد</MenuItem>
-                      <MenuItem value="Female">زن</MenuItem>
+                      <MenuItem value="Male">Male</MenuItem>
+                      <MenuItem value="Female">Female</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -587,28 +997,28 @@ function SandboxMode({
                 <Grid item xs={12}>
                   <Box display="flex" flexWrap="wrap" gap={1}>
                     <Chip
-                      label={`سیگار: ${patientData.smoking ? 'بله' : 'خیر'}`}
+                      label={`Smoking: ${patientData.smoking ? 'Yes' : 'No'}`}
                       color={patientData.smoking ? 'error' : 'default'}
                       onClick={() =>
                         setPatientData({ ...patientData, smoking: !patientData.smoking })
                       }
                     />
                     <Chip
-                      label={`الکل: ${patientData.alcohol ? 'بله' : 'خیر'}`}
+                      label={`Alcohol: ${patientData.alcohol ? 'Yes' : 'No'}`}
                       color={patientData.alcohol ? 'error' : 'default'}
                       onClick={() =>
                         setPatientData({ ...patientData, alcohol: !patientData.alcohol })
                       }
                     />
                     <Chip
-                      label={`GERD: ${patientData.gerd ? 'بله' : 'خیر'}`}
+                      label={`GERD: ${patientData.gerd ? 'Yes' : 'No'}`}
                       color={patientData.gerd ? 'warning' : 'default'}
                       onClick={() =>
                         setPatientData({ ...patientData, gerd: !patientData.gerd })
                       }
                     />
                     <Chip
-                      label={`Barrett's: ${patientData.barretts_esophagus ? 'بله' : 'خیر'}`}
+                      label={`Barrett's: ${patientData.barretts_esophagus ? 'Yes' : 'No'}`}
                       color={patientData.barretts_esophagus ? 'error' : 'default'}
                       onClick={() =>
                         setPatientData({ ...patientData, barretts_esophagus: !patientData.barretts_esophagus })
@@ -625,7 +1035,7 @@ function SandboxMode({
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                اطلاعات تومور
+                Tumor Information
               </Typography>
               <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid item xs={12} md={4}>
@@ -678,7 +1088,7 @@ function SandboxMode({
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    label="طول تومور (cm)"
+                    label="Tumor Length (cm)"
                     type="number"
                     value={cancerData.tumor_length_cm}
                     onChange={(e) =>
@@ -715,7 +1125,7 @@ function SandboxMode({
                   sx={{ mb: 2 }}
                 >
                   <Typography variant="h6">
-                    امتیاز ریسک: {riskResult.risk_score} ({riskResult.risk_category})
+                    Risk Score: {riskResult.risk_score} ({riskResult.risk_category})
                   </Typography>
                   <Typography>{riskResult.recommendation}</Typography>
                 </Alert>
@@ -735,3 +1145,314 @@ function SandboxMode({
     </Paper>
   )
 }
+
+// Clinical Decision Report Component
+function ClinicalDecisionReport({
+  patientData,
+  cancerData,
+  riskResult,
+  treatmentResult,
+}: {
+  patientData: any
+  cancerData: any
+  riskResult: any
+  treatmentResult: any
+}) {
+  const [reportData, setReportData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (riskResult || treatmentResult) {
+      generateReport()
+    }
+  }, [riskResult, treatmentResult])
+
+  const generateReport = () => {
+    const report = {
+      generatedAt: new Date().toLocaleString(),
+      patientInfo: {
+        age: patientData.age,
+        gender: patientData.gender,
+        bmi: patientData.bmi,
+        riskFactors: {
+          smoking: patientData.smoking ? 'Yes' : 'No',
+          alcohol: patientData.alcohol ? 'Yes' : 'No',
+          gerd: patientData.gerd ? 'Yes' : 'No',
+          barretts_esophagus: patientData.barretts_esophagus ? 'Yes' : 'No',
+          family_history: patientData.family_history ? 'Yes' : 'No',
+        },
+      },
+      cancerInfo: {
+        t_stage: cancerData.t_stage,
+        n_stage: cancerData.n_stage,
+        m_stage: cancerData.m_stage,
+        tumor_length_cm: cancerData.tumor_length_cm,
+        histological_grade: cancerData.histological_grade,
+        tumor_location: cancerData.tumor_location,
+      },
+      riskAssessment: riskResult ? {
+        risk_score: riskResult.risk_score,
+        risk_category: riskResult.risk_category,
+        recommendation: riskResult.recommendation,
+      } : null,
+      treatmentRecommendations: treatmentResult ? {
+        recommendations: treatmentResult.recommendations || [],
+      } : null,
+    }
+    setReportData(report)
+  }
+
+  const handleGenerateFullReport = async () => {
+    setLoading(true)
+    try {
+      const [riskRes, treatmentRes] = await Promise.allSettled([
+        api.post('/cds/risk-prediction', {
+          patient_data: patientData,
+          include_explanation: true,
+        }, { timeout: 60000 }),
+        api.post('/cds/treatment-recommendation', {
+          patient_data: patientData,
+          cancer_data: cancerData,
+        }, { timeout: 60000 }),
+      ])
+
+      const report = {
+        generatedAt: new Date().toLocaleString(),
+        patientInfo: {
+          age: patientData.age,
+          gender: patientData.gender,
+          bmi: patientData.bmi,
+          riskFactors: {
+            smoking: patientData.smoking ? 'Yes' : 'No',
+            alcohol: patientData.alcohol ? 'Yes' : 'No',
+            gerd: patientData.gerd ? 'Yes' : 'No',
+            barretts_esophagus: patientData.barretts_esophagus ? 'Yes' : 'No',
+            family_history: patientData.family_history ? 'Yes' : 'No',
+          },
+        },
+        cancerInfo: {
+          t_stage: cancerData.t_stage,
+          n_stage: cancerData.n_stage,
+          m_stage: cancerData.m_stage,
+          tumor_length_cm: cancerData.tumor_length_cm,
+          histological_grade: cancerData.histological_grade,
+          tumor_location: cancerData.tumor_location,
+        },
+        riskAssessment: riskRes.status === 'fulfilled' ? {
+          risk_score: riskRes.value.data.risk_score,
+          risk_category: riskRes.value.data.risk_category,
+          recommendation: riskRes.value.data.recommendation,
+        } : null,
+        treatmentRecommendations: treatmentRes.status === 'fulfilled' ? {
+          recommendations: treatmentRes.value.data.recommendations || [],
+        } : null,
+      }
+      setReportData(report)
+    } catch (error) {
+      console.error('Error generating report:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Paper sx={{ p: 3 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" gutterBottom>
+          Clinical Decision Report
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={handleGenerateFullReport}
+          disabled={loading}
+          startIcon={<DescriptionIcon />}
+        >
+          {loading ? 'Generating Report...' : 'Generate Full Report'}
+        </Button>
+      </Box>
+
+      {loading && (
+        <Box display="flex" justifyContent="center" sx={{ my: 3 }}>
+          <CircularProgress />
+        </Box>
+      )}
+
+      {reportData ? (
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Patient Information
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">Age:</Typography>
+                    <Typography variant="body1">{reportData.patientInfo.age} years</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">Gender:</Typography>
+                    <Typography variant="body1">{reportData.patientInfo.gender}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">BMI:</Typography>
+                    <Typography variant="body1">{reportData.patientInfo.bmi}</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Risk Factors:
+                    </Typography>
+                    <Box display="flex" flexWrap="wrap" gap={1}>
+                      <Chip
+                        label={`Smoking: ${reportData.patientInfo.riskFactors.smoking}`}
+                        color={patientData.smoking ? 'error' : 'default'}
+                        size="small"
+                      />
+                      <Chip
+                        label={`Alcohol: ${reportData.patientInfo.riskFactors.alcohol}`}
+                        color={patientData.alcohol ? 'error' : 'default'}
+                        size="small"
+                      />
+                      <Chip
+                        label={`GERD: ${reportData.patientInfo.riskFactors.gerd}`}
+                        color={patientData.gerd ? 'warning' : 'default'}
+                        size="small"
+                      />
+                      <Chip
+                        label={`Barrett's: ${reportData.patientInfo.riskFactors.barretts_esophagus}`}
+                        color={patientData.barretts_esophagus ? 'error' : 'default'}
+                        size="small"
+                      />
+                      <Chip
+                        label={`Family History: ${reportData.patientInfo.riskFactors.family_history}`}
+                        color={patientData.family_history ? 'warning' : 'default'}
+                        size="small"
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Tumor Information
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                <Grid container spacing={2}>
+                  <Grid item xs={4}>
+                    <Typography variant="body2" color="text.secondary">T Stage:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.t_stage}</Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="body2" color="text.secondary">N Stage:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.n_stage}</Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="body2" color="text.secondary">M Stage:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.m_stage}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">Tumor Length:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.tumor_length_cm} cm</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">Grade:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.histological_grade}</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="text.secondary">Location:</Typography>
+                    <Typography variant="body1">{reportData.cancerInfo.tumor_location}</Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {reportData.riskAssessment && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Risk Assessment
+                  </Typography>
+                  <Divider sx={{ mb: 2 }} />
+                  <Alert
+                    severity={
+                      reportData.riskAssessment.risk_category === 'Very High' ||
+                      reportData.riskAssessment.risk_category === 'High'
+                        ? 'error'
+                        : reportData.riskAssessment.risk_category === 'Moderate'
+                        ? 'warning'
+                        : 'info'
+                    }
+                    sx={{ mb: 2 }}
+                  >
+                    <Typography variant="h6">
+                      Risk Score: {reportData.riskAssessment.risk_score}%
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Category: {reportData.riskAssessment.risk_category}
+                    </Typography>
+                  </Alert>
+                  <Typography variant="body2" color="text.secondary">
+                    {reportData.riskAssessment.recommendation}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {reportData.treatmentRecommendations && reportData.treatmentRecommendations.recommendations && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Treatment Recommendations
+                  </Typography>
+                  <Divider sx={{ mb: 2 }} />
+                  {reportData.treatmentRecommendations.recommendations.slice(0, 3).map((rec: any, idx: number) => (
+                    <Box key={idx} sx={{ mb: 2 }}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        {rec.type}: {rec.regimen}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {rec.rationale}
+                      </Typography>
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Typography variant="body2" color="text.secondary" align="center">
+                  Report Generated At: {reportData.generatedAt}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+                  This report is automatically generated and should not be considered as final medical advice.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      ) : (
+        <Alert severity="info" sx={{ mt: 2 }}>
+          <Typography variant="h6">No Report Generated</Typography>
+          <Typography>
+            To generate a clinical decision report, please first enter patient information in the "Clinical Workflow" tab
+            and perform a risk prediction. Then click on the "Generate Full Report" button.
+          </Typography>
+        </Alert>
+      )}
+    </Paper>
+  )
+}
+

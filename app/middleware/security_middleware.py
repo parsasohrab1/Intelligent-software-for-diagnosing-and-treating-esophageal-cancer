@@ -52,9 +52,13 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             except Exception:
                 pass  # Don't fail if audit logging fails
 
-        # Add comprehensive security headers using utility
-        from app.core.security_headers import apply_security_headers
-        apply_security_headers(response)
+        # Add comprehensive security headers using utility (but don't fail if it errors)
+        try:
+            from app.core.security_headers import apply_security_headers
+            apply_security_headers(response)
+        except Exception:
+            # Don't fail if security headers can't be applied
+            pass
 
         return response
 

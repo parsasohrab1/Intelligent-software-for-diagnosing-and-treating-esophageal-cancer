@@ -11,7 +11,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 seconds timeout
+  timeout: 300000, // 5 minutes timeout for long operations like data generation
 })
 
 // Request interceptor
@@ -44,6 +44,11 @@ api.interceptors.response.use(
       console.error('API Base URL:', apiBaseURL)
       console.error('Make sure backend is running on http://localhost:8001')
       console.error('Full error:', error)
+    }
+    // Handle timeout errors
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      console.error('API Timeout Error:', error.message)
+      console.error('Request took too long. The backend might be processing a large operation.')
     }
     return Promise.reject(error)
   }

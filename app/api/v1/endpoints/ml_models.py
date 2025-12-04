@@ -246,7 +246,7 @@ async def batch_predict(request: BatchPredictRequest):
 async def list_models(
     model_type: Optional[str] = None,
     status: str = "active",
-    limit: int = 100,
+    limit: int = 10000,
 ):
     """List all trained models with caching"""
     from app.core.cache import CacheManager

@@ -34,8 +34,7 @@ interface LayoutProps {
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Patients', icon: <PeopleIcon />, path: '/patients' },
-  { text: 'Data Generation', icon: <ScienceIcon />, path: '/data-generation' },
-  { text: 'Data Collection', icon: <CloudDownloadIcon />, path: '/data-collection' },
+  { text: 'Patient Data', icon: <ScienceIcon />, path: '/patient-data' },
   { text: 'ML Models', icon: <PsychologyIcon />, path: '/ml-models' },
   { text: 'Clinical Decision Support', icon: <LocalHospitalIcon />, path: '/cds' },
         { text: 'MRI Report', icon: <ImageIcon />, path: '/mri' },

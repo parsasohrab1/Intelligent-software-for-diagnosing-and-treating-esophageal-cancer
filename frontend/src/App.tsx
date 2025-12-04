@@ -3,8 +3,7 @@ import { Box } from '@mui/material'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Patients from './pages/Patients'
-import DataGeneration from './pages/DataGeneration'
-import DataCollection from './pages/DataCollection'
+import PatientData from './pages/PatientData'
 import MLModels from './pages/MLModels'
 import CDS from './pages/CDS'
 import MRIDashboard from './pages/MRIDashboard'
@@ -18,8 +17,9 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/patients" element={<Patients />} />
-        <Route path="/data-generation" element={<DataGeneration />} />
-        <Route path="/data-collection" element={<DataCollection />} />
+        <Route path="/patient-data" element={<PatientData />} />
+        <Route path="/data-generation" element={<Navigate to="/patient-data" replace />} />
+        <Route path="/data-collection" element={<Navigate to="/patient-data" replace />} />
         <Route path="/ml-models" element={<MLModels />} />
         <Route path="/cds" element={<CDS />} />
         <Route path="/mri" element={<MRIDashboard />} />

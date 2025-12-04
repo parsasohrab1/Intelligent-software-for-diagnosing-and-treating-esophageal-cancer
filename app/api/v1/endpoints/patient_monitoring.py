@@ -3,6 +3,7 @@ Patient monitoring endpoints for tracking vital signs, lab results, and clinical
 """
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from typing import List, Optional, Dict, Any
 from datetime import date, datetime
 from pydantic import BaseModel
@@ -109,32 +110,56 @@ def check_parameter_status(value: Optional[float], normal_range: Dict[str, Any])
 
 def get_patient_monitoring_data(patient: Patient, db: Session) -> Dict[str, Any]:
     """Get all monitoring data for a patient"""
-    # Get latest clinical data
-    latest_clinical = db.query(ClinicalData).filter(
-        ClinicalData.patient_id == patient.patient_id
-    ).order_by(ClinicalData.record_date.desc()).first()
+    import logging
+    from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
     
-    # Get latest lab results
-    latest_labs = db.query(LabResult).filter(
-        LabResult.patient_id == patient.patient_id
-    ).order_by(LabResult.test_date.desc()).limit(10).all()
+    logger = logging.getLogger(__name__)
     
-    # Get latest imaging
-    latest_imaging = db.query(ImagingData).filter(
-        ImagingData.patient_id == patient.patient_id
-    ).order_by(ImagingData.imaging_date.desc()).first()
-    
-    # Get treatment data
-    latest_treatment = db.query(TreatmentData).filter(
-        TreatmentData.patient_id == patient.patient_id
-    ).order_by(TreatmentData.treatment_start_date.desc()).first()
-    
-    return {
-        "clinical": latest_clinical,
-        "labs": latest_labs,
-        "imaging": latest_imaging,
-        "treatment": latest_treatment,
-    }
+    try:
+        # Get latest clinical data - use examination_date (not record_date)
+        # Handle null dates by ordering and filtering
+        latest_clinical = db.query(ClinicalData).filter(
+            ClinicalData.patient_id == patient.patient_id
+        ).order_by(desc(ClinicalData.examination_date)).first()
+        
+        # Get latest lab results
+        latest_labs = db.query(LabResult).filter(
+            LabResult.patient_id == patient.patient_id
+        ).order_by(desc(LabResult.test_date)).limit(10).all()
+        
+        # Get latest imaging
+        latest_imaging = db.query(ImagingData).filter(
+            ImagingData.patient_id == patient.patient_id
+        ).order_by(desc(ImagingData.imaging_date)).first()
+        
+        # Get treatment data
+        latest_treatment = db.query(TreatmentData).filter(
+            TreatmentData.patient_id == patient.patient_id
+        ).order_by(desc(TreatmentData.treatment_start_date)).first()
+        
+        return {
+            "clinical": latest_clinical,
+            "labs": latest_labs,
+            "imaging": latest_imaging,
+            "treatment": latest_treatment,
+        }
+    except (SQLAlchemyError, OperationalError, DisconnectionError) as e:
+        logger.error(f"Database error in get_patient_monitoring_data: {e}")
+        # Return empty data on database error
+        return {
+            "clinical": None,
+            "labs": [],
+            "imaging": None,
+            "treatment": None,
+        }
+    except Exception as e:
+        logger.error(f"Error in get_patient_monitoring_data: {e}")
+        return {
+            "clinical": None,
+            "labs": [],
+            "imaging": None,
+            "treatment": None,
+        }
 
 
 @router.get("/patients/{patient_id}/monitoring", response_model=PatientMonitoringResponse)
@@ -483,7 +508,7 @@ async def get_patient_monitoring(
 @router.get("/patients/monitoring/all", response_model=List[PatientMonitoringResponse])
 async def get_all_patients_monitoring(
     skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=1000),
+    limit: int = Query(10000, ge=1, le=50000),
     db: Session = Depends(get_db)
 ):
     """Get monitoring data for all patients"""

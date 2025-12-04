@@ -83,13 +83,17 @@ export default function PatientMonitoring() {
 
   const loadPatients = async () => {
     try {
-      const response = await api.get('/patients?limit=100')
+      const response = await api.get('/patients/', {
+        params: { limit: 10000 }, // Increase limit to get all patients
+        timeout: 30000,
+      })
       setPatients(response.data)
       if (response.data.length > 0 && !selectedPatient) {
         setSelectedPatient(response.data[0].patient_id)
       }
     } catch (err: any) {
       setError('Failed to load patients')
+      console.error('Error loading patients:', err)
     }
   }
 
