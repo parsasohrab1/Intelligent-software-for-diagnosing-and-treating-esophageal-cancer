@@ -175,6 +175,10 @@ async def get_mri_reports(
                     else:
                         imaging_date_str = str(image.imaging_date)
                 
+                # Determine data source based on patient_id pattern
+                is_synthetic = patient_id_str.startswith('CAN') or patient_id_str.startswith('NOR')
+                data_source = "Synthetic" if is_synthetic else "Real"
+                
                 report_dict = {
                     "image_id": int(image.image_id) if image.image_id is not None else 0,
                     "patient_id": patient_id_str,
@@ -187,7 +191,15 @@ async def get_mri_reports(
                     "lymph_nodes_positive": int(image.lymph_nodes_positive) if image.lymph_nodes_positive is not None else 0,
                     "contrast_used": bool(image.contrast_used) if image.contrast_used is not None else False,
                     "radiologist_id": str(image.radiologist_id) if image.radiologist_id else None,
-                    "report_summary": report_summary
+                    "report_summary": report_summary,
+                    # Patient details
+                    "patient_age": int(patient.age) if patient and patient.age is not None else None,
+                    "patient_gender": str(patient.gender) if patient and patient.gender else None,
+                    "patient_ethnicity": str(patient.ethnicity) if patient and patient.ethnicity else None,
+                    "patient_has_cancer": bool(patient.has_cancer) if patient and patient.has_cancer is not None else None,
+                    "patient_cancer_type": str(patient.cancer_type) if patient and patient.cancer_type else None,
+                    "patient_cancer_subtype": str(patient.cancer_subtype) if patient and patient.cancer_subtype else None,
+                    "data_source": data_source,
                 }
                 reports.append(report_dict)
             except Exception as conv_err:

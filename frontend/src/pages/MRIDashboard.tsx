@@ -40,6 +40,14 @@ interface MRIReport {
   contrast_used: boolean
   radiologist_id: string | null
   report_summary: string
+  // Patient details
+  patient_age?: number | null
+  patient_gender?: string | null
+  patient_ethnicity?: string | null
+  patient_has_cancer?: boolean | null
+  patient_cancer_type?: string | null
+  patient_cancer_subtype?: string | null
+  data_source?: string
 }
 
 export default function MRIDashboard() {
@@ -109,12 +117,26 @@ export default function MRIDashboard() {
             MRI Imaging Reports
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            View and manage MRI images and interpretation reports from all sources (real and synthetic data)
+            View and manage MRI images and interpretation reports from all sources (real and synthetic data) with complete patient details
           </Typography>
           {!loading && mriReports.length > 0 && (
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Showing {mriReports.length} MRI report{mriReports.length !== 1 ? 's' : ''} with full details
-            </Typography>
+            <Box display="flex" gap={2} sx={{ mt: 1 }}>
+              <Typography variant="body2" color="text.secondary">
+                Showing {mriReports.length} MRI report{mriReports.length !== 1 ? 's' : ''} with full details
+              </Typography>
+              <Chip
+                label={`Real: ${mriReports.filter(r => r.data_source === 'Real' || (!r.data_source && !r.patient_id.startsWith('CAN') && !r.patient_id.startsWith('NOR'))).length}`}
+                color="success"
+                size="small"
+                variant="outlined"
+              />
+              <Chip
+                label={`Synthetic: ${mriReports.filter(r => r.data_source === 'Synthetic' || r.patient_id.startsWith('CAN') || r.patient_id.startsWith('NOR')).length}`}
+                color="primary"
+                size="small"
+                variant="outlined"
+              />
+            </Box>
           )}
         </Box>
         <Button
@@ -171,20 +193,54 @@ export default function MRIDashboard() {
                     />
                   </Box>
 
+                  {/* Data Source Indicator */}
+                  {(report.data_source || report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR')) && (
+                    <Box mb={1}>
+                      <Chip
+                        label={report.data_source || (report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR') ? 'Synthetic' : 'Real')}
+                        color={report.data_source === 'Synthetic' || report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR') ? 'primary' : 'success'}
+                        size="small"
+                        variant="outlined"
+                        sx={{ mb: 1 }}
+                      />
+                    </Box>
+                  )}
+
+                  {/* Patient Information */}
                   <Box mb={2}>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
                       <PersonIcon sx={{ fontSize: 16, mr: 0.5, verticalAlign: 'middle' }} />
-                      Patient: {report.patient_id}
+                      <strong>Patient ID:</strong> {report.patient_id}
                     </Typography>
-                    {report.patient_name && (
+                    {report.patient_age !== null && report.patient_age !== undefined && (
                       <Typography variant="body2" color="text.secondary" gutterBottom>
-                        Name: {report.patient_name}
+                        <strong>Age:</strong> {report.patient_age} years
+                      </Typography>
+                    )}
+                    {report.patient_gender && (
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <strong>Gender:</strong> {report.patient_gender}
+                      </Typography>
+                    )}
+                    {report.patient_ethnicity && (
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <strong>Ethnicity:</strong> {report.patient_ethnicity}
+                      </Typography>
+                    )}
+                    {report.patient_cancer_type && (
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <strong>Cancer Type:</strong> {report.patient_cancer_type}
+                      </Typography>
+                    )}
+                    {report.patient_cancer_subtype && (
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <strong>Cancer Subtype:</strong> {report.patient_cancer_subtype}
                       </Typography>
                     )}
                     {report.imaging_date && (
                       <Typography variant="body2" color="text.secondary" gutterBottom>
                         <CalendarIcon sx={{ fontSize: 16, mr: 0.5, verticalAlign: 'middle' }} />
-                        Date: {new Date(report.imaging_date).toLocaleDateString()}
+                        <strong>Imaging Date:</strong> {new Date(report.imaging_date).toLocaleDateString()}
                       </Typography>
                     )}
                   </Box>
@@ -323,6 +379,20 @@ export default function MRIDashboard() {
                 />
               </Box>
 
+              {/* Data Source */}
+              {(selectedImage.data_source || selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR')) && (
+                <Box mb={2}>
+                  <Chip
+                    label={selectedImage.data_source || (selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR') ? 'Synthetic' : 'Real')}
+                    color={selectedImage.data_source === 'Synthetic' || selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR') ? 'primary' : 'success'}
+                    variant="outlined"
+                  />
+                </Box>
+              )}
+
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Patient Information
+              </Typography>
               <Grid container spacing={2} mb={3}>
                 <Grid item xs={6}>
                   <Typography variant="body2" color="text.secondary">
@@ -332,13 +402,53 @@ export default function MRIDashboard() {
                     {selectedImage.patient_id}
                   </Typography>
                 </Grid>
-                {selectedImage.patient_name && (
+                {selectedImage.patient_age !== null && selectedImage.patient_age !== undefined && (
                   <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">
-                      Patient Name
+                      Age
                     </Typography>
-                    <Typography variant="body1" fontWeight="bold">
-                      {selectedImage.patient_name}
+                    <Typography variant="body1">
+                      {selectedImage.patient_age} years
+                    </Typography>
+                  </Grid>
+                )}
+                {selectedImage.patient_gender && (
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">
+                      Gender
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedImage.patient_gender}
+                    </Typography>
+                  </Grid>
+                )}
+                {selectedImage.patient_ethnicity && (
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">
+                      Ethnicity
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedImage.patient_ethnicity}
+                    </Typography>
+                  </Grid>
+                )}
+                {selectedImage.patient_cancer_type && (
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">
+                      Cancer Type
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedImage.patient_cancer_type}
+                    </Typography>
+                  </Grid>
+                )}
+                {selectedImage.patient_cancer_subtype && (
+                  <Grid item xs={6}>
+                    <Typography variant="body2" color="text.secondary">
+                      Cancer Subtype
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedImage.patient_cancer_subtype}
                     </Typography>
                   </Grid>
                 )}

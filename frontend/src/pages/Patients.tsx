@@ -27,8 +27,13 @@ interface Patient {
   patient_id: string
   age: number
   gender: string
+  ethnicity?: string | null
   has_cancer: boolean
   cancer_type: string | null
+  cancer_subtype?: string | null
+  created_at?: string
+  updated_at?: string
+  [key: string]: any
 }
 
 export default function Patients() {
@@ -93,10 +98,17 @@ export default function Patients() {
     }
   }
 
-  const filteredPatients = patients.filter((patient) =>
-    patient.patient_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (patient.cancer_type && patient.cancer_type.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  const filteredPatients = patients.filter((patient) => {
+    const searchLower = searchTerm.toLowerCase()
+    return (
+      patient.patient_id.toLowerCase().includes(searchLower) ||
+      (patient.cancer_type && patient.cancer_type.toLowerCase().includes(searchLower)) ||
+      (patient.cancer_subtype && patient.cancer_subtype.toLowerCase().includes(searchLower)) ||
+      (patient.ethnicity && patient.ethnicity.toLowerCase().includes(searchLower)) ||
+      patient.gender.toLowerCase().includes(searchLower) ||
+      (patient.patient_id.startsWith('CAN') || patient.patient_id.startsWith('NOR') ? 'synthetic' : 'real').includes(searchLower)
+    )
+  })
 
   if (loading) {
     return (
@@ -157,78 +169,118 @@ export default function Patients() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => navigate('/data-generation')}
+          onClick={() => navigate('/patient-data')}
         >
           Generate New Data
         </Button>
       </Box>
 
-      <TextField
-        fullWidth
-        placeholder="Search patients..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ mb: 3 }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <Box display="flex" gap={2} mb={3}>
+        <TextField
+          fullWidth
+          placeholder="Search by ID, cancer type, subtype, ethnicity, gender, or data source..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Box display="flex" gap={1} alignItems="center">
+          <Chip
+            label={`Total: ${filteredPatients.length}`}
+            color="primary"
+            variant="outlined"
+          />
+          <Chip
+            label={`Real: ${filteredPatients.filter(p => !p.patient_id.startsWith('CAN') && !p.patient_id.startsWith('NOR')).length}`}
+            color="success"
+            variant="outlined"
+          />
+          <Chip
+            label={`Synthetic: ${filteredPatients.filter(p => p.patient_id.startsWith('CAN') || p.patient_id.startsWith('NOR')).length}`}
+            color="info"
+            variant="outlined"
+          />
+        </Box>
+      </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer component={Paper} sx={{ maxHeight: 'calc(100vh - 300px)', overflowX: 'auto' }}>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell><strong>Patient ID</strong></TableCell>
+              <TableCell><strong>Data Source</strong></TableCell>
               <TableCell><strong>Age</strong></TableCell>
               <TableCell><strong>Gender</strong></TableCell>
+              <TableCell><strong>Ethnicity</strong></TableCell>
               <TableCell><strong>Cancer Status</strong></TableCell>
               <TableCell><strong>Cancer Type</strong></TableCell>
+              <TableCell><strong>Cancer Subtype</strong></TableCell>
+              <TableCell><strong>Created Date</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredPatients.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} align="center">
+                <TableCell colSpan={9} align="center">
                   <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
                     No patients found
                   </Typography>
                 </TableCell>
               </TableRow>
             ) : (
-              filteredPatients.map((patient) => (
-                <TableRow 
-                  key={patient.patient_id}
-                  sx={{ '&:hover': { backgroundColor: 'action.hover' } }}
-                >
-                  <TableCell>{patient.patient_id}</TableCell>
-                  <TableCell>{patient.age}</TableCell>
-                  <TableCell>{patient.gender}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={patient.has_cancer ? 'Cancer' : 'Normal'}
-                      color={patient.has_cancer ? 'error' : 'success'}
-                      size="small"
-                    />
-                  </TableCell>
-                  <TableCell>{patient.cancer_type || '-'}</TableCell>
-                </TableRow>
-              ))
+              filteredPatients.map((patient) => {
+                // Determine data source based on patient_id pattern
+                const isSynthetic = patient.patient_id.startsWith('CAN') || patient.patient_id.startsWith('NOR')
+                const dataSource = isSynthetic ? 'Synthetic' : 'Real'
+                
+                return (
+                  <TableRow 
+                    key={patient.patient_id}
+                    sx={{ '&:hover': { backgroundColor: 'action.hover' } }}
+                  >
+                    <TableCell>
+                      <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                        {patient.patient_id}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={dataSource}
+                        color={isSynthetic ? 'primary' : 'success'}
+                        size="small"
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell>{patient.age || '-'}</TableCell>
+                    <TableCell>{patient.gender || '-'}</TableCell>
+                    <TableCell>{patient.ethnicity || '-'}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={patient.has_cancer ? 'Cancer' : 'Normal'}
+                        color={patient.has_cancer ? 'error' : 'success'}
+                        size="small"
+                      />
+                    </TableCell>
+                    <TableCell>{patient.cancer_type || '-'}</TableCell>
+                    <TableCell>{patient.cancer_subtype || '-'}</TableCell>
+                    <TableCell>
+                      {patient.created_at 
+                        ? new Date(patient.created_at).toLocaleDateString()
+                        : '-'}
+                    </TableCell>
+                  </TableRow>
+                )
+              })
             )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {filteredPatients.length > 0 && (
-        <Box mt={2}>
-          <Typography variant="body2" color="text.secondary">
-            Total: {filteredPatients.length} patients
-          </Typography>
-        </Box>
-      )}
     </Box>
   )
 }
