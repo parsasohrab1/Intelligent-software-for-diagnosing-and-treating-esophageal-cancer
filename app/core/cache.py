@@ -12,26 +12,35 @@ class CacheManager:
     """Cache manager using Redis"""
 
     def __init__(self):
-        self.redis = get_redis_client()
+        try:
+            self.redis = get_redis_client()
+        except Exception:
+            self.redis = None
         self.default_ttl = 3600  # 1 hour
 
     def get(self, key: str) -> Optional[Any]:
         """Get value from cache"""
         try:
+            if self.redis is None:
+                return None
             value = self.redis.get(key)
             if value:
                 return json.loads(value)
             return None
         except Exception:
+            # If Redis is not available, return None (no cache)
             return None
 
     def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
         """Set value in cache"""
         try:
+            if self.redis is None:
+                return False
             ttl = ttl or self.default_ttl
-            serialized = json.dumps(value)
+            serialized = json.dumps(value, default=str)  # Handle datetime serialization
             return self.redis.setex(key, ttl, serialized)
         except Exception:
+            # If Redis is not available, silently fail (no cache)
             return False
 
     def delete(self, key: str) -> bool:

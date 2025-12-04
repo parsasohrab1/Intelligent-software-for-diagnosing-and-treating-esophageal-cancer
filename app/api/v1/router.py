@@ -15,6 +15,8 @@ from app.api.v1.endpoints import (
     maintenance,
     imaging,
     patient_monitoring,
+    mlops,
+    multi_modality,
 )
 
 api_router = APIRouter()
@@ -38,4 +40,6 @@ api_router.include_router(audit.router, prefix="/audit", tags=["audit"])
 api_router.include_router(imaging.router, prefix="/imaging", tags=["imaging"])
 api_router.include_router(patient_monitoring.router, prefix="/monitoring", tags=["patient-monitoring"])
 api_router.include_router(maintenance.router, prefix="/maintenance", tags=["maintenance"])
+api_router.include_router(mlops.router, prefix="/mlops", tags=["mlops"])
+api_router.include_router(multi_modality.router, prefix="/multi-modality", tags=["multi-modality"])
 

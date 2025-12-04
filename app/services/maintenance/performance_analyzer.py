@@ -13,7 +13,7 @@ class PerformanceAnalyzer:
     def __init__(self):
         self.db = get_mongodb_database()
         self.audit_logger = AuditLogger()
-        self.performance_collection = self.db["performance_metrics"]
+        self.performance_collection = self.db["performance_metrics"] if self.db is not None else None
 
     def analyze_api_performance(self, hours: int = 24) -> Dict:
         """Analyze API performance"""

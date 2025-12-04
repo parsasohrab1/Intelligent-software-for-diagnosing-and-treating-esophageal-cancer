@@ -51,7 +51,7 @@ class MRIReportResponse(BaseModel):
         from_attributes = True
 
 
-@router.get("/mri", response_model=List[ImagingDataResponse])
+@router.get("/mri")
 async def get_mri_images(
     patient_id: Optional[str] = Query(None, description="Filter by patient ID"),
     skip: int = Query(0, ge=0),
@@ -59,13 +59,47 @@ async def get_mri_images(
     db: Session = Depends(get_db)
 ):
     """Get all MRI images"""
-    query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
-    
-    if patient_id:
-        query = query.filter(ImagingData.patient_id == patient_id)
-    
-    images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
-    return images
+    try:
+        query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
+        
+        if patient_id:
+            query = query.filter(ImagingData.patient_id == patient_id)
+        
+        images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+        
+        # Convert to dict for response
+        image_list = []
+        for img in images:
+            try:
+                image_dict = {
+                    "image_id": int(img.image_id) if img.image_id is not None else 0,
+                    "patient_id": str(img.patient_id) if img.patient_id else "",
+                    "imaging_modality": str(img.imaging_modality) if img.imaging_modality else "",
+                    "findings": str(img.findings) if img.findings else None,
+                    "impression": str(img.impression) if img.impression else None,
+                    "tumor_length_cm": float(img.tumor_length_cm) if img.tumor_length_cm is not None else None,
+                    "wall_thickness_cm": float(img.wall_thickness_cm) if img.wall_thickness_cm is not None else None,
+                    "lymph_nodes_positive": int(img.lymph_nodes_positive) if img.lymph_nodes_positive is not None else 0,
+                    "contrast_used": bool(img.contrast_used) if img.contrast_used is not None else False,
+                    "radiologist_id": str(img.radiologist_id) if img.radiologist_id else None,
+                    "imaging_date": img.imaging_date.isoformat() if img.imaging_date and hasattr(img.imaging_date, 'isoformat') else (str(img.imaging_date) if img.imaging_date else None),
+                }
+                image_list.append(image_dict)
+            except Exception as conv_err:
+                import logging
+                import traceback
+                logging.warning(f"Error converting image {img.image_id}: {str(conv_err)}")
+                logging.warning(traceback.format_exc())
+                continue
+        
+        return image_list
+    except Exception as e:
+        import logging
+        import traceback
+        logging.error(f"Error fetching MRI images: {str(e)}")
+        logging.error(traceback.format_exc())
+        # Return empty list if there's an error
+        return []
 
 
 @router.get("/mri/{image_id}", response_model=ImagingDataResponse)
@@ -85,7 +119,7 @@ async def get_mri_image(
     return image
 
 
-@router.get("/mri/reports", response_model=List[MRIReportResponse])
+@router.get("/mri/reports")
 async def get_mri_reports(
     patient_id: Optional[str] = Query(None, description="Filter by patient ID"),
     skip: int = Query(0, ge=0),
@@ -93,40 +127,62 @@ async def get_mri_reports(
     db: Session = Depends(get_db)
 ):
     """Get MRI reports with patient information"""
-    query = db.query(ImagingData, Patient).join(
-        Patient, ImagingData.patient_id == Patient.patient_id
-    ).filter(ImagingData.imaging_modality == "MRI")
+    import logging
+    import traceback
     
-    if patient_id:
-        query = query.filter(ImagingData.patient_id == patient_id)
-    
-    results = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
-    
-    reports = []
-    for image, patient in results:
-        # Generate report summary
-        report_summary = f"MRI scan for patient {patient.patient_id}"
-        if image.findings:
-            report_summary += f". Findings: {image.findings[:100]}"
-        if image.impression:
-            report_summary += f". Impression: {image.impression}"
+    try:
+        query = db.query(ImagingData, Patient).join(
+            Patient, ImagingData.patient_id == Patient.patient_id
+        ).filter(ImagingData.imaging_modality == "MRI")
         
-        reports.append(MRIReportResponse(
-            image_id=image.image_id,
-            patient_id=image.patient_id,
-            patient_name=getattr(patient, 'name', None),
-            imaging_date=image.imaging_date,
-            findings=image.findings,
-            impression=image.impression,
-            tumor_length_cm=image.tumor_length_cm,
-            wall_thickness_cm=image.wall_thickness_cm,
-            lymph_nodes_positive=image.lymph_nodes_positive,
-            contrast_used=image.contrast_used,
-            radiologist_id=image.radiologist_id,
-            report_summary=report_summary
-        ))
-    
-    return reports
+        if patient_id:
+            query = query.filter(ImagingData.patient_id == patient_id)
+        
+        results = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+        
+        reports = []
+        for image, patient in results:
+            try:
+                # Generate report summary
+                report_summary = f"MRI scan for patient {patient.patient_id}"
+                if image.findings:
+                    report_summary += f". Findings: {image.findings[:100]}"
+                if image.impression:
+                    report_summary += f". Impression: {image.impression}"
+                
+                # Handle datetime conversion safely
+                imaging_date_str = None
+                if image.imaging_date:
+                    if hasattr(image.imaging_date, 'isoformat'):
+                        imaging_date_str = image.imaging_date.isoformat()
+                    else:
+                        imaging_date_str = str(image.imaging_date)
+                
+                report_dict = {
+                    "image_id": int(image.image_id) if image.image_id is not None else 0,
+                    "patient_id": str(image.patient_id) if image.patient_id else "",
+                    "patient_name": getattr(patient, 'name', None),
+                    "imaging_date": imaging_date_str,
+                    "findings": str(image.findings) if image.findings else None,
+                    "impression": str(image.impression) if image.impression else None,
+                    "tumor_length_cm": float(image.tumor_length_cm) if image.tumor_length_cm is not None else None,
+                    "wall_thickness_cm": float(image.wall_thickness_cm) if image.wall_thickness_cm is not None else None,
+                    "lymph_nodes_positive": int(image.lymph_nodes_positive) if image.lymph_nodes_positive is not None else 0,
+                    "contrast_used": bool(image.contrast_used) if image.contrast_used is not None else False,
+                    "radiologist_id": str(image.radiologist_id) if image.radiologist_id else None,
+                    "report_summary": report_summary
+                }
+                reports.append(report_dict)
+            except Exception as conv_err:
+                logging.warning(f"Error converting MRI report {image.image_id}: {str(conv_err)}")
+                logging.warning(traceback.format_exc())
+                continue
+        
+        return reports
+    except Exception as e:
+        logging.error(f"Error fetching MRI reports: {str(e)}")
+        logging.error(traceback.format_exc())
+        return []
 
 
 @router.get("/mri/{image_id}/report", response_model=MRIReportResponse)

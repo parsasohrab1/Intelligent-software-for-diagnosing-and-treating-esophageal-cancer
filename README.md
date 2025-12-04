@@ -43,6 +43,11 @@ INEsCape یک پلتفرم جامع برای مدیریت سرطان مری اس
 - Training pipeline با experiment tracking
 - Explainable AI با SHAP
 - Model registry و versioning
+- **MLOps Features:**
+  - Model Monitoring (Data Drift & Model Decay detection)
+  - A/B Testing Framework
+  - Real-time Messaging (Kafka/RabbitMQ)
+  - Multi-Modality Data Processing (DICOM, NIfTI, Text Reports)
 
 ### 🏥 پشتیبانی تصمیم‌گیری بالینی
 - پیش‌بینی ریسک سرطان
@@ -200,6 +205,8 @@ curl -X POST "http://localhost:8000/api/v1/cds/risk-prediction" \
 - [User Manual](docs/USER_MANUAL.md)
 - [API Documentation](docs/API_DOCUMENTATION.md)
 - [Training Materials](docs/TRAINING_MATERIALS.md)
+- **[MLOps Features Guide](docs/MLOPS_FEATURES.md)** - راهنمای کامل ویژگی‌های MLOps
+- **[MLOps Setup Guide](MLOPS_SETUP_GUIDE.md)** - راهنمای راه‌اندازی MLOps
 
 ### فازهای تکمیل شده
 

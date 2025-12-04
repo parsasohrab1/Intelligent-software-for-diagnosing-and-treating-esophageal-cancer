@@ -93,6 +93,19 @@ async def train_model(request: TrainModelRequest):
         os.makedirs("models", exist_ok=True)
         model.save_model(model_path)
 
+        # Calculate baseline statistics for monitoring
+        baseline_statistics = {}
+        for feature_name in model.feature_names:
+            if feature_name in X_train.columns:
+                feature_data = X_train[feature_name].dropna()
+                if len(feature_data) > 0:
+                    baseline_statistics[feature_name] = {
+                        "mean": float(feature_data.mean()),
+                        "std": float(feature_data.std()),
+                        "min": float(feature_data.min()),
+                        "max": float(feature_data.max()),
+                    }
+
         model_id = registry.register_model(
             model_name=request.model_type,
             model_type=request.model_type,
@@ -105,6 +118,7 @@ async def train_model(request: TrainModelRequest):
                 "val_size": request.val_size,
                 "hyperparameters": request.hyperparameters,
             },
+            baseline_statistics=baseline_statistics,
         )
 
         return {
@@ -172,6 +186,23 @@ async def predict(request: PredictRequest):
             "model_type": model_type,
         }
 
+        # Record prediction for monitoring (if enabled)
+        try:
+            from app.core.config import settings
+            if settings.MODEL_MONITORING_ENABLED:
+                from app.services.mlops.model_monitoring import ModelMonitoring
+                monitoring = ModelMonitoring()
+                monitoring.record_prediction(
+                    model_id=request.model_id,
+                    features=request.features,
+                    prediction=float(prediction),
+                    probability=probability,
+                )
+        except Exception as monitoring_error:
+            # Log but don't fail the prediction
+            import logging
+            logging.warning(f"Failed to record prediction for monitoring: {str(monitoring_error)}")
+
         # Add explanation if requested
         if request.include_explanation:
             explainer = ExplainableAI()
@@ -224,9 +255,12 @@ async def list_models(
     cache_key = cache_manager.generate_key("ml_models", "list", model_type=model_type, status=status, limit=limit)
     
     # Try to get from cache
-    cached_result = cache_manager.get(cache_key)
-    if cached_result is not None:
-        return cached_result
+    try:
+        cached_result = cache_manager.get(cache_key)
+        if cached_result is not None:
+            return cached_result
+    except Exception:
+        pass
     
     try:
         registry = ModelRegistry()
@@ -234,14 +268,18 @@ async def list_models(
         result = {"models": models, "count": len(models)}
         
         # Cache for 5 minutes
-        cache_manager.set(cache_key, result, ttl=300)
+        try:
+            cache_manager.set(cache_key, result, ttl=300)
+        except Exception:
+            pass
         
         return result
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error listing models: {str(e)}"
-        )
+        # Log error but return empty list if MongoDB is not available
+        import logging
+        logging.warning(f"Error listing models: {str(e)}")
+        return {"models": [], "count": 0}
 
 
 @router.get("/models/{model_id}")

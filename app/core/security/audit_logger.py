@@ -38,7 +38,6 @@ class AuditLogger:
         }
 
         if self.collection is not None:
-            if self.collection is not None:
             self.collection.insert_one(audit_record)
             # Check for suspicious patterns
             self._detect_suspicious_activity(user_id)
@@ -166,6 +165,9 @@ class AuditLogger:
         limit: int = 1000,
     ) -> List[Dict]:
         """Get audit logs with filters"""
+        if self.collection is None:
+            return []
+        
         query = {}
 
         if user_id:
@@ -193,6 +195,17 @@ class AuditLogger:
 
     def get_user_activity_summary(self, user_id: str, days: int = 30) -> Dict:
         """Get summary of user activity"""
+        if self.collection is None:
+            return {
+                "user_id": user_id,
+                "period_days": days,
+                "total_events": 0,
+                "data_accesses": 0,
+                "user_actions": 0,
+                "model_usage": 0,
+                "unique_datasets": 0,
+            }
+        
         from datetime import timedelta
 
         cutoff_time = (datetime.now() - timedelta(days=days)).isoformat()

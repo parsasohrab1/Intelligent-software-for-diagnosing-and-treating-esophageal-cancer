@@ -103,6 +103,9 @@ class SystemMonitor:
 
     def get_system_health(self, hours: int = 24) -> Dict:
         """Get system health summary"""
+        if self.monitoring_collection is None:
+            return {"status": "no_data", "message": "MongoDB not available"}
+        
         cutoff_time = (datetime.now() - timedelta(hours=hours)).isoformat()
 
         metrics = list(
@@ -137,6 +140,9 @@ class SystemMonitor:
 
     def get_performance_trends(self, days: int = 7) -> Dict:
         """Get performance trends"""
+        if self.monitoring_collection is None:
+            return {"database": [], "mongodb": [], "redis": []}
+        
         cutoff_time = (datetime.now() - timedelta(days=days)).isoformat()
 
         metrics = list(

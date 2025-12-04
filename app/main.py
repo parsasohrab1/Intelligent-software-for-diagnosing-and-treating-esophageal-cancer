@@ -23,7 +23,14 @@ from fastapi import Request
 async def lifespan(app: FastAPI):
     """Lifespan events for the application"""
     # Startup
-    await init_db()
+    try:
+        await init_db()
+    except Exception as e:
+        # Log error but don't crash the app
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Database initialization failed: {e}")
+        logger.warning("App will continue but database operations may fail")
     yield
     # Shutdown
     pass

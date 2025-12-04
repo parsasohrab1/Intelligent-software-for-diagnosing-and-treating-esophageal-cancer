@@ -65,6 +65,8 @@ class MetadataManager:
 
     def update_metadata(self, dataset_id: str, updates: Dict) -> bool:
         """Update metadata"""
+        if self.collection is None:
+            return False
         updates["updated_at"] = datetime.now().isoformat()
         result = self.collection.update_one(
             {"dataset_id": dataset_id}, {"$set": updates}
@@ -73,11 +75,15 @@ class MetadataManager:
 
     def delete_metadata(self, dataset_id: str) -> bool:
         """Delete metadata"""
+        if self.collection is None:
+            return False
         result = self.collection.delete_one({"dataset_id": dataset_id})
         return result.deleted_count > 0
 
     def get_all_metadata(self, limit: int = 1000) -> List[Dict]:
         """Get all metadata"""
+        if self.collection is None:
+            return []
         results = self.collection.find().limit(limit)
         return [self._format_result(r) for r in results]
 

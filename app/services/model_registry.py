@@ -18,7 +18,7 @@ class ModelRegistry:
         self.storage_path = Path(storage_path)
         self.storage_path.mkdir(exist_ok=True)
         self.db = get_mongodb_database()
-        self.collection = self.db["model_registry"]
+        self.collection = self.db["model_registry"] if self.db is not None else None
 
     def register_model(
         self,
@@ -28,8 +28,12 @@ class ModelRegistry:
         metrics: Dict,
         feature_names: List[str],
         training_config: Optional[Dict] = None,
+        baseline_statistics: Optional[Dict] = None,
     ) -> str:
         """Register a model in the registry"""
+        if self.collection is None:
+            raise ValueError("MongoDB is not available")
+        
         model_id = f"{model_type}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
         model_record = {
@@ -40,6 +44,7 @@ class ModelRegistry:
             "metrics": metrics,
             "feature_names": feature_names,
             "training_config": training_config or {},
+            "baseline_statistics": baseline_statistics or {},
             "created_at": datetime.now().isoformat(),
             "status": "active",
         }
@@ -49,6 +54,8 @@ class ModelRegistry:
 
     def get_model(self, model_id: str) -> Optional[Dict]:
         """Get model information"""
+        if self.collection is None:
+            return None
         model = self.collection.find_one({"model_id": model_id})
         if model:
             model["_id"] = str(model["_id"])
@@ -61,6 +68,9 @@ class ModelRegistry:
         limit: int = 100,
     ) -> List[Dict]:
         """List all models"""
+        if self.collection is None:
+            return []
+        
         query = {"status": status}
         if model_type:
             query["model_type"] = model_type
@@ -70,6 +80,9 @@ class ModelRegistry:
 
     def get_best_model(self, metric: str = "roc_auc") -> Optional[Dict]:
         """Get best model based on metric"""
+        if self.collection is None:
+            return None
+        
         models = list(self.collection.find({"status": "active"}))
 
         if not models:
@@ -84,12 +97,16 @@ class ModelRegistry:
 
     def update_model_status(self, model_id: str, status: str):
         """Update model status"""
+        if self.collection is None:
+            return
         self.collection.update_one(
             {"model_id": model_id}, {"$set": {"status": status, "updated_at": datetime.now().isoformat()}}
         )
 
     def delete_model(self, model_id: str):
         """Delete model from registry"""
+        if self.collection is None:
+            return
         model = self.get_model(model_id)
         if model:
             # Delete file

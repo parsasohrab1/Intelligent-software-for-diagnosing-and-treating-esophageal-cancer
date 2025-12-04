@@ -38,7 +38,7 @@ class IssueTracker:
 
     def __init__(self):
         self.db = get_mongodb_database()
-        self.issues_collection = self.db["issues"]
+        self.issues_collection = self.db["issues"] if self.db is not None else None
 
     def create_issue(
         self,
