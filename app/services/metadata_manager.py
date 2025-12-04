@@ -14,10 +14,12 @@ class MetadataManager:
 
     def __init__(self):
         self.db = get_mongodb_database()
-        self.collection = self.db["dataset_metadata"]
+        self.collection = self.db["dataset_metadata"] if self.db is not None else None
 
     def store_metadata(self, metadata: Dict) -> str:
         """Store dataset metadata"""
+        if self.collection is None:
+            raise ValueError("MongoDB is not available")
         metadata["created_at"] = datetime.now().isoformat()
         metadata["updated_at"] = datetime.now().isoformat()
 
@@ -26,6 +28,8 @@ class MetadataManager:
 
     def get_metadata(self, dataset_id: str) -> Optional[Dict]:
         """Get metadata for a dataset"""
+        if self.collection is None:
+            return None
         metadata = self.collection.find_one({"dataset_id": dataset_id})
         if metadata:
             metadata["_id"] = str(metadata["_id"])
@@ -54,6 +58,8 @@ class MetadataManager:
         if data_type:
             search_filter["data_type"] = data_type
 
+        if self.collection is None:
+            return []
         results = self.collection.find(search_filter).limit(limit)
         return [self._format_result(r) for r in results]
 
@@ -77,6 +83,13 @@ class MetadataManager:
 
     def get_statistics(self) -> Dict:
         """Get metadata statistics"""
+        if self.collection is None:
+            return {
+                "total_datasets": 0,
+                "by_source": {},
+                "by_data_type": {},
+            }
+        
         total = self.collection.count_documents({})
 
         # Count by source

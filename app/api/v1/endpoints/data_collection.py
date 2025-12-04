@@ -147,11 +147,16 @@ async def get_metadata_statistics():
         manager = MetadataManager()
         stats = manager.get_statistics()
         return stats
-
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error getting statistics: {str(e)}"
-        )
+        # Log error but return default empty statistics
+        import logging
+        logging.warning(f"Error getting metadata statistics: {str(e)}")
+        # Return default empty statistics if MongoDB is not available
+        return {
+            "total_datasets": 0,
+            "by_source": {},
+            "by_data_type": {},
+        }
 
 
 @router.post("/deidentify")

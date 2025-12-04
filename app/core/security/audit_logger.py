@@ -12,7 +12,7 @@ class AuditLogger:
 
     def __init__(self):
         self.db = get_mongodb_database()
-        self.collection = self.db["audit_logs"]
+        self.collection = self.db["audit_logs"] if self.db is not None else None
 
     def log_data_access(
         self,
@@ -37,10 +37,11 @@ class AuditLogger:
             "user_agent": user_agent,
         }
 
-        self.collection.insert_one(audit_record)
-
-        # Check for suspicious patterns
-        self._detect_suspicious_activity(user_id)
+        if self.collection is not None:
+            if self.collection is not None:
+            self.collection.insert_one(audit_record)
+            # Check for suspicious patterns
+            self._detect_suspicious_activity(user_id)
 
     def log_user_action(
         self,
@@ -63,7 +64,8 @@ class AuditLogger:
             "ip_address": ip_address,
         }
 
-        self.collection.insert_one(audit_record)
+        if self.collection is not None:
+            self.collection.insert_one(audit_record)
 
     def log_model_usage(
         self,
@@ -82,7 +84,8 @@ class AuditLogger:
             "input_data_hash": input_data_hash,
         }
 
-        self.collection.insert_one(audit_record)
+        if self.collection is not None:
+            self.collection.insert_one(audit_record)
 
     def log_security_event(
         self,
@@ -103,7 +106,8 @@ class AuditLogger:
             "ip_address": ip_address,
         }
 
-        self.collection.insert_one(audit_record)
+        if self.collection is not None:
+            self.collection.insert_one(audit_record)
 
         # Alert on high severity events
         if severity in ["high", "critical"]:
@@ -111,6 +115,9 @@ class AuditLogger:
 
     def _detect_suspicious_activity(self, user_id: str):
         """Detect potential data misuse"""
+        if self.collection is None:
+            return
+        
         # Get recent accesses (last 24 hours)
         from datetime import timedelta
 

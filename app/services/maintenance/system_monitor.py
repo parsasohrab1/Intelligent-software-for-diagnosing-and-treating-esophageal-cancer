@@ -14,7 +14,7 @@ class SystemMonitor:
 
     def __init__(self):
         self.db = get_mongodb_database()
-        self.monitoring_collection = self.db["system_monitoring"]
+        self.monitoring_collection = self.db["system_monitoring"] if self.db is not None else None
 
     def collect_metrics(self) -> Dict:
         """Collect current system metrics"""
@@ -26,8 +26,12 @@ class SystemMonitor:
             "api": self._check_api_health(),
         }
 
-        # Store metrics
-        self.monitoring_collection.insert_one(metrics)
+        # Store metrics (if MongoDB is available)
+        if self.monitoring_collection is not None:
+            try:
+                self.monitoring_collection.insert_one(metrics)
+            except Exception:
+                pass  # Don't fail if MongoDB is unavailable
 
         return metrics
 
