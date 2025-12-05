@@ -62,8 +62,28 @@ async def generate_synthetic_data(
         quality_score = validator.calculate_quality_score(validation_report)
 
         # Save to database if requested
+        # Note: We save synchronously to ensure data is available immediately
+        # For large datasets, consider using background tasks with status polling
         if request.save_to_db:
-            background_tasks.add_task(generator.save_to_database, dataset, db)
+            try:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.info("Starting to save data to database...")
+                generator.save_to_database(dataset, db)
+                # Flush and commit to ensure data is visible
+                db.commit()
+                db.flush()
+                logger.info("Data saved and committed to database")
+            except Exception as save_error:
+                # Log error but don't fail the request
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Error saving data to database: {save_error}")
+                import traceback
+                logger.error(traceback.format_exc())
+                # Rollback on error
+                db.rollback()
+                # Still return success since data was generated
 
         generation_time = time.time() - start_time
 

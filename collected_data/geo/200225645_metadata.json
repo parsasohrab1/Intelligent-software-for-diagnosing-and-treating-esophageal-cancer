@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200225645",
+  "title": "Hypoxia-induced gene expression profiling of esophageal cancer cell lines",
+  "summary": "Analysis of gene expression changes in two esophageal squamous cell carcinomas cell lines treated with hypoxia.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7053653",
+      "title": "KYSE410 Hypoxia rep2"
+    },
+    {
+      "accession": "GSM7053645",
+      "title": "KYSE150 Normoxia rep3"
+    },
+    {
+      "accession": "GSM7053650",
+      "title": "KYSE410 Normoxia rep2"
+    },
+    {
+      "accession": "GSM7053647",
+      "title": "KYSE150 Hypoxia rep2"
+    },
+    {
+      "accession": "GSM7053644",
+      "title": "KYSE150 Normoxia rep2"
+    },
+    {
+      "accession": "GSM7053643",
+      "title": "KYSE150 Normoxia rep1"
+    },
+    {
+      "accession": "GSM7053646",
+      "title": "KYSE150 Hypoxia rep1"
+    },
+    {
+      "accession": "GSM7053652",
+      "title": "KYSE410 Hypoxia rep1"
+    },
+    {
+      "accession": "GSM7053649",
+      "title": "KYSE410 Normoxia rep1"
+    },
+    {
+      "accession": "GSM7053651",
+      "title": "KYSE410 Normoxia rep3"
+    },
+    {
+      "accession": "GSM7053648",
+      "title": "KYSE150 Hypoxia rep3"
+    },
+    {
+      "accession": "GSM7053654",
+      "title": "KYSE410 Hypoxia rep3"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200207635",
+  "title": "Expression profiles of transfer RNA-derived small RNAs in esophageal cancer",
+  "summary": "We collected 4 paired esophageal cancer (EC) tissues and adjacent normal tissues. Total RNA was extracted from the tissues. Then total RNA was processed and transfer RNA-derived small RNAs (tsRNAs) were profiled using tsRNA sequencing technique. Raw read counts were filtered to remove the tsRNAs that were expressed in low levels. We only kept the tsRNAs with a nonzero raw read count in all 4 EC tissues or all 4 adjacent normal tissues, and normalized the remaining tsRNAs with DESeq2 in the statistical program R (version 4.0.1). Differentially expressed tsRNAs were screened using following criterions: fold change was larger than 2 and adjusted P value was less than 0.05.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6304175",
+      "title": "Patient2 esophageal cancer tissue"
+    },
+    {
+      "accession": "GSM6304181",
+      "title": "Patient4 adjacent normal esophageal tissue"
+    },
+    {
+      "accession": "GSM6304178",
+      "title": "Patient1 adjacent normal esophageal tissue"
+    },
+    {
+      "accession": "GSM6304176",
+      "title": "Patient3 esophageal cancer tissue"
+    },
+    {
+      "accession": "GSM6304179",
+      "title": "Patient2 adjacent normal esophageal tissue"
+    },
+    {
+      "accession": "GSM6304180",
+      "title": "Patient3 adjacent normal esophageal tissue"
+    },
+    {
+      "accession": "GSM6304174",
+      "title": "Patient1 esophageal cancer tissue"
+    },
+    {
+      "accession": "GSM6304177",
+      "title": "Patient4 esophageal cancer tissue"
+    }
+  ]
+}

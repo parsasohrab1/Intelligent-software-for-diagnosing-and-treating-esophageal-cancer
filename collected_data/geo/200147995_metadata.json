@@ -1,0 +1,113 @@
+{
+  "dataset_id": "200147995",
+  "title": "Acetyl-lysine Reader CECR2 Drives Breast Cancer Metastasis by Coordinating Macrophage Polarization and Immune Suppression [metastasis]",
+  "summary": "Purpose: Advanced breast cancer leads to significantly higher mortality due to metastasis. The goal of this work is to screen and study the deregulated epigenetic regulators to identify the novel targets for the treatment of metastatic breast cancer. Methods:RNA-Seq analysis of matched primary and metastatic breast samples to detect the deregulated epigenetic regulators. Live imaging system was applied to modulate metastatic tumor growth in vivo. Results: we identified that deregulated CECR2 was associated with breast cancer metastasis by RNA sequencing analysis of the matched primary and metastatic breast cancer samples from 13 patients. CECR2 knockout significantly decreased breast cancer metastasis in both immunocompromised and immunocompetent mice models. RNA-seq analysis showed that gene set \"response to NF-\u03baB signaling\" was significantly decreased by CECR2 depletion in breast cancer cells.  Mechanistically, CECR2 formed a complex with RELA on NF-\u03baB target gene promoters to activate target gene expression. Furthermore, CECR2 played a key role in tumor associated macrophage recruitment and polarization, which regulates the antitumor immunity in microenvironment. Conclusions: our work identified and characterized a novel epigenetic regulator CECR2 in regulating breast cancer metastasis, and can serve as a potential target for the treatment of metastatic breast cancer.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4451616",
+      "title": "5P"
+    },
+    {
+      "accession": "GSM4451619",
+      "title": "6M"
+    },
+    {
+      "accession": "GSM4451613",
+      "title": "3M"
+    },
+    {
+      "accession": "GSM4451627",
+      "title": "10M"
+    },
+    {
+      "accession": "GSM4451610",
+      "title": "2P"
+    },
+    {
+      "accession": "GSM4451630",
+      "title": "12P"
+    },
+    {
+      "accession": "GSM4451633",
+      "title": "13M"
+    },
+    {
+      "accession": "GSM4451608",
+      "title": "1P"
+    },
+    {
+      "accession": "GSM4451611",
+      "title": "2M"
+    },
+    {
+      "accession": "GSM4451631",
+      "title": "12M"
+    },
+    {
+      "accession": "GSM4451614",
+      "title": "4P"
+    },
+    {
+      "accession": "GSM4451625",
+      "title": "9M"
+    },
+    {
+      "accession": "GSM4451628",
+      "title": "11P"
+    },
+    {
+      "accession": "GSM4451622",
+      "title": "8P"
+    },
+    {
+      "accession": "GSM4451626",
+      "title": "10P"
+    },
+    {
+      "accession": "GSM4451609",
+      "title": "1M"
+    },
+    {
+      "accession": "GSM4451629",
+      "title": "11M"
+    },
+    {
+      "accession": "GSM4451617",
+      "title": "5M"
+    },
+    {
+      "accession": "GSM4451620",
+      "title": "7P"
+    },
+    {
+      "accession": "GSM4451623",
+      "title": "8M"
+    },
+    {
+      "accession": "GSM4451618",
+      "title": "6P"
+    },
+    {
+      "accession": "GSM4451621",
+      "title": "7M"
+    },
+    {
+      "accession": "GSM4451624",
+      "title": "9P"
+    },
+    {
+      "accession": "GSM4451615",
+      "title": "4M"
+    },
+    {
+      "accession": "GSM4451632",
+      "title": "13P"
+    },
+    {
+      "accession": "GSM4451612",
+      "title": "3P"
+    }
+  ]
+}

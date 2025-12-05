@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200293235",
+  "title": "Aberrant circTMEM45A Facilitates ESCC Inflammatory Progression by upregulating the NLRP3/Caspase1/IL-1\u03b2 pathway through m5C-mediated NLRP3 Activation",
+  "summary": "Esophageal squamous cell carcinoma (ESCC) is a highly invasive, metastatic upper gastrointestinal malignancy. With the continuous deepening of personalized precision medicine, targeted therapy and immunotherapy have greatly improved the current treatment dilemma of esophageal cancer, but not all patients can benefit from them, and the overall efficacy is still poor. Circular RNA (circRNA) has become a key regulator of cancer development and progression and is expected to become a biomarker for the diagnosis and prediction of various cancers. Our goal is to find effective early diagnostic markers and therapeutic intervention targets by identifying the circRNA expression pattern of ESCC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8879080",
+      "title": "C3"
+    },
+    {
+      "accession": "GSM8879083",
+      "title": "N3"
+    },
+    {
+      "accession": "GSM8879078",
+      "title": "C1"
+    },
+    {
+      "accession": "GSM8879081",
+      "title": "N1"
+    },
+    {
+      "accession": "GSM8879079",
+      "title": "C2"
+    },
+    {
+      "accession": "GSM8879082",
+      "title": "N2"
+    }
+  ]
+}

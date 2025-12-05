@@ -1,0 +1,469 @@
+{
+  "dataset_id": "200232497",
+  "title": "Epigenetic array data of saliva samples in individiduals with esophageal cancer (with controls)",
+  "summary": "We previously deposited a similar batch of data to the Gene Expression Omnibus (GEO) database under the accession code GSE232332. This dataset was to be a further validation of that study. Unlike the previous dataset, this has not, however, been submitted for publication. This dataset includes epigenetic data form 23 patients with invasive oesophageal adenocarcinoma, 25 with intramucosal oesophageal adenocarcinoma, 35 patients with non-dysplastic Barrett's esophagus and 32 controls who did not have Barrett's esophagus or cancer at endoscopy, performed within 2 weeks of the saliva sample which was obtained after fasting for at least 1  hour.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7346357",
+      "title": "Control 25"
+    },
+    {
+      "accession": "GSM7346320",
+      "title": "NonDysplasticBarrets 23"
+    },
+    {
+      "accession": "GSM7346274",
+      "title": "Intramucosal 25"
+    },
+    {
+      "accession": "GSM7346294",
+      "title": "InvastiveOesophageal 20"
+    },
+    {
+      "accession": "GSM7346340",
+      "title": "Control 08"
+    },
+    {
+      "accession": "GSM7346257",
+      "title": "Intramucosal 08"
+    },
+    {
+      "accession": "GSM7346277",
+      "title": "InvastiveOesophageal 03"
+    },
+    {
+      "accession": "GSM7346360",
+      "title": "Control 28"
+    },
+    {
+      "accession": "GSM7346297",
+      "title": "InvastiveOesophageal 23"
+    },
+    {
+      "accession": "GSM7346317",
+      "title": "NonDysplasticBarrets 20"
+    },
+    {
+      "accession": "GSM7346280",
+      "title": "InvastiveOesophageal 06"
+    },
+    {
+      "accession": "GSM7346363",
+      "title": "Control 31"
+    },
+    {
+      "accession": "GSM7346300",
+      "title": "NonDysplasticBarrets 03"
+    },
+    {
+      "accession": "GSM7346254",
+      "title": "Intramucosal 05"
+    },
+    {
+      "accession": "GSM7346337",
+      "title": "Control 05"
+    },
+    {
+      "accession": "GSM7346329",
+      "title": "NonDysplasticBarrets 32"
+    },
+    {
+      "accession": "GSM7346283",
+      "title": "InvastiveOesophageal 09"
+    },
+    {
+      "accession": "GSM7346266",
+      "title": "Intramucosal 17"
+    },
+    {
+      "accession": "GSM7346303",
+      "title": "NonDysplasticBarrets 06"
+    },
+    {
+      "accession": "GSM7346349",
+      "title": "Control 17"
+    },
+    {
+      "accession": "GSM7346286",
+      "title": "InvastiveOesophageal 12"
+    },
+    {
+      "accession": "GSM7346323",
+      "title": "NonDysplasticBarrets 26"
+    },
+    {
+      "accession": "GSM7346343",
+      "title": "Control 11"
+    },
+    {
+      "accession": "GSM7346306",
+      "title": "NonDysplasticBarrets 09"
+    },
+    {
+      "accession": "GSM7346260",
+      "title": "Intramucosal 11"
+    },
+    {
+      "accession": "GSM7346326",
+      "title": "NonDysplasticBarrets 29"
+    },
+    {
+      "accession": "GSM7346346",
+      "title": "Control 14"
+    },
+    {
+      "accession": "GSM7346263",
+      "title": "Intramucosal 14"
+    },
+    {
+      "accession": "GSM7346309",
+      "title": "NonDysplasticBarrets 12"
+    },
+    {
+      "accession": "GSM7346275",
+      "title": "InvastiveOesophageal 01"
+    },
+    {
+      "accession": "GSM7346358",
+      "title": "Control 26"
+    },
+    {
+      "accession": "GSM7346292",
+      "title": "InvastiveOesophageal 18"
+    },
+    {
+      "accession": "GSM7346312",
+      "title": "NonDysplasticBarrets 15"
+    },
+    {
+      "accession": "GSM7346295",
+      "title": "InvastiveOesophageal 21"
+    },
+    {
+      "accession": "GSM7346332",
+      "title": "NonDysplasticBarrets 35"
+    },
+    {
+      "accession": "GSM7346269",
+      "title": "Intramucosal 20"
+    },
+    {
+      "accession": "GSM7346352",
+      "title": "Control 20"
+    },
+    {
+      "accession": "GSM7346252",
+      "title": "Intramucosal 03"
+    },
+    {
+      "accession": "GSM7346335",
+      "title": "Control 03"
+    },
+    {
+      "accession": "GSM7346315",
+      "title": "NonDysplasticBarrets 18"
+    },
+    {
+      "accession": "GSM7346272",
+      "title": "Intramucosal 23"
+    },
+    {
+      "accession": "GSM7346355",
+      "title": "Control 23"
+    },
+    {
+      "accession": "GSM7346301",
+      "title": "NonDysplasticBarrets 04"
+    },
+    {
+      "accession": "GSM7346289",
+      "title": "InvastiveOesophageal 15"
+    },
+    {
+      "accession": "GSM7346255",
+      "title": "Intramucosal 06"
+    },
+    {
+      "accession": "GSM7346338",
+      "title": "Control 06"
+    },
+    {
+      "accession": "GSM7346321",
+      "title": "NonDysplasticBarrets 24"
+    },
+    {
+      "accession": "GSM7346324",
+      "title": "NonDysplasticBarrets 27"
+    },
+    {
+      "accession": "GSM7346258",
+      "title": "Intramucosal 09"
+    },
+    {
+      "accession": "GSM7346341",
+      "title": "Control 09"
+    },
+    {
+      "accession": "GSM7346278",
+      "title": "InvastiveOesophageal 04"
+    },
+    {
+      "accession": "GSM7346361",
+      "title": "Control 29"
+    },
+    {
+      "accession": "GSM7346298",
+      "title": "NonDysplasticBarrets 01"
+    },
+    {
+      "accession": "GSM7346261",
+      "title": "Intramucosal 12"
+    },
+    {
+      "accession": "GSM7346344",
+      "title": "Control 12"
+    },
+    {
+      "accession": "GSM7346281",
+      "title": "InvastiveOesophageal 07"
+    },
+    {
+      "accession": "GSM7346364",
+      "title": "Control 32"
+    },
+    {
+      "accession": "GSM7346264",
+      "title": "Intramucosal 15"
+    },
+    {
+      "accession": "GSM7346310",
+      "title": "NonDysplasticBarrets 13"
+    },
+    {
+      "accession": "GSM7346330",
+      "title": "NonDysplasticBarrets 33"
+    },
+    {
+      "accession": "GSM7346318",
+      "title": "NonDysplasticBarrets 21"
+    },
+    {
+      "accession": "GSM7346347",
+      "title": "Control 15"
+    },
+    {
+      "accession": "GSM7346284",
+      "title": "InvastiveOesophageal 10"
+    },
+    {
+      "accession": "GSM7346304",
+      "title": "NonDysplasticBarrets 07"
+    },
+    {
+      "accession": "GSM7346267",
+      "title": "Intramucosal 18"
+    },
+    {
+      "accession": "GSM7346350",
+      "title": "Control 18"
+    },
+    {
+      "accession": "GSM7346353",
+      "title": "Control 21"
+    },
+    {
+      "accession": "GSM7346287",
+      "title": "InvastiveOesophageal 13"
+    },
+    {
+      "accession": "GSM7346327",
+      "title": "NonDysplasticBarrets 30"
+    },
+    {
+      "accession": "GSM7346307",
+      "title": "NonDysplasticBarrets 10"
+    },
+    {
+      "accession": "GSM7346356",
+      "title": "Control 24"
+    },
+    {
+      "accession": "GSM7346290",
+      "title": "InvastiveOesophageal 16"
+    },
+    {
+      "accession": "GSM7346256",
+      "title": "Intramucosal 07"
+    },
+    {
+      "accession": "GSM7346270",
+      "title": "Intramucosal 21"
+    },
+    {
+      "accession": "GSM7346319",
+      "title": "NonDysplasticBarrets 22"
+    },
+    {
+      "accession": "GSM7346359",
+      "title": "Control 27"
+    },
+    {
+      "accession": "GSM7346339",
+      "title": "Control 07"
+    },
+    {
+      "accession": "GSM7346273",
+      "title": "Intramucosal 24"
+    },
+    {
+      "accession": "GSM7346293",
+      "title": "InvastiveOesophageal 19"
+    },
+    {
+      "accession": "GSM7346250",
+      "title": "Intramucosal 01"
+    },
+    {
+      "accession": "GSM7346333",
+      "title": "Control 01"
+    },
+    {
+      "accession": "GSM7346313",
+      "title": "NonDysplasticBarrets 16"
+    },
+    {
+      "accession": "GSM7346276",
+      "title": "InvastiveOesophageal 02"
+    },
+    {
+      "accession": "GSM7346296",
+      "title": "InvastiveOesophageal 22"
+    },
+    {
+      "accession": "GSM7346253",
+      "title": "Intramucosal 04"
+    },
+    {
+      "accession": "GSM7346316",
+      "title": "NonDysplasticBarrets 19"
+    },
+    {
+      "accession": "GSM7346336",
+      "title": "Control 04"
+    },
+    {
+      "accession": "GSM7346285",
+      "title": "InvastiveOesophageal 11"
+    },
+    {
+      "accession": "GSM7346348",
+      "title": "Control 16"
+    },
+    {
+      "accession": "GSM7346322",
+      "title": "NonDysplasticBarrets 25"
+    },
+    {
+      "accession": "GSM7346302",
+      "title": "NonDysplasticBarrets 05"
+    },
+    {
+      "accession": "GSM7346362",
+      "title": "Control 30"
+    },
+    {
+      "accession": "GSM7346279",
+      "title": "InvastiveOesophageal 05"
+    },
+    {
+      "accession": "GSM7346342",
+      "title": "Control 10"
+    },
+    {
+      "accession": "GSM7346259",
+      "title": "Intramucosal 10"
+    },
+    {
+      "accession": "GSM7346305",
+      "title": "NonDysplasticBarrets 08"
+    },
+    {
+      "accession": "GSM7346325",
+      "title": "NonDysplasticBarrets 28"
+    },
+    {
+      "accession": "GSM7346282",
+      "title": "InvastiveOesophageal 08"
+    },
+    {
+      "accession": "GSM7346262",
+      "title": "Intramucosal 13"
+    },
+    {
+      "accession": "GSM7346345",
+      "title": "Control 13"
+    },
+    {
+      "accession": "GSM7346311",
+      "title": "NonDysplasticBarrets 14"
+    },
+    {
+      "accession": "GSM7346299",
+      "title": "NonDysplasticBarrets 02"
+    },
+    {
+      "accession": "GSM7346265",
+      "title": "Intramucosal 16"
+    },
+    {
+      "accession": "GSM7346314",
+      "title": "NonDysplasticBarrets 17"
+    },
+    {
+      "accession": "GSM7346288",
+      "title": "InvastiveOesophageal 14"
+    },
+    {
+      "accession": "GSM7346268",
+      "title": "Intramucosal 19"
+    },
+    {
+      "accession": "GSM7346351",
+      "title": "Control 19"
+    },
+    {
+      "accession": "GSM7346331",
+      "title": "NonDysplasticBarrets 34"
+    },
+    {
+      "accession": "GSM7346308",
+      "title": "NonDysplasticBarrets 11"
+    },
+    {
+      "accession": "GSM7346251",
+      "title": "Intramucosal 02"
+    },
+    {
+      "accession": "GSM7346354",
+      "title": "Control 22"
+    },
+    {
+      "accession": "GSM7346271",
+      "title": "Intramucosal 22"
+    },
+    {
+      "accession": "GSM7346291",
+      "title": "InvastiveOesophageal 17"
+    },
+    {
+      "accession": "GSM7346334",
+      "title": "Control 02"
+    },
+    {
+      "accession": "GSM7346328",
+      "title": "NonDysplasticBarrets 31"
+    }
+  ]
+}

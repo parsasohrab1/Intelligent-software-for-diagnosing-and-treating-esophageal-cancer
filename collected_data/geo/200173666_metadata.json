@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200173666",
+  "title": "RNA-seq data of esophageal cancer cell Kyse510 after inhibition or silencing of LSD1 and G9a",
+  "summary": "The goals of this study are to compare transcriptome profiling (mRNA level) and signaling pathways between the control and ablating LSD1, the control and ablating G9a, the control and co-ablating LSD1 and G9a. We found pathways in apoptosis, endoplasmic reticulum stress and unfolded protein response were obviously changed in these groups, which are important for esophageal cancer therapy.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5365823",
+      "title": "sh-G9a-con"
+    },
+    {
+      "accession": "GSM5365817",
+      "title": "DMSO-con"
+    },
+    {
+      "accession": "GSM5365820",
+      "title": "SP+UNC"
+    },
+    {
+      "accession": "GSM5365818",
+      "title": "SP2509"
+    },
+    {
+      "accession": "GSM5365824",
+      "title": "sh-G9a+Dox"
+    },
+    {
+      "accession": "GSM5365821",
+      "title": "sh-LSD1-con"
+    },
+    {
+      "accession": "GSM5365819",
+      "title": "UNC0642"
+    },
+    {
+      "accession": "GSM5365822",
+      "title": "sh-LSD1+DOX"
+    }
+  ]
+}

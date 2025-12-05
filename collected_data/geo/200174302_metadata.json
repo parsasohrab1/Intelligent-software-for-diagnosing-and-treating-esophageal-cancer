@@ -1,0 +1,929 @@
+{
+  "dataset_id": "200174302",
+  "title": "Cancer specific microbiome revealed by cell-free RNA reads in patients' plasma",
+  "summary": "We sequenced cell-free RNA (cfRNA) for five cancer types (colorectal cancer, stomach cancer, liver cancer, lung cancer and esophageal cancer) and healthy individuals in 230 plasma samples collected from 6 clinical centers in China.  Cancer related signaling pathway and microbial genus were identified. Cancer detection and specific classification were achieved through combining both host and microbial cfRNA reads.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5291319",
+      "title": "ESCA_KZ-17"
+    },
+    {
+      "accession": "GSM5291402",
+      "title": "HCC-ShHW-225464"
+    },
+    {
+      "accession": "GSM5291522",
+      "title": "NC_PKU-2396996"
+    },
+    {
+      "accession": "GSM5291439",
+      "title": "STAD-2414120"
+    },
+    {
+      "accession": "GSM5291485",
+      "title": "CRC-2408162"
+    },
+    {
+      "accession": "GSM5291356",
+      "title": "LUAD-2381001"
+    },
+    {
+      "accession": "GSM5291399",
+      "title": "HCC_ShHW-225050"
+    },
+    {
+      "accession": "GSM5291482",
+      "title": "CRC-2406552"
+    },
+    {
+      "accession": "GSM5291316",
+      "title": "ESCA_569799"
+    },
+    {
+      "accession": "GSM5291528",
+      "title": "NC_PKU-48"
+    },
+    {
+      "accession": "GSM5291445",
+      "title": "CRC-2280766"
+    },
+    {
+      "accession": "GSM5291419",
+      "title": "STAD-2384103"
+    },
+    {
+      "accession": "GSM5291502",
+      "title": "NC_ChQ-26"
+    },
+    {
+      "accession": "GSM5291336",
+      "title": "ESCA_PKU-2418551"
+    },
+    {
+      "accession": "GSM5291465",
+      "title": "CRC-2386612"
+    },
+    {
+      "accession": "GSM5291382",
+      "title": "HCC_ChQ-33630257"
+    },
+    {
+      "accession": "GSM5291462",
+      "title": "CRC-2384548"
+    },
+    {
+      "accession": "GSM5291379",
+      "title": "LUAD-2391958"
+    },
+    {
+      "accession": "GSM5291339",
+      "title": "ESCA_UnionH-1626151"
+    },
+    {
+      "accession": "GSM5291542",
+      "title": "NC_PKU-2397512"
+    },
+    {
+      "accession": "GSM5291459",
+      "title": "CRC-2384377"
+    },
+    {
+      "accession": "GSM5291376",
+      "title": "LUAD-2386387"
+    },
+    {
+      "accession": "GSM5291505",
+      "title": "NC_ChQ-35"
+    },
+    {
+      "accession": "GSM5291422",
+      "title": "STAD-2386653"
+    },
+    {
+      "accession": "GSM5291396",
+      "title": "HCC_ShHW-224990"
+    },
+    {
+      "accession": "GSM5291525",
+      "title": "NC_PKU-28"
+    },
+    {
+      "accession": "GSM5291359",
+      "title": "LUAD-2381602"
+    },
+    {
+      "accession": "GSM5291442",
+      "title": "STAD-2415291"
+    },
+    {
+      "accession": "GSM5291479",
+      "title": "CRC-2399129"
+    },
+    {
+      "accession": "GSM5291327",
+      "title": "ESCA_PKU-2412866"
+    },
+    {
+      "accession": "GSM5291493",
+      "title": "CRC-2412048"
+    },
+    {
+      "accession": "GSM5291410",
+      "title": "STAD-2244628"
+    },
+    {
+      "accession": "GSM5291373",
+      "title": "LUAD-2386178"
+    },
+    {
+      "accession": "GSM5291430",
+      "title": "STAD-2396557"
+    },
+    {
+      "accession": "GSM5291513",
+      "title": "NC_ChQ-71"
+    },
+    {
+      "accession": "GSM5291393",
+      "title": "HCC-ShHW-223960"
+    },
+    {
+      "accession": "GSM5291473",
+      "title": "CRC-2391097"
+    },
+    {
+      "accession": "GSM5291436",
+      "title": "STAD-2412938"
+    },
+    {
+      "accession": "GSM5291353",
+      "title": "LUAD-2379275"
+    },
+    {
+      "accession": "GSM5291519",
+      "title": "NC_PKU-2392932"
+    },
+    {
+      "accession": "GSM5291390",
+      "title": "HCC_ShH-216224"
+    },
+    {
+      "accession": "GSM5291347",
+      "title": "LUAD-2359535"
+    },
+    {
+      "accession": "GSM5291476",
+      "title": "CRC-2396837"
+    },
+    {
+      "accession": "GSM5291539",
+      "title": "NC_ChQ-49"
+    },
+    {
+      "accession": "GSM5291456",
+      "title": "CRC-2384058"
+    },
+    {
+      "accession": "GSM5291433",
+      "title": "STAD-2406754"
+    },
+    {
+      "accession": "GSM5291350",
+      "title": "LUAD-2379000"
+    },
+    {
+      "accession": "GSM5291499",
+      "title": "NC_ChQ-10"
+    },
+    {
+      "accession": "GSM5291496",
+      "title": "CRC-2380493"
+    },
+    {
+      "accession": "GSM5291536",
+      "title": "NC_ChQ-23"
+    },
+    {
+      "accession": "GSM5291416",
+      "title": "STAD-2383295"
+    },
+    {
+      "accession": "GSM5291333",
+      "title": "ESCA_PKU-2415457"
+    },
+    {
+      "accession": "GSM5291330",
+      "title": "ESCA_PKU-2414466"
+    },
+    {
+      "accession": "GSM5291413",
+      "title": "STAD-2381588"
+    },
+    {
+      "accession": "GSM5291370",
+      "title": "LUAD-2384356"
+    },
+    {
+      "accession": "GSM5291453",
+      "title": "CRC-2383420"
+    },
+    {
+      "accession": "GSM5291516",
+      "title": "NC_HaiB-3"
+    },
+    {
+      "accession": "GSM5291374",
+      "title": "LUAD-2386185"
+    },
+    {
+      "accession": "GSM5291457",
+      "title": "CRC-2384108"
+    },
+    {
+      "accession": "GSM5291540",
+      "title": "NC_ChQ-58"
+    },
+    {
+      "accession": "GSM5291454",
+      "title": "CRC-2383555"
+    },
+    {
+      "accession": "GSM5291500",
+      "title": "NC_ChQ-11"
+    },
+    {
+      "accession": "GSM5291354",
+      "title": "LUAD-2380731"
+    },
+    {
+      "accession": "GSM5291417",
+      "title": "STAD-2383652"
+    },
+    {
+      "accession": "GSM5291371",
+      "title": "LUAD-2384360"
+    },
+    {
+      "accession": "GSM5291474",
+      "title": "CRC-2393807"
+    },
+    {
+      "accession": "GSM5291391",
+      "title": "HCC_ShH-216287"
+    },
+    {
+      "accession": "GSM5291351",
+      "title": "LUAD-2379197"
+    },
+    {
+      "accession": "GSM5291537",
+      "title": "NC_ChQ-25"
+    },
+    {
+      "accession": "GSM5291334",
+      "title": "ESCA_PKU-2415469"
+    },
+    {
+      "accession": "GSM5291480",
+      "title": "CRC-2405108"
+    },
+    {
+      "accession": "GSM5291520",
+      "title": "NC_PKU-2392993"
+    },
+    {
+      "accession": "GSM5291397",
+      "title": "HCC-ShHW-224995"
+    },
+    {
+      "accession": "GSM5291437",
+      "title": "STAD-2412941"
+    },
+    {
+      "accession": "GSM5291517",
+      "title": "NC_PKU-2359973"
+    },
+    {
+      "accession": "GSM5291434",
+      "title": "STAD-2411921"
+    },
+    {
+      "accession": "GSM5291477",
+      "title": "CRC-2397180"
+    },
+    {
+      "accession": "GSM5291394",
+      "title": "HCC-ShHW-224900"
+    },
+    {
+      "accession": "GSM5291523",
+      "title": "NC_PKU-2397878"
+    },
+    {
+      "accession": "GSM5291377",
+      "title": "LUAD-2387760"
+    },
+    {
+      "accession": "GSM5291497",
+      "title": "CRC-2384076"
+    },
+    {
+      "accession": "GSM5291414",
+      "title": "STAD-2382676"
+    },
+    {
+      "accession": "GSM5291531",
+      "title": "NC_PKU-8111237"
+    },
+    {
+      "accession": "GSM5291494",
+      "title": "CRC-2412066"
+    },
+    {
+      "accession": "GSM5291411",
+      "title": "STAD-2374161"
+    },
+    {
+      "accession": "GSM5291331",
+      "title": "ESCA_PKU-2414682"
+    },
+    {
+      "accession": "GSM5291543",
+      "title": "NC_PKU-34"
+    },
+    {
+      "accession": "GSM5291460",
+      "title": "CRC-2384422"
+    },
+    {
+      "accession": "GSM5291448",
+      "title": "CRC-2362297"
+    },
+    {
+      "accession": "GSM5291365",
+      "title": "LUAD-2383484"
+    },
+    {
+      "accession": "GSM5291428",
+      "title": "STAD-2393878"
+    },
+    {
+      "accession": "GSM5291345",
+      "title": "ESCA_XieH-1630872"
+    },
+    {
+      "accession": "GSM5291362",
+      "title": "LUAD-2382186"
+    },
+    {
+      "accession": "GSM5291328",
+      "title": "ESCA_PKU-2414413"
+    },
+    {
+      "accession": "GSM5291491",
+      "title": "CRC-2411883"
+    },
+    {
+      "accession": "GSM5291325",
+      "title": "ESCA_PKU-2412347"
+    },
+    {
+      "accession": "GSM5291408",
+      "title": "STAD-2121836"
+    },
+    {
+      "accession": "GSM5291471",
+      "title": "CRC-2390539"
+    },
+    {
+      "accession": "GSM5291511",
+      "title": "NC_ChQ-65"
+    },
+    {
+      "accession": "GSM5291425",
+      "title": "STAD-2390003"
+    },
+    {
+      "accession": "GSM5291342",
+      "title": "ESCA_UnionH-1629817"
+    },
+    {
+      "accession": "GSM5291388",
+      "title": "HCC_ChQ-91244930"
+    },
+    {
+      "accession": "GSM5291348",
+      "title": "LUAD-2359570"
+    },
+    {
+      "accession": "GSM5291451",
+      "title": "CRC-2383018"
+    },
+    {
+      "accession": "GSM5291534",
+      "title": "NC_ShH-1903250374"
+    },
+    {
+      "accession": "GSM5291322",
+      "title": "ESCA_KZ-5"
+    },
+    {
+      "accession": "GSM5291468",
+      "title": "CRC-2388932"
+    },
+    {
+      "accession": "GSM5291512",
+      "title": "NC_ChQ-70"
+    },
+    {
+      "accession": "GSM5291385",
+      "title": "HCC_ChQ-7000014337"
+    },
+    {
+      "accession": "GSM5291368",
+      "title": "LUAD-2384220"
+    },
+    {
+      "accession": "GSM5291508",
+      "title": "NC_ChQ-51"
+    },
+    {
+      "accession": "GSM5291488",
+      "title": "CRC-2408784"
+    },
+    {
+      "accession": "GSM5291412",
+      "title": "STAD-2380893"
+    },
+    {
+      "accession": "GSM5291329",
+      "title": "ESCA_PKU-2414433"
+    },
+    {
+      "accession": "GSM5291346",
+      "title": "LUAD-2238350"
+    },
+    {
+      "accession": "GSM5291514",
+      "title": "NC_HaiB-1"
+    },
+    {
+      "accession": "GSM5291429",
+      "title": "STAD-2394727"
+    },
+    {
+      "accession": "GSM5291431",
+      "title": "STAD-2402396"
+    },
+    {
+      "accession": "GSM5291405",
+      "title": "HCC-ShHW-352272"
+    },
+    {
+      "accession": "GSM5291475",
+      "title": "CRC-2396217"
+    },
+    {
+      "accession": "GSM5291449",
+      "title": "CRC-2372270"
+    },
+    {
+      "accession": "GSM5291366",
+      "title": "LUAD-2383900"
+    },
+    {
+      "accession": "GSM5291532",
+      "title": "NC_ShH-1903250135"
+    },
+    {
+      "accession": "GSM5291409",
+      "title": "STAD-2163710"
+    },
+    {
+      "accession": "GSM5291392",
+      "title": "HCC_ShHW-161444"
+    },
+    {
+      "accession": "GSM5291495",
+      "title": "CRC-9299429"
+    },
+    {
+      "accession": "GSM5291372",
+      "title": "LUAD-2386025"
+    },
+    {
+      "accession": "GSM5291538",
+      "title": "NC_ChQ-28"
+    },
+    {
+      "accession": "GSM5291455",
+      "title": "CRC-2383730"
+    },
+    {
+      "accession": "GSM5291326",
+      "title": "ESCA_PKU-2412565"
+    },
+    {
+      "accession": "GSM5291323",
+      "title": "ESCA_KZ-7"
+    },
+    {
+      "accession": "GSM5291452",
+      "title": "CRC-2383387"
+    },
+    {
+      "accession": "GSM5291369",
+      "title": "LUAD-2384340"
+    },
+    {
+      "accession": "GSM5291492",
+      "title": "CRC-2411896"
+    },
+    {
+      "accession": "GSM5291535",
+      "title": "NC_ChQ-21"
+    },
+    {
+      "accession": "GSM5291472",
+      "title": "CRC-2390716"
+    },
+    {
+      "accession": "GSM5291515",
+      "title": "NC_HaiB-2"
+    },
+    {
+      "accession": "GSM5291383",
+      "title": "HCC_ChQ-4"
+    },
+    {
+      "accession": "GSM5291389",
+      "title": "HCC_ShH-216176"
+    },
+    {
+      "accession": "GSM5291486",
+      "title": "CRC-2408206"
+    },
+    {
+      "accession": "GSM5291432",
+      "title": "STAD-2406523"
+    },
+    {
+      "accession": "GSM5291349",
+      "title": "LUAD-2378877"
+    },
+    {
+      "accession": "GSM5291503",
+      "title": "NC_ChQ-27"
+    },
+    {
+      "accession": "GSM5291420",
+      "title": "STAD-2384513"
+    },
+    {
+      "accession": "GSM5291337",
+      "title": "ESCA_PKU-2418615"
+    },
+    {
+      "accession": "GSM5291380",
+      "title": "LUAD-2394433"
+    },
+    {
+      "accession": "GSM5291469",
+      "title": "CRC-2389212"
+    },
+    {
+      "accession": "GSM5291386",
+      "title": "HCC_ChQ-8002011290"
+    },
+    {
+      "accession": "GSM5291466",
+      "title": "CRC-2387327"
+    },
+    {
+      "accession": "GSM5291483",
+      "title": "CRC-2407821"
+    },
+    {
+      "accession": "GSM5291406",
+      "title": "HCC-ShHW-352347"
+    },
+    {
+      "accession": "GSM5291489",
+      "title": "CRC-2410759"
+    },
+    {
+      "accession": "GSM5291343",
+      "title": "ESCA_UnionH-1631432"
+    },
+    {
+      "accession": "GSM5291509",
+      "title": "NC_ChQ-52"
+    },
+    {
+      "accession": "GSM5291446",
+      "title": "CRC-2327118"
+    },
+    {
+      "accession": "GSM5291400",
+      "title": "HCC_ShHW-225181"
+    },
+    {
+      "accession": "GSM5291526",
+      "title": "NC_PKU-33"
+    },
+    {
+      "accession": "GSM5291443",
+      "title": "STAD-2416091"
+    },
+    {
+      "accession": "GSM5291317",
+      "title": "ESCA_KZ-10"
+    },
+    {
+      "accession": "GSM5291529",
+      "title": "NC_PKU-56"
+    },
+    {
+      "accession": "GSM5291463",
+      "title": "CRC-2384796"
+    },
+    {
+      "accession": "GSM5291426",
+      "title": "STAD-2391832"
+    },
+    {
+      "accession": "GSM5291363",
+      "title": "LUAD-2382392"
+    },
+    {
+      "accession": "GSM5291360",
+      "title": "LUAD-2381787"
+    },
+    {
+      "accession": "GSM5291364",
+      "title": "LUAD-2382462"
+    },
+    {
+      "accession": "GSM5291403",
+      "title": "HCC-ShHW-225484"
+    },
+    {
+      "accession": "GSM5291320",
+      "title": "ESCA_KZ-19"
+    },
+    {
+      "accession": "GSM5291467",
+      "title": "CRC-2388859"
+    },
+    {
+      "accession": "GSM5291340",
+      "title": "ESCA_UnionH-1626626"
+    },
+    {
+      "accession": "GSM5291506",
+      "title": "NC_ChQ-36"
+    },
+    {
+      "accession": "GSM5291423",
+      "title": "STAD-2387639"
+    },
+    {
+      "accession": "GSM5291357",
+      "title": "LUAD-2381036"
+    },
+    {
+      "accession": "GSM5291464",
+      "title": "CRC-2386412"
+    },
+    {
+      "accession": "GSM5291440",
+      "title": "STAD-2414426"
+    },
+    {
+      "accession": "GSM5291401",
+      "title": "HCC_ShHW-225315"
+    },
+    {
+      "accession": "GSM5291384",
+      "title": "HCC_ChQ-5"
+    },
+    {
+      "accession": "GSM5291530",
+      "title": "NC_PKU-69"
+    },
+    {
+      "accession": "GSM5291447",
+      "title": "CRC-2334660"
+    },
+    {
+      "accession": "GSM5291510",
+      "title": "NC_ChQ-61"
+    },
+    {
+      "accession": "GSM5291427",
+      "title": "STAD-2393829"
+    },
+    {
+      "accession": "GSM5291381",
+      "title": "HCC_ChQ-10"
+    },
+    {
+      "accession": "GSM5291318",
+      "title": "ESCA_KZ-15"
+    },
+    {
+      "accession": "GSM5291470",
+      "title": "CRC-2390502"
+    },
+    {
+      "accession": "GSM5291444",
+      "title": "STAD-2416272"
+    },
+    {
+      "accession": "GSM5291361",
+      "title": "LUAD-2382152"
+    },
+    {
+      "accession": "GSM5291344",
+      "title": "ESCA_XieH-1630667"
+    },
+    {
+      "accession": "GSM5291367",
+      "title": "LUAD-2384213"
+    },
+    {
+      "accession": "GSM5291387",
+      "title": "HCC_ChQ-8002020781"
+    },
+    {
+      "accession": "GSM5291507",
+      "title": "NC_ChQ-40"
+    },
+    {
+      "accession": "GSM5291324",
+      "title": "ESCA_PKU-2412110"
+    },
+    {
+      "accession": "GSM5291490",
+      "title": "CRC-2410966"
+    },
+    {
+      "accession": "GSM5291407",
+      "title": "HCC-ShHW-352598"
+    },
+    {
+      "accession": "GSM5291533",
+      "title": "NC_ShH-1903250204"
+    },
+    {
+      "accession": "GSM5291404",
+      "title": "HCC-ShHW-351556"
+    },
+    {
+      "accession": "GSM5291321",
+      "title": "ESCA_KZ-20"
+    },
+    {
+      "accession": "GSM5291424",
+      "title": "STAD-2387809"
+    },
+    {
+      "accession": "GSM5291487",
+      "title": "CRC-2408346"
+    },
+    {
+      "accession": "GSM5291341",
+      "title": "ESCA_UnionH-1628973"
+    },
+    {
+      "accession": "GSM5291527",
+      "title": "NC_PKU-37"
+    },
+    {
+      "accession": "GSM5291438",
+      "title": "STAD-2414108"
+    },
+    {
+      "accession": "GSM5291541",
+      "title": "NC_PKU-2392860"
+    },
+    {
+      "accession": "GSM5291338",
+      "title": "ESCA_UnionH-1620241"
+    },
+    {
+      "accession": "GSM5291450",
+      "title": "CRC-2382513"
+    },
+    {
+      "accession": "GSM5291484",
+      "title": "CRC-2408137"
+    },
+    {
+      "accession": "GSM5291355",
+      "title": "LUAD-2380982"
+    },
+    {
+      "accession": "GSM5291458",
+      "title": "CRC-2384272"
+    },
+    {
+      "accession": "GSM5291504",
+      "title": "NC_ChQ-29"
+    },
+    {
+      "accession": "GSM5291335",
+      "title": "ESCA_PKU-2415974"
+    },
+    {
+      "accession": "GSM5291375",
+      "title": "LUAD-2386375"
+    },
+    {
+      "accession": "GSM5291332",
+      "title": "ESCA_PKU-2414854"
+    },
+    {
+      "accession": "GSM5291544",
+      "title": "NC_PKU-50"
+    },
+    {
+      "accession": "GSM5291518",
+      "title": "NC_PKU-2392931"
+    },
+    {
+      "accession": "GSM5291521",
+      "title": "NC_PKU-2394780"
+    },
+    {
+      "accession": "GSM5291435",
+      "title": "STAD-2412284"
+    },
+    {
+      "accession": "GSM5291421",
+      "title": "STAD-2386451"
+    },
+    {
+      "accession": "GSM5291441",
+      "title": "STAD-2414774"
+    },
+    {
+      "accession": "GSM5291501",
+      "title": "NC_ChQ-24"
+    },
+    {
+      "accession": "GSM5291481",
+      "title": "CRC-2406345"
+    },
+    {
+      "accession": "GSM5291461",
+      "title": "CRC-2384541"
+    },
+    {
+      "accession": "GSM5291378",
+      "title": "LUAD-2388850"
+    },
+    {
+      "accession": "GSM5291398",
+      "title": "HCC_ShHW-225048"
+    },
+    {
+      "accession": "GSM5291352",
+      "title": "LUAD-2379223"
+    },
+    {
+      "accession": "GSM5291418",
+      "title": "STAD-2383723"
+    },
+    {
+      "accession": "GSM5291498",
+      "title": "CRC-2384226"
+    },
+    {
+      "accession": "GSM5291415",
+      "title": "STAD-2382823"
+    },
+    {
+      "accession": "GSM5291478",
+      "title": "CRC-2398897"
+    },
+    {
+      "accession": "GSM5291315",
+      "title": "ESCA_569608"
+    },
+    {
+      "accession": "GSM5291358",
+      "title": "LUAD-2381280"
+    },
+    {
+      "accession": "GSM5291524",
+      "title": "NC_PKU-2399728"
+    },
+    {
+      "accession": "GSM5291395",
+      "title": "HCC-ShHW-224934"
+    }
+  ]
+}

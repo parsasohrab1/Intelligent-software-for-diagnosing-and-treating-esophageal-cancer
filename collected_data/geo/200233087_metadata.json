@@ -1,0 +1,281 @@
+{
+  "dataset_id": "200233087",
+  "title": "DNA methylation profiling to determine the primary sites of metastatic cancers using formalin-fixed paraffin-embedded tissues [Test Set]",
+  "summary": "Accurate identification of the primary site of metastatic cancer is critical to guide the subsequent treatments. There is a significant portion of patients whose primary sites are initially classified as uncertain, and 3-9% of cancer patients are diagnosed with cancer of unknown primary (CUP) even after comprehensive diagnostic workups. Yet, a widely accepted molecular test is still not available. Here, we presented the combination of a novel DNA methylation sequencing-based method and an algorithm to predict the tissues of origin for metastatic cancers. The assay applied degraded DNA from formalin-fixed, paraffin-embedded (FFPE) tissues to generate reduced represent bisulfite sequencing libraries (FFPE-RRBS). Comparable DNA methylation metrics were obtained for the paired fresh frozen (FF) RRBS and FFPE-RRBS libraries and the FFPE-RRBS libraries of matched primary and metastatic cancer tissues. We generated and systemically evaluated 28 molecular classifiers built on four methylation evaluation methods and seven machine-learning approaches from a training data set of 498 primary cancer patients. Of those classifiers, the beta values-based (mean methylation) linear support vector (BELIVE) performed the best, achieving overall accuracies of 81-95% for identifying the primary sites of 215 metastatic cancer patients by utilizing the top-k predictions (k=1, 2, 3). The prediction accuracies ranged from 92% to 98% for 4702 patients with primary tumors in a cross-validation cohort. Lastly, BELIVE successfully identified the tissues of origin for approximately 81-93% of cases in a cohort of 68 patients initially diagnosed with CUP.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7401269",
+      "title": "lymph node FFPE sample of Lung cancer [22M000002]"
+    },
+    {
+      "accession": "GSM7401286",
+      "title": "liver FFPE sample of Liver and gallbladder [22M000025]"
+    },
+    {
+      "accession": "GSM7401266",
+      "title": "lung FFPE sample of Lung cancer [22T005880]"
+    },
+    {
+      "accession": "GSM7401312",
+      "title": "lymph node FFPE sample of Lung cancer [22M000078]"
+    },
+    {
+      "accession": "GSM7401292",
+      "title": "lung FFPE sample of Lung cancer [22M000044]"
+    },
+    {
+      "accession": "GSM7401272",
+      "title": "abdominal cavity FFPE sample of Stomach cancer [22M000005]"
+    },
+    {
+      "accession": "GSM7401309",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000071]"
+    },
+    {
+      "accession": "GSM7401289",
+      "title": "liver FFPE sample of Liver cancer [22M000030]"
+    },
+    {
+      "accession": "GSM7401278",
+      "title": "neck FFPE sample of Head and neck neoplasm [22M000015]"
+    },
+    {
+      "accession": "GSM7401315",
+      "title": "neck FFPE sample of Lung cancer [22M000076]"
+    },
+    {
+      "accession": "GSM7401295",
+      "title": "small intestine FFPE sample of Lung cancer [22M000049]"
+    },
+    {
+      "accession": "GSM7401258",
+      "title": "liver FFPE sample of Lung cancer [193144]"
+    },
+    {
+      "accession": "GSM7401275",
+      "title": "bone FFPE sample of Ovarian cancer [22M000009]"
+    },
+    {
+      "accession": "GSM7401321",
+      "title": "lymph node FFPE sample of Stomach cancer [22M000194]"
+    },
+    {
+      "accession": "GSM7401301",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000057]"
+    },
+    {
+      "accession": "GSM7401318",
+      "title": "lymph node FFPE sample of Lung cancer [22M000080]"
+    },
+    {
+      "accession": "GSM7401298",
+      "title": "lymph node FFPE sample of Stomach cancer [22M000054]"
+    },
+    {
+      "accession": "GSM7401324",
+      "title": "dorsum FFPE sample of Lung cancer [22M000082]"
+    },
+    {
+      "accession": "GSM7401287",
+      "title": "lymph node FFPE sample of Liver and gallbladder [22M000028]"
+    },
+    {
+      "accession": "GSM7401304",
+      "title": "liver FFPE sample of Colon and rectum cancer [22M000062]"
+    },
+    {
+      "accession": "GSM7401284",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000021]"
+    },
+    {
+      "accession": "GSM7401267",
+      "title": "ovary FFPE sample of Colon and rectum cancer [22A017521]"
+    },
+    {
+      "accession": "GSM7401281",
+      "title": "brain FFPE sample of Lung cancer [22M000018]"
+    },
+    {
+      "accession": "GSM7401264",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22T003632]"
+    },
+    {
+      "accession": "GSM7401307",
+      "title": "hydrothorax FFPE sample of Stomach cancer [22M000102]"
+    },
+    {
+      "accession": "GSM7401261",
+      "title": "abdominal cavity FFPE sample of Lung cancer [21A000124]"
+    },
+    {
+      "accession": "GSM7401313",
+      "title": "lymph node FFPE sample of Ovarian cancer [22M000077]"
+    },
+    {
+      "accession": "GSM7401310",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000073]"
+    },
+    {
+      "accession": "GSM7401293",
+      "title": "lymph node FFPE sample of Colon and rectum cancer [22M000046]"
+    },
+    {
+      "accession": "GSM7401273",
+      "title": "abdominal cavity FFPE sample of Lung cancer [22M000006]"
+    },
+    {
+      "accession": "GSM7401316",
+      "title": "abdominal cavity FFPE sample of Stomach cancer [22M000075]"
+    },
+    {
+      "accession": "GSM7401290",
+      "title": "bone FFPE sample of Lung cancer [22M000032]"
+    },
+    {
+      "accession": "GSM7401270",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000003]"
+    },
+    {
+      "accession": "GSM7401259",
+      "title": "neck FFPE sample of Head and neck neoplasm [21A003923]"
+    },
+    {
+      "accession": "GSM7401276",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000011]"
+    },
+    {
+      "accession": "GSM7401296",
+      "title": "liver FFPE sample of Colon and rectum cancer [22M000050]"
+    },
+    {
+      "accession": "GSM7401322",
+      "title": "lymph node FFPE sample of Lung cancer [22M000192]"
+    },
+    {
+      "accession": "GSM7401302",
+      "title": "chest wall FFPE sample of Ovarian cancer [22M000058]"
+    },
+    {
+      "accession": "GSM7401262",
+      "title": "lung FFPE sample of Lung cancer [21A016128]"
+    },
+    {
+      "accession": "GSM7401282",
+      "title": "left thigh FFPE sample of Lung cancer [22M000019]"
+    },
+    {
+      "accession": "GSM7401319",
+      "title": "neck FFPE sample of Head and neck neoplasm [22M000200]"
+    },
+    {
+      "accession": "GSM7401299",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000055]"
+    },
+    {
+      "accession": "GSM7401268",
+      "title": "lymph node FFPE sample of Liver cancer [22A017687]"
+    },
+    {
+      "accession": "GSM7401279",
+      "title": "liver FFPE sample of Liver and gallbladder [22M000016]"
+    },
+    {
+      "accession": "GSM7401305",
+      "title": "abdominal cavity FFPE sample of Colon and rectum cancer [22M000063]"
+    },
+    {
+      "accession": "GSM7401265",
+      "title": "brain FFPE sample of Lung cancer [22A005867]"
+    },
+    {
+      "accession": "GSM7401285",
+      "title": "lymph node FFPE sample of Stomach cancer [22M000024]"
+    },
+    {
+      "accession": "GSM7401311",
+      "title": "lymph node FFPE sample of Thyroid cancer [22M000072]"
+    },
+    {
+      "accession": "GSM7401297",
+      "title": "lymph node FFPE sample of Cervix cancer [22M000052]"
+    },
+    {
+      "accession": "GSM7401308",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000068]"
+    },
+    {
+      "accession": "GSM7401288",
+      "title": "bone FFPE sample of Stomach cancer [22M000029]"
+    },
+    {
+      "accession": "GSM7401294",
+      "title": "ovary FFPE sample of Lung cancer [22M000048]"
+    },
+    {
+      "accession": "GSM7401314",
+      "title": "abdominal cavity FFPE sample of Ovarian cancer [22M000074]"
+    },
+    {
+      "accession": "GSM7401277",
+      "title": "liver FFPE sample of Esophagus cancer [22M000014]"
+    },
+    {
+      "accession": "GSM7401291",
+      "title": "liver FFPE sample of Head and neck neoplasm [22M000043]"
+    },
+    {
+      "accession": "GSM7401271",
+      "title": "brain FFPE sample of Thyroid cancer [22M000004]"
+    },
+    {
+      "accession": "GSM7401274",
+      "title": "lymph node FFPE sample of Colon and rectum cancer [22M000008]"
+    },
+    {
+      "accession": "GSM7401317",
+      "title": "dorsum FFPE sample of Thyroid cancer [22M000079]"
+    },
+    {
+      "accession": "GSM7401323",
+      "title": "liver FFPE sample of Lung cancer [22M000081]"
+    },
+    {
+      "accession": "GSM7401260",
+      "title": "lymph node FFPE sample of Cervix cancer [20A040925]"
+    },
+    {
+      "accession": "GSM7401306",
+      "title": "liver FFPE sample of Liver and gallbladder [22M000064]"
+    },
+    {
+      "accession": "GSM7401257",
+      "title": "liver FFPE sample of Colon and rectum cancer [193334A2]"
+    },
+    {
+      "accession": "GSM7401300",
+      "title": "neck FFPE sample of Head and neck neoplasm [22M000056]"
+    },
+    {
+      "accession": "GSM7401320",
+      "title": "lymph node FFPE sample of Head and neck neoplasm [22M000196]"
+    },
+    {
+      "accession": "GSM7401283",
+      "title": "neck FFPE sample of Head and neck neoplasm [22M000020]"
+    },
+    {
+      "accession": "GSM7401303",
+      "title": "neck FFPE sample of Head and neck neoplasm [22M000061]"
+    },
+    {
+      "accession": "GSM7401263",
+      "title": "lymph node FFPE sample of Stomach cancer [21T012031]"
+    },
+    {
+      "accession": "GSM7401280",
+      "title": "lung FFPE sample of Ovarian cancer [22M000017]"
+    }
+  ]
+}

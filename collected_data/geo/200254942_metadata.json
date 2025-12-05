@@ -1,0 +1,433 @@
+{
+  "dataset_id": "200254942",
+  "title": "The pluripotency factor NANOG contributes to mesenchymal plasticity and is predictive for outcome in esophageal adenocarcinoma",
+  "summary": "Despite the advent of neoadjuvant chemoradiotherapy (CRT), overall survival rates of esophagealadenocarcinoma(EAC) remain low. A readily induced mesenchymal transition of EAC cells contributes to resistance to CRT. In this study, we aimed to chart the heterogeneity in cell state transition after CRT and to identify its underpinnings. RNA-sequencing was performed on 100 pre-treatment biopsies. After RNA-sequencing, Ridge regression analysis was applied to correlate gene expression to ranked plasticity, and models were developed to predict mesenchymal transitions in patients. Plasticity score predictions of the three highest significant predictive models were projected on the pre-treatment biopsies and related to clinical outcome data. A motif enrichment analysis of the genes associated with all three models revealed NANOG as the key associated transcription factor. In accordance, expression of NANOG in pre-treatment biopsies was highly associated with poor response to neoadjuvant chemoradiation, the occurrence of recurrences, and median overall survival difference in EAC patients (>48 months).",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8060527",
+      "title": "amc-253-eac"
+    },
+    {
+      "accession": "GSM8060573",
+      "title": "amc-248-esc"
+    },
+    {
+      "accession": "GSM8060590",
+      "title": "amc-446-eac"
+    },
+    {
+      "accession": "GSM8060507",
+      "title": "amc-074-eac"
+    },
+    {
+      "accession": "GSM8060570",
+      "title": "amc-207-eac"
+    },
+    {
+      "accession": "GSM8060550",
+      "title": "amc-030-eac"
+    },
+    {
+      "accession": "GSM8060504",
+      "title": "amc-058-eac"
+    },
+    {
+      "accession": "GSM8060587",
+      "title": "amc-349-eac"
+    },
+    {
+      "accession": "GSM8060530",
+      "title": "amc-265-eac"
+    },
+    {
+      "accession": "GSM8060567",
+      "title": "amc-172-eac"
+    },
+    {
+      "accession": "GSM8060510",
+      "title": "amc-101-eac"
+    },
+    {
+      "accession": "GSM8060547",
+      "title": "amc-023-eac"
+    },
+    {
+      "accession": "GSM8060593",
+      "title": "037m"
+    },
+    {
+      "accession": "GSM8060536",
+      "title": "amc-297-eac"
+    },
+    {
+      "accession": "GSM8060553",
+      "title": "amc-061-eac"
+    },
+    {
+      "accession": "GSM8060516",
+      "title": "amc-194-eac"
+    },
+    {
+      "accession": "GSM8060579",
+      "title": "amc-310-eac"
+    },
+    {
+      "accession": "GSM8060533",
+      "title": "amc-283-eac"
+    },
+    {
+      "accession": "GSM8060599",
+      "title": "oe33"
+    },
+    {
+      "accession": "GSM8060559",
+      "title": "amc-111-eac"
+    },
+    {
+      "accession": "GSM8060513",
+      "title": "amc-154-eac"
+    },
+    {
+      "accession": "GSM8060596",
+      "title": "289b"
+    },
+    {
+      "accession": "GSM8060576",
+      "title": "amc-287-eac"
+    },
+    {
+      "accession": "GSM8060539",
+      "title": "amc-312-eac"
+    },
+    {
+      "accession": "GSM8060556",
+      "title": "amc-089-eac"
+    },
+    {
+      "accession": "GSM8060602",
+      "title": "oe21"
+    },
+    {
+      "accession": "GSM8060592",
+      "title": "031m"
+    },
+    {
+      "accession": "GSM8060555",
+      "title": "amc-088-eac"
+    },
+    {
+      "accession": "GSM8060509",
+      "title": "amc-084-eac"
+    },
+    {
+      "accession": "GSM8060572",
+      "title": "amc-228-eac"
+    },
+    {
+      "accession": "GSM8060515",
+      "title": "amc-183-eac"
+    },
+    {
+      "accession": "GSM8060552",
+      "title": "amc-044-eac"
+    },
+    {
+      "accession": "GSM8060535",
+      "title": "amc-289-eac"
+    },
+    {
+      "accession": "GSM8060598",
+      "title": "oe19"
+    },
+    {
+      "accession": "GSM8060578",
+      "title": "amc-307-eac"
+    },
+    {
+      "accession": "GSM8060512",
+      "title": "amc-151-eac"
+    },
+    {
+      "accession": "GSM8060595",
+      "title": "081r"
+    },
+    {
+      "accession": "GSM8060532",
+      "title": "amc-274-eac"
+    },
+    {
+      "accession": "GSM8060575",
+      "title": "amc-286-eac"
+    },
+    {
+      "accession": "GSM8060518",
+      "title": "amc-208-eac"
+    },
+    {
+      "accession": "GSM8060601",
+      "title": "kyse520"
+    },
+    {
+      "accession": "GSM8060544",
+      "title": "amc-003-eac"
+    },
+    {
+      "accession": "GSM8060564",
+      "title": "amc-150-eac"
+    },
+    {
+      "accession": "GSM8060581",
+      "title": "amc-322-eac"
+    },
+    {
+      "accession": "GSM8060498",
+      "title": "amc-009-esc"
+    },
+    {
+      "accession": "GSM8060524",
+      "title": "amc-231-eac"
+    },
+    {
+      "accession": "GSM8060561",
+      "title": "amc-120-eac"
+    },
+    {
+      "accession": "GSM8060521",
+      "title": "amc-220-eac"
+    },
+    {
+      "accession": "GSM8060541",
+      "title": "amc-314-eac"
+    },
+    {
+      "accession": "GSM8060558",
+      "title": "amc-100-eac"
+    },
+    {
+      "accession": "GSM8060501",
+      "title": "amc-046-eac"
+    },
+    {
+      "accession": "GSM8060584",
+      "title": "amc-328-esc"
+    },
+    {
+      "accession": "GSM8060563",
+      "title": "amc-146-eac"
+    },
+    {
+      "accession": "GSM8060538",
+      "title": "amc-311-eac"
+    },
+    {
+      "accession": "GSM8060600",
+      "title": "kyse410"
+    },
+    {
+      "accession": "GSM8060517",
+      "title": "amc-198-eac"
+    },
+    {
+      "accession": "GSM8060583",
+      "title": "amc-327-eac"
+    },
+    {
+      "accession": "GSM8060560",
+      "title": "amc-114-eac"
+    },
+    {
+      "accession": "GSM8060497",
+      "title": "amc-007-eac"
+    },
+    {
+      "accession": "GSM8060514",
+      "title": "amc-165-eac"
+    },
+    {
+      "accession": "GSM8060597",
+      "title": "flo1"
+    },
+    {
+      "accession": "GSM8060580",
+      "title": "amc-315-eac"
+    },
+    {
+      "accession": "GSM8060557",
+      "title": "amc-095-eac"
+    },
+    {
+      "accession": "GSM8060540",
+      "title": "amc-313-eac"
+    },
+    {
+      "accession": "GSM8060537",
+      "title": "amc-300-eac"
+    },
+    {
+      "accession": "GSM8060577",
+      "title": "amc-299-eac"
+    },
+    {
+      "accession": "GSM8060520",
+      "title": "amc-217-eac"
+    },
+    {
+      "accession": "GSM8060546",
+      "title": "amc-019-eac"
+    },
+    {
+      "accession": "GSM8060589",
+      "title": "amc-357-eac"
+    },
+    {
+      "accession": "GSM8060526",
+      "title": "amc-237-eac"
+    },
+    {
+      "accession": "GSM8060500",
+      "title": "amc-029-eac"
+    },
+    {
+      "accession": "GSM8060543",
+      "title": "amc-319-eac"
+    },
+    {
+      "accession": "GSM8060506",
+      "title": "amc-072-esc"
+    },
+    {
+      "accession": "GSM8060523",
+      "title": "amc-227-eac"
+    },
+    {
+      "accession": "GSM8060569",
+      "title": "amc-186-eac"
+    },
+    {
+      "accession": "GSM8060566",
+      "title": "amc-170-eac"
+    },
+    {
+      "accession": "GSM8060549",
+      "title": "amc-025-eac"
+    },
+    {
+      "accession": "GSM8060529",
+      "title": "amc-264-eac"
+    },
+    {
+      "accession": "GSM8060499",
+      "title": "amc-020-esc"
+    },
+    {
+      "accession": "GSM8060503",
+      "title": "amc-057-eac"
+    },
+    {
+      "accession": "GSM8060586",
+      "title": "amc-338-eac"
+    },
+    {
+      "accession": "GSM8060582",
+      "title": "amc-323-eac"
+    },
+    {
+      "accession": "GSM8060545",
+      "title": "amc-016-esc"
+    },
+    {
+      "accession": "GSM8060505",
+      "title": "amc-060-eac"
+    },
+    {
+      "accession": "GSM8060562",
+      "title": "amc-138-eac"
+    },
+    {
+      "accession": "GSM8060525",
+      "title": "amc-236-eac"
+    },
+    {
+      "accession": "GSM8060542",
+      "title": "amc-316-eac"
+    },
+    {
+      "accession": "GSM8060588",
+      "title": "amc-350-eac"
+    },
+    {
+      "accession": "GSM8060502",
+      "title": "amc-055-eac"
+    },
+    {
+      "accession": "GSM8060568",
+      "title": "amc-180-eac"
+    },
+    {
+      "accession": "GSM8060585",
+      "title": "amc-329-eac"
+    },
+    {
+      "accession": "GSM8060522",
+      "title": "amc-223-eac"
+    },
+    {
+      "accession": "GSM8060565",
+      "title": "amc-155-eac"
+    },
+    {
+      "accession": "GSM8060534",
+      "title": "amc-285-eac-b"
+    },
+    {
+      "accession": "GSM8060591",
+      "title": "007b"
+    },
+    {
+      "accession": "GSM8060508",
+      "title": "amc-083-eac"
+    },
+    {
+      "accession": "GSM8060519",
+      "title": "amc-209-eac"
+    },
+    {
+      "accession": "GSM8060571",
+      "title": "amc-214-eac"
+    },
+    {
+      "accession": "GSM8060531",
+      "title": "amc-273-esc"
+    },
+    {
+      "accession": "GSM8060554",
+      "title": "amc-075-eac"
+    },
+    {
+      "accession": "GSM8060528",
+      "title": "amc-255-eac"
+    },
+    {
+      "accession": "GSM8060551",
+      "title": "amc-031-eac"
+    },
+    {
+      "accession": "GSM8060511",
+      "title": "amc-116-eac"
+    },
+    {
+      "accession": "GSM8060594",
+      "title": "058b"
+    },
+    {
+      "accession": "GSM8060574",
+      "title": "amc-258-eac"
+    },
+    {
+      "accession": "GSM8060548",
+      "title": "amc-024-eac"
+    }
+  ]
+}

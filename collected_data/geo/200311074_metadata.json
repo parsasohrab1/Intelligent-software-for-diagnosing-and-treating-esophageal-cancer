@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200311074",
+  "title": "COPG1 Is a Selectively Essential Regulator  of Cancer Progression and Chemoresistance: A Comprehensive Pan-Cancer Study",
+  "summary": "The coatomer complex, a key regulator of intracellular vesicular transport, has recently been implicated in cancer progression, yet a comprehensive pan-cancer analysis of its subunits has been lacking. Here, we systematically profiled genetic alterations, expression patterns, prognostic relevance, and functional dependencies of all COPI and COPII coatomer subunits across 33 cancer types using more than 10,000 tumor samples from The Cancer Genome Atlas (TCGA), complemented by functional perturbation data from CRISPR (n = 1,178) and RNAi (n = 707) screens in DepMap. Gene amplification\u2014most notably of COPB2\u2014was the most frequent alteration and was associated with poor survival in bladder and esophageal cancers. Mutations in COPA and SEC31A also demonstrated prognostic significance in endometrial carcinoma. Expression analyses revealed broad upregulation of coatomer genes across cancer types, with COPG1 and COPB1 emerging as strong risk-associated genes (HR > 2). Integrative functional dependency analyses further identified COPG1 and COPE as selectively essential in multiple cancer contexts, with COPG1 loss notably linked to increased drug sensitivity. Functional validation in hepatocellular carcinoma (HCC) showed that COPG1 knockdown impaired malignant phenotypes and reduced tumorigenicity in vivo. Mechanistically, COPG1 depletion induced Golgi disruption and ER stress, increased ROS production, and suppressed PI3K\u2013AKT signaling. Moreover, COPG1 knockdown sensitized HCC cells to sorafenib and doxorubicin, whereas COPG1 overexpression conferred resistance. Collectively, our pan-cancer analysis reveals context-dependent roles of coatomer subunits and identifies COPG1 as a novel oncogenic driver and potential therapeutic target in HCC, mediating chemoresistance through redox modulation and PI3K\u2013AKT pathway inhibition.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9316578",
+      "title": "PLCPRF5-siSCR_1, Day 2"
+    },
+    {
+      "accession": "GSM9316575",
+      "title": "PLCPRF5-siCOPG1_1, Day 2"
+    },
+    {
+      "accession": "GSM9316579",
+      "title": "PLCPRF5-siSCR_2, Day 2"
+    },
+    {
+      "accession": "GSM9316576",
+      "title": "PLCPRF5-siCOPG1_2, Day 2"
+    },
+    {
+      "accession": "GSM9316580",
+      "title": "PLCPRF5-siSCR_3, Day 2"
+    },
+    {
+      "accession": "GSM9316577",
+      "title": "PLCPRF5-siCOPG1_3, Day 2"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "dataset_id": "0e570a90-aff0-4c62-9677-cee80e73fb37",
+  "file_name": "TCGA-ESCA.55a537eb-b053-4436-b92b-ae36229c0c31.absolute_liftover.gene_level_copy_number.v36.tsv",
+  "data_type": "Gene Level Copy Number",
+  "data_format": "TSV",
+  "file_size": 3436235,
+  "cases": []
+}

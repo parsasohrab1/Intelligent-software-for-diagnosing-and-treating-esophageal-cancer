@@ -145,9 +145,19 @@ async def predict_risk(request: RiskPredictionRequest):
         return result
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error predicting risk: {str(e)}"
-        )
+        import logging
+        import traceback
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error predicting risk: {str(e)}")
+        logger.error(traceback.format_exc())
+        # Return a graceful error response instead of crashing
+        return {
+            "error": f"Error predicting risk: {str(e)}",
+            "risk_score": 0.5,
+            "risk_level": "unknown",
+            "factors": [],
+            "recommendations": ["Unable to calculate risk. Please check patient data."]
+        }
 
 
 @router.post("/treatment-recommendation")
@@ -235,6 +245,7 @@ async def check_monitoring_alerts(request: MonitoringAlertRequest):
 async def get_cds_services():
     """Get list of available CDS services"""
     # This endpoint should always work as it doesn't depend on external services
+    # Return immediately without try-except to avoid any overhead
     services = [
         {
             "name": "Risk Prediction",

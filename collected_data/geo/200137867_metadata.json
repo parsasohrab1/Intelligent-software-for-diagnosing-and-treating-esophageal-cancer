@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200137867",
+  "title": "Tissue samples of 4 patients with esophageal cancer before and after radiotherapy",
+  "summary": "Esophageal cancer is one of the common malignant tumors, and the mortality rate ranks fourth among all malignant tumors in China. Radiotherapy is one of the main methods for the treatment of esophageal cancer, and radiation resistance is one of the important factors of tumor recurrence and metastasis. Therefore, the study of radioresistance related markers of esophageal cancer is of great significance to improve the radiosensitivity of esophageal cancer. We used microarrays to detail to find critical prognostic factors for esophageal cancer patients after radiotherapy.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4090710",
+      "title": "Esophageal carcinoma after radiotherapy_1"
+    },
+    {
+      "accession": "GSM4090713",
+      "title": "Esophageal carcinoma before radiotherapy_2"
+    },
+    {
+      "accession": "GSM4090716",
+      "title": "Esophageal carcinoma after radiotherapy_4"
+    },
+    {
+      "accession": "GSM4090717",
+      "title": "Esophageal carcinoma before radiotherapy_4"
+    },
+    {
+      "accession": "GSM4090711",
+      "title": "Esophageal carcinoma before radiotherapy_1"
+    },
+    {
+      "accession": "GSM4090714",
+      "title": "Esophageal carcinoma after radiotherapy_3"
+    },
+    {
+      "accession": "GSM4090715",
+      "title": "Esophageal carcinoma before radiotherapy_3"
+    },
+    {
+      "accession": "GSM4090712",
+      "title": "Esophageal carcinoma after radiotherapy_2"
+    }
+  ]
+}

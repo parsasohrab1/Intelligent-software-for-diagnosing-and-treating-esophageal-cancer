@@ -1,0 +1,8 @@
+{
+  "dataset_id": "a6b81501-0f18-4ab1-8994-2576412cc5d0",
+  "file_name": "TCGA_ESCA.1c44114f-ea66-43cb-addb-3c3d6cf18286.wxs.MuSE.somatic_annotation.vcf.gz",
+  "data_type": "Annotated Somatic Mutation",
+  "data_format": "VCF",
+  "file_size": 144671,
+  "cases": []
+}

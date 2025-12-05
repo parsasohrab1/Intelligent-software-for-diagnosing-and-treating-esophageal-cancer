@@ -1,0 +1,901 @@
+{
+  "dataset_id": "200172159",
+  "title": "mRNA expression profiles of 223 cancer cell lines including newly established ones",
+  "summary": "Establishment and molecular characterization of 239 peritoneally-metastatic cancer cell lines from 170 patients\u2019 ascites in 11 kinds of cancers mainly consisted of gastric, pancreatic, and ovarian cancer. We performed comparative transcriptome analyses using microarrays between our established cancer cell lines and cell-bank derived cancer cell lines",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5242910",
+      "title": "KYSE-1140"
+    },
+    {
+      "accession": "GSM5242993",
+      "title": "NPC-32C"
+    },
+    {
+      "accession": "GSM5242864",
+      "title": "NSC-37C"
+    },
+    {
+      "accession": "GSM5242947",
+      "title": "KYSE-850"
+    },
+    {
+      "accession": "GSM5243030",
+      "title": "NOVC-8C"
+    },
+    {
+      "accession": "GSM5242973",
+      "title": "NPC-14C"
+    },
+    {
+      "accession": "GSM5242844",
+      "title": "GCIY"
+    },
+    {
+      "accession": "GSM5242927",
+      "title": "KYSE-2400"
+    },
+    {
+      "accession": "GSM5243010",
+      "title": "NPC-9C"
+    },
+    {
+      "accession": "GSM5242907",
+      "title": "NSCE-5"
+    },
+    {
+      "accession": "GSM5242990",
+      "title": "NPC-2C-1"
+    },
+    {
+      "accession": "GSM5242841",
+      "title": "NSC-20C"
+    },
+    {
+      "accession": "GSM5242970",
+      "title": "MIAPaca-2"
+    },
+    {
+      "accession": "GSM5242887",
+      "title": "NSC-67C"
+    },
+    {
+      "accession": "GSM5242924",
+      "title": "KYSE-220"
+    },
+    {
+      "accession": "GSM5243007",
+      "title": "NPC-6C"
+    },
+    {
+      "accession": "GSM5242950",
+      "title": "OE-21"
+    },
+    {
+      "accession": "GSM5242987",
+      "title": "NPC-27C"
+    },
+    {
+      "accession": "GSM5242867",
+      "title": "NSC-40C"
+    },
+    {
+      "accession": "GSM5243033",
+      "title": "RMG-I"
+    },
+    {
+      "accession": "GSM5243050",
+      "title": "NKC-1C"
+    },
+    {
+      "accession": "GSM5242904",
+      "title": "NSCE-18"
+    },
+    {
+      "accession": "GSM5243013",
+      "title": "PK-59"
+    },
+    {
+      "accession": "GSM5242884",
+      "title": "NSC-64C"
+    },
+    {
+      "accession": "GSM5242967",
+      "title": "HPAF-II"
+    },
+    {
+      "accession": "GSM5242847",
+      "title": "HSC-39"
+    },
+    {
+      "accession": "GSM5242930",
+      "title": "KYSE-2780"
+    },
+    {
+      "accession": "GSM5242939",
+      "title": "KYSE-450"
+    },
+    {
+      "accession": "GSM5243022",
+      "title": "MCAS"
+    },
+    {
+      "accession": "GSM5242873",
+      "title": "NSC-50C"
+    },
+    {
+      "accession": "GSM5242956",
+      "title": "TE15"
+    },
+    {
+      "accession": "GSM5243019",
+      "title": "ES-2"
+    },
+    {
+      "accession": "GSM5243039",
+      "title": "SKG-I"
+    },
+    {
+      "accession": "GSM5242936",
+      "title": "KYSE-3650"
+    },
+    {
+      "accession": "GSM5242890",
+      "title": "NSC-70C"
+    },
+    {
+      "accession": "GSM5242833",
+      "title": "NSC-9C"
+    },
+    {
+      "accession": "GSM5242953",
+      "title": "TE1"
+    },
+    {
+      "accession": "GSM5242916",
+      "title": "KYSE-1260"
+    },
+    {
+      "accession": "GSM5242853",
+      "title": "KATO-III"
+    },
+    {
+      "accession": "GSM5242999",
+      "title": "NPC-38C"
+    },
+    {
+      "accession": "GSM5242870",
+      "title": "NSC-47C"
+    },
+    {
+      "accession": "GSM5243036",
+      "title": "BOKU"
+    },
+    {
+      "accession": "GSM5242979",
+      "title": "NPC-1C"
+    },
+    {
+      "accession": "GSM5243016",
+      "title": "Panc-1"
+    },
+    {
+      "accession": "GSM5242896",
+      "title": "HSC-41"
+    },
+    {
+      "accession": "GSM5242830",
+      "title": "NSC-6C"
+    },
+    {
+      "accession": "GSM5243042",
+      "title": "SW576"
+    },
+    {
+      "accession": "GSM5242913",
+      "title": "KYSE-1230"
+    },
+    {
+      "accession": "GSM5242996",
+      "title": "NPC-35C"
+    },
+    {
+      "accession": "GSM5242976",
+      "title": "NPC-17C"
+    },
+    {
+      "accession": "GSM5242850",
+      "title": "HSC-58"
+    },
+    {
+      "accession": "GSM5242933",
+      "title": "KYSE-3210"
+    },
+    {
+      "accession": "GSM5242893",
+      "title": "OCUM-1"
+    },
+    {
+      "accession": "GSM5242959",
+      "title": "TE6"
+    },
+    {
+      "accession": "GSM5242876",
+      "title": "NSC-53C"
+    },
+    {
+      "accession": "GSM5242856",
+      "title": "NSC-24C"
+    },
+    {
+      "accession": "GSM5242902",
+      "title": "MKN74"
+    },
+    {
+      "accession": "GSM5242836",
+      "title": "NSC-14C"
+    },
+    {
+      "accession": "GSM5243002",
+      "title": "NPC-40C-w"
+    },
+    {
+      "accession": "GSM5243048",
+      "title": "NBC-1C"
+    },
+    {
+      "accession": "GSM5242919",
+      "title": "KYSE-150"
+    },
+    {
+      "accession": "GSM5242862",
+      "title": "NSC-35C-1"
+    },
+    {
+      "accession": "GSM5242899",
+      "title": "IM95"
+    },
+    {
+      "accession": "GSM5242982",
+      "title": "NPC-22C"
+    },
+    {
+      "accession": "GSM5242985",
+      "title": "NPC-25C"
+    },
+    {
+      "accession": "GSM5243028",
+      "title": "NOVC-6C"
+    },
+    {
+      "accession": "GSM5242945",
+      "title": "KYSE-770"
+    },
+    {
+      "accession": "GSM5242882",
+      "title": "NSC-61C"
+    },
+    {
+      "accession": "GSM5242965",
+      "title": "H5766T"
+    },
+    {
+      "accession": "GSM5243008",
+      "title": "NPC-7C"
+    },
+    {
+      "accession": "GSM5242925",
+      "title": "KYSE-2270"
+    },
+    {
+      "accession": "GSM5242842",
+      "title": "NSC-22C"
+    },
+    {
+      "accession": "GSM5242905",
+      "title": "NSCE-33"
+    },
+    {
+      "accession": "GSM5242859",
+      "title": "NSC-29C"
+    },
+    {
+      "accession": "GSM5243045",
+      "title": "HSC-2"
+    },
+    {
+      "accession": "GSM5243025",
+      "title": "NOVC-3C"
+    },
+    {
+      "accession": "GSM5243005",
+      "title": "NPC-4C"
+    },
+    {
+      "accession": "GSM5242942",
+      "title": "KYSE-520"
+    },
+    {
+      "accession": "GSM5242922",
+      "title": "KYSE-1860"
+    },
+    {
+      "accession": "GSM5243051",
+      "title": "NPM-1C"
+    },
+    {
+      "accession": "GSM5242879",
+      "title": "NSC-57C"
+    },
+    {
+      "accession": "GSM5242839",
+      "title": "NSC-17CA"
+    },
+    {
+      "accession": "GSM5242962",
+      "title": "AsPC-1"
+    },
+    {
+      "accession": "GSM5242988",
+      "title": "NPC-28C"
+    },
+    {
+      "accession": "GSM5242865",
+      "title": "NSC-38C-1"
+    },
+    {
+      "accession": "GSM5243031",
+      "title": "OVISE"
+    },
+    {
+      "accession": "GSM5242928",
+      "title": "KYSE-270"
+    },
+    {
+      "accession": "GSM5243011",
+      "title": "PK-1"
+    },
+    {
+      "accession": "GSM5242948",
+      "title": "KYSE-960"
+    },
+    {
+      "accession": "GSM5242908",
+      "title": "NEGJC-1C"
+    },
+    {
+      "accession": "GSM5242845",
+      "title": "GSU"
+    },
+    {
+      "accession": "GSM5242891",
+      "title": "NSC-71C"
+    },
+    {
+      "accession": "GSM5242974",
+      "title": "NPC-15C"
+    },
+    {
+      "accession": "GSM5242911",
+      "title": "KYSE-1170"
+    },
+    {
+      "accession": "GSM5242994",
+      "title": "NPC-33C"
+    },
+    {
+      "accession": "GSM5242871",
+      "title": "NSC-48CA"
+    },
+    {
+      "accession": "GSM5243037",
+      "title": "Ca Ski"
+    },
+    {
+      "accession": "GSM5242991",
+      "title": "NPC-30C"
+    },
+    {
+      "accession": "GSM5242954",
+      "title": "TE10"
+    },
+    {
+      "accession": "GSM5242934",
+      "title": "KYSE-3410"
+    },
+    {
+      "accession": "GSM5243034",
+      "title": "RMUG-S"
+    },
+    {
+      "accession": "GSM5242868",
+      "title": "NSC-44CF"
+    },
+    {
+      "accession": "GSM5242971",
+      "title": "NPC-10C-1"
+    },
+    {
+      "accession": "GSM5242931",
+      "title": "KYSE-2880"
+    },
+    {
+      "accession": "GSM5243014",
+      "title": "PK-9"
+    },
+    {
+      "accession": "GSM5242951",
+      "title": "T.T"
+    },
+    {
+      "accession": "GSM5243017",
+      "title": "2008"
+    },
+    {
+      "accession": "GSM5242848",
+      "title": "HSC-43"
+    },
+    {
+      "accession": "GSM5242888",
+      "title": "NSC-68C"
+    },
+    {
+      "accession": "GSM5242968",
+      "title": "KLM-1"
+    },
+    {
+      "accession": "GSM5243040",
+      "title": "SKG-II"
+    },
+    {
+      "accession": "GSM5242885",
+      "title": "NSC-65C"
+    },
+    {
+      "accession": "GSM5242937",
+      "title": "KYSE-3940"
+    },
+    {
+      "accession": "GSM5243003",
+      "title": "NPC-41C"
+    },
+    {
+      "accession": "GSM5242920",
+      "title": "KYSE-170"
+    },
+    {
+      "accession": "GSM5242957",
+      "title": "TE3"
+    },
+    {
+      "accession": "GSM5242874",
+      "title": "NSC-51C"
+    },
+    {
+      "accession": "GSM5242900",
+      "title": "MKN28"
+    },
+    {
+      "accession": "GSM5242983",
+      "title": "NPC-23C"
+    },
+    {
+      "accession": "GSM5242854",
+      "title": "MKN45"
+    },
+    {
+      "accession": "GSM5242837",
+      "title": "NSC-15CF"
+    },
+    {
+      "accession": "GSM5243020",
+      "title": "JHOM-1"
+    },
+    {
+      "accession": "GSM5242960",
+      "title": "TE8"
+    },
+    {
+      "accession": "GSM5243043",
+      "title": "SiHa"
+    },
+    {
+      "accession": "GSM5243000",
+      "title": "NPC-39C"
+    },
+    {
+      "accession": "GSM5242897",
+      "title": "HSC-42"
+    },
+    {
+      "accession": "GSM5242851",
+      "title": "HSC-59"
+    },
+    {
+      "accession": "GSM5242980",
+      "title": "NPC-20C"
+    },
+    {
+      "accession": "GSM5242834",
+      "title": "NSC-10C"
+    },
+    {
+      "accession": "GSM5242877",
+      "title": "NSC-54C"
+    },
+    {
+      "accession": "GSM5242997",
+      "title": "NPC-36C-w"
+    },
+    {
+      "accession": "GSM5242917",
+      "title": "KYSE-140"
+    },
+    {
+      "accession": "GSM5242883",
+      "title": "NSC-63C"
+    },
+    {
+      "accession": "GSM5242966",
+      "title": "HPAC"
+    },
+    {
+      "accession": "GSM5242831",
+      "title": "NSC-7C"
+    },
+    {
+      "accession": "GSM5242914",
+      "title": "KYSE-1240"
+    },
+    {
+      "accession": "GSM5242894",
+      "title": "OKAJIMA"
+    },
+    {
+      "accession": "GSM5242857",
+      "title": "NSC-26C-1"
+    },
+    {
+      "accession": "GSM5242977",
+      "title": "NPC-18C-1"
+    },
+    {
+      "accession": "GSM5243012",
+      "title": "PK-45P"
+    },
+    {
+      "accession": "GSM5243029",
+      "title": "NOVC-7C"
+    },
+    {
+      "accession": "GSM5242940",
+      "title": "KYSE-50"
+    },
+    {
+      "accession": "GSM5243023",
+      "title": "NOVC-1C"
+    },
+    {
+      "accession": "GSM5243049",
+      "title": "NGBC-1C"
+    },
+    {
+      "accession": "GSM5242963",
+      "title": "BxPC-3"
+    },
+    {
+      "accession": "GSM5242843",
+      "title": "FU97"
+    },
+    {
+      "accession": "GSM5242989",
+      "title": "NPC-29C"
+    },
+    {
+      "accession": "GSM5242863",
+      "title": "NSC-36C"
+    },
+    {
+      "accession": "GSM5242946",
+      "title": "KYSE-790"
+    },
+    {
+      "accession": "GSM5242886",
+      "title": "NSC-66C"
+    },
+    {
+      "accession": "GSM5242926",
+      "title": "KYSE-2300"
+    },
+    {
+      "accession": "GSM5243009",
+      "title": "NPC-8C"
+    },
+    {
+      "accession": "GSM5242880",
+      "title": "NSC-58C"
+    },
+    {
+      "accession": "GSM5242860",
+      "title": "NSC-32C"
+    },
+    {
+      "accession": "GSM5243026",
+      "title": "NOVC-4C"
+    },
+    {
+      "accession": "GSM5242906",
+      "title": "NSCE-41"
+    },
+    {
+      "accession": "GSM5242923",
+      "title": "KYSE-190"
+    },
+    {
+      "accession": "GSM5243006",
+      "title": "NPC-5C"
+    },
+    {
+      "accession": "GSM5243046",
+      "title": "SKN-3"
+    },
+    {
+      "accession": "GSM5242943",
+      "title": "KYSE-590"
+    },
+    {
+      "accession": "GSM5242892",
+      "title": "NUGC-4"
+    },
+    {
+      "accession": "GSM5242846",
+      "title": "HGC-27"
+    },
+    {
+      "accession": "GSM5242840",
+      "title": "NSC-18C-1"
+    },
+    {
+      "accession": "GSM5243032",
+      "title": "OVSAHO"
+    },
+    {
+      "accession": "GSM5242986",
+      "title": "NPC-26C"
+    },
+    {
+      "accession": "GSM5242903",
+      "title": "N87"
+    },
+    {
+      "accession": "GSM5242929",
+      "title": "KYSE-2710"
+    },
+    {
+      "accession": "GSM5242969",
+      "title": "KP4"
+    },
+    {
+      "accession": "GSM5242992",
+      "title": "NPC-31C"
+    },
+    {
+      "accession": "GSM5242866",
+      "title": "NSC-39C"
+    },
+    {
+      "accession": "GSM5242949",
+      "title": "NEC-1C-1"
+    },
+    {
+      "accession": "GSM5243018",
+      "title": "A2780"
+    },
+    {
+      "accession": "GSM5242852",
+      "title": "HSC-60"
+    },
+    {
+      "accession": "GSM5242889",
+      "title": "NSC-69C"
+    },
+    {
+      "accession": "GSM5242975",
+      "title": "NPC-16C"
+    },
+    {
+      "accession": "GSM5242915",
+      "title": "KYSE-1250"
+    },
+    {
+      "accession": "GSM5242998",
+      "title": "NPC-37C"
+    },
+    {
+      "accession": "GSM5242955",
+      "title": "TE14"
+    },
+    {
+      "accession": "GSM5243038",
+      "title": "HCS-2"
+    },
+    {
+      "accession": "GSM5242909",
+      "title": "EC-GI-10"
+    },
+    {
+      "accession": "GSM5242935",
+      "title": "KYSE-350"
+    },
+    {
+      "accession": "GSM5243035",
+      "title": "TOV-241G"
+    },
+    {
+      "accession": "GSM5242832",
+      "title": "NSC-8CM"
+    },
+    {
+      "accession": "GSM5242952",
+      "title": "T.Tn"
+    },
+    {
+      "accession": "GSM5242872",
+      "title": "NSC-49C"
+    },
+    {
+      "accession": "GSM5242849",
+      "title": "HSC-44"
+    },
+    {
+      "accession": "GSM5242972",
+      "title": "NPC-13C"
+    },
+    {
+      "accession": "GSM5242995",
+      "title": "NPC-34C"
+    },
+    {
+      "accession": "GSM5243021",
+      "title": "JHOS2"
+    },
+    {
+      "accession": "GSM5242869",
+      "title": "NSC-46C"
+    },
+    {
+      "accession": "GSM5243015",
+      "title": "PSN-1"
+    },
+    {
+      "accession": "GSM5242932",
+      "title": "KYSE-30"
+    },
+    {
+      "accession": "GSM5242912",
+      "title": "KYSE-1190"
+    },
+    {
+      "accession": "GSM5242829",
+      "title": "NSC-4X1a"
+    },
+    {
+      "accession": "GSM5242938",
+      "title": "KYSE-410"
+    },
+    {
+      "accession": "GSM5242855",
+      "title": "NSC-23C-1"
+    },
+    {
+      "accession": "GSM5242918",
+      "title": "KYSE-1440"
+    },
+    {
+      "accession": "GSM5242895",
+      "title": "SNU16"
+    },
+    {
+      "accession": "GSM5242978",
+      "title": "NPC-19C"
+    },
+    {
+      "accession": "GSM5242944",
+      "title": "KYSE-70"
+    },
+    {
+      "accession": "GSM5243027",
+      "title": "NOVC-5C"
+    },
+    {
+      "accession": "GSM5242878",
+      "title": "NSC-56C-2"
+    },
+    {
+      "accession": "GSM5242984",
+      "title": "NPC-24C"
+    },
+    {
+      "accession": "GSM5242901",
+      "title": "MKN7"
+    },
+    {
+      "accession": "GSM5243047",
+      "title": "NLS-1C"
+    },
+    {
+      "accession": "GSM5242964",
+      "title": "Capan2"
+    },
+    {
+      "accession": "GSM5242881",
+      "title": "NSC-60C"
+    },
+    {
+      "accession": "GSM5242835",
+      "title": "NSC-11C"
+    },
+    {
+      "accession": "GSM5242861",
+      "title": "NSC-34C"
+    },
+    {
+      "accession": "GSM5242981",
+      "title": "NPC-21C"
+    },
+    {
+      "accession": "GSM5243044",
+      "title": "A431"
+    },
+    {
+      "accession": "GSM5242961",
+      "title": "TE9"
+    },
+    {
+      "accession": "GSM5243024",
+      "title": "NOVC-2C"
+    },
+    {
+      "accession": "GSM5243001",
+      "title": "NPC-3C"
+    },
+    {
+      "accession": "GSM5242921",
+      "title": "KYSE-180"
+    },
+    {
+      "accession": "GSM5242875",
+      "title": "NSC-52C"
+    },
+    {
+      "accession": "GSM5242898",
+      "title": "HSC-57"
+    },
+    {
+      "accession": "GSM5242941",
+      "title": "KYSE-510"
+    },
+    {
+      "accession": "GSM5242858",
+      "title": "NSC-28C"
+    },
+    {
+      "accession": "GSM5242958",
+      "title": "TE5"
+    },
+    {
+      "accession": "GSM5242838",
+      "title": "NSC-16C"
+    },
+    {
+      "accession": "GSM5243041",
+      "title": "SKG-IIIa"
+    },
+    {
+      "accession": "GSM5243004",
+      "title": "NPC-42C"
+    }
+  ]
+}

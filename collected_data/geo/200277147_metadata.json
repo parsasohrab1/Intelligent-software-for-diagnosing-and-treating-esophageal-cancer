@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200277147",
+  "title": "Patient-Derived Tumor Organoid and Fibroblast Assembloid Models for interrogation of the tumor microenvironment in Esophageal Adenocarcinoma",
+  "summary": "The tumor microenvironment (TME) comprises all non-tumor elements of cancer and strongly influences disease progression and phenotype. To understand tumor biology and accurately test new therapeutic strategies, representative models should contain both tumor cells and normal cells of the TME. Here we describe and characterize co-culture tumor-derived organoids and cancer-associated fibroblasts (CAFs), a major component of the TME, in matrix-embedded assembloid models of esophageal adenocarcinoma (EAC). We demonstrate that the assembloid models faithfully recapitulate the differentiation status of EAC and different CAF phenotypes found in the EAC patient TME. We evaluate cell phenotypes by combining tissue clearing techniques with wholemount immunofluorescence and histology, providing a practical framework for characterization of cancer assembloids.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8515096",
+      "title": "esophageal cancer, assembloid, 191 + 669"
+    },
+    {
+      "accession": "GSM8515093",
+      "title": "esophageal cancer, organoid, 005"
+    },
+    {
+      "accession": "GSM8515094",
+      "title": "esophageal cancer, assembloid, 005 + 669"
+    },
+    {
+      "accession": "GSM8515091",
+      "title": "esophageal cancer, fibroblast, 669"
+    },
+    {
+      "accession": "GSM8515097",
+      "title": "esophageal cancer, organoid, 195"
+    },
+    {
+      "accession": "GSM8515098",
+      "title": "esophageal cancer, assembloid, 195 + 669"
+    },
+    {
+      "accession": "GSM8515095",
+      "title": "esophageal cancer, organoid, 191"
+    },
+    {
+      "accession": "GSM8515092",
+      "title": "esophageal cancer, fibroblast, 1412"
+    }
+  ]
+}

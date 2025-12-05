@@ -1,0 +1,8 @@
+{
+  "dataset_id": "871df18f-0664-45d3-bf3e-85651eb93a84",
+  "file_name": "TCGA-ESCA.5bc44356-97e2-4d19-8ef8-953e66375393.wgs.tumor_normal.gatk4_mutect2.raw_somatic_mutation.vcf.gz",
+  "data_type": "Raw Simple Somatic Mutation",
+  "data_format": "VCF",
+  "file_size": 1087542,
+  "cases": []
+}

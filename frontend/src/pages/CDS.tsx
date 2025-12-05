@@ -44,6 +44,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
+  AreaChart,
+  Area,
 } from 'recharts'
 
 interface TabPanelProps {
@@ -149,8 +152,8 @@ export default function CDS() {
     setLoadingPatients(true)
     try {
       const response = await api.get('/patients/', {
-        params: { limit: 10000 },
-        timeout: 30000,
+        params: { limit: 100 }, // Further reduced limit for better performance
+        timeout: 30000, // 30 seconds timeout (reduced since limit is smaller)
       })
       const patientsData = Array.isArray(response.data) ? response.data : []
       setPatients(patientsData)
@@ -170,13 +173,51 @@ export default function CDS() {
     setLoadingServices(true)
     try {
       const response = await api.get('/cds/services', {
-        timeout: 30000,
+        timeout: 5000, // 5 seconds timeout (very fast endpoint)
       })
       const services = response.data?.services || []
       setCdsServices(services)
     } catch (error: any) {
       console.error('Error fetching CDS services:', error)
-      setCdsServices([])
+      // Set default services if API fails (offline mode)
+      setCdsServices([
+        {
+          name: 'Risk Prediction',
+          id: 'risk-prediction',
+          description: 'Predict risk of esophageal cancer development',
+          endpoint: '/cds/risk-prediction'
+        },
+        {
+          name: 'Treatment Recommendation',
+          id: 'treatment-recommendation',
+          description: 'Recommend treatment based on patient characteristics',
+          endpoint: '/cds/treatment-recommendation'
+        },
+        {
+          name: 'Prognostic Scoring',
+          id: 'prognostic-score',
+          description: 'Calculate prognostic score for patient',
+          endpoint: '/cds/prognostic-score'
+        },
+        {
+          name: 'Nanosystem Design',
+          id: 'nanosystem-design',
+          description: 'Suggest personalized nanosystem design',
+          endpoint: '/cds/nanosystem-design'
+        },
+        {
+          name: 'Clinical Trial Matching',
+          id: 'clinical-trial-match',
+          description: 'Match patient to clinical trials',
+          endpoint: '/cds/clinical-trial-match'
+        },
+        {
+          name: 'Monitoring Alerts',
+          id: 'monitoring-alerts',
+          description: 'Check for monitoring alerts',
+          endpoint: '/cds/monitoring-alerts'
+        }
+      ])
     } finally {
       setLoadingServices(false)
     }
@@ -187,7 +228,7 @@ export default function CDS() {
     try {
       const response = await api.get('/patients/', {
         params: { limit: 4 },
-        timeout: 30000,
+        timeout: 60000, // 60 seconds timeout
       })
       const patientsData = Array.isArray(response.data) ? response.data : []
       // Take first 1-4 patients
@@ -694,7 +735,9 @@ export default function CDS() {
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[2].description}
                 </Typography>
-                <Grid container spacing={2}>
+                
+                {/* Tumor Information Input */}
+                <Grid container spacing={2} sx={{ mb: 3 }}>
                   <Grid item xs={12} md={4}>
                     <FormControl fullWidth>
                       <InputLabel>T Stage</InputLabel>
@@ -755,6 +798,130 @@ export default function CDS() {
                     />
                   </Grid>
                 </Grid>
+
+                {/* Tumor Information Visualization */}
+                <Divider sx={{ my: 3 }} />
+                <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                  Tumor Information Visualization
+                </Typography>
+                <Grid container spacing={3} sx={{ mb: 3 }}>
+                  {/* TNM Staging Bar Chart */}
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          TNM Staging
+                        </Typography>
+                        <ResponsiveContainer width="100%" height={250}>
+                          <BarChart
+                            data={[
+                              { 
+                                stage: 'T Stage', 
+                                value: parseInt(cancerData.t_stage?.replace('T', '') || '0'),
+                                max: 4,
+                              },
+                              { 
+                                stage: 'N Stage', 
+                                value: parseInt(cancerData.n_stage?.replace('N', '') || '0'),
+                                max: 3,
+                              },
+                              { 
+                                stage: 'M Stage', 
+                                value: parseInt(cancerData.m_stage?.replace('M', '') || '0'),
+                                max: 1,
+                              },
+                            ]}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="stage" />
+                            <YAxis domain={[0, 4]} />
+                            <Tooltip />
+                            <Bar dataKey="value" fill="#1976d2" />
+                            <Bar dataKey="max" fill="#e0e0e0" opacity={0.3} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  {/* Tumor Size Visualization */}
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          Tumor Size (cm)
+                        </Typography>
+                        <ResponsiveContainer width="100%" height={250}>
+                          <BarChart
+                            data={[{
+                              name: 'Tumor Length',
+                              value: cancerData.tumor_length_cm || 0,
+                              max: 20,
+                            }]}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis domain={[0, 20]} />
+                            <Tooltip />
+                            <Bar dataKey="value" fill="#d32f2f" />
+                            <Bar dataKey="max" fill="#e0e0e0" opacity={0.2} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                        <Box sx={{ mt: 2, textAlign: 'center' }}>
+                          <Typography variant="h4" color="primary">
+                            {cancerData.tumor_length_cm || 0} cm
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {cancerData.tumor_length_cm > 5 ? 'Large Tumor' : 
+                             cancerData.tumor_length_cm > 3 ? 'Medium Tumor' : 'Small Tumor'}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  {/* Stage Distribution Pie Chart */}
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          Overall Stage Distribution
+                        </Typography>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <PieChart>
+                            <Pie
+                              data={[{
+                                name: `T${cancerData.t_stage?.replace('T', '') || '0'}`,
+                                value: parseInt(cancerData.t_stage?.replace('T', '') || '0'),
+                              }, {
+                                name: `N${cancerData.n_stage?.replace('N', '') || '0'}`,
+                                value: parseInt(cancerData.n_stage?.replace('N', '') || '0'),
+                              }, {
+                                name: `M${cancerData.m_stage?.replace('M', '') || '0'}`,
+                                value: parseInt(cancerData.m_stage?.replace('M', '') || '0'),
+                              }]}
+                              cx="50%"
+                              cy="50%"
+                              labelLine={false}
+                              label={({ name, value }) => `${name}: ${value}`}
+                              outerRadius={100}
+                              fill="#8884d8"
+                              dataKey="value"
+                            >
+                              {[0, 1, 2].map((_, index) => {
+                                const colors = ['#1976d2', '#dc004e', '#ff9800']
+                                return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                              })}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+
                 <Box sx={{ mt: 2 }}>
                   <Button onClick={handleBack} sx={{ mr: 1 }}>
                     Back
@@ -807,13 +974,134 @@ export default function CDS() {
                           ? 'warning'
                           : 'info'
                       }
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 3 }}
                     >
                       <Typography variant="h6">
                         Risk Score: {riskResult.risk_score} ({riskResult.risk_category})
                       </Typography>
                       <Typography>{riskResult.recommendation}</Typography>
                     </Alert>
+
+                    {/* Prediction and Recommendation Visualization */}
+                    <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+                      Prediction and Recommendation Analysis
+                    </Typography>
+                    <Grid container spacing={3} sx={{ mb: 3 }}>
+                      {/* Risk Score Gauge */}
+                      <Grid item xs={12} md={6}>
+                        <Card>
+                          <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                              Risk Score Visualization
+                            </Typography>
+                            <ResponsiveContainer width="100%" height={300}>
+                              <BarChart
+                                data={[{
+                                  category: riskResult.risk_category,
+                                  score: (riskResult.risk_score || 0) * 100,
+                                  max: 100,
+                                }]}
+                                layout="vertical"
+                              >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis type="number" domain={[0, 100]} />
+                                <YAxis dataKey="category" type="category" width={120} />
+                                <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
+                                <Bar dataKey="score" fill={
+                                  riskResult.risk_category === 'Very High' || riskResult.risk_category === 'High'
+                                    ? '#d32f2f'
+                                    : riskResult.risk_category === 'Moderate'
+                                    ? '#f57c00'
+                                    : '#388e3c'
+                                } />
+                                <Bar dataKey="max" fill="#e0e0e0" opacity={0.2} />
+                              </BarChart>
+                            </ResponsiveContainer>
+                            <Box sx={{ mt: 2, textAlign: 'center' }}>
+                              <Typography variant="h3" color={
+                                riskResult.risk_category === 'Very High' || riskResult.risk_category === 'High'
+                                  ? 'error'
+                                  : riskResult.risk_category === 'Moderate'
+                                  ? 'warning'
+                                  : 'success'
+                              }>
+                                {(riskResult.risk_score || 0) * 100}%
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                {riskResult.risk_category} Risk
+                              </Typography>
+                            </Box>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+
+                      {/* Risk Factors Contribution */}
+                      <Grid item xs={12} md={6}>
+                        <Card>
+                          <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                              Risk Factors Contribution
+                            </Typography>
+                            {riskResult.factors && riskResult.factors.length > 0 ? (
+                              <ResponsiveContainer width="100%" height={300}>
+                                <BarChart
+                                  data={riskResult.factors
+                                    .sort((a: any, b: any) => b.contribution - a.contribution)
+                                    .slice(0, 5)
+                                    .map((factor: any) => ({
+                                      name: factor.factor.replace('_', ' '),
+                                      contribution: (factor.contribution || 0) * 100,
+                                    }))}
+                                  layout="vertical"
+                                >
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis type="number" domain={[0, 100]} />
+                                  <YAxis dataKey="name" type="category" width={120} />
+                                  <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
+                                  <Bar dataKey="contribution" fill="#1976d2" />
+                                </BarChart>
+                              </ResponsiveContainer>
+                            ) : (
+                              <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Typography color="text.secondary">No factor data available</Typography>
+                              </Box>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </Grid>
+
+                      {/* Risk Trend Over Time (Simulated) */}
+                      <Grid item xs={12}>
+                        <Card>
+                          <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                              Risk Progression Timeline
+                            </Typography>
+                            <ResponsiveContainer width="100%" height={250}>
+                              <AreaChart
+                                data={[
+                                  { time: 'Baseline', risk: 0 },
+                                  { time: 'Current', risk: (riskResult.risk_score || 0) * 100 },
+                                  { time: 'Projected', risk: Math.min(100, (riskResult.risk_score || 0) * 100 * 1.2) },
+                                ]}
+                              >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="time" />
+                                <YAxis domain={[0, 100]} />
+                                <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
+                                <Area
+                                  type="monotone"
+                                  dataKey="risk"
+                                  stroke="#1976d2"
+                                  fill="#1976d2"
+                                  fillOpacity={0.6}
+                                />
+                              </AreaChart>
+                            </ResponsiveContainer>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    </Grid>
 
                     {riskResult.shap_explanation && (
                       <Box sx={{ mt: 3 }}>
@@ -832,6 +1120,85 @@ export default function CDS() {
                     <Typography variant="h6" gutterBottom>
                       Treatment Recommendations
                     </Typography>
+                    
+                    {/* Treatment Recommendations Visualization */}
+                    <Grid container spacing={3} sx={{ mb: 3 }}>
+                      {/* Treatment Types Distribution */}
+                      {treatmentResult.recommendations && treatmentResult.recommendations.length > 0 && (
+                        <Grid item xs={12} md={6}>
+                          <Card>
+                            <CardContent>
+                              <Typography variant="h6" gutterBottom>
+                                Treatment Types Distribution
+                              </Typography>
+                              <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                  <Pie
+                                    data={(() => {
+                                      const typeCount = treatmentResult.recommendations.reduce((acc: any, rec: any) => {
+                                        const type = rec.type || 'Unknown'
+                                        acc[type] = (acc[type] || 0) + 1
+                                        return acc
+                                      }, {})
+                                      return Object.entries(typeCount).map(([name, value]) => ({
+                                        name,
+                                        value,
+                                      }))
+                                    })()}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                  >
+                                    {treatmentResult.recommendations.map((_: any, index: number) => {
+                                      const colors = ['#1976d2', '#dc004e', '#ff9800', '#388e3c', '#7b1fa2']
+                                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                    })}
+                                  </Pie>
+                                  <Tooltip />
+                                  <Legend />
+                                </PieChart>
+                              </ResponsiveContainer>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      )}
+
+                      {/* Treatment Priority Chart */}
+                      {treatmentResult.recommendations && treatmentResult.recommendations.length > 0 && (
+                        <Grid item xs={12} md={6}>
+                          <Card>
+                            <CardContent>
+                              <Typography variant="h6" gutterBottom>
+                                Treatment Priority Ranking
+                              </Typography>
+                              <ResponsiveContainer width="100%" height={300}>
+                                <BarChart
+                                  data={treatmentResult.recommendations
+                                    .slice(0, 5)
+                                    .map((rec: any, idx: number) => ({
+                                      name: rec.type || `Treatment ${idx + 1}`,
+                                      priority: 5 - idx,
+                                    }))}
+                                  layout="vertical"
+                                >
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis type="number" domain={[0, 5]} />
+                                  <YAxis dataKey="name" type="category" width={120} />
+                                  <Tooltip />
+                                  <Bar dataKey="priority" fill="#388e3c" />
+                                </BarChart>
+                              </ResponsiveContainer>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      )}
+                    </Grid>
+
+                    {/* Treatment Recommendations List */}
                     {treatmentResult.recommendations?.slice(0, 5).map((rec: any, idx: number) => (
                       <Card key={idx} sx={{ mt: 1 }}>
                         <CardContent>
@@ -943,7 +1310,7 @@ function SandboxMode({
         </Button>
         {!autoUpdate && (
           <Button variant="contained" onClick={handleRiskPrediction} disabled={loading} sx={{ ml: 2 }}>
-            Calculate Risk
+            {loading ? 'Calculating Risk...' : 'Calculate Risk'}
           </Button>
         )}
       </Box>
@@ -1343,63 +1710,182 @@ function ClinicalDecisionReport({
                   Tumor Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid container spacing={2}>
+                
+                {/* Tumor Information Text */}
+                <Grid container spacing={2} sx={{ mb: 3 }}>
                   <Grid item xs={4}>
                     <Typography variant="body2" color="text.secondary">T Stage:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.t_stage}</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.t_stage}</Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="body2" color="text.secondary">N Stage:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.n_stage}</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.n_stage}</Typography>
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="body2" color="text.secondary">M Stage:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.m_stage}</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.m_stage}</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">Tumor Length:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.tumor_length_cm} cm</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.tumor_length_cm} cm</Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">Grade:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.histological_grade}</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.histological_grade}</Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="text.secondary">Location:</Typography>
-                    <Typography variant="body1">{reportData.cancerInfo.tumor_location}</Typography>
+                    <Typography variant="body1" fontWeight="bold">{reportData.cancerInfo.tumor_location}</Typography>
                   </Grid>
                 </Grid>
+
+                {/* Tumor Information Visualization */}
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle1" gutterBottom>
+                  Tumor Staging Visualization
+                </Typography>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart
+                    data={[
+                      { 
+                        stage: 'T Stage', 
+                        value: parseInt(reportData.cancerInfo.t_stage?.replace('T', '') || '0'),
+                        max: 4,
+                      },
+                      { 
+                        stage: 'N Stage', 
+                        value: parseInt(reportData.cancerInfo.n_stage?.replace('N', '') || '0'),
+                        max: 3,
+                      },
+                      { 
+                        stage: 'M Stage', 
+                        value: parseInt(reportData.cancerInfo.m_stage?.replace('M', '') || '0'),
+                        max: 1,
+                      },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="stage" />
+                    <YAxis domain={[0, 4]} />
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#1976d2" />
+                    <Bar dataKey="max" fill="#e0e0e0" opacity={0.3} />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </Grid>
 
           {reportData.riskAssessment && (
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Risk Assessment
+                    Risk Assessment & Prediction
                   </Typography>
-                  <Divider sx={{ mb: 2 }} />
-                  <Alert
-                    severity={
-                      reportData.riskAssessment.risk_category === 'Very High' ||
-                      reportData.riskAssessment.risk_category === 'High'
-                        ? 'error'
-                        : reportData.riskAssessment.risk_category === 'Moderate'
-                        ? 'warning'
-                        : 'info'
-                    }
-                    sx={{ mb: 2 }}
-                  >
-                    <Typography variant="h6">
-                      Risk Score: {reportData.riskAssessment.risk_score}%
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      Category: {reportData.riskAssessment.risk_category}
-                    </Typography>
-                  </Alert>
-                  <Typography variant="body2" color="text.secondary">
+                  <Divider sx={{ mb: 3 }} />
+                  
+                  <Grid container spacing={3}>
+                    {/* Risk Score Visualization */}
+                    <Grid item xs={12} md={6}>
+                      <Alert
+                        severity={
+                          reportData.riskAssessment.risk_category === 'Very High' ||
+                          reportData.riskAssessment.risk_category === 'High'
+                            ? 'error'
+                            : reportData.riskAssessment.risk_category === 'Moderate'
+                            ? 'warning'
+                            : 'info'
+                        }
+                        sx={{ mb: 2 }}
+                      >
+                        <Typography variant="h6">
+                          Risk Score: {(reportData.riskAssessment.risk_score || 0) * 100}%
+                        </Typography>
+                        <Typography variant="subtitle1">
+                          Category: {reportData.riskAssessment.risk_category}
+                        </Typography>
+                      </Alert>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <BarChart
+                          data={[{
+                            category: reportData.riskAssessment.risk_category,
+                            score: (reportData.riskAssessment.risk_score || 0) * 100,
+                            max: 100,
+                          }]}
+                          layout="vertical"
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis type="number" domain={[0, 100]} />
+                          <YAxis dataKey="category" type="category" width={120} />
+                          <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
+                          <Bar dataKey="score" fill={
+                            reportData.riskAssessment.risk_category === 'Very High' ||
+                            reportData.riskAssessment.risk_category === 'High'
+                              ? '#d32f2f'
+                              : reportData.riskAssessment.risk_category === 'Moderate'
+                              ? '#f57c00'
+                              : '#388e3c'
+                          } />
+                          <Bar dataKey="max" fill="#e0e0e0" opacity={0.2} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Grid>
+
+                    {/* Risk Factors Chart */}
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Risk Factors Summary
+                      </Typography>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            data={(() => {
+                              const factors = [
+                                { name: 'Active Risk Factors', value: [
+                                  reportData.patientInfo.riskFactors.smoking === 'Yes',
+                                  reportData.patientInfo.riskFactors.alcohol === 'Yes',
+                                  reportData.patientInfo.riskFactors.gerd === 'Yes',
+                                  reportData.patientInfo.riskFactors.barretts_esophagus === 'Yes',
+                                  reportData.patientInfo.riskFactors.family_history === 'Yes',
+                                ].filter(Boolean).length },
+                                { name: 'No Risk Factors', value: [
+                                  reportData.patientInfo.riskFactors.smoking === 'Yes',
+                                  reportData.patientInfo.riskFactors.alcohol === 'Yes',
+                                  reportData.patientInfo.riskFactors.gerd === 'Yes',
+                                  reportData.patientInfo.riskFactors.barretts_esophagus === 'Yes',
+                                  reportData.patientInfo.riskFactors.family_history === 'Yes',
+                                ].filter(Boolean).length === 0 ? 1 : 0 },
+                              ].filter(item => item.value > 0)
+                              return factors.length > 0 ? factors : [{ name: 'No Data', value: 1 }]
+                            })()}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {[0, 1].map((_, index) => {
+                              const activeCount = [
+                                reportData.patientInfo.riskFactors.smoking === 'Yes',
+                                reportData.patientInfo.riskFactors.alcohol === 'Yes',
+                                reportData.patientInfo.riskFactors.gerd === 'Yes',
+                                reportData.patientInfo.riskFactors.barretts_esophagus === 'Yes',
+                                reportData.patientInfo.riskFactors.family_history === 'Yes',
+                              ].filter(Boolean).length
+                              const colors = activeCount > 0 ? ['#d32f2f', '#4caf50'] : ['#9e9e9e']
+                              return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                            })}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </Grid>
+                  </Grid>
+
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                     {reportData.riskAssessment.recommendation}
                   </Typography>
                 </CardContent>
@@ -1408,21 +1894,92 @@ function ClinicalDecisionReport({
           )}
 
           {reportData.treatmentRecommendations && reportData.treatmentRecommendations.recommendations && (
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Treatment Recommendations
                   </Typography>
-                  <Divider sx={{ mb: 2 }} />
-                  {reportData.treatmentRecommendations.recommendations.slice(0, 3).map((rec: any, idx: number) => (
-                    <Box key={idx} sx={{ mb: 2 }}>
+                  <Divider sx={{ mb: 3 }} />
+                  
+                  {/* Treatment Recommendations Visualization */}
+                  <Grid container spacing={3} sx={{ mb: 3 }}>
+                    {/* Treatment Types Distribution */}
+                    <Grid item xs={12} md={6}>
                       <Typography variant="subtitle1" gutterBottom>
-                        {rec.type}: {rec.regimen}
+                        Treatment Types Distribution
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {rec.rationale}
+                      <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                          <Pie
+                            data={(() => {
+                              const typeCount = reportData.treatmentRecommendations.recommendations.reduce((acc: any, rec: any) => {
+                                const type = rec.type || 'Unknown'
+                                acc[type] = (acc[type] || 0) + 1
+                                return acc
+                              }, {})
+                              return Object.entries(typeCount).map(([name, value]) => ({
+                                name,
+                                value,
+                              }))
+                            })()}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {reportData.treatmentRecommendations.recommendations.map((_: any, index: number) => {
+                              const colors = ['#1976d2', '#dc004e', '#ff9800', '#388e3c', '#7b1fa2']
+                              return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                            })}
+                          </Pie>
+                          <Tooltip />
+                          <Legend />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </Grid>
+
+                    {/* Treatment Priority Chart */}
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Treatment Priority Ranking
                       </Typography>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <BarChart
+                          data={reportData.treatmentRecommendations.recommendations
+                            .slice(0, 5)
+                            .map((rec: any, idx: number) => ({
+                              name: rec.type || `Treatment ${idx + 1}`,
+                              priority: 5 - idx,
+                            }))}
+                          layout="vertical"
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis type="number" domain={[0, 5]} />
+                          <YAxis dataKey="name" type="category" width={120} />
+                          <Tooltip />
+                          <Bar dataKey="priority" fill="#388e3c" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Grid>
+                  </Grid>
+
+                  {/* Treatment Recommendations List */}
+                  {reportData.treatmentRecommendations.recommendations.slice(0, 5).map((rec: any, idx: number) => (
+                    <Box key={idx} sx={{ mb: 2 }}>
+                      <Card variant="outlined">
+                        <CardContent>
+                          <Typography variant="subtitle1" gutterBottom>
+                            {rec.type}: {rec.regimen}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {rec.rationale}
+                          </Typography>
+                        </CardContent>
+                      </Card>
                     </Box>
                   ))}
                 </CardContent>

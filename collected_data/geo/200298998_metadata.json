@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200298998",
+  "title": "Visfatin facilitates esophageal cancer migration by suppressing miR-3613-5p expression and promoting VEZF1/VCAN production",
+  "summary": "Esophageal cancer, one of the most prevalent cancers worldwide, frequently exhibits distant metastases. The adipokine visfatin has been implicated in cancer progression and metastasis. However, the mechanisms by which visfatin regulates motility in esophageal cancer remain unclear. Here, we found that visfatin levels are higher in metastatic esophageal cancer patients than in primary esophageal cancer patients. Visfatin stimulation enhances migration and invasion in esophageal cancer cells. miRNA sequencing results revealed that miR-3613-5p controls visfatin-induced cell motility. Visfatin promotes esophageal cancer cell migration by reducing miR-3613-5p expression and subsequently increasing VEZF1/VCAN production. The visfatin/miR-3613-5p axis exhibits a promising target for inhibiting esophageal cancer metastasis.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9029613",
+      "title": "Visfatin-30ng-mL-1"
+    },
+    {
+      "accession": "GSM9029611",
+      "title": "Control-1"
+    },
+    {
+      "accession": "GSM9029614",
+      "title": "Visfatin-30ng-mL-2"
+    },
+    {
+      "accession": "GSM9029612",
+      "title": "Control-2"
+    }
+  ]
+}

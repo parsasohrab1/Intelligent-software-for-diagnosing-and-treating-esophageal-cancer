@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200203115",
+  "title": "Intra-tumoural Microbiota Remodels the Tumour Immune",
+  "summary": "Esophageal squamous cell carcinoma (ESCC) accounts for ~90% of all cases of esophageal cancer and the sixth most common cause of cancer related death worldwide. 1, 2 It remains a globally challenging disease and mostly diagnosed cases requires a multidisciplinary approach with extensive treatments including surgery, chemoradiotherapy and/or chemotherapy.  ESCC has a relatively high tumor mutational burden,3 suggesting that it could benefit from PD-1 blockade.  Recently, three phase III clinical trials reported that PD-1 blockade significantly improved progression-free survival (PFS) and overall survival (OS) when combined with chemotherapy as first-line therapy in advanced/metastatic ESCC.4, 5 Moreover, in 2021 ASCO annual meeting,  two phase II clinical trials reported that neoadjuvant chemo-immunotherapy (NACI) induced an obvious improvement of the pathologic complete response (pCR) for resectable ESCC (35.  3% and 42.5%, respectively).  Several phase III trials on this topic are ongoing (NCT04807673, NCT04848753, NCT04280822) (https://clinicaltrial s.gov/ct2/show/NCT04807673), indicating that neoadjuvant NACI would become promising treatment for locally advanced ESCC.  Nevertheless, not all ESCC patients could respond to NACI. Patients who responded well or poorly to neoadjuvant immunotherapy were treated with surgery. We collected samples from these patients and conducted single-cell sequencing to analyze the tumor immune microenvironment of patients with different therapeutic effects, compare the differences in immune cell composition in the immune microenvironment, and explore more effective neoadjuvant therapy methods.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6157011",
+      "title": "ESCC2-Non-responder (PART4)"
+    },
+    {
+      "accession": "GSM6157008",
+      "title": "ESCC2-Non-responder (PART1)"
+    },
+    {
+      "accession": "GSM6157014",
+      "title": "ESCC3-responder (PART3)"
+    },
+    {
+      "accession": "GSM6157017",
+      "title": "ESCC1-responder (PART2)"
+    },
+    {
+      "accession": "GSM6157009",
+      "title": "ESCC2-Non-responder (PART2)"
+    },
+    {
+      "accession": "GSM6157015",
+      "title": "ESCC3-responder (PART4)"
+    },
+    {
+      "accession": "GSM6157012",
+      "title": "ESCC3-responder (PART1)"
+    },
+    {
+      "accession": "GSM6157018",
+      "title": "ESCC1-responder (PART3)"
+    },
+    {
+      "accession": "GSM6157010",
+      "title": "ESCC2-Non-responder (PART3)"
+    },
+    {
+      "accession": "GSM6157019",
+      "title": "ESCC1-responder (PART4)"
+    },
+    {
+      "accession": "GSM6157016",
+      "title": "ESCC1-responder (PART1)"
+    },
+    {
+      "accession": "GSM6157013",
+      "title": "ESCC3-responder (PART2)"
+    }
+  ]
+}

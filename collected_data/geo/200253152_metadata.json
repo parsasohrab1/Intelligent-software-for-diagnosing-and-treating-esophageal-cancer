@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200253152",
+  "title": "The Ig superfamily ligand B7H6 subjects T cell responses to NK cell surveillance",
+  "summary": "T cells play a critical role in the immune system by recognizing and responding to foreign and tumor antigens. Dysregulation or dysfunction of T cells can lead to autoimmune diseases, infectious diseases and cancer. Understanding the mechanisms that regulate T cell immunity is therefore critical for the development of effective therapies for diseases associated with T cell dysfunction. Co-inhibitory \u2018checkpoint molecules\u2019 such as programmed cell death protein 1 (PD-1) are tightly connected to T cell activation and balance excessive or prolonged immune activation by T cell-intrinsic signaling. Here, by screening for mediators of NK cell recognition on T cells, we identify the Ig superfamily ligand B7H6 to be highly expressed by activated T cells, including patient-infused CD19-targeting chimeric antigen receptor (CAR)-T cells. We show that, unlike other checkpoint molecules, B7H6 mediates NKp30-dependent recognition and subsequent cytolysis of activated T cells by NK cells. B7H6+ T cells are prevalent in the tissue and blood of several diseases, and we find that their abundance in tumor tissue positively correlates with clinical response in a cohort of immune checkpoint inhibitor-treated patients with esophageal cancer. In humanized mouse models, we demonstrate that NK cell surveillance via B7H6 is relevant in limiting the persistence and anti-tumor activity of CAR T cells in vivo and that its genetic depletion enhances T cell proliferation and persistence. In summary, we provide evidence of B7H6 protein expression by activated T cells and suggest the B7H6-NKp30 axis as therapeutically actionable NK cell-dependent immune checkpoint that regulates human T cell function.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8015120",
+      "title": "TotalSeq-C hashtag CITE-sequencing on GBM-infiltrating CD8 T cells (4 patients combined)"
+    },
+    {
+      "accession": "GSM8015117",
+      "title": "B7H6 CITE-sequencing on GBM-infiltrating CD4 T cells (4 patients combined)"
+    },
+    {
+      "accession": "GSM8015119",
+      "title": "TotalSeq-C hashtag CITE-sequencing on GBM-infiltrating CD4 T cells (4 patients combined)"
+    },
+    {
+      "accession": "GSM8015122",
+      "title": "RNA-sequencing on GBM-infiltrating CD8 T cells (4 patients combined)"
+    },
+    {
+      "accession": "GSM8015121",
+      "title": "RNA-sequencing on GBM-infiltrating CD4 T cells (4 patients combined)"
+    },
+    {
+      "accession": "GSM8015118",
+      "title": "B7H6 CITE-sequencing on GBM-infiltrating CD8 T cells (4 patients combined)"
+    }
+  ]
+}

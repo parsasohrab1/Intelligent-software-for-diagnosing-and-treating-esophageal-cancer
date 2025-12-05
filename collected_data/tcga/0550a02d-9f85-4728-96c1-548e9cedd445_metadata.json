@@ -1,0 +1,8 @@
+{
+  "dataset_id": "0550a02d-9f85-4728-96c1-548e9cedd445",
+  "file_name": "TCGA-ESCA.63635c91-4b65-4e7a-9468-51f15ceec4e7.ascat3.allelic_specific.seg.txt",
+  "data_type": "Allele-specific Copy Number Segment",
+  "data_format": "TXT",
+  "file_size": 3987,
+  "cases": []
+}

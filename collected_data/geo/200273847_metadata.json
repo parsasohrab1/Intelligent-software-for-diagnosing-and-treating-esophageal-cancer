@@ -1,0 +1,29 @@
+{
+  "dataset_id": "200273847",
+  "title": "Definition of a multi-omics signature for Esophageal Adenocarcinoma prognosis prediction [scRNA-seq]",
+  "summary": "Esophageal cancer, a highly lethal tumor, contributes to 5% of all cancer deaths, with its primary subtypes being esophageal squamous cell carcinoma (ESCC) and esophageal adenocarcinoma (EAC). While most studies focus on ESCC, this study investigates EAC using single-cell RNA sequencing (scRNA-seq) to analyze CD45+ immune cells from tumors and matched non-tumor tissues in therapy-na\u00efve patients. By examining the transcriptional profiles of these immune cells and the entire transcriptome in a cohort of 23 patients, the study identifies distinct transcriptional signatures. These signatures were used to stratify a large cohort of TCGA EAC patients, revealing strong associations with prognosis and clinical outcomes. The findings suggest that these transcriptional profiles can improve prognosis accuracy post-surgery and potentially guide effective therapies, including immunotherapy, for EAC patients.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8438050",
+      "title": "patient_25_T"
+    },
+    {
+      "accession": "GSM8438053",
+      "title": "patient_25_NT"
+    },
+    {
+      "accession": "GSM8438051",
+      "title": "patient_26_T"
+    },
+    {
+      "accession": "GSM8438049",
+      "title": "patient_21_T"
+    },
+    {
+      "accession": "GSM8438052",
+      "title": "patient_21_NT"
+    }
+  ]
+}

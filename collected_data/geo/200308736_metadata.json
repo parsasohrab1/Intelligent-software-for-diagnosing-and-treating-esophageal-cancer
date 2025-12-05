@@ -1,0 +1,21 @@
+{
+  "dataset_id": "200308736",
+  "title": "Single-cell transcriptomic analysis reveals epithelial and microenvironmental heterogeneity in small cell carcinoma of the esophagus",
+  "summary": "Small cell carcinoma of the esophagus (SCCE) is a rare and aggressive malignancy with limited treatment options and poor prognosis. To better characterize its biological features, we performed single-cell RNA sequencing on SCCE alongside esophageal squamous cell carcinoma, esophageal adenocarcinoma, and adjacent normal tissues. Integrative transcriptomic analysis revealed that SCCE was dominated by malignant epithelial cells displaying high chromosomal instability and could be divided into three transcriptionally distinct subtypes with divergent differentiation trajectories. The tumor microenvironment exhibited profound immune suppression with reduced immune infiltration and downregulation of immune checkpoint genes, while the stromal compartment was enriched in extracellular matrix fibroblasts with elevated ELF3 activity and inflammatory fibroblasts mediating collagen-driven signaling. Notably, SCCE displayed the most intricate cell\u2013cell communication network among esophageal cancer subtypes. This single-cell atlas highlights the unique tumor architecture, immune exclusion, and stromal reprogramming of SCCE, providing a valuable resource for understanding its biology and guiding future mechanistic studies.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9252205",
+      "title": "SCCE-P2"
+    },
+    {
+      "accession": "GSM9252206",
+      "title": "SCCE-P3"
+    },
+    {
+      "accession": "GSM9252204",
+      "title": "SCCE-P1"
+    }
+  ]
+}

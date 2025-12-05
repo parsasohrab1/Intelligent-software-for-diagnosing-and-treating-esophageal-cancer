@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200235535",
+  "title": "The aberrant inclusion of BOLA3 exon 3 promoted by HNRNPC acts as an oncogenic driver in esophageal squamous cell carcinoma [shBOLA3-L RNA-seq]",
+  "summary": "Aberrant RNA splicing events produce transcripts to facilitate ESCC progression, yet how this splicing process is abnomally regulated remains elusive. Here, we unveil a alternative splicing axis of BOLA3 transcripts and its regulator HNRNPC in ESCC.The long isoform of BOLA3 (-L) with exon3 is highly expressed in ESCC and associated with poor prognosis. Functional assays demonstrate the pro-tumorigenic function of BOLA3-L in ESCC cells. HNRNPC binds to BOLA3-L pre-mRNA and promotes exon3 inclusion forming BOLA3-L. HNRNPC knockdown suppresses the tumorigenesis of ESCC cells, phenocopying BOLA3-L knockdown, which is significantly rescued by BOLA3-L overexpression. High expression of HNRNPC is correlated with the exon-3 inclusion of BOLA3 in ESCC and associated with poor prognosis. BOLA3-L maintains mitochondrial structural and functional stability, exerting pro-oncogenic effects through the WNT/\u03b2-catenin pathway. E2F7 acts as a key transcription factor to regulate the transcriptional upregulation of HNRNPC and promotes the inclusion of BOLA3 exon3.Taken together, our findings provide insights into how alternative splicing contributes to ESCC progression, by investgating a HNRNPC-BOLA3 splicing axis.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7504870",
+      "title": "KD2"
+    },
+    {
+      "accession": "GSM7504867",
+      "title": "NC3"
+    },
+    {
+      "accession": "GSM7504865",
+      "title": "NC1"
+    },
+    {
+      "accession": "GSM7504871",
+      "title": "KD3"
+    },
+    {
+      "accession": "GSM7504868",
+      "title": "NC4"
+    },
+    {
+      "accession": "GSM7504869",
+      "title": "KD1"
+    },
+    {
+      "accession": "GSM7504866",
+      "title": "NC2"
+    },
+    {
+      "accession": "GSM7504872",
+      "title": "KD4"
+    }
+  ]
+}

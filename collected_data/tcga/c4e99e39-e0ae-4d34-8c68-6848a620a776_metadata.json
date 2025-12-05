@@ -1,0 +1,8 @@
+{
+  "dataset_id": "c4e99e39-e0ae-4d34-8c68-6848a620a776",
+  "file_name": "TCGA-ESCA.5629748a-04cc-4206-989e-05606f8883a7.wgs.varscan2.raw_somatic_mutation.vcf.gz",
+  "data_type": "Raw Simple Somatic Mutation",
+  "data_format": "VCF",
+  "file_size": 1078758,
+  "cases": []
+}

@@ -1,0 +1,69 @@
+{
+  "dataset_id": "200219044",
+  "title": "Elevated methionine flux drives pyroptosis evasion in persister cancer cells",
+  "summary": "Induction of cell death represents a primary goal of most anti-cancer treatments. Despite the efficacy of such approaches, a small population of \u201cpersisters\u201d develop evasion strategies to therapy-induced cell death. While previous studies have identified mechanisms of resistance to apoptosis, the mechanisms by which persisters dampen other forms of cell death, such as pyroptosis, remain to be elucidated. Pyroptosis is a form of inflammatory cell death that involves formation of membrane pores, ion gradient imbalance, water inflow and membrane rupture. Herein, we investigate mechanisms by which cancer persisters resist pyroptosis, survive, then proliferate in the presence of tyrosine kinase inhibitors (TKI). Lung, prostate and esophageal cancer persister cells remaining after treatments exhibited several hallmarks indicative of pyroptosis resistance. The inflammatory attributes of persisters included chronic activation of inflammasome, STING, and type I interferons. Comprehensive metabolomic characterization uncovered that TKI-induced pyroptotic persisters display high methionine consumption and excessive taurine production. Elevated methionine flux or exogenous taurine maintained plasma membrane integrity via osmolyte-mediated effects. Increased dependency on methionine flux decreased the level of one carbon metabolism intermediate S-(5'-adenosyl)-L-homocysteine, a determinant of cell methylation capacity. The consequent increase in methylation potential induced DNA hypermethylation of genes regulating metal ion balance and intrinsic immune response. This enabled thwarting TKI resistance by using the hypomethylating agent decitabine. In summary, the evolution of resistance to pyroptosis can occur via a stepwise process of physical acclimation and epigenetic changes without existing or recurrent mutations.\u2003",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6766368",
+      "title": "7 Erlotinib-Day-27-002 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766365",
+      "title": "5 Erlotinib-Day-19-003 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766380",
+      "title": "13 Erlotinib-Day-75-003 - Descendant of Persisters (DPs)"
+    },
+    {
+      "accession": "GSM6766374",
+      "title": "10 Erlotinib-Day-3-003 - Treated- (3 days)"
+    },
+    {
+      "accession": "GSM6766376",
+      "title": "11 Erlotinib-Day-75-001 - Descendant of Persisters (DPs)"
+    },
+    {
+      "accession": "GSM6766356",
+      "title": "1 Control-001"
+    },
+    {
+      "accession": "GSM6766361",
+      "title": "3 Erlotinib-Day-19-001 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766358",
+      "title": "2 Control-002"
+    },
+    {
+      "accession": "GSM6766378",
+      "title": "12 Erlotinib-Day-75-002 - Descendant of Persisters (DPs)"
+    },
+    {
+      "accession": "GSM6766370",
+      "title": "8 Erlotinib-Day-27-003 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766384",
+      "title": "15 Lauria-002 - (Early Expanding, EEs)"
+    },
+    {
+      "accession": "GSM6766367",
+      "title": "6 Erlotinib-Day-27-001 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766363",
+      "title": "4 Erlotinib-Day-19-002 - Persisters (P)"
+    },
+    {
+      "accession": "GSM6766383",
+      "title": "14 Lauria-001 - (Early Expanding, EEs)"
+    },
+    {
+      "accession": "GSM6766372",
+      "title": "9 Erlotinib-Day-3-002 - Treated- (3 days)"
+    }
+  ]
+}

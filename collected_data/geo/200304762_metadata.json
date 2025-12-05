@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200304762",
+  "title": "Deciphering Precursor Cell Dynamics in Esophageal Preneoplasia via Genetic Barcoding and Single-Cell Transcriptomics",
+  "summary": "Esophageal preneoplastic cells, despite appearing histologically normal, exhibit early genetic alterations and lineage plasticity, yet their origins and trajectories remain unclear. This study employs genetic barcoding combined with single-cell RNA sequencing to trace the lineage of esophageal preneoplastic cells and identify a distinct progenitor-like population with high plasticity. Through a newly developed scoring system, high-plasticity cells are mapped, revealing their contributions to proliferative and basal cell populations. The study identifies key molecular markers, including Nfib and Qk, that define these precursor cells. These findings provide critical insights into early tumorigenesis, highlighting the potential of precursor cells as biomarkers for early cancer detection and therapeutic targeting. By elucidating the cellular dynamics underlying esophageal cancer initiation, this research lays the foundation for strategies to prevent malignant progression, offering broader implications for improving cancer diagnostics and treatment approaches.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9156519",
+      "title": "PC-tumor"
+    },
+    {
+      "accession": "GSM9156518",
+      "title": "Normal esophagus"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200156585",
+  "title": "Tumor fibroblast-derived FGF2 regulates SPRY1 expression in esophageal tumor-infiltrating T cells and plays a role in T cell exhaustion",
+  "summary": "Using single-cell RNA sequencing, we found that exhausted T cells in esophageal cancer were more heterogeneous than previously clarified. We discovered that SPRY1 was notably enriched in two subsets of exhausted CD8+ T cells. When overexpressed, SPRY1 impaired T cell activation by interacting with CBL, which is a negative regulator of ZAP-70 tyrosine phosphorylation.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4734088",
+      "title": "Tumor.10x.R2"
+    },
+    {
+      "accession": "GSM4734087",
+      "title": "Tumor.10x.R1"
+    }
+  ]
+}

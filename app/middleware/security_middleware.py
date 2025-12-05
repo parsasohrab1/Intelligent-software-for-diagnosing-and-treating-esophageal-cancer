@@ -26,13 +26,15 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             response = await call_next(request)
         except Exception as e:
             # Log error (but don't fail if audit logger fails)
+            # Use try-except with timeout protection
             try:
-                audit_logger.log_security_event(
-                    event_type="request_error",
-                    severity="medium",
-                    description=f"Error processing request: {str(e)}",
-                    ip_address=client_ip,
-                )
+                if audit_logger.collection is not None:
+                    audit_logger.log_security_event(
+                        event_type="request_error",
+                        severity="medium",
+                        description=f"Error processing request: {str(e)}",
+                        ip_address=client_ip,
+                    )
             except Exception:
                 pass  # Don't fail if audit logging fails
             raise
@@ -41,14 +43,16 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         process_time = time.time() - start_time
 
         # Log slow requests (but don't fail if audit logger fails)
-        if process_time > 5.0:
+        # Skip logging for health/status endpoints to avoid overhead
+        if process_time > 5.0 and "/health" not in request.url.path and "/cds/services" not in request.url.path:
             try:
-                audit_logger.log_security_event(
-                    event_type="slow_request",
-                    severity="low",
-                    description=f"Slow request: {request.url.path} took {process_time:.2f}s",
-                    ip_address=client_ip,
-                )
+                if audit_logger.collection is not None:
+                    audit_logger.log_security_event(
+                        event_type="slow_request",
+                        severity="low",
+                        description=f"Slow request: {request.url.path} took {process_time:.2f}s",
+                        ip_address=client_ip,
+                    )
             except Exception:
                 pass  # Don't fail if audit logging fails
 

@@ -1,0 +1,209 @@
+{
+  "dataset_id": "200136541",
+  "title": "Inferring Epigenetic and Genetic Biomarkers of cancer in cell-free DNA",
+  "summary": "Aims: Cancer is an important public health problem worldwide. In recent years, methods based on the analysis of plasma cfDNA which is as an emerging technology have been largely explored for noninvasive prenatal testing and cancer liquid biopsy. We inferred both epigenetic and genetic biomarkers of esophageal cancer (ESCA) in cfDNA with adapted SALP-seq. Materials & methods: Next Generation Sequencing libraries of cfDNA samples from ESCA patients and healthy people were constructed by using SALP-seq. We performed bioinformatics analysis on our sequencing data to find cancer-specific biomarkers. Results & conclusion: 54 important regulatory elements of ESCA, 49 epigenetic and 37 genetic ESCA-specific genes were inferred in cfDNA with SALP-seq, which may ultimately contribute to the development of effective diagnostic and therapeutic approaches for ESCA.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4051321",
+      "title": "cfDNA29"
+    },
+    {
+      "accession": "GSM4051275",
+      "title": "Lane1_cfDNA3"
+    },
+    {
+      "accession": "GSM4051301",
+      "title": "Lane2_cfDNA9"
+    },
+    {
+      "accession": "GSM4051281",
+      "title": "Lane1_cfDNA9"
+    },
+    {
+      "accession": "GSM4051318",
+      "title": "cfDNA26"
+    },
+    {
+      "accession": "GSM4051298",
+      "title": "Lane2_cfDNA6"
+    },
+    {
+      "accession": "GSM4051278",
+      "title": "Lane1_cfDNA6"
+    },
+    {
+      "accession": "GSM4051295",
+      "title": "Lane2_cfDNA3"
+    },
+    {
+      "accession": "GSM4051284",
+      "title": "Lane1_cfDNA12"
+    },
+    {
+      "accession": "GSM4051307",
+      "title": "Lane2_cfDNA15"
+    },
+    {
+      "accession": "GSM4051304",
+      "title": "Lane2_cfDNA12"
+    },
+    {
+      "accession": "GSM4051287",
+      "title": "Lane1_cfDNA15"
+    },
+    {
+      "accession": "GSM4051276",
+      "title": "Lane1_cfDNA4"
+    },
+    {
+      "accession": "GSM4051310",
+      "title": "Lane2_cfDNA18"
+    },
+    {
+      "accession": "GSM4051313",
+      "title": "cfDNA21"
+    },
+    {
+      "accession": "GSM4051273",
+      "title": "Lane1_cfDNA1"
+    },
+    {
+      "accession": "GSM4051293",
+      "title": "Lane2_cfDNA1"
+    },
+    {
+      "accession": "GSM4051296",
+      "title": "Lane2_cfDNA4"
+    },
+    {
+      "accession": "GSM4051290",
+      "title": "Lane1_cfDNA18"
+    },
+    {
+      "accession": "GSM4051316",
+      "title": "cfDNA24"
+    },
+    {
+      "accession": "GSM4051302",
+      "title": "Lane2_cfDNA10"
+    },
+    {
+      "accession": "GSM4051322",
+      "title": "cfDNA30"
+    },
+    {
+      "accession": "GSM4051319",
+      "title": "cfDNA27"
+    },
+    {
+      "accession": "GSM4051282",
+      "title": "Lane1_cfDNA10"
+    },
+    {
+      "accession": "GSM4051299",
+      "title": "Lane2_cfDNA7"
+    },
+    {
+      "accession": "GSM4051279",
+      "title": "Lane1_cfDNA7"
+    },
+    {
+      "accession": "GSM4051285",
+      "title": "Lane1_cfDNA13"
+    },
+    {
+      "accession": "GSM4051311",
+      "title": "Lane2_cfDNA19"
+    },
+    {
+      "accession": "GSM4051291",
+      "title": "Lane1_cfDNA19"
+    },
+    {
+      "accession": "GSM4051288",
+      "title": "Lane1_cfDNA16"
+    },
+    {
+      "accession": "GSM4051308",
+      "title": "Lane2_cfDNA16"
+    },
+    {
+      "accession": "GSM4051294",
+      "title": "Lane2_cfDNA2"
+    },
+    {
+      "accession": "GSM4051305",
+      "title": "Lane2_cfDNA13"
+    },
+    {
+      "accession": "GSM4051320",
+      "title": "cfDNA28"
+    },
+    {
+      "accession": "GSM4051317",
+      "title": "cfDNA25"
+    },
+    {
+      "accession": "GSM4051274",
+      "title": "Lane1_cfDNA2"
+    },
+    {
+      "accession": "GSM4051297",
+      "title": "Lane2_cfDNA5"
+    },
+    {
+      "accession": "GSM4051314",
+      "title": "cfDNA22"
+    },
+    {
+      "accession": "GSM4051277",
+      "title": "Lane1_cfDNA5"
+    },
+    {
+      "accession": "GSM4051303",
+      "title": "Lane2_cfDNA11"
+    },
+    {
+      "accession": "GSM4051283",
+      "title": "Lane1_cfDNA11"
+    },
+    {
+      "accession": "GSM4051280",
+      "title": "Lane1_cfDNA8"
+    },
+    {
+      "accession": "GSM4051300",
+      "title": "Lane2_cfDNA8"
+    },
+    {
+      "accession": "GSM4051286",
+      "title": "Lane1_cfDNA14"
+    },
+    {
+      "accession": "GSM4051312",
+      "title": "Lane2_cfDNA20"
+    },
+    {
+      "accession": "GSM4051306",
+      "title": "Lane2_cfDNA14"
+    },
+    {
+      "accession": "GSM4051292",
+      "title": "Lane1_cfDNA20"
+    },
+    {
+      "accession": "GSM4051309",
+      "title": "Lane2_cfDNA17"
+    },
+    {
+      "accession": "GSM4051289",
+      "title": "Lane1_cfDNA17"
+    },
+    {
+      "accession": "GSM4051315",
+      "title": "cfDNA23"
+    }
+  ]
+}

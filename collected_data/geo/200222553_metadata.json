@@ -1,0 +1,73 @@
+{
+  "dataset_id": "200222553",
+  "title": "Investigating iRhom2-associated transcriptional changes in Tylosis with Esophageal Cancer",
+  "summary": "BACKGROUND AND AIMS: Survival rates for esophageal squamous cell carcinoma (ESCC) are extremely low due to the late diagnosis of most cases. An understanding of the early molecular processes that lead to ESCC may facilitate opportunities for early diagnosis; however, these remain poorly defined. Tylosis with esophageal cancer (TOC) is a rare syndrome associated with a high lifetime risk of ESCC and germline mutations in RHBDF2, encoding iRhom2. Using TOC as a model of ESCC predisposition, this study aimed to identify early-stage transcriptional changes in ESCC development.   METHODS: Esophageal biopsies were obtained from control and TOC individuals, the latter undergoing surveillance endoscopy, and adjacent diagnostic biopsies were graded as having no dysplasia or malignancy. Bulk RNA-Seq was performed, and findings were compared with sporadic ESCC vs normal RNASeq datasets.   RESULTS: Multiple transcriptional changes were identified in TOC samples, relative to controls, and many were detected in ESCC. Accordingly, pathway analyses predicted an enrichment of cancer-associated processes linked to cellular proliferation and metastasis, and several transcription factors were predicted to be associated with TOC and ESCC, including negative enrichment of GRHL2. Subsequently, a filtering strategy revealed 22 genes that were significantly dysregulated in both TOC and ESCC. Moreover, Keratin 17, which was upregulated in TOC and ESCC, was also found to be overexpressed at the protein level in \u2018normal\u2019 TOC esophagus tissue.   CONCLUSION: Transcriptional changes occur in TOC esophagus prior to the onset of dysplasia, many of which are associated with ESCC. These findings support the utility of TOC to help reveal the early molecular processes that lead to sporadic ESCC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6925938",
+      "title": "Esophageal Tissue, TOC, T554"
+    },
+    {
+      "accession": "GSM6925924",
+      "title": "Esophageal Tissue, Control, CTRL2"
+    },
+    {
+      "accession": "GSM6925930",
+      "title": "Esophageal Tissue, TOC, T530"
+    },
+    {
+      "accession": "GSM6925927",
+      "title": "Esophageal Tissue, Control, CTRL5"
+    },
+    {
+      "accession": "GSM6925929",
+      "title": "Esophageal Tissue, TOC, T527"
+    },
+    {
+      "accession": "GSM6925923",
+      "title": "Esophageal Tissue, Control, CTRL1"
+    },
+    {
+      "accession": "GSM6925926",
+      "title": "Esophageal Tissue, Control, CTRL4"
+    },
+    {
+      "accession": "GSM6925932",
+      "title": "Esophageal Tissue, TOC, T538"
+    },
+    {
+      "accession": "GSM6925935",
+      "title": "Esophageal Tissue, TOC, T549"
+    },
+    {
+      "accession": "GSM6925931",
+      "title": "Esophageal Tissue, TOC, T534"
+    },
+    {
+      "accession": "GSM6925928",
+      "title": "Esophageal Tissue, Control, CTRL6"
+    },
+    {
+      "accession": "GSM6925934",
+      "title": "Esophageal Tissue, TOC, T547"
+    },
+    {
+      "accession": "GSM6925937",
+      "title": "Esophageal Tissue, TOC, T553"
+    },
+    {
+      "accession": "GSM6925936",
+      "title": "Esophageal Tissue, TOC, T550"
+    },
+    {
+      "accession": "GSM6925933",
+      "title": "Esophageal Tissue, TOC, T544"
+    },
+    {
+      "accession": "GSM6925925",
+      "title": "Esophageal Tissue, Control, CTRL3"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200146195",
+  "title": "SNORA42 Promote Oesophageal Squamous Cell Carcinoma Development through interacting with DHX9",
+  "summary": "Oesophageal cancer is a high malignant cancer and oesophageal squamous cell carcinoma (ESCC) is the most common subtype of oesophageal cancer. Here, we identified H/ACA box snoRNA42 (SNORA42) was upregulated in ESCC and can be applied as the diagnostic and prognostic marker. Specifically, overexpression of SNORA42 promoted ESCC proliferation, migration and invasion ability whereas knockdown of SNORA42 inhibited these phenotypes in vitro and in vivo. Using RNA pull-down assay combined with Mass Spectrometry technique, we identified protein DHX9 interacted with SNORA42. DHX9 protein expression was up-regulated in ESCC and had a positive correlation with the expression of SNORA42. Furthermore, the effects of SNORA42 overexpression on ESCC phenotypes can be reversed by knockdown of DHX9. Mechanically, SNORA42 promoted DHX9 stabilized by attenuating its ubiquitination and degradation. From KEGG analysis of next-generation sequencing, we identified the NF-kappa B pathway was one of the most regulated pathways by SNORA42. SNORA42 enhanced phosphorylation of p65 in the nucleus. Moreover, SNORA42 exerted its function through promoting DHX9 interacted with p-65, inducing transcription of NF-kappa B target genes. These findings suggest that SNORA42 promotes ESCC tumorgenesis via SNORA42/DHX9/p65 axis",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4367990",
+      "title": "NC-1"
+    },
+    {
+      "accession": "GSM4367991",
+      "title": "ASO-42-1"
+    }
+  ]
+}

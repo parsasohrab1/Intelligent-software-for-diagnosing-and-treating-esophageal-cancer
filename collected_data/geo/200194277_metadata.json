@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200194277",
+  "title": "Modulation of the tumor promoting functions of cancer associated fibroblasts by phosphodiesterase type 5 inhibition increases the efficacy of chemotherapy in human preclinical models of esophageal adenocarcinoma",
+  "summary": "The chemotherapy resistance of esophageal adenocarcinomas (EAC) is underpinned by cancer cell extrinsic mechanisms of the tumor microenvironment (TME). We demonstrate that by targeting the tumor-promoting functions of the predominant TME cell type, cancer associated fibroblasts (CAF) with phosphodiesterase type 5 inhibitors (PDE5i) we can enhance the efficacy of standard-of-care chemotherapy. These findings demonstrate that CAF drive chemotherapy resistance in EAC and can be targeted by repurposing PDE5i, a safe and well tolerated class of drug administered to millions of patients world-wide to treat erectile dysfunction.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5832194",
+      "title": "OES5R-C"
+    },
+    {
+      "accession": "GSM5832191",
+      "title": "OES7R-D"
+    },
+    {
+      "accession": "GSM5832188",
+      "title": "OES7R-A"
+    },
+    {
+      "accession": "GSM5832189",
+      "title": "OES7R-B"
+    },
+    {
+      "accession": "GSM5832186",
+      "title": "OES4R-C"
+    },
+    {
+      "accession": "GSM5832192",
+      "title": "OES5R-A"
+    },
+    {
+      "accession": "GSM5832184",
+      "title": "OES4R-A"
+    },
+    {
+      "accession": "GSM5832195",
+      "title": "OES5R-D"
+    },
+    {
+      "accession": "GSM5832193",
+      "title": "OES5R-B"
+    },
+    {
+      "accession": "GSM5832190",
+      "title": "OES7R-C"
+    },
+    {
+      "accession": "GSM5832187",
+      "title": "OES4R-D"
+    },
+    {
+      "accession": "GSM5832185",
+      "title": "OES4R-B"
+    }
+  ]
+}

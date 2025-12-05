@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200242834",
+  "title": "Gene expression profiling and the effect of HDAC9 in cisplatin resistance of esophageal squamous cell carcinoma",
+  "summary": "Esophageal cancer is one of the most serious health problems globally because of its high incidence and mortality rate. Cisplatin (CDDP) is the primary treatment but limited by the drug resistance. However, the mechanism of cisplatin resistance remains unclear. Herein, the CDDP-resistant cell line TE-1/CDDP was established to compared with TE-1, the expression profiles of circRNAs   mRNA  and lncRNA were compared between TE-1/CDDP and TE-1 using microarray analysis, and used this as a basis for exploring possible mechanisms of drug resistance in genes such as HDAC9.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7771677",
+      "title": "TE-1 5um-A"
+    },
+    {
+      "accession": "GSM7771680",
+      "title": "TE-1 5um-D"
+    },
+    {
+      "accession": "GSM7771678",
+      "title": "TE-1 5um-B"
+    },
+    {
+      "accession": "GSM7771674",
+      "title": "TE-1-B"
+    },
+    {
+      "accession": "GSM7771675",
+      "title": "TE-1-C"
+    },
+    {
+      "accession": "GSM7771673",
+      "title": "TE-1-A"
+    },
+    {
+      "accession": "GSM7771676",
+      "title": "TE-1-D"
+    },
+    {
+      "accession": "GSM7771679",
+      "title": "TE-1 5um-C"
+    }
+  ]
+}

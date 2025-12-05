@@ -1,0 +1,21 @@
+{
+  "dataset_id": "200289049",
+  "title": "Deciphering Precursor Cell Dynamics in Esophageal Preneoplasia via Genetic Barcoding and Single-Cell Transcriptomics",
+  "summary": "Cancer cell lineage plasticity complicates tumor initiation and progression. Using genetic barcoding and single-cell RNA sequencing (scRNA-seq), we mapped esophageal preneoplastic cell lineages and developed the eXamined Ridge (XR) score to identify high-plasticity cells. We discovered preneoplastic precursor cells (PNPCs) as key progenitors and identified Nfib and Qk as conserved markers, highlighting potential biomarkers for early cancer detection and intervention.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8782607",
+      "title": "PC barcodes"
+    },
+    {
+      "accession": "GSM8782609",
+      "title": "PC Scar"
+    },
+    {
+      "accession": "GSM8782608",
+      "title": "PC GEX"
+    }
+  ]
+}

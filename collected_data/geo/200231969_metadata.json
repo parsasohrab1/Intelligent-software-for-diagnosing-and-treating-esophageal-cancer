@@ -1,0 +1,869 @@
+{
+  "dataset_id": "200231969",
+  "title": "DNA methylation profiling to determine the primary sites of metastatic cancers using formalin-fixed paraffin-embedded tissues [ValidationSet]",
+  "summary": "Accurate identification of the primary site of metastatic cancer is critical to guide the subsequent treatments. There is a significant portion of patients whose primary sites are initially classified as uncertain, and 3-9% of cancer patients are diagnosed with cancer of unknown primary (CUP) even after comprehensive diagnostic workups. Yet, a widely accepted molecular test is still not available. Here, we presented the combination of a novel DNA methylation sequencing-based method and an algorithm to predict the tissues of origin for metastatic cancers. The assay applied degraded DNA from formalin-fixed, paraffin-embedded (FFPE) tissues to generate reduced represent bisulfite sequencing libraries (FFPE-RRBS). Comparable DNA methylation metrics were obtained for the paired fresh frozen (FF) RRBS and FFPE-RRBS libraries and the FFPE-RRBS libraries of matched primary and metastatic cancer tissues. We generated and systemically evaluated 28 molecular classifiers built on four methylation evaluation methods and seven machine-learning approaches from a training data set of 498 primary cancer patients. Of those classifiers, the beta values-based (mean methylation) linear support vector (BELIVE) performed the best, achieving overall accuracies of 81-95% for identifying the primary sites of 215 metastatic cancer patients by utilizing the top-k predictions (k=1, 2, 3). The prediction accuracies ranged from 92% to 98% for 4702 patients with primary tumors in a cross-validation cohort. Lastly, BELIVE successfully identified the tissues of origin for approximately 81-93% of cases in a cohort of 68 patients initially diagnosed with CUP.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7306688",
+      "title": "Breast Invasive Ductal Carcinoma [20A040772]"
+    },
+    {
+      "accession": "GSM7306651",
+      "title": "Nasopharyngeal Carcinoma [20A040900]"
+    },
+    {
+      "accession": "GSM7306568",
+      "title": "Oral Squamous Cell Carcinoma [20A040468]"
+    },
+    {
+      "accession": "GSM7306771",
+      "title": "Ovarian High-grade Serous Carcinoma [21T007767]"
+    },
+    {
+      "accession": "GSM7306734",
+      "title": "Stomach Adenocarcinoma [21T000209]"
+    },
+    {
+      "accession": "GSM7306605",
+      "title": "Stomach Adenocarcinoma [20A040843]"
+    },
+    {
+      "accession": "GSM7306671",
+      "title": "Breast Invasive Carcinoma with Ductal Carcinoma in Situ [20A040755]"
+    },
+    {
+      "accession": "GSM7306754",
+      "title": "Breast cancer (subtype unknown) [18A006509]"
+    },
+    {
+      "accession": "GSM7306588",
+      "title": "Papillary Thyroid Carcinoma [20B011138]"
+    },
+    {
+      "accession": "GSM7306714",
+      "title": "Papillary Thyroid Carcinoma [18A006662]"
+    },
+    {
+      "accession": "GSM7306631",
+      "title": "Hepatocellular Carcinoma [20A040921]"
+    },
+    {
+      "accession": "GSM7306585",
+      "title": "Papillary Thyroid Carcinoma [20B011134]"
+    },
+    {
+      "accession": "GSM7306668",
+      "title": "Cholangiocarcinoma [20A040880]"
+    },
+    {
+      "accession": "GSM7306751",
+      "title": "Hypopharynx Squamous Cell Carcinoma [21T000239]"
+    },
+    {
+      "accession": "GSM7306628",
+      "title": "Colon and rectum   Adenocarcinoma [20A040868]"
+    },
+    {
+      "accession": "GSM7306711",
+      "title": "Stomach Adenocarcinoma [20A040796]"
+    },
+    {
+      "accession": "GSM7306674",
+      "title": "Breast cancer (subtype unknown) [20A040752]"
+    },
+    {
+      "accession": "GSM7306591",
+      "title": "Papillary Thyroid Carcinoma [20B011142]"
+    },
+    {
+      "accession": "GSM7306757",
+      "title": "Cervix Squamous Cell Carcinoma [21T007671]"
+    },
+    {
+      "accession": "GSM7306611",
+      "title": "Stomach Adenocarcinoma [20A040851]"
+    },
+    {
+      "accession": "GSM7306694",
+      "title": "Lung Adenocarcinoma [20A040786]"
+    },
+    {
+      "accession": "GSM7306731",
+      "title": "Lung Adenocarcinoma [21T000206]"
+    },
+    {
+      "accession": "GSM7306565",
+      "title": "Oral Squamous Cell Carcinoma [20A040471]"
+    },
+    {
+      "accession": "GSM7306648",
+      "title": "Colon and rectum   Adenocarcinoma [20A040903]"
+    },
+    {
+      "accession": "GSM7306774",
+      "title": "Esophagus Squamous Cell Carcinoma [18A006451]"
+    },
+    {
+      "accession": "GSM7306608",
+      "title": "Stomach Adenocarcinoma [20A040848]"
+    },
+    {
+      "accession": "GSM7306691",
+      "title": "Lung Squamous Cell Carcinoma [20A040771]"
+    },
+    {
+      "accession": "GSM7306697",
+      "title": "Lung Adenocarcinoma [20A040768]"
+    },
+    {
+      "accession": "GSM7306614",
+      "title": "Stomach Adenocarcinoma [20A040854]"
+    },
+    {
+      "accession": "GSM7306763",
+      "title": "Esophagus Adenocarcinoma [21T007735]"
+    },
+    {
+      "accession": "GSM7306634",
+      "title": "Stomach Adenocarcinoma [20A040919]"
+    },
+    {
+      "accession": "GSM7306597",
+      "title": "Stomach Adenocarcinoma [193175]"
+    },
+    {
+      "accession": "GSM7306717",
+      "title": "Papillary Thyroid Carcinoma [18A006655]"
+    },
+    {
+      "accession": "GSM7306680",
+      "title": "Breast cancer (subtype unknown) [20A040787]"
+    },
+    {
+      "accession": "GSM7306594",
+      "title": "Ovarian Serous Carcinoma [193176B1]"
+    },
+    {
+      "accession": "GSM7306640",
+      "title": "Stomach Adenocarcinoma [20A040913]"
+    },
+    {
+      "accession": "GSM7306723",
+      "title": "Papillary Thyroid Carcinoma [18A006641]"
+    },
+    {
+      "accession": "GSM7306760",
+      "title": "Cervix Adenocarcinoma [21T007679]"
+    },
+    {
+      "accession": "GSM7306677",
+      "title": "Breast Invasive Ductal Carcinoma [20A040756]"
+    },
+    {
+      "accession": "GSM7306660",
+      "title": "Nasopharyngeal Carcinoma [20A040890]"
+    },
+    {
+      "accession": "GSM7306743",
+      "title": "Esophagus Squamous Cell Carcinoma [21T000224]"
+    },
+    {
+      "accession": "GSM7306577",
+      "title": "Breast cancer (subtype unknown) [2019-4745]"
+    },
+    {
+      "accession": "GSM7306703",
+      "title": "Lung Adenocarcinoma [20A040762]"
+    },
+    {
+      "accession": "GSM7306657",
+      "title": "Nasopharyngeal Carcinoma [20A040895]"
+    },
+    {
+      "accession": "GSM7306740",
+      "title": "Nasopharyngeal Carcinoma [21T000216]"
+    },
+    {
+      "accession": "GSM7306737",
+      "title": "Colon and rectum   Adenocarcinoma [21T000213]"
+    },
+    {
+      "accession": "GSM7306574",
+      "title": "Liver and gallbladder(subtype unknown) [2019-4489]"
+    },
+    {
+      "accession": "GSM7306617",
+      "title": "Colon and rectum   Adenocarcinoma [20A040857]"
+    },
+    {
+      "accession": "GSM7306700",
+      "title": "Lung Adenocarcinoma [20A040785]"
+    },
+    {
+      "accession": "GSM7306637",
+      "title": "Stomach Squamous Cell Carcinoma [20A040916]"
+    },
+    {
+      "accession": "GSM7306654",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040898]"
+    },
+    {
+      "accession": "GSM7306720",
+      "title": "Papillary Thyroid Carcinoma [18A006649]"
+    },
+    {
+      "accession": "GSM7306571",
+      "title": "Lung Adenocarcinoma [2019-3945]"
+    },
+    {
+      "accession": "GSM7306689",
+      "title": "Lung Adenocarcinoma [20A040757]"
+    },
+    {
+      "accession": "GSM7306772",
+      "title": "Esophagus Squamous Cell Carcinoma [21T002988]"
+    },
+    {
+      "accession": "GSM7306643",
+      "title": "Colon and rectum   Adenocarcinoma [20A040910]"
+    },
+    {
+      "accession": "GSM7306726",
+      "title": "Papillary Thyroid Carcinoma [18A006637]"
+    },
+    {
+      "accession": "GSM7306769",
+      "title": "Ovarian Serous Carcinoma [21T007765]"
+    },
+    {
+      "accession": "GSM7306606",
+      "title": "Stomach Adenocarcinoma [20A040846]"
+    },
+    {
+      "accession": "GSM7306752",
+      "title": "Ovarian Serous Carcinoma [21T000240]"
+    },
+    {
+      "accession": "GSM7306686",
+      "title": "Breast cancer (subtype unknown) [20A040747]"
+    },
+    {
+      "accession": "GSM7306669",
+      "title": "Hepatocellular Carcinoma [20A040879]"
+    },
+    {
+      "accession": "GSM7306603",
+      "title": "Stomach Adenocarcinoma [20A040841]"
+    },
+    {
+      "accession": "GSM7306623",
+      "title": "Colon and rectum   Adenocarcinoma [20A040863]"
+    },
+    {
+      "accession": "GSM7306666",
+      "title": "Hepatocellular Carcinoma [20A040882]"
+    },
+    {
+      "accession": "GSM7306583",
+      "title": "Papillary Thyroid Carcinoma [20B011131]"
+    },
+    {
+      "accession": "GSM7306749",
+      "title": "Esophagus Squamous Cell Carcinoma [21T000235]"
+    },
+    {
+      "accession": "GSM7306706",
+      "title": "Esophagus Adenocarcinoma [20A040783]"
+    },
+    {
+      "accession": "GSM7306620",
+      "title": "Colon and rectum   Adenocarcinoma [20A040860]"
+    },
+    {
+      "accession": "GSM7306663",
+      "title": "Cervix Squamous Cell Carcinoma [20A040887]"
+    },
+    {
+      "accession": "GSM7306746",
+      "title": "Cervix Squamous Cell Carcinoma [21T000229]"
+    },
+    {
+      "accession": "GSM7306626",
+      "title": "Colon and rectum   Adenocarcinoma [20A040866]"
+    },
+    {
+      "accession": "GSM7306766",
+      "title": "Ovarian High-grade Serous Carcinoma [21T007752]"
+    },
+    {
+      "accession": "GSM7306709",
+      "title": "Esophagus Squamous Cell Carcinoma [20A040745]"
+    },
+    {
+      "accession": "GSM7306563",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040474]"
+    },
+    {
+      "accession": "GSM7306646",
+      "title": "Colon and rectum   Adenocarcinoma [20A040906]"
+    },
+    {
+      "accession": "GSM7306580",
+      "title": "Papillary Thyroid Carcinoma [20B011128]"
+    },
+    {
+      "accession": "GSM7306729",
+      "title": "Lung Adenocarcinoma [21T000204]"
+    },
+    {
+      "accession": "GSM7306735",
+      "title": "Stomach Adenocarcinoma [21T000210]"
+    },
+    {
+      "accession": "GSM7306652",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040872]"
+    },
+    {
+      "accession": "GSM7306569",
+      "title": "Lung Adenocarcinoma [2019-3746]"
+    },
+    {
+      "accession": "GSM7306600",
+      "title": "Breast cancer (subtype unknown) [193253]"
+    },
+    {
+      "accession": "GSM7306683",
+      "title": "Breast Invasive Ductal Carcinoma [20A040750]"
+    },
+    {
+      "accession": "GSM7306612",
+      "title": "Stomach Adenocarcinoma [20A040852]"
+    },
+    {
+      "accession": "GSM7306695",
+      "title": "Lung Adenocarcinoma [20A040789]"
+    },
+    {
+      "accession": "GSM7306566",
+      "title": "Oral Squamous Cell Carcinoma [20A040470]"
+    },
+    {
+      "accession": "GSM7306649",
+      "title": "Colon and rectum   Adenocarcinoma [20A040902]"
+    },
+    {
+      "accession": "GSM7306732",
+      "title": "Lung Adenocarcinoma [21T000207]"
+    },
+    {
+      "accession": "GSM7306586",
+      "title": "Papillary Thyroid Carcinoma [20B011136]"
+    },
+    {
+      "accession": "GSM7306675",
+      "title": "Breast Invasive Ductal Carcinoma [20A040764]"
+    },
+    {
+      "accession": "GSM7306592",
+      "title": "Papillary Thyroid Carcinoma [20B011143]"
+    },
+    {
+      "accession": "GSM7306758",
+      "title": "Cervix Squamous Cell Carcinoma [21T007676]"
+    },
+    {
+      "accession": "GSM7306632",
+      "title": "Esophagus Squamous Cell Carcinoma [20A040922]"
+    },
+    {
+      "accession": "GSM7306715",
+      "title": "Papillary Thyroid Carcinoma [18A006661]"
+    },
+    {
+      "accession": "GSM7306718",
+      "title": "Papillary Thyroid Carcinoma [18A006653]"
+    },
+    {
+      "accession": "GSM7306589",
+      "title": "Papillary Thyroid Carcinoma [20B011139]"
+    },
+    {
+      "accession": "GSM7306629",
+      "title": "Colon and rectum   Adenocarcinoma [20A040869]"
+    },
+    {
+      "accession": "GSM7306692",
+      "title": "Lung Adenocarcinoma [20A040790]"
+    },
+    {
+      "accession": "GSM7306672",
+      "title": "Breast Invasive Ductal Carcinoma [20A040766]"
+    },
+    {
+      "accession": "GSM7306712",
+      "title": "Ovarian cancer(subtype unknown) [20A040775]"
+    },
+    {
+      "accession": "GSM7306755",
+      "title": "Ovarian High-grade Serous Carcinoma [21T007665]"
+    },
+    {
+      "accession": "GSM7306615",
+      "title": "Colon and rectum   Adenocarcinoma [20A040855]"
+    },
+    {
+      "accession": "GSM7306775",
+      "title": "Esophagus Squamous Cell Carcinoma [18A006449]"
+    },
+    {
+      "accession": "GSM7306572",
+      "title": "Stomach Adenocarcinoma [2019-4380]"
+    },
+    {
+      "accession": "GSM7306655",
+      "title": "Nasopharyngeal Carcinoma [20A040897]"
+    },
+    {
+      "accession": "GSM7306635",
+      "title": "Stomach Adenocarcinoma [20A040918]"
+    },
+    {
+      "accession": "GSM7306621",
+      "title": "Colon and rectum   Adenocarcinoma [20A040861]"
+    },
+    {
+      "accession": "GSM7306609",
+      "title": "Stomach Adenocarcinoma [20A040849]"
+    },
+    {
+      "accession": "GSM7306698",
+      "title": "Lung Adenocarcinoma [20A040794]"
+    },
+    {
+      "accession": "GSM7306578",
+      "title": "Papillary Thyroid Carcinoma [20B011126]"
+    },
+    {
+      "accession": "GSM7306738",
+      "title": "Colon and rectum   Adenocarcinoma [21T000214]"
+    },
+    {
+      "accession": "GSM7306641",
+      "title": "Stomach Squamous Cell Carcinoma [20A040912]"
+    },
+    {
+      "accession": "GSM7306724",
+      "title": "Papillary Thyroid Carcinoma [18A006640]"
+    },
+    {
+      "accession": "GSM7306658",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040894]"
+    },
+    {
+      "accession": "GSM7306575",
+      "title": "Gallbladder Carcinoma [2019-4546]"
+    },
+    {
+      "accession": "GSM7306704",
+      "title": "Lung Adenocarcinoma [20A040770]"
+    },
+    {
+      "accession": "GSM7306744",
+      "title": "Papillary Thyroid Carcinoma [21T000226]"
+    },
+    {
+      "accession": "GSM7306661",
+      "title": "Nasopharyngeal Carcinoma [20A040889]"
+    },
+    {
+      "accession": "GSM7306721",
+      "title": "Papillary Thyroid Carcinoma [18A006644]"
+    },
+    {
+      "accession": "GSM7306761",
+      "title": "Cervix Squamous Cell Carcinoma [21T007680]"
+    },
+    {
+      "accession": "GSM7306741",
+      "title": "Liver and gallbladder(subtype unknown) [21T000218]"
+    },
+    {
+      "accession": "GSM7306595",
+      "title": "Breast cancer (subtype unknown) [193586A2]"
+    },
+    {
+      "accession": "GSM7306678",
+      "title": "Breast Invasive Ductal Carcinoma [20A040791]"
+    },
+    {
+      "accession": "GSM7306684",
+      "title": "Breast Invasive Ductal Carcinoma [20A040754]"
+    },
+    {
+      "accession": "GSM7306601",
+      "title": "Colon and rectum   Adenocarcinoma [193115]"
+    },
+    {
+      "accession": "GSM7306747",
+      "title": "Esophagus Squamous Cell Carcinoma [21T000232]"
+    },
+    {
+      "accession": "GSM7306618",
+      "title": "Colon and rectum   Adenocarcinoma [20A040858]"
+    },
+    {
+      "accession": "GSM7306767",
+      "title": "Ovarian Serous Carcinoma [21T007762]"
+    },
+    {
+      "accession": "GSM7306681",
+      "title": "Breast Invasive Carcinoma with Ductal Carcinoma in Situ [20A040774]"
+    },
+    {
+      "accession": "GSM7306764",
+      "title": "Esophagus Squamous Cell Carcinoma [21T007737]"
+    },
+    {
+      "accession": "GSM7306598",
+      "title": "Lung Adenocarcinoma [193437]"
+    },
+    {
+      "accession": "GSM7306638",
+      "title": "Stomach cancer\uff08subtype unknown\uff09 [20A040915]"
+    },
+    {
+      "accession": "GSM7306753",
+      "title": "Colon and rectum   Adenocarcinoma [18A006510]"
+    },
+    {
+      "accession": "GSM7306701",
+      "title": "Lung Squamous Cell Carcinoma [20A040793]"
+    },
+    {
+      "accession": "GSM7306624",
+      "title": "Colon and rectum   Adenocarcinoma [20A040864]"
+    },
+    {
+      "accession": "GSM7306707",
+      "title": "Esophagus Squamous Cell Carcinoma [20A040763]"
+    },
+    {
+      "accession": "GSM7306664",
+      "title": "Ovarian Serous Carcinoma [20A040885]"
+    },
+    {
+      "accession": "GSM7306650",
+      "title": "Colon and rectum   Adenocarcinoma [20A040901]"
+    },
+    {
+      "accession": "GSM7306567",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040469]"
+    },
+    {
+      "accession": "GSM7306607",
+      "title": "Stomach Adenocarcinoma [20A040847]"
+    },
+    {
+      "accession": "GSM7306587",
+      "title": "Papillary Thyroid Carcinoma [20B011137]"
+    },
+    {
+      "accession": "GSM7306670",
+      "title": "Breast Invasive Ductal Carcinoma [20A040777]"
+    },
+    {
+      "accession": "GSM7306584",
+      "title": "Papillary Thyroid Carcinoma [20B011132]"
+    },
+    {
+      "accession": "GSM7306647",
+      "title": "Colon and rectum   Adenocarcinoma [20A040905]"
+    },
+    {
+      "accession": "GSM7306733",
+      "title": "Stomach Adenocarcinoma [21T000208]"
+    },
+    {
+      "accession": "GSM7306690",
+      "title": "Lung cancer(subtype unknown) [20A040780]"
+    },
+    {
+      "accession": "GSM7306604",
+      "title": "Stomach Adenocarcinoma [20A040842]"
+    },
+    {
+      "accession": "GSM7306773",
+      "title": "Esophagus Squamous Cell Carcinoma [21T002990]"
+    },
+    {
+      "accession": "GSM7306687",
+      "title": "Breast Invasive Ductal Carcinoma [20A040767]"
+    },
+    {
+      "accession": "GSM7306667",
+      "title": "Hepatocellular Carcinoma [20A040881]"
+    },
+    {
+      "accession": "GSM7306750",
+      "title": "Cervix Squamous Cell Carcinoma [21T000237]"
+    },
+    {
+      "accession": "GSM7306644",
+      "title": "Colon and rectum   Adenocarcinoma [20A040909]"
+    },
+    {
+      "accession": "GSM7306727",
+      "title": "Breast Invasive Carcinoma with Ductal Carcinoma in Situ [21T000202]"
+    },
+    {
+      "accession": "GSM7306730",
+      "title": "Lung Adenocarcinoma [21T000205]"
+    },
+    {
+      "accession": "GSM7306770",
+      "title": "Ovarian cancer(subtype unknown) [21T007766]"
+    },
+    {
+      "accession": "GSM7306713",
+      "title": "Breast Invasive Carcinoma with Ductal Carcinoma in Situ [20A040751]"
+    },
+    {
+      "accession": "GSM7306630",
+      "title": "Ovarian Serous Carcinoma [20A040924]"
+    },
+    {
+      "accession": "GSM7306564",
+      "title": "Oral Squamous Cell Carcinoma [20A040472]"
+    },
+    {
+      "accession": "GSM7306596",
+      "title": "Papillary Thyroid Carcinoma [193036]"
+    },
+    {
+      "accession": "GSM7306679",
+      "title": "Breast Invasive Ductal Carcinoma [20A040776]"
+    },
+    {
+      "accession": "GSM7306581",
+      "title": "Papillary Thyroid Carcinoma [20B011129]"
+    },
+    {
+      "accession": "GSM7306710",
+      "title": "Stomach Adenocarcinoma [20A040788]"
+    },
+    {
+      "accession": "GSM7306627",
+      "title": "Colon and rectum   Adenocarcinoma [20A040867]"
+    },
+    {
+      "accession": "GSM7306570",
+      "title": "Lung Adenocarcinoma [2019-3748]"
+    },
+    {
+      "accession": "GSM7306716",
+      "title": "Papillary Thyroid Carcinoma [18A006659]"
+    },
+    {
+      "accession": "GSM7306762",
+      "title": "Ovarian cancer(subtype unknown) [21T007681]"
+    },
+    {
+      "accession": "GSM7306633",
+      "title": "Stomach Adenocarcinoma [20A040920]"
+    },
+    {
+      "accession": "GSM7306736",
+      "title": "Colon and rectum   Adenocarcinoma [21T000212]"
+    },
+    {
+      "accession": "GSM7306653",
+      "title": "Nasopharyngeal Carcinoma [20A040899]"
+    },
+    {
+      "accession": "GSM7306573",
+      "title": "Stomach Adenocarcinoma [2019-4383]"
+    },
+    {
+      "accession": "GSM7306613",
+      "title": "Stomach cancer\uff08subtype unknown\uff09 [20A040853]"
+    },
+    {
+      "accession": "GSM7306742",
+      "title": "Esophagus Squamous Cell Carcinoma [21T000223]"
+    },
+    {
+      "accession": "GSM7306699",
+      "title": "Lung Adenocarcinoma [20A040765]"
+    },
+    {
+      "accession": "GSM7306616",
+      "title": "Colon and rectum   Adenocarcinoma [20A040856]"
+    },
+    {
+      "accession": "GSM7306676",
+      "title": "Breast Invasive Ductal Carcinoma [20A040749]"
+    },
+    {
+      "accession": "GSM7306656",
+      "title": "Nasopharyngeal Carcinoma [20A040896]"
+    },
+    {
+      "accession": "GSM7306739",
+      "title": "Colon and rectum   Adenocarcinoma [21T000215]"
+    },
+    {
+      "accession": "GSM7306610",
+      "title": "Stomach Adenocarcinoma [20A040850]"
+    },
+    {
+      "accession": "GSM7306696",
+      "title": "Lung Adenocarcinoma [20A040781]"
+    },
+    {
+      "accession": "GSM7306673",
+      "title": "Breast Invasive Ductal Carcinoma [20A040760]"
+    },
+    {
+      "accession": "GSM7306756",
+      "title": "Ovarian Serous Carcinoma [21T007666]"
+    },
+    {
+      "accession": "GSM7306759",
+      "title": "Cervix Squamous Cell Carcinoma [21T007677]"
+    },
+    {
+      "accession": "GSM7306776",
+      "title": "Esophagus Squamous Cell Carcinoma [21T002985]"
+    },
+    {
+      "accession": "GSM7306693",
+      "title": "Lung Squamous Cell Carcinoma [20A040782]"
+    },
+    {
+      "accession": "GSM7306636",
+      "title": "Stomach Neuroendocrine carcinoma [20A040917]"
+    },
+    {
+      "accession": "GSM7306719",
+      "title": "Papillary Thyroid Carcinoma [18A006652]"
+    },
+    {
+      "accession": "GSM7306708",
+      "title": "Esophagus Squamous Cell Carcinoma [20A040744]"
+    },
+    {
+      "accession": "GSM7306593",
+      "title": "Papillary Thyroid Carcinoma [20B011144]"
+    },
+    {
+      "accession": "GSM7306642",
+      "title": "Colon and rectum  Neuroendocrine Carcinoma [20A040911]"
+    },
+    {
+      "accession": "GSM7306705",
+      "title": "Colon and rectum  Neuroendocrine Carcinoma [20A040761]"
+    },
+    {
+      "accession": "GSM7306576",
+      "title": "Breast cancer (subtype unknown) [2019-4744]"
+    },
+    {
+      "accession": "GSM7306590",
+      "title": "Papillary Thyroid Carcinoma [20B011140]"
+    },
+    {
+      "accession": "GSM7306579",
+      "title": "Papillary Thyroid Carcinoma [20B011127]"
+    },
+    {
+      "accession": "GSM7306662",
+      "title": "Cervix Squamous Cell Carcinoma [20A040888]"
+    },
+    {
+      "accession": "GSM7306745",
+      "title": "Esophagus Squamous Cell Carcinoma [21T000227]"
+    },
+    {
+      "accession": "GSM7306702",
+      "title": "Lung Adenocarcinoma [20A040792]"
+    },
+    {
+      "accession": "GSM7306725",
+      "title": "Papillary Thyroid Carcinoma [18A006639]"
+    },
+    {
+      "accession": "GSM7306659",
+      "title": "Hypopharynx Squamous Cell Carcinoma [20A040891]"
+    },
+    {
+      "accession": "GSM7306602",
+      "title": "Lung Adenocarcinoma [193145]"
+    },
+    {
+      "accession": "GSM7306625",
+      "title": "Colon and rectum   Adenocarcinoma [20A040865]"
+    },
+    {
+      "accession": "GSM7306748",
+      "title": "Ovarian Serous Carcinoma [21T000233]"
+    },
+    {
+      "accession": "GSM7306582",
+      "title": "Papillary Thyroid Carcinoma [20B011130]"
+    },
+    {
+      "accession": "GSM7306665",
+      "title": "Ovarian Serous Carcinoma [20A040883]"
+    },
+    {
+      "accession": "GSM7306682",
+      "title": "Breast Invasive Carcinoma with Ductal Carcinoma in Situ [20A040746]"
+    },
+    {
+      "accession": "GSM7306599",
+      "title": "Hepatocellular Carcinoma [193583]"
+    },
+    {
+      "accession": "GSM7306622",
+      "title": "Colon and rectum   Adenocarcinoma [20A040862]"
+    },
+    {
+      "accession": "GSM7306639",
+      "title": "Stomach Adenocarcinoma [20A040914]"
+    },
+    {
+      "accession": "GSM7306768",
+      "title": "Ovarian Serous Carcinoma [21T007764]"
+    },
+    {
+      "accession": "GSM7306685",
+      "title": "Breast Mucinous Carcinoma [20A040753]"
+    },
+    {
+      "accession": "GSM7306562",
+      "title": "Head and neck neoplasm(subtype unknown) [20A040477]"
+    },
+    {
+      "accession": "GSM7306619",
+      "title": "Colon and rectum   Adenocarcinoma [20A040859]"
+    },
+    {
+      "accession": "GSM7306765",
+      "title": "Ovarian High-grade Serous Carcinoma [21T007749]"
+    },
+    {
+      "accession": "GSM7306722",
+      "title": "Papillary Thyroid Carcinoma [18A006643]"
+    },
+    {
+      "accession": "GSM7306728",
+      "title": "Lung Squamous Cell Carcinoma [21T000203]"
+    },
+    {
+      "accession": "GSM7306645",
+      "title": "Colon and rectum   Adenocarcinoma [20A040908]"
+    }
+  ]
+}

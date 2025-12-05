@@ -1,0 +1,53 @@
+{
+  "dataset_id": "200273127",
+  "title": "Comparative single-cell analysis of esophageal cancer subtypes reveals cellular distinctions explaining varied immunotherapy responses",
+  "summary": "Esophageal cancer comprises two main subtypes: esophageal squamous cell carcinoma (ESCC) and esophageal adenocarcinoma (EAC). Previous studies revealed their distinct genomic characteristics, sharing similarities with head and neck squamous cell carcinoma (HNSCC) and gastric adenocarcinoma (GAC) for ESCC and EAC, respectively. This study compares ESCC and EAC at single-cell resolution to identify factors explaining differences in immunotherapy response rates. We performed comparative single-cell transcriptome analysis for four cancer types near the esophagus using data from 35 patients with ESCC, EAC, HNSCC, or GAC. Malignant epithelial cells showed distinct separations between subtypes based on histological origins. We identified enrichment of CXCL13+ CD8+ T cells and CXCL9+CXCL10+ TAMs in ESCC and HNSCC, promoting a hot-tumor environment through interferon-\u03b3 pathways. Conversely, hypoxia and cold-tumor related populations, such as heat-shock protein high CD8+ T cells and MARCO+ TAMs, were enriched in EAC and GAC. These immune subsets' expression signatures predicted immunotherapy responses across diverse cancer types.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8422226",
+      "title": "EC06, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422229",
+      "title": "EC09, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422223",
+      "title": "EC03, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422221",
+      "title": "EC01, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422224",
+      "title": "EC04, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422227",
+      "title": "EC07, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422231",
+      "title": "EC12, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422230",
+      "title": "EC11, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422225",
+      "title": "EC05, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422222",
+      "title": "EC02, scRNA-seq"
+    },
+    {
+      "accession": "GSM8422228",
+      "title": "EC08, scRNA-seq"
+    }
+  ]
+}

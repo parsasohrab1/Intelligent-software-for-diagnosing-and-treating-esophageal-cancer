@@ -1,0 +1,8 @@
+{
+  "dataset_id": "862a9a0e-faf3-40ab-aa0c-ed329ca560fa",
+  "file_name": "TCGA-ESCA.a3fbf7eb-4976-449d-97dc-035f2b6ab3e3.ascat3.gene_level_copy_number.v36.tsv",
+  "data_type": "Gene Level Copy Number",
+  "data_format": "TSV",
+  "file_size": 3448163,
+  "cases": []
+}

@@ -1,0 +1,261 @@
+{
+  "dataset_id": "200266330",
+  "title": "Single cell profiling of bone metastasis ecosystems from multiple cancer types reveals convergent and divergent mechanisms of bone colonization",
+  "summary": "Bone represents congenial soil for metastatic seeds and is frequently affected by metastasis of multiple cancer types. The histological and molecular characteristics of bone metastases (BMs) are diverse but poorly understood. Herein, we performed single-cell RNA-seq on 34 BMs from 6 cancer types and identified 3 ecosystem archetypes characterized by enrichment of macrophages/osteoclasts (M\u03c6-OC), regulatory/exhausted T cells (Treg-Tex), and monocytes (Mono), respectively. Breast cancer BMs are mostly the M\u03c6-OC archetype driven by the osteolytic vicious cycle, whereas kidney cancers BMs mainly belong to the Treg-Tex archetype that lacks osteoclasts. Lung cancers BMs evenly distributed across all archetypes. Further analyses revealed parallel mechanisms of immunosuppression and bone remodeling. Elevated estrogen signaling distinguishes macrophages in the M\u03c6-OC subtype, which was investigated in a companion study. Together, we elucidated that divergent mechanisms toward bone colonization and that BMs of different origins can adopt the same mechanism through convergent evolution or adaptation.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8245026",
+      "title": "ctrl_05_2"
+    },
+    {
+      "accession": "GSM8245046",
+      "title": "KC_09_2"
+    },
+    {
+      "accession": "GSM8245009",
+      "title": "BC_05_1"
+    },
+    {
+      "accession": "GSM8669376",
+      "title": "BC_10_1"
+    },
+    {
+      "accession": "GSM8245029",
+      "title": "KC_02_1"
+    },
+    {
+      "accession": "GSM8245049",
+      "title": "LC_01_1"
+    },
+    {
+      "accession": "GSM8245032",
+      "title": "KC_12_1"
+    },
+    {
+      "accession": "GSM8669379",
+      "title": "BC_12_1"
+    },
+    {
+      "accession": "GSM8245006",
+      "title": "BC_02_1"
+    },
+    {
+      "accession": "GSM8245052",
+      "title": "LC_04_1"
+    },
+    {
+      "accession": "GSM8245035",
+      "title": "CC_02_1"
+    },
+    {
+      "accession": "GSM8245018",
+      "title": "ctrl_01_2"
+    },
+    {
+      "accession": "GSM8669382",
+      "title": "CC_03_1"
+    },
+    {
+      "accession": "GSM8245055",
+      "title": "LC_06_1"
+    },
+    {
+      "accession": "GSM8245038",
+      "title": "KC_05_1"
+    },
+    {
+      "accession": "GSM8669385",
+      "title": "LC_08_2"
+    },
+    {
+      "accession": "GSM8245012",
+      "title": "BC_08_1"
+    },
+    {
+      "accession": "GSM8245015",
+      "title": "CC_01_1"
+    },
+    {
+      "accession": "GSM8245044",
+      "title": "KC_08_2"
+    },
+    {
+      "accession": "GSM8245027",
+      "title": "EC_01_1"
+    },
+    {
+      "accession": "GSM8245047",
+      "title": "KC_10_1"
+    },
+    {
+      "accession": "GSM8245021",
+      "title": "ctrl_03_1"
+    },
+    {
+      "accession": "GSM8245041",
+      "title": "KC_06_2"
+    },
+    {
+      "accession": "GSM8245024",
+      "title": "ctrl_04_2"
+    },
+    {
+      "accession": "GSM8245007",
+      "title": "BC_03_1"
+    },
+    {
+      "accession": "GSM8669383",
+      "title": "LC_07_1"
+    },
+    {
+      "accession": "GSM8245030",
+      "title": "KC_03_1"
+    },
+    {
+      "accession": "GSM8245010",
+      "title": "BC_06_1"
+    },
+    {
+      "accession": "GSM8669377",
+      "title": "BC_11_1"
+    },
+    {
+      "accession": "GSM8245050",
+      "title": "LC_02_1"
+    },
+    {
+      "accession": "GSM8245033",
+      "title": "KC_13_1"
+    },
+    {
+      "accession": "GSM8245053",
+      "title": "LC_05_1"
+    },
+    {
+      "accession": "GSM8245013",
+      "title": "BC_08_2"
+    },
+    {
+      "accession": "GSM8245019",
+      "title": "ctrl_02_1"
+    },
+    {
+      "accession": "GSM8669380",
+      "title": "BDC_01_1"
+    },
+    {
+      "accession": "GSM8245056",
+      "title": "TC_01_1"
+    },
+    {
+      "accession": "GSM8245036",
+      "title": "CC_02_2"
+    },
+    {
+      "accession": "GSM8245022",
+      "title": "ctrl_03_2"
+    },
+    {
+      "accession": "GSM8245039",
+      "title": "KC_05_2"
+    },
+    {
+      "accession": "GSM8245016",
+      "title": "CC_01_2"
+    },
+    {
+      "accession": "GSM8245042",
+      "title": "KC_07_1"
+    },
+    {
+      "accession": "GSM8245008",
+      "title": "BC_04_1"
+    },
+    {
+      "accession": "GSM8245048",
+      "title": "KC_10_2"
+    },
+    {
+      "accession": "GSM8245045",
+      "title": "KC_09_1"
+    },
+    {
+      "accession": "GSM8245028",
+      "title": "KC_01_1"
+    },
+    {
+      "accession": "GSM8245025",
+      "title": "ctrl_05_1"
+    },
+    {
+      "accession": "GSM8669378",
+      "title": "PC_01_1"
+    },
+    {
+      "accession": "GSM8245005",
+      "title": "BC_01_1"
+    },
+    {
+      "accession": "GSM8245054",
+      "title": "LC_05_2"
+    },
+    {
+      "accession": "GSM8669381",
+      "title": "BDC_01_2"
+    },
+    {
+      "accession": "GSM8669384",
+      "title": "LC_08_1"
+    },
+    {
+      "accession": "GSM8245037",
+      "title": "KC_04_1"
+    },
+    {
+      "accession": "GSM8245057",
+      "title": "TC_02_1"
+    },
+    {
+      "accession": "GSM8245011",
+      "title": "BC_07_1"
+    },
+    {
+      "accession": "GSM8245031",
+      "title": "KC_11_1"
+    },
+    {
+      "accession": "GSM8245051",
+      "title": "LC_03_1"
+    },
+    {
+      "accession": "GSM8245014",
+      "title": "BC_09_1"
+    },
+    {
+      "accession": "GSM8245034",
+      "title": "KC_14_1"
+    },
+    {
+      "accession": "GSM8245017",
+      "title": "ctrl_01_1"
+    },
+    {
+      "accession": "GSM8245040",
+      "title": "KC_06_1"
+    },
+    {
+      "accession": "GSM8245020",
+      "title": "ctrl_02_2"
+    },
+    {
+      "accession": "GSM8245023",
+      "title": "ctrl_04_1"
+    },
+    {
+      "accession": "GSM8245043",
+      "title": "KC_08_1"
+    }
+  ]
+}

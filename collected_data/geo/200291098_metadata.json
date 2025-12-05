@@ -1,0 +1,49 @@
+{
+  "dataset_id": "200291098",
+  "title": "RNA Transcripts Serve as a Template for Double-Strand Break Repair in Human Cells",
+  "summary": "Double-strand breaks (DSBs) are toxic lesions that lead to genome instability. While canonical DSB repair pathways typically operate independently of RNA, emerging evidence suggests that RNA:DNA hybrids and transcripts near damaged sites can influence repair outcomes. However, a direct role for transcript RNA as a template during DSB repair in human cells is yet to be established. In this study, we designed fluorescent- and sequencing-based assays, which demonstrated that RNA-containing oligonucleotides and messenger RNA serve as templates to promote DSB repair. We conducted a CRISPR/Cas9-based genetic screen to identify factors that promote RNA-templated DSB repair (RT-DSBR), and of the candidate polymerases, we identified DNA polymerase-zeta (Pol\u03b6) as the potential reverse transcriptase that facilitates RT-DSBR. Furthermore, by analyzing sequencing data from cancer genomes, we identified the presence of whole intron deletions, a unique genomic scar reflective of RT-DSBR activity generated when spliced mRNA serves as the repair template. These findings highlight RT-DSBR as an alternative pathway for repairing DSBs in transcribed genes, with potential mutagenic consequences.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8829098",
+      "title": "IMPACT_WID_13"
+    },
+    {
+      "accession": "GSM8829101",
+      "title": "IMPACT_WID_21"
+    },
+    {
+      "accession": "GSM8829104",
+      "title": "IMPACT_WID_40"
+    },
+    {
+      "accession": "GSM8829096",
+      "title": "IMPACT_WID_06"
+    },
+    {
+      "accession": "GSM8829099",
+      "title": "IMPACT_WID_14"
+    },
+    {
+      "accession": "GSM8829102",
+      "title": "IMPACT_WID_29"
+    },
+    {
+      "accession": "GSM8829100",
+      "title": "IMPACT_WID_18"
+    },
+    {
+      "accession": "GSM8829097",
+      "title": "IMPACT_WID_08"
+    },
+    {
+      "accession": "GSM8829103",
+      "title": "IMPACT_WID_36"
+    },
+    {
+      "accession": "GSM8829095",
+      "title": "IMPACT_WID_01"
+    }
+  ]
+}

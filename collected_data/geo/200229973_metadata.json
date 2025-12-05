@@ -1,0 +1,105 @@
+{
+  "dataset_id": "200229973",
+  "title": "Effect of cisplatin in depletion MAGEA6 expression  of esophageal cancer cells",
+  "summary": "To investigate  cisplatin  chemo-sensitivity in established KYSE 150/510 cell lines in which each target gene has been knocked out by CRISPR-Cas9. We performed gene expression profiling analysis using data obtained from RNA-seq of 8 different cells by three biological replicate.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7182135",
+      "title": "KYSE 510 cells, MAGEA6-KO, 3"
+    },
+    {
+      "accession": "GSM7182115",
+      "title": "KYSE 150 cells, NC, 1"
+    },
+    {
+      "accession": "GSM7182118",
+      "title": "KYSE 150 cells, DDP, 1"
+    },
+    {
+      "accession": "GSM7182121",
+      "title": "KYSE 150 cells, MAGEA6-KO, 1"
+    },
+    {
+      "accession": "GSM7182138",
+      "title": "KYSE 510 cells, MAGEA6-KO, DDP, 3"
+    },
+    {
+      "accession": "GSM7182124",
+      "title": "KYSE 150 cells, MAGEA6-KO, DDP, 1"
+    },
+    {
+      "accession": "GSM7182127",
+      "title": "KYSE  510 cells, NC, 1"
+    },
+    {
+      "accession": "GSM7182133",
+      "title": "KYSE 510 cells, MAGEA6-KO, 1"
+    },
+    {
+      "accession": "GSM7182116",
+      "title": "KYSE 150 cells, NC, 2"
+    },
+    {
+      "accession": "GSM7182136",
+      "title": "KYSE 510 cells, MAGEA6-KO, DDP, 1"
+    },
+    {
+      "accession": "GSM7182130",
+      "title": "KYSE 510 cells, DDP, 1"
+    },
+    {
+      "accession": "GSM7182122",
+      "title": "KYSE 150 cells, MAGEA6-KO, 2"
+    },
+    {
+      "accession": "GSM7182119",
+      "title": "KYSE 150 cells, DDP, 2"
+    },
+    {
+      "accession": "GSM7182131",
+      "title": "KYSE 510 cells, DDP, 2"
+    },
+    {
+      "accession": "GSM7182125",
+      "title": "KYSE 150 cells, MAGEA6-KO, DDP, 2"
+    },
+    {
+      "accession": "GSM7182128",
+      "title": "KYSE 510 cells, NC, 2"
+    },
+    {
+      "accession": "GSM7182117",
+      "title": "KYSE 150 cells, NC, 3"
+    },
+    {
+      "accession": "GSM7182134",
+      "title": "KYSE 510 cells, MAGEA6-KO, 2"
+    },
+    {
+      "accession": "GSM7182137",
+      "title": "KYSE 510 cells, MAGEA6-KO, DDP, 2"
+    },
+    {
+      "accession": "GSM7182123",
+      "title": "KYSE 150 cells, MAGEA6-KO, 3"
+    },
+    {
+      "accession": "GSM7182120",
+      "title": "KYSE 150 cells, DDP, 3"
+    },
+    {
+      "accession": "GSM7182126",
+      "title": "KYSE 150 cells, MAGEA6-KO, DDP, 3"
+    },
+    {
+      "accession": "GSM7182132",
+      "title": "KYSE 510 cells, DDP, 3"
+    },
+    {
+      "accession": "GSM7182129",
+      "title": "KYSE 510 cells, NC, 3"
+    }
+  ]
+}

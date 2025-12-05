@@ -1,0 +1,137 @@
+{
+  "dataset_id": "200148005",
+  "title": "Acetyl-lysine Reader CECR2 Drives Breast Cancer Metastasis by Coordinating Macrophage Polarization and Immune Suppression",
+  "summary": "This SuperSeries is composed of the SubSeries listed below.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4451631",
+      "title": "12M"
+    },
+    {
+      "accession": "GSM4451628",
+      "title": "11P"
+    },
+    {
+      "accession": "GSM4451611",
+      "title": "2M"
+    },
+    {
+      "accession": "GSM4451608",
+      "title": "1P"
+    },
+    {
+      "accession": "GSM4451579",
+      "title": "Control-1"
+    },
+    {
+      "accession": "GSM4451625",
+      "title": "9M"
+    },
+    {
+      "accession": "GSM4451622",
+      "title": "8P"
+    },
+    {
+      "accession": "GSM4451619",
+      "title": "6M"
+    },
+    {
+      "accession": "GSM4451582",
+      "title": "CECR2 sg1-2"
+    },
+    {
+      "accession": "GSM4451623",
+      "title": "8M"
+    },
+    {
+      "accession": "GSM4451583",
+      "title": "CECR2 sg2-1"
+    },
+    {
+      "accession": "GSM4451580",
+      "title": "Control-2"
+    },
+    {
+      "accession": "GSM4451626",
+      "title": "10P"
+    },
+    {
+      "accession": "GSM4451614",
+      "title": "4P"
+    },
+    {
+      "accession": "GSM4451620",
+      "title": "7P"
+    },
+    {
+      "accession": "GSM4451617",
+      "title": "5M"
+    },
+    {
+      "accession": "GSM4451621",
+      "title": "7M"
+    },
+    {
+      "accession": "GSM4451618",
+      "title": "6P"
+    },
+    {
+      "accession": "GSM4451581",
+      "title": "CECR2 sg1-1"
+    },
+    {
+      "accession": "GSM4451615",
+      "title": "4M"
+    },
+    {
+      "accession": "GSM4451632",
+      "title": "13P"
+    },
+    {
+      "accession": "GSM4451612",
+      "title": "3P"
+    },
+    {
+      "accession": "GSM4451609",
+      "title": "1M"
+    },
+    {
+      "accession": "GSM4451629",
+      "title": "11M"
+    },
+    {
+      "accession": "GSM4451616",
+      "title": "5P"
+    },
+    {
+      "accession": "GSM4451633",
+      "title": "13M"
+    },
+    {
+      "accession": "GSM4451613",
+      "title": "3M"
+    },
+    {
+      "accession": "GSM4451584",
+      "title": "CECR2 sg2-2"
+    },
+    {
+      "accession": "GSM4451624",
+      "title": "9P"
+    },
+    {
+      "accession": "GSM4451630",
+      "title": "12P"
+    },
+    {
+      "accession": "GSM4451627",
+      "title": "10M"
+    },
+    {
+      "accession": "GSM4451610",
+      "title": "2P"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "dataset_id": "200225131",
+  "title": "NAT10 mediated ac4C tRNA modification promotes EGFR mRNA translation and gefitinib resistance in cancers",
+  "summary": "The diverse RNA modifications play essential functions in gene expression regulation. Aberrant RNA modifications are frequently associated with cancers, while the underlying mechanisms and clinical significance remain poorly understood. Here we revealed that the ac4C RNA acetyltransferase NAT10 is significantly upregulated in esophageal cancers (ESCA) and associated with poor ESCA prognosis. In addition, using cancer cell lines, xenograft tumor models, Nat10 conditional knockin and conditional knockout mice, in vivo ESCA tumorigenesis model and chemical inhibition approaches, we uncovered the critical physiological functions of NAT10 in promoting esophageal cancer tumorigenesis and progression in vitro and in vivo. Mechanistically, NAT10 depletion reduced the abundance of ac4C-modified tRNAs and significantly decreased the translation efficiencies of mRNAs enriched for ac4C-modified-tRNA decoded codons. We further identified EGFR as a key downstream target that facilitates NAT10\u2019s oncogenic functions in promoting esophageal cancer progression. In terms of clinical significance, we demonstrated that NAT10 promotes esophageal cancer resistance to EGFR inhibitor gefitinib, and combination of NAT10 depletion and gefitinib treatment synergistically inhibits esophageal cancer progression in vitro and in vivo. Our data uncovered novel molecular mechanisms underlying esophageal cancer progression at the layer of mRNA translation control and provided molecular insights for development of effective cancer therapeutic strategies.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7039849",
+      "title": "NC-1-input.fq.gz"
+    },
+    {
+      "accession": "GSM7593413",
+      "title": "TE9_NC1-input"
+    },
+    {
+      "accession": "GSM7593416",
+      "title": "TE9_NC2-input"
+    },
+    {
+      "accession": "GSM7593419",
+      "title": "TE9_sgNAT10-1-input"
+    },
+    {
+      "accession": "GSM7039855",
+      "title": "sg-2-input.fq.gz"
+    },
+    {
+      "accession": "GSM7039852",
+      "title": "NC-2-RNC.fq.gz"
+    },
+    {
+      "accession": "GSM7039851",
+      "title": "NC-2-input.fq.gz"
+    },
+    {
+      "accession": "GSM7593415",
+      "title": "TE9_NC1-ac4C"
+    },
+    {
+      "accession": "GSM7593418",
+      "title": "TE9_NC2-ac4C"
+    },
+    {
+      "accession": "GSM7039854",
+      "title": "sg-1-RNC.fq.gz"
+    },
+    {
+      "accession": "GSM7039856",
+      "title": "sg-2-RNC.fq.gz"
+    },
+    {
+      "accession": "GSM7593417",
+      "title": "TE9_NC2-IgG"
+    },
+    {
+      "accession": "GSM7593420",
+      "title": "TE9_sgNAT10-2-input"
+    },
+    {
+      "accession": "GSM7039850",
+      "title": "NC-1-RNC.fq.gz"
+    },
+    {
+      "accession": "GSM7039853",
+      "title": "sg-1-input.fq.gz"
+    },
+    {
+      "accession": "GSM7593414",
+      "title": "TE9_NC1-IgG"
+    }
+  ]
+}

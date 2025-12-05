@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200141781",
+  "title": "The protumor function of UHRF1 is linked to both the Akt signaling cascade and the epithelial-mesenchymal transition in esophageal cancer",
+  "summary": "The epigenetic factor UHRF1 is highly expressed in many types of cancers, however, the underlying mechanism remains elusive. Here we report an oncogenic function of UHRF1 in esophageal cancer(EC). UHRF1 was observed to be robustly expressed in EC cells. Knockdown of UHRF1 was achieved in two EC cell lines TE-10 and Kyse410 using a shRNA-mediated lentivirus system. Silencing of UHRF1 led to the inhibition of the proliferation and the mesenchymal phenotype as determined by the wound-healing and the invasion-in-matrigel assays. Transcriptome profile analysis revealed that two groups of the genes are significantly suppressed upon the UHRF1-shRNA expression. One group is linked to Akt signal pathway and the other is linked to the epithelial-mesenchymal transition. MK2206, an Akt inhibitor, could also inhibit the growth and the mesenchymal phenotype of EC cells. But interestingly, while UHRF1 deficiency resulted in the downregulation of EMT-associated genes such as ZEB2, vimentin and twist1, MK2206 inhibition of Akt activity only suppressed the expression of snail, suggesting that the control of the mesenchymal phenotype by UHRF1 does not rely on the AKT cascade. We conclude that the oncogenic function of UHRF1 is linked to the synergistic effect on the Akt signal cascade and the EMT-specific genes in EC cells.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4213113",
+      "title": "TE10_shUHRF1_rep3"
+    },
+    {
+      "accession": "GSM4213121",
+      "title": "Kyse410_scramble_rep2"
+    },
+    {
+      "accession": "GSM4213122",
+      "title": "Kyse410_scramble_rep3"
+    },
+    {
+      "accession": "GSM4213119",
+      "title": "Kyse410_shUHRF1_rep3"
+    },
+    {
+      "accession": "GSM4213116",
+      "title": "TE10_scramble_rep3"
+    },
+    {
+      "accession": "GSM4213120",
+      "title": "Kyse410_scramble_rep1"
+    },
+    {
+      "accession": "GSM4213117",
+      "title": "Kyse410_shUHRF1_rep1"
+    },
+    {
+      "accession": "GSM4213111",
+      "title": "TE10_shUHRF1_rep1"
+    },
+    {
+      "accession": "GSM4213114",
+      "title": "TE10_scramble_rep1"
+    },
+    {
+      "accession": "GSM4213112",
+      "title": "TE10_shUHRF1_rep2"
+    },
+    {
+      "accession": "GSM4213118",
+      "title": "Kyse410_shUHRF1_rep2"
+    },
+    {
+      "accession": "GSM4213115",
+      "title": "TE10_scramble_rep2"
+    }
+  ]
+}

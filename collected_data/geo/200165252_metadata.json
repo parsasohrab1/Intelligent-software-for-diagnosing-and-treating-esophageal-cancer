@@ -1,0 +1,317 @@
+{
+  "dataset_id": "200165252",
+  "title": "RNA sequencing of the phase II PERFECT trial combining a PD-L1 inhibitor (atezolizumab) with neoadjuvant chemoradiotherapy in resectable esophageal adenocarcinoma patients.",
+  "summary": "We performed bulk RNA sequencing of tumor biopsies from patients before treatment, on-treatment and in case a poor response was suspected from the resection specimen. At baseline we found in responding patients a higher six-gene IFNy score compared to non-responders. On-treatment non-responders showed either high expression of co-inhibitory checkpoints with a high number of cytotoxic lymphocytes or low expression and a low number of cytotoxic lymphocytes.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5033959",
+      "title": "Patient tumor sample_10_on_treatment"
+    },
+    {
+      "accession": "GSM5033976",
+      "title": "Patient tumor sample_22_baseline"
+    },
+    {
+      "accession": "GSM5033956",
+      "title": "Patient tumor sample_9_on_treatment"
+    },
+    {
+      "accession": "GSM5034002",
+      "title": "Patient tumor sample_34_on_treatment"
+    },
+    {
+      "accession": "GSM5034019",
+      "title": "Patient tumor sample_45_baseline"
+    },
+    {
+      "accession": "GSM5033982",
+      "title": "Patient tumor sample_25_baseline"
+    },
+    {
+      "accession": "GSM5033962",
+      "title": "Patient tumor sample_12_baseline"
+    },
+    {
+      "accession": "GSM5033999",
+      "title": "Patient tumor sample_33_on_treatment"
+    },
+    {
+      "accession": "GSM5033979",
+      "title": "Patient tumor sample_23_on_treatment"
+    },
+    {
+      "accession": "GSM5034005",
+      "title": "Patient tumor sample_35_on_treatment"
+    },
+    {
+      "accession": "GSM5033968",
+      "title": "Patient tumor sample_17_resection"
+    },
+    {
+      "accession": "GSM5033985",
+      "title": "Patient tumor sample_26_baseline"
+    },
+    {
+      "accession": "GSM5033948",
+      "title": "Patient tumor sample_3_baseline"
+    },
+    {
+      "accession": "GSM5033965",
+      "title": "Patient tumor sample_15_on_treatment"
+    },
+    {
+      "accession": "GSM5034011",
+      "title": "Patient tumor sample_40_baseline"
+    },
+    {
+      "accession": "GSM5033945",
+      "title": "Patient tumor sample_1_resection"
+    },
+    {
+      "accession": "GSM5033991",
+      "title": "Patient tumor sample_30_baseline"
+    },
+    {
+      "accession": "GSM5034008",
+      "title": "Patient tumor sample_38_baseline"
+    },
+    {
+      "accession": "GSM5033988",
+      "title": "Patient tumor sample_28_on_treatment"
+    },
+    {
+      "accession": "GSM5034014",
+      "title": "Patient tumor sample_42_on_treatment"
+    },
+    {
+      "accession": "GSM5033977",
+      "title": "Patient tumor sample_22_on_treatment"
+    },
+    {
+      "accession": "GSM5033994",
+      "title": "Patient tumor sample_31_on_treatment"
+    },
+    {
+      "accession": "GSM5033974",
+      "title": "Patient tumor sample_20_resection"
+    },
+    {
+      "accession": "GSM5033957",
+      "title": "Patient tumor sample_9_resection"
+    },
+    {
+      "accession": "GSM5033971",
+      "title": "Patient tumor sample_19_on_treatment"
+    },
+    {
+      "accession": "GSM5034017",
+      "title": "Patient tumor sample_44_baseline"
+    },
+    {
+      "accession": "GSM5033954",
+      "title": "Patient tumor sample_7_on_treatment"
+    },
+    {
+      "accession": "GSM5033997",
+      "title": "Patient tumor sample_32_resection"
+    },
+    {
+      "accession": "GSM5033951",
+      "title": "Patient tumor sample_4_baseline"
+    },
+    {
+      "accession": "GSM5034003",
+      "title": "Patient tumor sample_34_resection"
+    },
+    {
+      "accession": "GSM5033986",
+      "title": "Patient tumor sample_26_on_treatment"
+    },
+    {
+      "accession": "GSM5034020",
+      "title": "Patient tumor sample_45_on_treatment"
+    },
+    {
+      "accession": "GSM5034000",
+      "title": "Patient tumor sample_33_resection"
+    },
+    {
+      "accession": "GSM5033963",
+      "title": "Patient tumor sample_12_on_treatment"
+    },
+    {
+      "accession": "GSM5033983",
+      "title": "Patient tumor sample_25_on_treatment"
+    },
+    {
+      "accession": "GSM5034006",
+      "title": "Patient tumor sample_36_on_treatment"
+    },
+    {
+      "accession": "GSM5033960",
+      "title": "Patient tumor sample_11_baseline"
+    },
+    {
+      "accession": "GSM5033980",
+      "title": "Patient tumor sample_23_resection"
+    },
+    {
+      "accession": "GSM5033949",
+      "title": "Patient tumor sample_3_on_treatment"
+    },
+    {
+      "accession": "GSM5033966",
+      "title": "Patient tumor sample_17_baseline"
+    },
+    {
+      "accession": "GSM5033946",
+      "title": "Patient tumor sample_2_baseline"
+    },
+    {
+      "accession": "GSM5033992",
+      "title": "Patient tumor sample_30_on_treatment"
+    },
+    {
+      "accession": "GSM5034012",
+      "title": "Patient tumor sample_41_baseline"
+    },
+    {
+      "accession": "GSM5033952",
+      "title": "Patient tumor sample_6_baseline"
+    },
+    {
+      "accession": "GSM5033972",
+      "title": "Patient tumor sample_20_baseline"
+    },
+    {
+      "accession": "GSM5033989",
+      "title": "Patient tumor sample_29_baseline"
+    },
+    {
+      "accession": "GSM5034009",
+      "title": "Patient tumor sample_38_on_treatment"
+    },
+    {
+      "accession": "GSM5033958",
+      "title": "Patient tumor sample_10_baseline"
+    },
+    {
+      "accession": "GSM5033969",
+      "title": "Patient tumor sample_18_baseline"
+    },
+    {
+      "accession": "GSM5033995",
+      "title": "Patient tumor sample_31_resection"
+    },
+    {
+      "accession": "GSM5033955",
+      "title": "Patient tumor sample_8_baseline"
+    },
+    {
+      "accession": "GSM5033975",
+      "title": "Patient tumor sample_21_baseline"
+    },
+    {
+      "accession": "GSM5034001",
+      "title": "Patient tumor sample_34_baseline"
+    },
+    {
+      "accession": "GSM5033987",
+      "title": "Patient tumor sample_28_baseline"
+    },
+    {
+      "accession": "GSM5033998",
+      "title": "Patient tumor sample_33_baseline"
+    },
+    {
+      "accession": "GSM5034018",
+      "title": "Patient tumor sample_44_on_treatment"
+    },
+    {
+      "accession": "GSM5033978",
+      "title": "Patient tumor sample_23_baseline"
+    },
+    {
+      "accession": "GSM5033984",
+      "title": "Patient tumor sample_25_resection"
+    },
+    {
+      "accession": "GSM5034004",
+      "title": "Patient tumor sample_35_baseline"
+    },
+    {
+      "accession": "GSM5034015",
+      "title": "Patient tumor sample_43_baseline"
+    },
+    {
+      "accession": "GSM5033947",
+      "title": "Patient tumor sample_2_on_treatment"
+    },
+    {
+      "accession": "GSM5033967",
+      "title": "Patient tumor sample_17_on_treatment"
+    },
+    {
+      "accession": "GSM5033981",
+      "title": "Patient tumor sample_24_baseline"
+    },
+    {
+      "accession": "GSM5033961",
+      "title": "Patient tumor sample_11_on_treatment"
+    },
+    {
+      "accession": "GSM5033944",
+      "title": "Patient tumor sample_1_on_treatment"
+    },
+    {
+      "accession": "GSM5033964",
+      "title": "Patient tumor sample_15_baseline"
+    },
+    {
+      "accession": "GSM5034007",
+      "title": "Patient tumor sample_37_baseline"
+    },
+    {
+      "accession": "GSM5034013",
+      "title": "Patient tumor sample_42_baseline"
+    },
+    {
+      "accession": "GSM5033950",
+      "title": "Patient tumor sample_3_resection"
+    },
+    {
+      "accession": "GSM5033996",
+      "title": "Patient tumor sample_32_on_treatment"
+    },
+    {
+      "accession": "GSM5033990",
+      "title": "Patient tumor sample_29_on_treatment"
+    },
+    {
+      "accession": "GSM5034010",
+      "title": "Patient tumor sample_39_baseline"
+    },
+    {
+      "accession": "GSM5033973",
+      "title": "Patient tumor sample_20_on_treatment"
+    },
+    {
+      "accession": "GSM5034016",
+      "title": "Patient tumor sample_43_on_treatment"
+    },
+    {
+      "accession": "GSM5033993",
+      "title": "Patient tumor sample_31_baseline"
+    },
+    {
+      "accession": "GSM5033953",
+      "title": "Patient tumor sample_7_baseline"
+    },
+    {
+      "accession": "GSM5033970",
+      "title": "Patient tumor sample_18_on_treatment"
+    }
+  ]
+}

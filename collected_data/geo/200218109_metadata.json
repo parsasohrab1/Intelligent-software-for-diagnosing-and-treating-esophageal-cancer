@@ -1,0 +1,153 @@
+{
+  "dataset_id": "200218109",
+  "title": "Esophageal Squamous Cell Carcinoma tumors from Indian patients: nuclear-stabilized p53 (NS+) versus unstable p53 (NS-) protein",
+  "summary": "Transcriptional profiling of Esophageal Squamous Cell Carcinoma (ESCC) tumors comparing samples harbouring nuclear-stabilized p53 (NS+) versus unstable p53 (NS-) protein, determined through immunohistochemistry (IHC) staining of the tumor sections. The goal was to identify the genes that were differentially regulated between NS+ and NS- ESCC samples.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6734750",
+      "title": "NS+ esophageal tumor 31"
+    },
+    {
+      "accession": "GSM6734730",
+      "title": "NS- esophageal tumor 11"
+    },
+    {
+      "accession": "GSM6734724",
+      "title": "NS- esophageal tumor 5"
+    },
+    {
+      "accession": "GSM6734727",
+      "title": "NS- esophageal tumor 8"
+    },
+    {
+      "accession": "GSM6734747",
+      "title": "NS+ esophageal tumor 28"
+    },
+    {
+      "accession": "GSM6734733",
+      "title": "NS+ esophageal tumor 14"
+    },
+    {
+      "accession": "GSM6734736",
+      "title": "NS- esophageal tumor 17"
+    },
+    {
+      "accession": "GSM6734753",
+      "title": "NS+ esophageal tumor 34"
+    },
+    {
+      "accession": "GSM6734739",
+      "title": "NS+ esophageal tumor 20"
+    },
+    {
+      "accession": "GSM6734732",
+      "title": "NS+ esophageal tumor 13"
+    },
+    {
+      "accession": "GSM6734752",
+      "title": "NS+ esophageal tumor 33"
+    },
+    {
+      "accession": "GSM6734735",
+      "title": "NS+ esophageal tumor 16"
+    },
+    {
+      "accession": "GSM6734755",
+      "title": "NS- esophageal tumor 36"
+    },
+    {
+      "accession": "GSM6734729",
+      "title": "NS+ esophageal tumor 10"
+    },
+    {
+      "accession": "GSM6734741",
+      "title": "NS+ esophageal tumor 22"
+    },
+    {
+      "accession": "GSM6734721",
+      "title": "NS- esophageal tumor 2"
+    },
+    {
+      "accession": "GSM6734744",
+      "title": "NS- esophageal tumor 25"
+    },
+    {
+      "accession": "GSM6734738",
+      "title": "NS- esophageal tumor 19"
+    },
+    {
+      "accession": "GSM6734740",
+      "title": "NS+ esophageal tumor 21"
+    },
+    {
+      "accession": "GSM6734720",
+      "title": "NS- esophageal tumor 1"
+    },
+    {
+      "accession": "GSM6734737",
+      "title": "NS+ esophageal tumor 18"
+    },
+    {
+      "accession": "GSM6734749",
+      "title": "NS- esophageal tumor 30"
+    },
+    {
+      "accession": "GSM6734743",
+      "title": "NS- esophageal tumor 24"
+    },
+    {
+      "accession": "GSM6734723",
+      "title": "NS- esophageal tumor 4"
+    },
+    {
+      "accession": "GSM6734726",
+      "title": "NS- esophageal tumor 7"
+    },
+    {
+      "accession": "GSM6734722",
+      "title": "NS- esophageal tumor 3"
+    },
+    {
+      "accession": "GSM6734746",
+      "title": "NS+ esophageal tumor 27"
+    },
+    {
+      "accession": "GSM6734725",
+      "title": "NS- esophageal tumor 6"
+    },
+    {
+      "accession": "GSM6734742",
+      "title": "NS+ esophageal tumor 23"
+    },
+    {
+      "accession": "GSM6734745",
+      "title": "NS+ esophageal tumor 26"
+    },
+    {
+      "accession": "GSM6734751",
+      "title": "NS+ esophageal tumor 32"
+    },
+    {
+      "accession": "GSM6734731",
+      "title": "NS- esophageal tumor 12"
+    },
+    {
+      "accession": "GSM6734754",
+      "title": "NS+ esophageal tumor 35"
+    },
+    {
+      "accession": "GSM6734734",
+      "title": "NS- esophageal tumor 15"
+    },
+    {
+      "accession": "GSM6734728",
+      "title": "NS- esophageal tumor 9"
+    },
+    {
+      "accession": "GSM6734748",
+      "title": "NS- esophageal tumor 29"
+    }
+  ]
+}

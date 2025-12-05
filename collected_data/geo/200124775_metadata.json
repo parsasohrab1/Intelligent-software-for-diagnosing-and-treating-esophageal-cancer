@@ -1,0 +1,801 @@
+{
+  "dataset_id": "200124775",
+  "title": "Multiplex 5mC Marker Barcode Counting (MMBC-seq): A sensitive detection method for cell-free DNA methylation",
+  "summary": "The detection of hypermethylation markers on cell-free DNA (cfDNA) in biological fluids is a promising and non-invasive approach for early diagnosis and monitoring of human diseases. However, it is challenging to detect hypermethylation markers in a high-throughput, sensitive, and cost-effective manner. Here we presented a multiplex 5-methylcytosine marker barcode counting (MMBC-seq) technique and reported its clinical application for cfDNA from peripheral plasma samples. We identified an MMBC cancer detection panel and developed a scoring system to differentiate cancer versus healthy controls. In a multiple-cancer case-control study, the panel achieved a sensitivity and specificity of 80.2% and 95.7% respectively (AUC 0.906, 95% CI 0.846-0.948). The results suggest that MMBC-seq has great potential to realize non-invasive, flexible and clinically applicable cancer detection.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM3553838",
+      "title": "MMBC010028NOR"
+    },
+    {
+      "accession": "GSM3553755",
+      "title": "MMBC030014CAC"
+    },
+    {
+      "accession": "GSM3553875",
+      "title": "MMBC050007CAC"
+    },
+    {
+      "accession": "GSM3553792",
+      "title": "MMBC020001NOR"
+    },
+    {
+      "accession": "GSM3553855",
+      "title": "MMBC010045NOR"
+    },
+    {
+      "accession": "GSM3553772",
+      "title": "MMBC040009CAC"
+    },
+    {
+      "accession": "GSM3553789",
+      "title": "MMBC040026CAC"
+    },
+    {
+      "accession": "GSM3553752",
+      "title": "MMBC030011CAC"
+    },
+    {
+      "accession": "GSM3553835",
+      "title": "MMBC010025NOR"
+    },
+    {
+      "accession": "GSM3553769",
+      "title": "MMBC040006CAC"
+    },
+    {
+      "accession": "GSM3553815",
+      "title": "MMBC010005NOR"
+    },
+    {
+      "accession": "GSM3553898",
+      "title": "MMBC060009CAC"
+    },
+    {
+      "accession": "GSM3553852",
+      "title": "MMBC010042NOR"
+    },
+    {
+      "accession": "GSM3553732",
+      "title": "MMBC020008CAC"
+    },
+    {
+      "accession": "GSM3553712",
+      "title": "MMBC010002CAC"
+    },
+    {
+      "accession": "GSM3553878",
+      "title": "MMBC040029CAC"
+    },
+    {
+      "accession": "GSM3553795",
+      "title": "MMBC020004NOR"
+    },
+    {
+      "accession": "GSM3553749",
+      "title": "MMBC030008CAC"
+    },
+    {
+      "accession": "GSM3553832",
+      "title": "MMBC010022NOR"
+    },
+    {
+      "accession": "GSM3553895",
+      "title": "MMBC060006CAC"
+    },
+    {
+      "accession": "GSM3553812",
+      "title": "MMBC010002NOR"
+    },
+    {
+      "accession": "GSM3553858",
+      "title": "MMBC010048NOR"
+    },
+    {
+      "accession": "GSM3553775",
+      "title": "MMBC040012CAC"
+    },
+    {
+      "accession": "GSM3553729",
+      "title": "MMBC020005CAC"
+    },
+    {
+      "accession": "GSM3553884",
+      "title": "MMBC040035CAC"
+    },
+    {
+      "accession": "GSM3553801",
+      "title": "MMBC020010NOR"
+    },
+    {
+      "accession": "GSM3553718",
+      "title": "MMBC010008CAC"
+    },
+    {
+      "accession": "GSM3553818",
+      "title": "MMBC010008NOR"
+    },
+    {
+      "accession": "GSM3553735",
+      "title": "MMBC020011CAC"
+    },
+    {
+      "accession": "GSM3553781",
+      "title": "MMBC040018CAC"
+    },
+    {
+      "accession": "GSM3553901",
+      "title": "MMBC070003CAC"
+    },
+    {
+      "accession": "GSM3553844",
+      "title": "MMBC010034NOR"
+    },
+    {
+      "accession": "GSM3553864",
+      "title": "MMBC010054NOR"
+    },
+    {
+      "accession": "GSM3553715",
+      "title": "MMBC010005CAC"
+    },
+    {
+      "accession": "GSM3553881",
+      "title": "MMBC040032CAC"
+    },
+    {
+      "accession": "GSM3553798",
+      "title": "MMBC020007NOR"
+    },
+    {
+      "accession": "GSM3553761",
+      "title": "MMBC030020CAC"
+    },
+    {
+      "accession": "GSM3553741",
+      "title": "MMBC020017CAC"
+    },
+    {
+      "accession": "GSM3553907",
+      "title": "MMBC070009CAC"
+    },
+    {
+      "accession": "GSM3553824",
+      "title": "MMBC010014NOR"
+    },
+    {
+      "accession": "GSM3553778",
+      "title": "MMBC040015CAC"
+    },
+    {
+      "accession": "GSM3553861",
+      "title": "MMBC010051NOR"
+    },
+    {
+      "accession": "GSM3553841",
+      "title": "MMBC010031NOR"
+    },
+    {
+      "accession": "GSM3553887",
+      "title": "MMBC040038CAC"
+    },
+    {
+      "accession": "GSM3553804",
+      "title": "MMBC020013NOR"
+    },
+    {
+      "accession": "GSM3553721",
+      "title": "MMBC010011CAC"
+    },
+    {
+      "accession": "GSM3553738",
+      "title": "MMBC020014CAC"
+    },
+    {
+      "accession": "GSM3553904",
+      "title": "MMBC070006CAC"
+    },
+    {
+      "accession": "GSM3553821",
+      "title": "MMBC010011NOR"
+    },
+    {
+      "accession": "GSM3553758",
+      "title": "MMBC030017CAC"
+    },
+    {
+      "accession": "GSM3553857",
+      "title": "MMBC010047NOR"
+    },
+    {
+      "accession": "GSM3553903",
+      "title": "MMBC070005CAC"
+    },
+    {
+      "accession": "GSM3553737",
+      "title": "MMBC020013CAC"
+    },
+    {
+      "accession": "GSM3553820",
+      "title": "MMBC010010NOR"
+    },
+    {
+      "accession": "GSM3553754",
+      "title": "MMBC030013CAC"
+    },
+    {
+      "accession": "GSM3553867",
+      "title": "MMBC010057NOR"
+    },
+    {
+      "accession": "GSM3553774",
+      "title": "MMBC040011CAC"
+    },
+    {
+      "accession": "GSM3553837",
+      "title": "MMBC010027NOR"
+    },
+    {
+      "accession": "GSM3553863",
+      "title": "MMBC010053NOR"
+    },
+    {
+      "accession": "GSM3553780",
+      "title": "MMBC040017CAC"
+    },
+    {
+      "accession": "GSM3553717",
+      "title": "MMBC010007CAC"
+    },
+    {
+      "accession": "GSM3553734",
+      "title": "MMBC020010CAC"
+    },
+    {
+      "accession": "GSM3553900",
+      "title": "MMBC070002CAC"
+    },
+    {
+      "accession": "GSM3553817",
+      "title": "MMBC010007NOR"
+    },
+    {
+      "accession": "GSM3553883",
+      "title": "MMBC040034CAC"
+    },
+    {
+      "accession": "GSM3553800",
+      "title": "MMBC020009NOR"
+    },
+    {
+      "accession": "GSM3553760",
+      "title": "MMBC030019CAC"
+    },
+    {
+      "accession": "GSM3553843",
+      "title": "MMBC010033NOR"
+    },
+    {
+      "accession": "GSM3553797",
+      "title": "MMBC020006NOR"
+    },
+    {
+      "accession": "GSM3553714",
+      "title": "MMBC010004CAC"
+    },
+    {
+      "accession": "GSM3553860",
+      "title": "MMBC010050NOR"
+    },
+    {
+      "accession": "GSM3553880",
+      "title": "MMBC040031CAC"
+    },
+    {
+      "accession": "GSM3553757",
+      "title": "MMBC030016CAC"
+    },
+    {
+      "accession": "GSM3553840",
+      "title": "MMBC010030NOR"
+    },
+    {
+      "accession": "GSM3553711",
+      "title": "MMBC010001CAC"
+    },
+    {
+      "accession": "GSM3553906",
+      "title": "MMBC070008CAC"
+    },
+    {
+      "accession": "GSM3553777",
+      "title": "MMBC040014CAC"
+    },
+    {
+      "accession": "GSM3553783",
+      "title": "MMBC040020CAC"
+    },
+    {
+      "accession": "GSM3553866",
+      "title": "MMBC010056NOR"
+    },
+    {
+      "accession": "GSM3553746",
+      "title": "MMBC030005CAC"
+    },
+    {
+      "accession": "GSM3553892",
+      "title": "MMBC060003CAC"
+    },
+    {
+      "accession": "GSM3553829",
+      "title": "MMBC010019NOR"
+    },
+    {
+      "accession": "GSM3553846",
+      "title": "MMBC010036NOR"
+    },
+    {
+      "accession": "GSM3553763",
+      "title": "MMBC030022CAC"
+    },
+    {
+      "accession": "GSM3553809",
+      "title": "MMBC020018NOR"
+    },
+    {
+      "accession": "GSM3553726",
+      "title": "MMBC020002CAC"
+    },
+    {
+      "accession": "GSM3553889",
+      "title": "MMBC040040CAC"
+    },
+    {
+      "accession": "GSM3553872",
+      "title": "MMBC050004CAC"
+    },
+    {
+      "accession": "GSM3553826",
+      "title": "MMBC010016NOR"
+    },
+    {
+      "accession": "GSM3553743",
+      "title": "MMBC030002CAC"
+    },
+    {
+      "accession": "GSM3553786",
+      "title": "MMBC040023CAC"
+    },
+    {
+      "accession": "GSM3553806",
+      "title": "MMBC020015NOR"
+    },
+    {
+      "accession": "GSM3553723",
+      "title": "MMBC010013CAC"
+    },
+    {
+      "accession": "GSM3553869",
+      "title": "MMBC050001CAC"
+    },
+    {
+      "accession": "GSM3553740",
+      "title": "MMBC020016CAC"
+    },
+    {
+      "accession": "GSM3553823",
+      "title": "MMBC010013NOR"
+    },
+    {
+      "accession": "GSM3553886",
+      "title": "MMBC040037CAC"
+    },
+    {
+      "accession": "GSM3553720",
+      "title": "MMBC010010CAC"
+    },
+    {
+      "accession": "GSM3553849",
+      "title": "MMBC010039NOR"
+    },
+    {
+      "accession": "GSM3553766",
+      "title": "MMBC040003CAC"
+    },
+    {
+      "accession": "GSM3553828",
+      "title": "MMBC010018NOR"
+    },
+    {
+      "accession": "GSM3553803",
+      "title": "MMBC020012NOR"
+    },
+    {
+      "accession": "GSM3553865",
+      "title": "MMBC010055NOR"
+    },
+    {
+      "accession": "GSM3553782",
+      "title": "MMBC040019CAC"
+    },
+    {
+      "accession": "GSM3553908",
+      "title": "MMBC070010CAC"
+    },
+    {
+      "accession": "GSM3553825",
+      "title": "MMBC010015NOR"
+    },
+    {
+      "accession": "GSM3553762",
+      "title": "MMBC030021CAC"
+    },
+    {
+      "accession": "GSM3553805",
+      "title": "MMBC020014NOR"
+    },
+    {
+      "accession": "GSM3553722",
+      "title": "MMBC010012CAC"
+    },
+    {
+      "accession": "GSM3553862",
+      "title": "MMBC010052NOR"
+    },
+    {
+      "accession": "GSM3553779",
+      "title": "MMBC040016CAC"
+    },
+    {
+      "accession": "GSM3553845",
+      "title": "MMBC010035NOR"
+    },
+    {
+      "accession": "GSM3553742",
+      "title": "MMBC030001CAC"
+    },
+    {
+      "accession": "GSM3553905",
+      "title": "MMBC070007CAC"
+    },
+    {
+      "accession": "GSM3553842",
+      "title": "MMBC010032NOR"
+    },
+    {
+      "accession": "GSM3553759",
+      "title": "MMBC030018CAC"
+    },
+    {
+      "accession": "GSM3553888",
+      "title": "MMBC040039CAC"
+    },
+    {
+      "accession": "GSM3553802",
+      "title": "MMBC020011NOR"
+    },
+    {
+      "accession": "GSM3553719",
+      "title": "MMBC010009CAC"
+    },
+    {
+      "accession": "GSM3553728",
+      "title": "MMBC020004CAC"
+    },
+    {
+      "accession": "GSM3553868",
+      "title": "MMBC010058NOR"
+    },
+    {
+      "accession": "GSM3553785",
+      "title": "MMBC040022CAC"
+    },
+    {
+      "accession": "GSM3553739",
+      "title": "MMBC020015CAC"
+    },
+    {
+      "accession": "GSM3553765",
+      "title": "MMBC040002CAC"
+    },
+    {
+      "accession": "GSM3553885",
+      "title": "MMBC040036CAC"
+    },
+    {
+      "accession": "GSM3553894",
+      "title": "MMBC060005CAC"
+    },
+    {
+      "accession": "GSM3553822",
+      "title": "MMBC010012NOR"
+    },
+    {
+      "accession": "GSM3553811",
+      "title": "MMBC010001NOR"
+    },
+    {
+      "accession": "GSM3553848",
+      "title": "MMBC010038NOR"
+    },
+    {
+      "accession": "GSM3553725",
+      "title": "MMBC020001CAC"
+    },
+    {
+      "accession": "GSM3553791",
+      "title": "MMBC040028CAC"
+    },
+    {
+      "accession": "GSM3553874",
+      "title": "MMBC050006CAC"
+    },
+    {
+      "accession": "GSM3553834",
+      "title": "MMBC010024NOR"
+    },
+    {
+      "accession": "GSM3553751",
+      "title": "MMBC030010CAC"
+    },
+    {
+      "accession": "GSM3553745",
+      "title": "MMBC030004CAC"
+    },
+    {
+      "accession": "GSM3553891",
+      "title": "MMBC060002CAC"
+    },
+    {
+      "accession": "GSM3553808",
+      "title": "MMBC020017NOR"
+    },
+    {
+      "accession": "GSM3553788",
+      "title": "MMBC040025CAC"
+    },
+    {
+      "accession": "GSM3553854",
+      "title": "MMBC010044NOR"
+    },
+    {
+      "accession": "GSM3553771",
+      "title": "MMBC040008CAC"
+    },
+    {
+      "accession": "GSM3553871",
+      "title": "MMBC050003CAC"
+    },
+    {
+      "accession": "GSM3553831",
+      "title": "MMBC010021NOR"
+    },
+    {
+      "accession": "GSM3553897",
+      "title": "MMBC060008CAC"
+    },
+    {
+      "accession": "GSM3553814",
+      "title": "MMBC010004NOR"
+    },
+    {
+      "accession": "GSM3553731",
+      "title": "MMBC020007CAC"
+    },
+    {
+      "accession": "GSM3553794",
+      "title": "MMBC020003NOR"
+    },
+    {
+      "accession": "GSM3553851",
+      "title": "MMBC010041NOR"
+    },
+    {
+      "accession": "GSM3553768",
+      "title": "MMBC040005CAC"
+    },
+    {
+      "accession": "GSM3553847",
+      "title": "MMBC010037NOR"
+    },
+    {
+      "accession": "GSM3553873",
+      "title": "MMBC050005CAC"
+    },
+    {
+      "accession": "GSM3553877",
+      "title": "MMBC050009CAC"
+    },
+    {
+      "accession": "GSM3553744",
+      "title": "MMBC030003CAC"
+    },
+    {
+      "accession": "GSM3553810",
+      "title": "MMBC020019NOR"
+    },
+    {
+      "accession": "GSM3553727",
+      "title": "MMBC020003CAC"
+    },
+    {
+      "accession": "GSM3553748",
+      "title": "MMBC030007CAC"
+    },
+    {
+      "accession": "GSM3553770",
+      "title": "MMBC040007CAC"
+    },
+    {
+      "accession": "GSM3553893",
+      "title": "MMBC060004CAC"
+    },
+    {
+      "accession": "GSM3553764",
+      "title": "MMBC040001CAC"
+    },
+    {
+      "accession": "GSM3553827",
+      "title": "MMBC010017NOR"
+    },
+    {
+      "accession": "GSM3553870",
+      "title": "MMBC050002CAC"
+    },
+    {
+      "accession": "GSM3553724",
+      "title": "MMBC010014CAC"
+    },
+    {
+      "accession": "GSM3553790",
+      "title": "MMBC040027CAC"
+    },
+    {
+      "accession": "GSM3553853",
+      "title": "MMBC010043NOR"
+    },
+    {
+      "accession": "GSM3553807",
+      "title": "MMBC020016NOR"
+    },
+    {
+      "accession": "GSM3553850",
+      "title": "MMBC010040NOR"
+    },
+    {
+      "accession": "GSM3553767",
+      "title": "MMBC040004CAC"
+    },
+    {
+      "accession": "GSM3553833",
+      "title": "MMBC010023NOR"
+    },
+    {
+      "accession": "GSM3553890",
+      "title": "MMBC060001CAC"
+    },
+    {
+      "accession": "GSM3553787",
+      "title": "MMBC040024CAC"
+    },
+    {
+      "accession": "GSM3553773",
+      "title": "MMBC040010CAC"
+    },
+    {
+      "accession": "GSM3553902",
+      "title": "MMBC070004CAC"
+    },
+    {
+      "accession": "GSM3553799",
+      "title": "MMBC020008NOR"
+    },
+    {
+      "accession": "GSM3553830",
+      "title": "MMBC010020NOR"
+    },
+    {
+      "accession": "GSM3553747",
+      "title": "MMBC030006CAC"
+    },
+    {
+      "accession": "GSM3553784",
+      "title": "MMBC040021CAC"
+    },
+    {
+      "accession": "GSM3553856",
+      "title": "MMBC010046NOR"
+    },
+    {
+      "accession": "GSM3553736",
+      "title": "MMBC020012CAC"
+    },
+    {
+      "accession": "GSM3553882",
+      "title": "MMBC040033CAC"
+    },
+    {
+      "accession": "GSM3553753",
+      "title": "MMBC030012CAC"
+    },
+    {
+      "accession": "GSM3553836",
+      "title": "MMBC010026NOR"
+    },
+    {
+      "accession": "GSM3553879",
+      "title": "MMBC040030CAC"
+    },
+    {
+      "accession": "GSM3553796",
+      "title": "MMBC020005NOR"
+    },
+    {
+      "accession": "GSM3553819",
+      "title": "MMBC010009NOR"
+    },
+    {
+      "accession": "GSM3553733",
+      "title": "MMBC020009CAC"
+    },
+    {
+      "accession": "GSM3553716",
+      "title": "MMBC010006CAC"
+    },
+    {
+      "accession": "GSM3553750",
+      "title": "MMBC030009CAC"
+    },
+    {
+      "accession": "GSM3553876",
+      "title": "MMBC050008CAC"
+    },
+    {
+      "accession": "GSM3553859",
+      "title": "MMBC010049NOR"
+    },
+    {
+      "accession": "GSM3553776",
+      "title": "MMBC040013CAC"
+    },
+    {
+      "accession": "GSM3553813",
+      "title": "MMBC010003NOR"
+    },
+    {
+      "accession": "GSM3553730",
+      "title": "MMBC020006CAC"
+    },
+    {
+      "accession": "GSM3553899",
+      "title": "MMBC070001CAC"
+    },
+    {
+      "accession": "GSM3553816",
+      "title": "MMBC010006NOR"
+    },
+    {
+      "accession": "GSM3553839",
+      "title": "MMBC010029NOR"
+    },
+    {
+      "accession": "GSM3553756",
+      "title": "MMBC030015CAC"
+    },
+    {
+      "accession": "GSM3553713",
+      "title": "MMBC010003CAC"
+    },
+    {
+      "accession": "GSM3553896",
+      "title": "MMBC060007CAC"
+    },
+    {
+      "accession": "GSM3553793",
+      "title": "MMBC020002NOR"
+    }
+  ]
+}

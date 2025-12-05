@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200291375",
+  "title": "Expression data of circTMEM45A knockdown in KYSE-150 cell line",
+  "summary": "The circTMEM45A was knocked down in KYSE-150 cells using siRNA, and the gene expression between the knockdown group and the negative control group was compared to explore the downstream molecular mechanism of circTMEM45A in esophageal cancer.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8834052",
+      "title": "150SI3"
+    },
+    {
+      "accession": "GSM8834050",
+      "title": "150SI2"
+    },
+    {
+      "accession": "GSM8834044",
+      "title": "150NC2"
+    },
+    {
+      "accession": "GSM8834042",
+      "title": "150NC1"
+    },
+    {
+      "accession": "GSM8834048",
+      "title": "150SI1"
+    },
+    {
+      "accession": "GSM8834046",
+      "title": "150NC3"
+    }
+  ]
+}

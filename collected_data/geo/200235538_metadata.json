@@ -1,0 +1,161 @@
+{
+  "dataset_id": "200235538",
+  "title": "The dysregulated inclusion of BOLA3 exon 3 promoted by HNRNPC accelerates the progression of esophageal squamous cell carcinoma in esophageal squamous cell carcinoma",
+  "summary": "This SuperSeries is composed of the SubSeries listed below.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7504888",
+      "title": "T08"
+    },
+    {
+      "accession": "GSM7504865",
+      "title": "NC1"
+    },
+    {
+      "accession": "GSM7504882",
+      "title": "T02"
+    },
+    {
+      "accession": "GSM7504885",
+      "title": "T05"
+    },
+    {
+      "accession": "GSM7504902",
+      "title": "N11"
+    },
+    {
+      "accession": "GSM7504871",
+      "title": "KD3"
+    },
+    {
+      "accession": "GSM7504868",
+      "title": "NC4"
+    },
+    {
+      "accession": "GSM7504874",
+      "title": "NC2"
+    },
+    {
+      "accession": "GSM7504891",
+      "title": "T11"
+    },
+    {
+      "accession": "GSM7504894",
+      "title": "N03"
+    },
+    {
+      "accession": "GSM7504877",
+      "title": "KD1"
+    },
+    {
+      "accession": "GSM7504897",
+      "title": "N06"
+    },
+    {
+      "accession": "GSM7504880",
+      "title": "KD4"
+    },
+    {
+      "accession": "GSM7504883",
+      "title": "T03"
+    },
+    {
+      "accession": "GSM7504900",
+      "title": "N09"
+    },
+    {
+      "accession": "GSM7504869",
+      "title": "KD1"
+    },
+    {
+      "accession": "GSM7504886",
+      "title": "T06"
+    },
+    {
+      "accession": "GSM7504889",
+      "title": "T09"
+    },
+    {
+      "accession": "GSM7504866",
+      "title": "NC2"
+    },
+    {
+      "accession": "GSM7504878",
+      "title": "KD2"
+    },
+    {
+      "accession": "GSM7504898",
+      "title": "N07"
+    },
+    {
+      "accession": "GSM7504892",
+      "title": "N01"
+    },
+    {
+      "accession": "GSM7504872",
+      "title": "KD4"
+    },
+    {
+      "accession": "GSM7504895",
+      "title": "N04"
+    },
+    {
+      "accession": "GSM7504875",
+      "title": "NC3"
+    },
+    {
+      "accession": "GSM7504901",
+      "title": "N10"
+    },
+    {
+      "accession": "GSM7504881",
+      "title": "T01"
+    },
+    {
+      "accession": "GSM7504887",
+      "title": "T07"
+    },
+    {
+      "accession": "GSM7504890",
+      "title": "T10"
+    },
+    {
+      "accession": "GSM7504884",
+      "title": "T04"
+    },
+    {
+      "accession": "GSM7504870",
+      "title": "KD2"
+    },
+    {
+      "accession": "GSM7504893",
+      "title": "N02"
+    },
+    {
+      "accession": "GSM7504873",
+      "title": "NC1"
+    },
+    {
+      "accession": "GSM7504867",
+      "title": "NC3"
+    },
+    {
+      "accession": "GSM7504896",
+      "title": "N05"
+    },
+    {
+      "accession": "GSM7504899",
+      "title": "N08"
+    },
+    {
+      "accession": "GSM7504879",
+      "title": "KD3"
+    },
+    {
+      "accession": "GSM7504876",
+      "title": "NC4"
+    }
+  ]
+}

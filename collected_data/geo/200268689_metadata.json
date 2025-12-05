@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200268689",
+  "title": "Fusobacterium nucleatum-driven mitophagy facilitates endosymbiosis in macrophages and promotes esophageal squamous cell carcinoma metastasis",
+  "summary": "The facultative intracellular bacterium Fusobacterium nucleatum (Fn) mediates tumorigenesis and progression in esophageal squamous cell carcinoma (ESCC). The intracellular survival strategy of Fn and whether Fn can spread through cell\u2012cell contact in intratumoral tissues and, if so, the underlying mechanisms and implications are currently unknown. Here, we observed that Fn accumulates in macrophages from ESCC tumors and paracancerous normal tissues. We further found that Fn-induced macrophage mitophagy through the PINK1-Parkin-independent pathway decreases excessive mitochondrial ROS production to promote survival. Furthermore, Fn drives a biphasic metabolic switch between glycolysis and oxidative phosphorylation in macrophages to support the bioenergetic demands of survival. Notably, Fn is carried and delivered to tumors by macrophages, where it promotes tumor metastasis via the CCL2-CCR2 axis in ESCC. Treatment with a mitochondrial division inhibitor (mdivi-1) reduced the intracellular Fn concentration and inhibited Fn-positive tumor metastasis in mice. These findings indicate that mitophagy inhibitors or mitophagy machinery targeting may serve as efficient therapeutic strategies to treat Fn-positive tumors.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8296524",
+      "title": "ESCC cells, Fn"
+    },
+    {
+      "accession": "GSM8296523",
+      "title": "ESCC cells, Control"
+    }
+  ]
+}

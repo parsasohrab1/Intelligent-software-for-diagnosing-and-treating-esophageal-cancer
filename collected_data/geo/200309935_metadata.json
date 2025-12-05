@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200309935",
+  "title": "Multi-omic integration identifies mechanisms of Broad Drug Resistance and opportunities for therapeutic reprogramming cancer cells",
+  "summary": "Broad drug resistance in cancer arises through diverse transcriptional, metabolic, and genetic adaptations, yet the shared molecular programs that sustain cross-resistant phenotypes remain incompletely defined. This study integrates PRISM drug-response data with transcriptomic, metabolomic, and mutational profiles to characterize the molecular features associated with broad drug resistance and to identify compounds capable of reversing resistance-associated gene signatures. Resistant cell lines exhibited coordinated activation of extracellular matrix remodeling, stress-adaptation pathways, and survival signaling, with NFE2L2 emerging as a central regulatory hub linking upstream mutations to oxidative-stress transcriptional programs. Multi-omic integration further revealed metabolic reprogramming as a conserved hallmark of resistance, and analyses of clinical cohorts demonstrated that resistance-associated alterations were associated with reduced progression-free survival.  Computational perturbagen screening nominated compounds predicted to counteract resistance-associated transcriptional signatures. Experimental validation confirmed that rosiglitazone suppressed NFE2L2-associated gene expression programs and restored chemotherapy sensitivity in resistant models, supporting a scalable framework for rational phenotypic reprogramming.  This GEO submission provides raw RNA-seq data generated from compound-treated OE19 cells used to experimentally validate candidate re-sensitization strategies.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9284991",
+      "title": "OE19_Methylprednisolone_2"
+    },
+    {
+      "accession": "GSM9284992",
+      "title": "OE19_Rosiglitazone_1"
+    },
+    {
+      "accession": "GSM9284989",
+      "title": "OE19_Halcinonide_2"
+    },
+    {
+      "accession": "GSM9284986",
+      "title": "OE19_Control_1"
+    },
+    {
+      "accession": "GSM9284993",
+      "title": "OE19_Rosiglitazone_2"
+    },
+    {
+      "accession": "GSM9284990",
+      "title": "OE19_Methylprednisolone_1"
+    },
+    {
+      "accession": "GSM9284987",
+      "title": "OE19_Control_2"
+    },
+    {
+      "accession": "GSM9284988",
+      "title": "OE19_Halcinonide_1"
+    }
+  ]
+}

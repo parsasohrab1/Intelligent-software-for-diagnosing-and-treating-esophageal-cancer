@@ -20,35 +20,41 @@ async def get_patients(
     """Get list of patients"""
     import logging
     import traceback
+    import time
     from datetime import datetime
     from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
     
+    start_time = time.time()
+    logger = logging.getLogger(__name__)
+    
     try:
-        # Query database
-        patients = db.query(Patient).offset(skip).limit(limit).all()
+        # Query database - optimized with limit
+        # Reduce default limit if not specified to improve performance
+        # Further reduce limit to prevent timeouts
+        effective_limit = min(limit, 100) if limit > 100 else limit
+        patients = db.query(Patient).offset(skip).limit(effective_limit).all()
+        
+        query_time = time.time() - start_time
+        if query_time > 1.0:
+            logger.warning(f"Patient query took {query_time:.2f}s, returned {len(patients)} patients")
         
         # Convert to dict for response (avoid Pydantic serialization issues)
+        # Optimized: Use list comprehension and simplified datetime handling
         patient_list = []
+        now_iso = datetime.now().isoformat()
+        
         for p in patients:
             try:
-                # Handle datetime conversion safely
-                created_at_str = None
-                if p.created_at:
-                    if hasattr(p.created_at, 'isoformat'):
-                        created_at_str = p.created_at.isoformat()
-                    else:
-                        created_at_str = str(p.created_at)
-                else:
-                    created_at_str = datetime.now().isoformat()
+                # Optimized datetime conversion with better error handling
+                try:
+                    created_at_str = p.created_at.isoformat() if p.created_at and hasattr(p.created_at, 'isoformat') else now_iso
+                except (AttributeError, ValueError, TypeError):
+                    created_at_str = now_iso
                 
-                updated_at_str = None
-                if p.updated_at:
-                    if hasattr(p.updated_at, 'isoformat'):
-                        updated_at_str = p.updated_at.isoformat()
-                    else:
-                        updated_at_str = str(p.updated_at)
-                else:
-                    updated_at_str = datetime.now().isoformat()
+                try:
+                    updated_at_str = p.updated_at.isoformat() if p.updated_at and hasattr(p.updated_at, 'isoformat') else now_iso
+                except (AttributeError, ValueError, TypeError):
+                    updated_at_str = now_iso
                 
                 patient_dict = {
                     "patient_id": str(p.patient_id) if p.patient_id else "",
@@ -63,14 +69,18 @@ async def get_patients(
                 }
                 patient_list.append(patient_dict)
             except Exception as conv_err:
-                logging.warning(f"Error converting patient {p.patient_id}: {str(conv_err)}")
-                logging.warning(traceback.format_exc())
+                # Reduced logging for performance - only log if critical
+                logger.warning(f"Error converting patient {getattr(p, 'patient_id', 'unknown')}: {str(conv_err)}")
                 continue
+        
+        total_time = time.time() - start_time
+        if total_time > 1.0:
+            logger.warning(f"get_patients took {total_time:.2f}s total (query: {query_time:.2f}s, conversion: {total_time - query_time:.2f}s)")
         
         return patient_list
     except (OperationalError, DisconnectionError, SQLAlchemyError) as e:
         # Database connection/operation errors - return empty list
-        logging.warning(f"Database error querying patients: {str(e)}")
+        logger.warning(f"Database error querying patients: {str(e)}")
         try:
             db.rollback()
         except Exception:
@@ -78,8 +88,9 @@ async def get_patients(
         return []
     except Exception as e:
         # Any other error - log and return empty list
-        logging.error(f"Error querying patients: {str(e)}")
-        logging.error(traceback.format_exc())
+        logger.error(f"Error querying patients: {str(e)}")
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            logger.error(traceback.format_exc())
         try:
             db.rollback()
         except Exception:

@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200171167",
+  "title": "RNA-Seq on Eca109 and KYSE450 cell lines with DMSO and Elaiophylin treatment",
+  "summary": "Esophageal cancer remains a dominating cause of cancer-associated death and has shown a sharp increase of more than 6-fold increase rates all over the world. It is divided into two main pathological types: esophageal squamous cell carcinoma (ESCC) and esophageal adenocarcinoma (EAC). Though the treatment has been improved a lot, the prognosis is still very poor with overall survival rate at 5 year was 15%-25%. Elaiophylin is a novel autophagy inhibitor at the late stage, which is a C2 symmetric macrolides separated from Streptomyces niger. However, the function of it in esophageal cancer was never explored. EIF4B is an important component of eukaryotic transcription initiation complex, which can be recruited to the 5\u2019 untranslated region (5\u2019UTR) of the mRNA. In recent years, eIF4B was suggested to play an important role in the progression of a various cancer cells. In the study we presented here, we firstly confirmed that the Elaiophylin was a novel autophagy inhibitor in ESCC cells. Moreover, Elaiophylin can inhibit the proliferation and migration of ESCCs, and promotes apoptosis. Then, we using RNA-seq to identify the genes which were regulated by Elaiophylin and verify them by RT-qPCR assay. Finally, we found the activity of PI3K/AKT pathway was inhibited by Elaiophylin. And the mRNA and protein expression level of eIF4B was both downregulated by Elaiophylin. In order to further confirm whether eIF4B is a target of Elaiophylin, we transfected a EIF4B-OE plasmid to ESCC cells, and found that the eIF4B overexpression could block the effect which was resulted from Elaiophylin. And by transfecting a shRNA to ESCC cells, we found that knockdown of eIF4B could inhibit the proliferation and migration of ESCC cells and promotes apoptosis when compared with the control group. All the results suggest that Elaiophylin could inhibit the proliferation, invasion of ESCC cells and promote its apoptosis by targeting the eIF4B via PI3K/AKT signaling pathway. This result identified that the Elaiophylin might serve as a promising therapeutic medicine for esophageal cancer.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5220246",
+      "title": "Eca109 Elaiophylin 2"
+    },
+    {
+      "accession": "GSM5220243",
+      "title": "Eca109 DMSO rep1"
+    },
+    {
+      "accession": "GSM5220249",
+      "title": "KYSE450 Elaiophylin 1"
+    },
+    {
+      "accession": "GSM5220247",
+      "title": "KYSE450 DMSO rep1"
+    },
+    {
+      "accession": "GSM5220244",
+      "title": "Eca109 DMSO rep2"
+    },
+    {
+      "accession": "GSM5220250",
+      "title": "KYSE450 Elaiophylin 2"
+    },
+    {
+      "accession": "GSM5220245",
+      "title": "Eca109 Elaiophylin 1"
+    },
+    {
+      "accession": "GSM5220248",
+      "title": "KYSE450 DMSO rep2"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200206246",
+  "title": "Research on mechanisms of miR-27a-3p on  Cisplatin sensitivity of hepatocellular carcinoma based on next generation sequencing",
+  "summary": "Hepatocellular carcinoma (HCC) accounts for 75% of primary liver cancer, ranking seventh in the incidence rate of tumors worldwide, and second in the mortality rate of tumors. The 5-year survival rate after radical surgery is only 59%-68%, and due to the influence of proliferation, invasion, microvascular infiltration and inflammatory environment of hepatocellular carcinoma, Recurrence is still possible after surgical resection, local ablative therapy or liver transplantation. Systemic antitumor therapy can control disease progression and prolong patient survival, and a variety of kinase inhibitors are used in patients who cannot undergo surgery. However, due to the existence of acquired drug resistance to multikinase inhibitors, its effect is not good. Platinum-based FOLFOX4 is recommended, but its efficacy is limited by drug resistance. miR-27a-3p, located in the short arm of chromosome 19, has been found to be involved in inhibiting the activity, proliferation, angiogenesis, and invasion of liver cancer. Other studies have found that miR-27a-3p regulates the sensitivity of tumors (esophageal cancer and breast cancer) to Cisplatin by regulating the apoptosis of the Bcl-2 protein family. The cells were cultured in DMEM medium supplemented with 10% fetal bovine serum and 1% antibiotic-antimitotic solution. The HCC cell line Huh-7 was transfected using Lipofectamine 3000 reagent following the manufacturer\u2019s protocol and incubated for 48h for further analysis. The gene expression profiles were analyzed of Huh-7 cells transfected with miR-27a-3p mimics or NC to assess effect of miR-27a-3p on Cisplatin sensitivity of HCC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6248663",
+      "title": "Huh-7, M3"
+    },
+    {
+      "accession": "GSM6248658",
+      "title": "Huh-7, NC1"
+    },
+    {
+      "accession": "GSM6248661",
+      "title": "Huh-7, M1"
+    },
+    {
+      "accession": "GSM6248662",
+      "title": "Huh-7, M2"
+    },
+    {
+      "accession": "GSM6248659",
+      "title": "Huh-7, NC2"
+    },
+    {
+      "accession": "GSM6248660",
+      "title": "Huh-7, NC3"
+    }
+  ]
+}

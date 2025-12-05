@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200290209",
+  "title": "RNA-seq analysis of differentially expressed genes between WT and KD ZC3H18 KYSE150/ECA109 cells.",
+  "summary": "Small interfering RNAs (siRNAs) targeting ZC3H18 were purchased from Suzhou Hongxun Biotechnology Co., Ltd. (Suzhou, China), with an empty vector serving as the control (si-nc). ZC3H18 siRNA sequences were GGGGTGAGGGCTTCTGATCT and TCGTCGGAGTGATTATCTTCCT. These siRNAs were introduced into KYSE150 and ECA109 cells using DharmaFect1 (Suzhou Hongxun Biotechnology Co., Ltd., Suzhou, China).",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8808476",
+      "title": "ECA109 with siRNAs targeting ZC3H18_1"
+    },
+    {
+      "accession": "GSM8808479",
+      "title": "KYSE150 with siRNAs targeting ZC3H18_1"
+    },
+    {
+      "accession": "GSM8808478",
+      "title": "ECA109 with si-nc"
+    },
+    {
+      "accession": "GSM8808481",
+      "title": "KYSE150 with si-nc"
+    },
+    {
+      "accession": "GSM8808477",
+      "title": "ECA109 with siRNAs targeting ZC3H18_2"
+    },
+    {
+      "accession": "GSM8808480",
+      "title": "KYSE150 with siRNAs targeting ZC3H18_2"
+    }
+  ]
+}

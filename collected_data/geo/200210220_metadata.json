@@ -1,0 +1,29 @@
+{
+  "dataset_id": "200210220",
+  "title": "Comprehensive analyses of partially methylated domains and differentially methylated regions in esophageal cancer reveal both cell-type- and cancer-specific epigenetic regulation",
+  "summary": "This SuperSeries is composed of the SubSeries listed below.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6423673",
+      "title": "KYSE70, H3K36me2"
+    },
+    {
+      "accession": "GSM6423670",
+      "title": "ESO26_WGBS"
+    },
+    {
+      "accession": "GSM6423671",
+      "title": "TE5_WGBS"
+    },
+    {
+      "accession": "GSM6423674",
+      "title": "TE5, H3K36me2"
+    },
+    {
+      "accession": "GSM6423672",
+      "title": "ESO26, H3K36me2"
+    }
+  ]
+}

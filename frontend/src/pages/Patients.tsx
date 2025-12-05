@@ -52,7 +52,7 @@ export default function Patients() {
     try {
       const response = await api.get('/patients/', {
         params: { limit: 100 },
-        timeout: 30000, // 30 seconds timeout
+        timeout: 60000, // 60 seconds timeout
       })
       // Handle both array and object responses
       if (Array.isArray(response.data)) {

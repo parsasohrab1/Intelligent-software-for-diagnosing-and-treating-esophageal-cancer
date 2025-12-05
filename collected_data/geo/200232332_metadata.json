@@ -1,0 +1,1109 @@
+{
+  "dataset_id": "200232332",
+  "title": "Epigenetic array data of saliva samples in individiduals with esophageal cancer with controls",
+  "summary": "We took saliva samples from 89 people with oesophageal cancer (plus 9 with high grade dysplasia, also labelled here as cancer) and 167 controls. We took replicate samples on 6 cancer samples and 4 controls to assess reproducibility. The cancer groups comprise people with invasive adenocarcinoma (61 and also 6 replicates), 28 people with intramucosal adenocarcinoma, 9 people with high-grade dysplasia arising in Barrett's esophagus, 52 patients with non-dysplastic Barrett's esophagus, 42 people with no positive diagnosis after endoscopy (ie no Barrett's, + 1 replicate), and 73 self-reported healthy volunteers (with 3 duplicates)",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7328706",
+      "title": "Control114"
+    },
+    {
+      "accession": "GSM7328743",
+      "title": "Control151"
+    },
+    {
+      "accession": "GSM7328577",
+      "title": "Cancer 87"
+    },
+    {
+      "accession": "GSM7328494",
+      "title": "Cancer 5 Replicate"
+    },
+    {
+      "accession": "GSM7328660",
+      "title": "Control68"
+    },
+    {
+      "accession": "GSM7328746",
+      "title": "Control154"
+    },
+    {
+      "accession": "GSM7328580",
+      "title": "Cancer 90"
+    },
+    {
+      "accession": "GSM7328663",
+      "title": "Control71"
+    },
+    {
+      "accession": "GSM7328497",
+      "title": "Cancer 7"
+    },
+    {
+      "accession": "GSM7328700",
+      "title": "Control108"
+    },
+    {
+      "accession": "GSM7328617",
+      "title": "Control25"
+    },
+    {
+      "accession": "GSM7328534",
+      "title": "Cancer 44"
+    },
+    {
+      "accession": "GSM7328680",
+      "title": "Control88"
+    },
+    {
+      "accession": "GSM7328514",
+      "title": "Cancer 24"
+    },
+    {
+      "accession": "GSM7328597",
+      "title": "Control5"
+    },
+    {
+      "accession": "GSM7328560",
+      "title": "Cancer 70"
+    },
+    {
+      "accession": "GSM7328726",
+      "title": "Control134"
+    },
+    {
+      "accession": "GSM7328643",
+      "title": "Control51"
+    },
+    {
+      "accession": "GSM7328683",
+      "title": "Control91"
+    },
+    {
+      "accession": "GSM7328637",
+      "title": "Control45"
+    },
+    {
+      "accession": "GSM7328720",
+      "title": "Control128"
+    },
+    {
+      "accession": "GSM7328554",
+      "title": "Cancer 64"
+    },
+    {
+      "accession": "GSM7328600",
+      "title": "Control8"
+    },
+    {
+      "accession": "GSM7328517",
+      "title": "Cancer 27"
+    },
+    {
+      "accession": "GSM7328723",
+      "title": "Control131"
+    },
+    {
+      "accession": "GSM7328640",
+      "title": "Control48"
+    },
+    {
+      "accession": "GSM7328557",
+      "title": "Cancer 67"
+    },
+    {
+      "accession": "GSM7328657",
+      "title": "Control65"
+    },
+    {
+      "accession": "GSM7328574",
+      "title": "Cancer 84"
+    },
+    {
+      "accession": "GSM7328537",
+      "title": "Cancer 47"
+    },
+    {
+      "accession": "GSM7328620",
+      "title": "Control28"
+    },
+    {
+      "accession": "GSM7328740",
+      "title": "Control148"
+    },
+    {
+      "accession": "GSM7328491",
+      "title": "Cancer 4"
+    },
+    {
+      "accession": "GSM7328703",
+      "title": "Control111"
+    },
+    {
+      "accession": "GSM7328503",
+      "title": "Cancer 13"
+    },
+    {
+      "accession": "GSM7328586",
+      "title": "Cancer 96"
+    },
+    {
+      "accession": "GSM7328540",
+      "title": "Cancer 50"
+    },
+    {
+      "accession": "GSM7328623",
+      "title": "Control31"
+    },
+    {
+      "accession": "GSM7328752",
+      "title": "Control160"
+    },
+    {
+      "accession": "GSM7328669",
+      "title": "Control77"
+    },
+    {
+      "accession": "GSM7328755",
+      "title": "Control163"
+    },
+    {
+      "accession": "GSM7328709",
+      "title": "Control117"
+    },
+    {
+      "accession": "GSM7328672",
+      "title": "Control80"
+    },
+    {
+      "accession": "GSM7328589",
+      "title": "Control 1"
+    },
+    {
+      "accession": "GSM7328543",
+      "title": "Cancer 53"
+    },
+    {
+      "accession": "GSM7328626",
+      "title": "Control34"
+    },
+    {
+      "accession": "GSM7328606",
+      "title": "Control14"
+    },
+    {
+      "accession": "GSM7328689",
+      "title": "Control97"
+    },
+    {
+      "accession": "GSM7328646",
+      "title": "Control54"
+    },
+    {
+      "accession": "GSM7328523",
+      "title": "Cancer 33"
+    },
+    {
+      "accession": "GSM7328563",
+      "title": "Cancer 73"
+    },
+    {
+      "accession": "GSM7328609",
+      "title": "Control17"
+    },
+    {
+      "accession": "GSM7328526",
+      "title": "Cancer 36"
+    },
+    {
+      "accession": "GSM7328729",
+      "title": "Control137"
+    },
+    {
+      "accession": "GSM7328692",
+      "title": "Control100"
+    },
+    {
+      "accession": "GSM7328686",
+      "title": "Control94"
+    },
+    {
+      "accession": "GSM7328603",
+      "title": "Control11"
+    },
+    {
+      "accession": "GSM7328649",
+      "title": "Control57"
+    },
+    {
+      "accession": "GSM7328566",
+      "title": "Cancer 76"
+    },
+    {
+      "accession": "GSM7328732",
+      "title": "Control140"
+    },
+    {
+      "accession": "GSM7328712",
+      "title": "Control120"
+    },
+    {
+      "accession": "GSM7328500",
+      "title": "Cancer 10"
+    },
+    {
+      "accession": "GSM7328520",
+      "title": "Cancer 30"
+    },
+    {
+      "accession": "GSM7328749",
+      "title": "Control157"
+    },
+    {
+      "accession": "GSM7328583",
+      "title": "Cancer 93"
+    },
+    {
+      "accession": "GSM7328666",
+      "title": "Control74"
+    },
+    {
+      "accession": "GSM7328715",
+      "title": "Control123"
+    },
+    {
+      "accession": "GSM7328632",
+      "title": "Control40"
+    },
+    {
+      "accession": "GSM7328546",
+      "title": "Cancer 56"
+    },
+    {
+      "accession": "GSM7328629",
+      "title": "Control37"
+    },
+    {
+      "accession": "GSM7328512",
+      "title": "Cancer 22"
+    },
+    {
+      "accession": "GSM7328678",
+      "title": "Control86"
+    },
+    {
+      "accession": "GSM7328595",
+      "title": "Control 4"
+    },
+    {
+      "accession": "GSM7328635",
+      "title": "Control43"
+    },
+    {
+      "accession": "GSM7328506",
+      "title": "Cancer 16"
+    },
+    {
+      "accession": "GSM7328718",
+      "title": "Control126"
+    },
+    {
+      "accession": "GSM7328549",
+      "title": "Cancer 59"
+    },
+    {
+      "accession": "GSM7328532",
+      "title": "Cancer 42"
+    },
+    {
+      "accession": "GSM7328552",
+      "title": "Cancer 62"
+    },
+    {
+      "accession": "GSM7328615",
+      "title": "Control23"
+    },
+    {
+      "accession": "GSM7328698",
+      "title": "Control106"
+    },
+    {
+      "accession": "GSM7328486",
+      "title": "Cancer 1  Replicate"
+    },
+    {
+      "accession": "GSM7328569",
+      "title": "Cancer 79"
+    },
+    {
+      "accession": "GSM7328738",
+      "title": "Control146"
+    },
+    {
+      "accession": "GSM7328735",
+      "title": "Control143"
+    },
+    {
+      "accession": "GSM7328652",
+      "title": "Control60"
+    },
+    {
+      "accession": "GSM7328529",
+      "title": "Cancer 39"
+    },
+    {
+      "accession": "GSM7328612",
+      "title": "Control20"
+    },
+    {
+      "accession": "GSM7328572",
+      "title": "Cancer 82"
+    },
+    {
+      "accession": "GSM7328489",
+      "title": "Cancer 3"
+    },
+    {
+      "accession": "GSM7328695",
+      "title": "Control103"
+    },
+    {
+      "accession": "GSM7328492",
+      "title": "Cancer 4 Replicate"
+    },
+    {
+      "accession": "GSM7328741",
+      "title": "Control149"
+    },
+    {
+      "accession": "GSM7328655",
+      "title": "Control63"
+    },
+    {
+      "accession": "GSM7328638",
+      "title": "Control46"
+    },
+    {
+      "accession": "GSM7328575",
+      "title": "Cancer 85"
+    },
+    {
+      "accession": "GSM7328721",
+      "title": "Control129"
+    },
+    {
+      "accession": "GSM7328592",
+      "title": "Control 2 Replicate"
+    },
+    {
+      "accession": "GSM7328509",
+      "title": "Cancer 19"
+    },
+    {
+      "accession": "GSM7328675",
+      "title": "Control83"
+    },
+    {
+      "accession": "GSM7328658",
+      "title": "Control66"
+    },
+    {
+      "accession": "GSM7328624",
+      "title": "Control32"
+    },
+    {
+      "accession": "GSM7328641",
+      "title": "Control49"
+    },
+    {
+      "accession": "GSM7328707",
+      "title": "Control115"
+    },
+    {
+      "accession": "GSM7328558",
+      "title": "Cancer 68"
+    },
+    {
+      "accession": "GSM7328555",
+      "title": "Cancer 65"
+    },
+    {
+      "accession": "GSM7328758",
+      "title": "Control166"
+    },
+    {
+      "accession": "GSM7328724",
+      "title": "Control132"
+    },
+    {
+      "accession": "GSM7328521",
+      "title": "Cancer 31"
+    },
+    {
+      "accession": "GSM7328604",
+      "title": "Control12"
+    },
+    {
+      "accession": "GSM7328561",
+      "title": "Cancer 71"
+    },
+    {
+      "accession": "GSM7328687",
+      "title": "Control95"
+    },
+    {
+      "accession": "GSM7328744",
+      "title": "Control152"
+    },
+    {
+      "accession": "GSM7328727",
+      "title": "Control135"
+    },
+    {
+      "accession": "GSM7328644",
+      "title": "Control52"
+    },
+    {
+      "accession": "GSM7328515",
+      "title": "Cancer 25"
+    },
+    {
+      "accession": "GSM7328598",
+      "title": "Control6"
+    },
+    {
+      "accession": "GSM7328541",
+      "title": "Cancer 51"
+    },
+    {
+      "accession": "GSM7328495",
+      "title": "Cancer 6"
+    },
+    {
+      "accession": "GSM7328747",
+      "title": "Control155"
+    },
+    {
+      "accession": "GSM7328681",
+      "title": "Control89"
+    },
+    {
+      "accession": "GSM7328664",
+      "title": "Control72"
+    },
+    {
+      "accession": "GSM7328535",
+      "title": "Cancer 45"
+    },
+    {
+      "accession": "GSM7328661",
+      "title": "Control69"
+    },
+    {
+      "accession": "GSM7328578",
+      "title": "Cancer 88"
+    },
+    {
+      "accession": "GSM7328618",
+      "title": "Control26"
+    },
+    {
+      "accession": "GSM7328701",
+      "title": "Control109"
+    },
+    {
+      "accession": "GSM7328498",
+      "title": "Cancer 8"
+    },
+    {
+      "accession": "GSM7328667",
+      "title": "Control75"
+    },
+    {
+      "accession": "GSM7328684",
+      "title": "Control92"
+    },
+    {
+      "accession": "GSM7328581",
+      "title": "Cancer 91"
+    },
+    {
+      "accession": "GSM7328750",
+      "title": "Control158"
+    },
+    {
+      "accession": "GSM7328538",
+      "title": "Cancer 48"
+    },
+    {
+      "accession": "GSM7328621",
+      "title": "Control29"
+    },
+    {
+      "accession": "GSM7328704",
+      "title": "Control112"
+    },
+    {
+      "accession": "GSM7328670",
+      "title": "Control78"
+    },
+    {
+      "accession": "GSM7328587",
+      "title": "Cancer 97"
+    },
+    {
+      "accession": "GSM7328601",
+      "title": "Control9"
+    },
+    {
+      "accession": "GSM7328518",
+      "title": "Cancer 28"
+    },
+    {
+      "accession": "GSM7328567",
+      "title": "Cancer 77"
+    },
+    {
+      "accession": "GSM7328633",
+      "title": "Control41"
+    },
+    {
+      "accession": "GSM7328550",
+      "title": "Cancer 60"
+    },
+    {
+      "accession": "GSM7328753",
+      "title": "Control161"
+    },
+    {
+      "accession": "GSM7328487",
+      "title": "Cancer 2"
+    },
+    {
+      "accession": "GSM7328650",
+      "title": "Control58"
+    },
+    {
+      "accession": "GSM7328716",
+      "title": "Control124"
+    },
+    {
+      "accession": "GSM7328504",
+      "title": "Cancer 14"
+    },
+    {
+      "accession": "GSM7328733",
+      "title": "Control141"
+    },
+    {
+      "accession": "GSM7328693",
+      "title": "Control101"
+    },
+    {
+      "accession": "GSM7328653",
+      "title": "Control61"
+    },
+    {
+      "accession": "GSM7328564",
+      "title": "Cancer 74"
+    },
+    {
+      "accession": "GSM7328570",
+      "title": "Cancer 80"
+    },
+    {
+      "accession": "GSM7328736",
+      "title": "Control144"
+    },
+    {
+      "accession": "GSM7328524",
+      "title": "Cancer 34"
+    },
+    {
+      "accession": "GSM7328590",
+      "title": "Control 1 Replicate"
+    },
+    {
+      "accession": "GSM7328607",
+      "title": "Control15"
+    },
+    {
+      "accession": "GSM7328690",
+      "title": "Control98"
+    },
+    {
+      "accession": "GSM7328673",
+      "title": "Control81"
+    },
+    {
+      "accession": "GSM7328730",
+      "title": "Control138"
+    },
+    {
+      "accession": "GSM7328527",
+      "title": "Cancer 37"
+    },
+    {
+      "accession": "GSM7328647",
+      "title": "Control55"
+    },
+    {
+      "accession": "GSM7328710",
+      "title": "Control118"
+    },
+    {
+      "accession": "GSM7328627",
+      "title": "Control35"
+    },
+    {
+      "accession": "GSM7328544",
+      "title": "Cancer 54"
+    },
+    {
+      "accession": "GSM7328610",
+      "title": "Control18"
+    },
+    {
+      "accession": "GSM7328756",
+      "title": "Control164"
+    },
+    {
+      "accession": "GSM7328513",
+      "title": "Cancer 23"
+    },
+    {
+      "accession": "GSM7328596",
+      "title": "Control 4 Replicate"
+    },
+    {
+      "accession": "GSM7328507",
+      "title": "Cancer 17"
+    },
+    {
+      "accession": "GSM7328630",
+      "title": "Control38"
+    },
+    {
+      "accession": "GSM7328547",
+      "title": "Cancer 57"
+    },
+    {
+      "accession": "GSM7328696",
+      "title": "Control104"
+    },
+    {
+      "accession": "GSM7328713",
+      "title": "Control121"
+    },
+    {
+      "accession": "GSM7328584",
+      "title": "Cancer 94"
+    },
+    {
+      "accession": "GSM7328679",
+      "title": "Control87"
+    },
+    {
+      "accession": "GSM7328501",
+      "title": "Cancer 11"
+    },
+    {
+      "accession": "GSM7328699",
+      "title": "Control107"
+    },
+    {
+      "accession": "GSM7328659",
+      "title": "Control67"
+    },
+    {
+      "accession": "GSM7328576",
+      "title": "Cancer 86"
+    },
+    {
+      "accession": "GSM7328530",
+      "title": "Cancer 40"
+    },
+    {
+      "accession": "GSM7328493",
+      "title": "Cancer 5"
+    },
+    {
+      "accession": "GSM7328702",
+      "title": "Control110"
+    },
+    {
+      "accession": "GSM7328619",
+      "title": "Control27"
+    },
+    {
+      "accession": "GSM7328490",
+      "title": "Cancer 3 Replicate"
+    },
+    {
+      "accession": "GSM7328742",
+      "title": "Control150"
+    },
+    {
+      "accession": "GSM7328613",
+      "title": "Control21"
+    },
+    {
+      "accession": "GSM7328516",
+      "title": "Cancer 26"
+    },
+    {
+      "accession": "GSM7328616",
+      "title": "Control24"
+    },
+    {
+      "accession": "GSM7328739",
+      "title": "Control147"
+    },
+    {
+      "accession": "GSM7328533",
+      "title": "Cancer 43"
+    },
+    {
+      "accession": "GSM7328656",
+      "title": "Control64"
+    },
+    {
+      "accession": "GSM7328573",
+      "title": "Cancer 83"
+    },
+    {
+      "accession": "GSM7328593",
+      "title": "Control 3"
+    },
+    {
+      "accession": "GSM7328745",
+      "title": "Control153"
+    },
+    {
+      "accession": "GSM7328536",
+      "title": "Cancer 46"
+    },
+    {
+      "accession": "GSM7328553",
+      "title": "Cancer 63"
+    },
+    {
+      "accession": "GSM7328599",
+      "title": "Control7"
+    },
+    {
+      "accession": "GSM7328682",
+      "title": "Control90"
+    },
+    {
+      "accession": "GSM7328522",
+      "title": "Cancer 32"
+    },
+    {
+      "accession": "GSM7328725",
+      "title": "Control133"
+    },
+    {
+      "accession": "GSM7328556",
+      "title": "Cancer 66"
+    },
+    {
+      "accession": "GSM7328676",
+      "title": "Control84"
+    },
+    {
+      "accession": "GSM7328759",
+      "title": "Control167"
+    },
+    {
+      "accession": "GSM7328719",
+      "title": "Control127"
+    },
+    {
+      "accession": "GSM7328636",
+      "title": "Control44"
+    },
+    {
+      "accession": "GSM7328622",
+      "title": "Control30"
+    },
+    {
+      "accession": "GSM7328559",
+      "title": "Cancer 69"
+    },
+    {
+      "accession": "GSM7328605",
+      "title": "Control13"
+    },
+    {
+      "accession": "GSM7328510",
+      "title": "Cancer 20"
+    },
+    {
+      "accession": "GSM7328688",
+      "title": "Control96"
+    },
+    {
+      "accession": "GSM7328639",
+      "title": "Control47"
+    },
+    {
+      "accession": "GSM7328722",
+      "title": "Control130"
+    },
+    {
+      "accession": "GSM7328625",
+      "title": "Control33"
+    },
+    {
+      "accession": "GSM7328585",
+      "title": "Cancer 95"
+    },
+    {
+      "accession": "GSM7328542",
+      "title": "Cancer 52"
+    },
+    {
+      "accession": "GSM7328502",
+      "title": "Cancer 12"
+    },
+    {
+      "accession": "GSM7328705",
+      "title": "Control113"
+    },
+    {
+      "accession": "GSM7328642",
+      "title": "Control50"
+    },
+    {
+      "accession": "GSM7328496",
+      "title": "Cancer 6 Replicate"
+    },
+    {
+      "accession": "GSM7328628",
+      "title": "Control36"
+    },
+    {
+      "accession": "GSM7328668",
+      "title": "Control76"
+    },
+    {
+      "accession": "GSM7328751",
+      "title": "Control159"
+    },
+    {
+      "accession": "GSM7328662",
+      "title": "Control70"
+    },
+    {
+      "accession": "GSM7328708",
+      "title": "Control116"
+    },
+    {
+      "accession": "GSM7328539",
+      "title": "Cancer 49"
+    },
+    {
+      "accession": "GSM7328579",
+      "title": "Cancer 89"
+    },
+    {
+      "accession": "GSM7328728",
+      "title": "Control136"
+    },
+    {
+      "accession": "GSM7328665",
+      "title": "Control73"
+    },
+    {
+      "accession": "GSM7328582",
+      "title": "Cancer 92"
+    },
+    {
+      "accession": "GSM7328499",
+      "title": "Cancer 9"
+    },
+    {
+      "accession": "GSM7328711",
+      "title": "Control119"
+    },
+    {
+      "accession": "GSM7328731",
+      "title": "Control139"
+    },
+    {
+      "accession": "GSM7328648",
+      "title": "Control56"
+    },
+    {
+      "accession": "GSM7328519",
+      "title": "Cancer 29"
+    },
+    {
+      "accession": "GSM7328748",
+      "title": "Control156"
+    },
+    {
+      "accession": "GSM7328651",
+      "title": "Control59"
+    },
+    {
+      "accession": "GSM7328685",
+      "title": "Control93"
+    },
+    {
+      "accession": "GSM7328602",
+      "title": "Control10"
+    },
+    {
+      "accession": "GSM7328645",
+      "title": "Control53"
+    },
+    {
+      "accession": "GSM7328548",
+      "title": "Cancer 58"
+    },
+    {
+      "accession": "GSM7328562",
+      "title": "Cancer 72"
+    },
+    {
+      "accession": "GSM7328654",
+      "title": "Control62"
+    },
+    {
+      "accession": "GSM7328531",
+      "title": "Cancer 41"
+    },
+    {
+      "accession": "GSM7328734",
+      "title": "Control142"
+    },
+    {
+      "accession": "GSM7328754",
+      "title": "Control162"
+    },
+    {
+      "accession": "GSM7328614",
+      "title": "Control22"
+    },
+    {
+      "accession": "GSM7328551",
+      "title": "Cancer 61"
+    },
+    {
+      "accession": "GSM7328565",
+      "title": "Cancer 75"
+    },
+    {
+      "accession": "GSM7328631",
+      "title": "Control39"
+    },
+    {
+      "accession": "GSM7328714",
+      "title": "Control122"
+    },
+    {
+      "accession": "GSM7328511",
+      "title": "Cancer 21"
+    },
+    {
+      "accession": "GSM7328737",
+      "title": "Control145"
+    },
+    {
+      "accession": "GSM7328757",
+      "title": "Control165"
+    },
+    {
+      "accession": "GSM7328545",
+      "title": "Cancer 55"
+    },
+    {
+      "accession": "GSM7328697",
+      "title": "Control105"
+    },
+    {
+      "accession": "GSM7328568",
+      "title": "Cancer 78"
+    },
+    {
+      "accession": "GSM7328634",
+      "title": "Control42"
+    },
+    {
+      "accession": "GSM7328717",
+      "title": "Control125"
+    },
+    {
+      "accession": "GSM7328485",
+      "title": "Cancer 1"
+    },
+    {
+      "accession": "GSM7328588",
+      "title": "Cancer 98"
+    },
+    {
+      "accession": "GSM7328505",
+      "title": "Cancer 15"
+    },
+    {
+      "accession": "GSM7328677",
+      "title": "Control85"
+    },
+    {
+      "accession": "GSM7328508",
+      "title": "Cancer 18"
+    },
+    {
+      "accession": "GSM7328691",
+      "title": "Control99"
+    },
+    {
+      "accession": "GSM7328671",
+      "title": "Control79"
+    },
+    {
+      "accession": "GSM7328608",
+      "title": "Control16"
+    },
+    {
+      "accession": "GSM7328525",
+      "title": "Cancer 35"
+    },
+    {
+      "accession": "GSM7328694",
+      "title": "Control102"
+    },
+    {
+      "accession": "GSM7328611",
+      "title": "Control19"
+    },
+    {
+      "accession": "GSM7328591",
+      "title": "Control 2"
+    },
+    {
+      "accession": "GSM7328674",
+      "title": "Control82"
+    },
+    {
+      "accession": "GSM7328528",
+      "title": "Cancer 38"
+    },
+    {
+      "accession": "GSM7328571",
+      "title": "Cancer 81"
+    },
+    {
+      "accession": "GSM7328488",
+      "title": "Cancer 2 Replicate"
+    },
+    {
+      "accession": "GSM7328594",
+      "title": "Control 3 Replicate"
+    }
+  ]
+}

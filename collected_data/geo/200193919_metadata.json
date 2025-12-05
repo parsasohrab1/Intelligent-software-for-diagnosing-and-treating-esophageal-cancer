@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200193919",
+  "title": "RBM4 regulates esophageal cancer progression",
+  "summary": "In order to profile the transcription events that were regulated by RBM4, mRNA-seq was performed on KYSE150_shRBM4 and KYSE150_ctl which based on KYSE150 cells",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5823640",
+      "title": "KYSE150_shRBM4"
+    },
+    {
+      "accession": "GSM5823641",
+      "title": "KYSE150_ctl"
+    }
+  ]
+}

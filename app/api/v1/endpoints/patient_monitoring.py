@@ -42,6 +42,15 @@ NORMAL_RANGES = {
         "c_reactive_protein": {"min": 0, "max": 3.0, "unit": "mg/L"},
         "tumor_marker_cea": {"min": 0, "max": 3.0, "unit": "ng/mL"},
         "tumor_marker_ca19_9": {"min": 0, "max": 37, "unit": "U/mL"},
+        "cholesterol_total": {"min": 0, "max": 200, "unit": "mg/dL"},
+        "cholesterol_ldl": {"min": 0, "max": 100, "unit": "mg/dL"},
+        "cholesterol_hdl": {"min": 40, "max": 100, "unit": "mg/dL"},
+        "triglycerides": {"min": 0, "max": 150, "unit": "mg/dL"},
+        "sodium": {"min": 135, "max": 145, "unit": "mEq/L"},
+        "potassium": {"min": 3.5, "max": 5.0, "unit": "mEq/L"},
+        "alkaline_phosphatase": {"min": 44, "max": 147, "unit": "U/L"},
+        "glucose": {"min": 70, "max": 100, "unit": "mg/dL"},
+        "bun": {"min": 7, "max": 20, "unit": "mg/dL"},
     },
     "clinical_parameters": {
         "bmi": {"min": 18.5, "max": 24.9, "unit": "kg/m²"},
@@ -127,10 +136,15 @@ def get_patient_monitoring_data(patient: Patient, db: Session) -> Dict[str, Any]
             LabResult.patient_id == patient.patient_id
         ).order_by(desc(LabResult.test_date)).limit(10).all()
         
-        # Get latest imaging
+        # Get latest imaging (and also get all imaging for comprehensive results)
         latest_imaging = db.query(ImagingData).filter(
             ImagingData.patient_id == patient.patient_id
         ).order_by(desc(ImagingData.imaging_date)).first()
+        
+        # Get all imaging records for this patient (limit to 10 most recent)
+        all_imaging = db.query(ImagingData).filter(
+            ImagingData.patient_id == patient.patient_id
+        ).order_by(desc(ImagingData.imaging_date)).limit(10).all()
         
         # Get treatment data
         latest_treatment = db.query(TreatmentData).filter(
@@ -141,6 +155,7 @@ def get_patient_monitoring_data(patient: Patient, db: Session) -> Dict[str, Any]
             "clinical": latest_clinical,
             "labs": latest_labs,
             "imaging": latest_imaging,
+            "all_imaging": all_imaging,  # Include all imaging records
             "treatment": latest_treatment,
         }
     except (SQLAlchemyError, OperationalError, DisconnectionError) as e:
@@ -150,6 +165,7 @@ def get_patient_monitoring_data(patient: Patient, db: Session) -> Dict[str, Any]
             "clinical": None,
             "labs": [],
             "imaging": None,
+            "all_imaging": [],
             "treatment": None,
         }
     except Exception as e:
@@ -158,6 +174,7 @@ def get_patient_monitoring_data(patient: Patient, db: Session) -> Dict[str, Any]
             "clinical": None,
             "labs": [],
             "imaging": None,
+            "all_imaging": [],
             "treatment": None,
         }
 
@@ -168,12 +185,23 @@ async def get_patient_monitoring(
     db: Session = Depends(get_db)
 ):
     """Get comprehensive monitoring data for a patient"""
+    import logging
+    import time
+    logger = logging.getLogger(__name__)
+    start_time = time.time()
+    
     patient = db.query(Patient).filter(Patient.patient_id == patient_id).first()
     
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
     
     monitoring_data = get_patient_monitoring_data(patient, db)
+    
+    # Reduced logging for performance
+    # logger.info(f"Monitoring data for {patient_id}: "
+    #             f"clinical={monitoring_data['clinical'] is not None}, "
+    #             f"labs={len(monitoring_data['labs'])}, "
+    #             f"imaging={monitoring_data['imaging'] is not None}")
     
     # Build vital signs
     vital_signs = []
@@ -239,12 +267,44 @@ async def get_patient_monitoring(
                 last_updated=clinical.examination_date,
                 trend=None
             ))
+        
+        # Temperature
+        if hasattr(clinical, 'temperature') and clinical.temperature is not None:
+            vital_signs.append(MonitoringParameter(
+                name="Temperature",
+                value=float(clinical.temperature),
+                unit="°C",
+                normal_range=NORMAL_RANGES["vital_signs"]["temperature"],
+                status=check_parameter_status(
+                    float(clinical.temperature),
+                    NORMAL_RANGES["vital_signs"]["temperature"]
+                ),
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Oxygen Saturation
+        if hasattr(clinical, 'oxygen_saturation') and clinical.oxygen_saturation is not None:
+            vital_signs.append(MonitoringParameter(
+                name="Oxygen Saturation (SpO2)",
+                value=float(clinical.oxygen_saturation),
+                unit="%",
+                normal_range=NORMAL_RANGES["vital_signs"]["oxygen_saturation"],
+                status=check_parameter_status(
+                    float(clinical.oxygen_saturation),
+                    NORMAL_RANGES["vital_signs"]["oxygen_saturation"]
+                ),
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
     
     # Build lab results - use direct fields from LabResult model
     lab_results = []
     
-    # Get latest lab result
-    latest_lab = monitoring_data["labs"][0] if monitoring_data["labs"] else None
+    # Get all lab results (not just latest) to show comprehensive data
+    all_labs = monitoring_data["labs"] if monitoring_data["labs"] else []
+    # Use latest lab for most recent values, but we can aggregate from multiple labs
+    latest_lab = all_labs[0] if all_labs else None
     
     if latest_lab:
         # Hemoglobin
@@ -372,6 +432,110 @@ async def get_patient_monitoring(
                 last_updated=latest_lab.test_date,
                 trend=None
             ))
+        
+        # Sodium
+        if latest_lab.sodium is not None:
+            lab_results.append(MonitoringParameter(
+                name="Sodium",
+                value=float(latest_lab.sodium),
+                unit=NORMAL_RANGES["lab_results"]["sodium"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["sodium"],
+                status=check_parameter_status(float(latest_lab.sodium), NORMAL_RANGES["lab_results"]["sodium"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        # Potassium
+        if latest_lab.potassium is not None:
+            lab_results.append(MonitoringParameter(
+                name="Potassium",
+                value=float(latest_lab.potassium),
+                unit=NORMAL_RANGES["lab_results"]["potassium"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["potassium"],
+                status=check_parameter_status(float(latest_lab.potassium), NORMAL_RANGES["lab_results"]["potassium"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        # Alkaline Phosphatase
+        if latest_lab.alkaline_phosphatase is not None:
+            lab_results.append(MonitoringParameter(
+                name="Alkaline Phosphatase",
+                value=float(latest_lab.alkaline_phosphatase),
+                unit=NORMAL_RANGES["lab_results"]["alkaline_phosphatase"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["alkaline_phosphatase"],
+                status=check_parameter_status(float(latest_lab.alkaline_phosphatase), NORMAL_RANGES["lab_results"]["alkaline_phosphatase"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        # Cholesterol, LDL, HDL - check if fields exist (may need to be added to model)
+        # For now, we'll check if they exist using getattr
+        if hasattr(latest_lab, 'cholesterol_total') and latest_lab.cholesterol_total is not None:
+            lab_results.append(MonitoringParameter(
+                name="Total Cholesterol",
+                value=float(latest_lab.cholesterol_total),
+                unit=NORMAL_RANGES["lab_results"]["cholesterol_total"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["cholesterol_total"],
+                status=check_parameter_status(float(latest_lab.cholesterol_total), NORMAL_RANGES["lab_results"]["cholesterol_total"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        if hasattr(latest_lab, 'cholesterol_ldl') and latest_lab.cholesterol_ldl is not None:
+            lab_results.append(MonitoringParameter(
+                name="LDL Cholesterol",
+                value=float(latest_lab.cholesterol_ldl),
+                unit=NORMAL_RANGES["lab_results"]["cholesterol_ldl"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["cholesterol_ldl"],
+                status=check_parameter_status(float(latest_lab.cholesterol_ldl), NORMAL_RANGES["lab_results"]["cholesterol_ldl"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        if hasattr(latest_lab, 'cholesterol_hdl') and latest_lab.cholesterol_hdl is not None:
+            lab_results.append(MonitoringParameter(
+                name="HDL Cholesterol",
+                value=float(latest_lab.cholesterol_hdl),
+                unit=NORMAL_RANGES["lab_results"]["cholesterol_hdl"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["cholesterol_hdl"],
+                status=check_parameter_status(float(latest_lab.cholesterol_hdl), NORMAL_RANGES["lab_results"]["cholesterol_hdl"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        if hasattr(latest_lab, 'triglycerides') and latest_lab.triglycerides is not None:
+            lab_results.append(MonitoringParameter(
+                name="Triglycerides",
+                value=float(latest_lab.triglycerides),
+                unit=NORMAL_RANGES["lab_results"]["triglycerides"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["triglycerides"],
+                status=check_parameter_status(float(latest_lab.triglycerides), NORMAL_RANGES["lab_results"]["triglycerides"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        if hasattr(latest_lab, 'glucose') and latest_lab.glucose is not None:
+            lab_results.append(MonitoringParameter(
+                name="Glucose",
+                value=float(latest_lab.glucose),
+                unit=NORMAL_RANGES["lab_results"]["glucose"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["glucose"],
+                status=check_parameter_status(float(latest_lab.glucose), NORMAL_RANGES["lab_results"]["glucose"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
+        
+        if hasattr(latest_lab, 'bun') and latest_lab.bun is not None:
+            lab_results.append(MonitoringParameter(
+                name="BUN (Blood Urea Nitrogen)",
+                value=float(latest_lab.bun),
+                unit=NORMAL_RANGES["lab_results"]["bun"]["unit"],
+                normal_range=NORMAL_RANGES["lab_results"]["bun"],
+                status=check_parameter_status(float(latest_lab.bun), NORMAL_RANGES["lab_results"]["bun"]),
+                last_updated=latest_lab.test_date,
+                trend=None
+            ))
     
     # Build clinical parameters
     clinical_parameters = []
@@ -379,7 +543,7 @@ async def get_patient_monitoring(
         clinical = monitoring_data["clinical"]
         
         # BMI
-        if clinical.bmi:
+        if clinical.bmi is not None:
             clinical_parameters.append(MonitoringParameter(
                 name="BMI (Body Mass Index)",
                 value=float(clinical.bmi),
@@ -391,7 +555,7 @@ async def get_patient_monitoring(
             ))
         
         # Weight
-        if clinical.weight_kg:
+        if clinical.weight_kg is not None:
             clinical_parameters.append(MonitoringParameter(
                 name="Weight",
                 value=float(clinical.weight_kg),
@@ -403,7 +567,7 @@ async def get_patient_monitoring(
             ))
         
         # Height
-        if clinical.height_cm:
+        if clinical.height_cm is not None:
             clinical_parameters.append(MonitoringParameter(
                 name="Height",
                 value=float(clinical.height_cm),
@@ -414,26 +578,169 @@ async def get_patient_monitoring(
                 trend=None
             ))
         
-        # Tumor Stage (if available)
+        # Calculate weight loss percentage if we have historical data
+        # Optimized: Only calculate if we have current weight and examination date
+        if clinical.weight_kg is not None and clinical.examination_date:
+            try:
+                # Get previous weight if available - optimized query with filters
+                previous_clinical = db.query(ClinicalData).filter(
+                    ClinicalData.patient_id == patient.patient_id,
+                    ClinicalData.examination_date < clinical.examination_date,
+                    ClinicalData.weight_kg.isnot(None)
+                ).order_by(desc(ClinicalData.examination_date)).limit(1).first()
+                
+                if previous_clinical and previous_clinical.weight_kg and clinical.weight_kg:
+                    weight_loss = ((previous_clinical.weight_kg - clinical.weight_kg) / previous_clinical.weight_kg) * 100
+                    if weight_loss > 0:
+                        clinical_parameters.append(MonitoringParameter(
+                            name="Weight Loss Percentage",
+                            value=float(weight_loss),
+                            unit="%",
+                            normal_range=NORMAL_RANGES["clinical_parameters"]["weight_loss_percentage"],
+                            status=check_parameter_status(weight_loss, NORMAL_RANGES["clinical_parameters"]["weight_loss_percentage"]),
+                            last_updated=clinical.examination_date,
+                            trend=None
+                        ))
+            except Exception:
+                pass  # Skip if calculation fails
+        
+        # Tumor Stage T
         if clinical.t_stage:
+            stage_value = int(clinical.t_stage.replace('T', '')) if clinical.t_stage.replace('T', '').isdigit() else None
             clinical_parameters.append(MonitoringParameter(
-                name="T Stage",
-                value=None,
+                name="T Stage (Tumor)",
+                value=stage_value,
                 unit="stage",
                 normal_range={"min": 0, "max": 0, "unit": "T0", "note": "T0 = No tumor, T1-T4 = Increasing severity"},
                 status="abnormal" if clinical.t_stage != "T0" else "normal",
                 last_updated=clinical.examination_date,
                 trend=None
             ))
+        
+        # Tumor Stage N
+        if clinical.n_stage:
+            stage_value = int(clinical.n_stage.replace('N', '')) if clinical.n_stage.replace('N', '').isdigit() else None
+            clinical_parameters.append(MonitoringParameter(
+                name="N Stage (Nodes)",
+                value=stage_value,
+                unit="stage",
+                normal_range={"min": 0, "max": 0, "unit": "N0", "note": "N0 = No nodes, N1-N3 = Increasing involvement"},
+                status="abnormal" if clinical.n_stage != "N0" else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Tumor Stage M
+        if clinical.m_stage:
+            stage_value = int(clinical.m_stage.replace('M', '')) if clinical.m_stage.replace('M', '').isdigit() else None
+            clinical_parameters.append(MonitoringParameter(
+                name="M Stage (Metastasis)",
+                value=stage_value,
+                unit="stage",
+                normal_range={"min": 0, "max": 0, "unit": "M0", "note": "M0 = No metastasis, M1 = Metastasis present"},
+                status="abnormal" if clinical.m_stage != "M0" else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Histological Grade
+        if clinical.histological_grade:
+            grade_value = int(clinical.histological_grade.replace('G', '')) if clinical.histological_grade.replace('G', '').isdigit() else None
+            clinical_parameters.append(MonitoringParameter(
+                name="Histological Grade",
+                value=grade_value,
+                unit="grade",
+                normal_range={"min": 1, "max": 1, "unit": "G1", "note": "G1 = Well differentiated, G2-G3 = Increasing grade"},
+                status="abnormal" if clinical.histological_grade not in ["G1", "GX"] else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Tumor Length (from clinical data)
+        if clinical.tumor_length_cm is not None:
+            clinical_parameters.append(MonitoringParameter(
+                name="Tumor Length (Clinical)",
+                value=float(clinical.tumor_length_cm),
+                unit="cm",
+                normal_range={"min": 0, "max": 0, "unit": "cm", "note": "0 = No tumor, >0 = Tumor present"},
+                status="abnormal" if clinical.tumor_length_cm > 0 else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Tumor Location
+        if clinical.tumor_location:
+            clinical_parameters.append(MonitoringParameter(
+                name="Tumor Location",
+                value=None,
+                unit="location",
+                normal_range={"note": clinical.tumor_location},
+                status="abnormal" if clinical.tumor_location else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Lymphovascular Invasion
+        if clinical.lymphovascular_invasion is not None:
+            clinical_parameters.append(MonitoringParameter(
+                name="Lymphovascular Invasion",
+                value=1.0 if clinical.lymphovascular_invasion else 0.0,
+                unit="present/absent",
+                normal_range={"min": 0, "max": 0, "unit": "Absent", "note": "0 = Absent, 1 = Present"},
+                status="abnormal" if clinical.lymphovascular_invasion else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
+        
+        # Perineural Invasion
+        if clinical.perineural_invasion is not None:
+            clinical_parameters.append(MonitoringParameter(
+                name="Perineural Invasion",
+                value=1.0 if clinical.perineural_invasion else 0.0,
+                unit="present/absent",
+                normal_range={"min": 0, "max": 0, "unit": "Absent", "note": "0 = Absent, 1 = Present"},
+                status="abnormal" if clinical.perineural_invasion else "normal",
+                last_updated=clinical.examination_date,
+                trend=None
+            ))
     
-    # Build imaging results
+    # Build imaging results - use latest imaging but also aggregate from all imaging
     imaging_results = []
+    all_imaging = monitoring_data.get("all_imaging", [])
+    
     if monitoring_data["imaging"]:
         imaging = monitoring_data["imaging"]
+        # Reduced logging for performance
+        # logger.info(f"Building imaging results for {patient_id}, imaging data exists, modality={imaging.imaging_modality}")
         
+        # Imaging Modality
+        if imaging.imaging_modality:
+            imaging_results.append(MonitoringParameter(
+                name="Imaging Modality",
+                value=None,
+                unit="type",
+                normal_range={"note": imaging.imaging_modality},
+                status="normal",
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Imaging Date
+        if imaging.imaging_date:
+            imaging_results.append(MonitoringParameter(
+                name="Imaging Date",
+                value=None,
+                unit="date",
+                normal_range={"note": imaging.imaging_date.strftime("%Y-%m-%d") if hasattr(imaging.imaging_date, 'strftime') else str(imaging.imaging_date)},
+                status="normal",
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Tumor Length
         if imaging.tumor_length_cm is not None:
             imaging_results.append(MonitoringParameter(
-                name="Tumor Length",
+                name="Tumor Length (Imaging)",
                 value=float(imaging.tumor_length_cm),
                 unit="cm",
                 normal_range=NORMAL_RANGES["imaging"]["tumor_length"],
@@ -442,6 +749,7 @@ async def get_patient_monitoring(
                 trend=None
             ))
         
+        # Wall Thickness
         if imaging.wall_thickness_cm is not None:
             imaging_results.append(MonitoringParameter(
                 name="Wall Thickness",
@@ -456,6 +764,7 @@ async def get_patient_monitoring(
                 trend=None
             ))
         
+        # Lymph Nodes Positive
         if imaging.lymph_nodes_positive is not None:
             imaging_results.append(MonitoringParameter(
                 name="Lymph Nodes Positive",
@@ -466,6 +775,128 @@ async def get_patient_monitoring(
                 last_updated=imaging.imaging_date,
                 trend=None
             ))
+        
+        # Contrast Used
+        if imaging.contrast_used is not None:
+            imaging_results.append(MonitoringParameter(
+                name="Contrast Used",
+                value=1.0 if imaging.contrast_used else 0.0,
+                unit="yes/no",
+                normal_range={"min": 0, "max": 1, "unit": "No/Yes", "note": "0 = No contrast, 1 = Contrast used"},
+                status="normal",
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Findings (if available, show as summary) - Optimized string processing
+        if imaging.findings:
+            findings_str = str(imaging.findings)
+            findings_summary = findings_str[:100] + "..." if len(findings_str) > 100 else findings_str
+            # Optimized: Only check keywords if string is not too long
+            findings_status = "normal"
+            if len(findings_str) < 500:  # Only process short strings for performance
+                findings_lower = findings_str.lower()
+                if any(word in findings_lower for word in ["abnormal", "mass", "tumor", "lesion", "suspicious", "malignancy"]):
+                    findings_status = "abnormal"
+                elif any(word in findings_lower for word in ["critical", "severe", "advanced", "metastasis"]):
+                    findings_status = "critical"
+            
+            imaging_results.append(MonitoringParameter(
+                name="Imaging Findings",
+                value=None,
+                unit="text",
+                normal_range={"note": findings_summary},
+                status=findings_status,
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Impression (if available, show as summary) - Optimized string processing
+        if imaging.impression:
+            impression_str = str(imaging.impression)
+            impression_summary = impression_str[:100] + "..." if len(impression_str) > 100 else impression_str
+            # Optimized: Only check keywords if string is not too long
+            impression_status = "normal"
+            if len(impression_str) < 500:  # Only process short strings for performance
+                impression_lower = impression_str.lower()
+                if any(word in impression_lower for word in ["abnormal", "mass", "tumor", "lesion", "suspicious", "malignancy"]):
+                    impression_status = "abnormal"
+                elif any(word in impression_lower for word in ["critical", "severe", "advanced", "metastasis"]):
+                    impression_status = "critical"
+            
+            imaging_results.append(MonitoringParameter(
+                name="Imaging Impression",
+                value=None,
+                unit="text",
+                normal_range={"note": impression_summary},
+                status=impression_status,
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Radiologist ID (if available)
+        if imaging.radiologist_id:
+            imaging_results.append(MonitoringParameter(
+                name="Radiologist ID",
+                value=None,
+                unit="id",
+                normal_range={"note": str(imaging.radiologist_id)},
+                status="normal",
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+        
+        # Image ID
+        if imaging.image_id:
+            imaging_results.append(MonitoringParameter(
+                name="Image ID",
+                value=float(imaging.image_id),
+                unit="id",
+                normal_range={"note": f"Image ID: {imaging.image_id}"},
+                status="normal",
+                last_updated=imaging.imaging_date,
+                trend=None
+            ))
+    
+    # If we have multiple imaging records, add summary
+    if len(all_imaging) > 1:
+        imaging_results.append(MonitoringParameter(
+            name="Total Imaging Studies",
+            value=float(len(all_imaging)),
+            unit="count",
+            normal_range={"note": f"Patient has {len(all_imaging)} imaging studies on record"},
+            status="normal",
+            last_updated=all_imaging[0].imaging_date if all_imaging else None,
+            trend=None
+        ))
+    
+    # If no imaging data but patient has cancer, recommend imaging
+    if not monitoring_data["imaging"] and patient.has_cancer:
+        # Reduced logging for performance
+        # logger.info(f"No imaging data for {patient_id}, but patient has cancer - imaging recommended")
+        imaging_results.append(MonitoringParameter(
+            name="Imaging Status",
+            value=None,
+            unit="status",
+            normal_range={"note": "No recent imaging data available. Imaging recommended for cancer patients."},
+            status="missing",
+            last_updated=None,
+            trend=None
+        ))
+    
+    # If no imaging data at all
+    if not monitoring_data["imaging"] and not patient.has_cancer:
+        # Reduced logging for performance
+        # logger.info(f"No imaging data for {patient_id}")
+        imaging_results.append(MonitoringParameter(
+            name="Imaging Status",
+            value=None,
+            unit="status",
+            normal_range={"note": "No imaging data available for this patient."},
+            status="missing",
+            last_updated=None,
+            trend=None
+        ))
     
     # Determine overall status
     all_parameters = vital_signs + lab_results + clinical_parameters + imaging_results
@@ -488,6 +919,10 @@ async def get_patient_monitoring(
             alerts.append(f"⚠️ CRITICAL: {param.name} is outside normal range")
         elif param.status == "abnormal":
             alerts.append(f"⚠️ {param.name} requires attention")
+    
+    elapsed_time = time.time() - start_time
+    if elapsed_time > 1.0:  # Only log if it takes more than 1 second
+        logger.warning(f"Patient monitoring for {patient_id} took {elapsed_time:.2f}s")
     
     return PatientMonitoringResponse(
         patient_id=patient.patient_id,

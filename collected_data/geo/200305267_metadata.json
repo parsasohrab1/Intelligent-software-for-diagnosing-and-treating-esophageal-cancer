@@ -1,0 +1,1481 @@
+{
+  "dataset_id": "200305267",
+  "title": "Microbial signals in primary and metastatic brain tumors",
+  "summary": "Gliomas and brain metastases (BrM) are associated with poor prognosis, necessitating a deeper understanding of brain tumor biology and the development of effective therapeutic strategies. While our group and others have demonstrated microbial presence in various tumors, recent controversies regarding cancer-type-specific intra-tumoral microbiota emphasize the importance of rigorous, orthogonal validation. This prospective, multi-institutional study included a total of 243 samples from 221 patients, comprising 168 glioma and BrM samples and 75 non-cancerous or tumor-adjacent tissues. Using stringent fluorescent in situ hybridization, immunohistochemistry, and high-resolution spatial imaging, we detected intracellular bacterial 16S rRNA and lipopolysaccharides in both glioma and BrM samples, localized to tumor, immune, and stromal cells. Custom 16S and metagenomic sequencing workflows identified taxa associated with intra-tumoral bacterial signals in the tumor microenvironment; however, standard culture methods did not yield readily cultivable microbiota. Spatial analyses revealed significant correlations between bacterial 16S signals and anti-microbial and immunometabolic signatures at regional, neighborhood, and cellular levels. Furthermore, intra-tumoral 16S bacterial signals showed sequence overlap with matched oral and gut microbiota, suggesting a possible connection with distant communities. Together, these findings introduce microbial elements as a component of the brain tumor microenvironment and lay the foundation for future mechanistic and translational studies.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9167745",
+      "title": "P25_AjN_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167828",
+      "title": "P39_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167791",
+      "title": "P37_BrM_ROI_8_RNA"
+    },
+    {
+      "accession": "GSM9167994",
+      "title": "P42_BrM_ROI_7_Protein"
+    },
+    {
+      "accession": "GSM9167911",
+      "title": "P20_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167708",
+      "title": "P14_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167874",
+      "title": "P8_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167957",
+      "title": "P35_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167854",
+      "title": "P2_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167771",
+      "title": "P35_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167974",
+      "title": "P37_BrM_ROI_7_Protein"
+    },
+    {
+      "accession": "GSM9167937",
+      "title": "P28_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9168020",
+      "title": "P41_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167891",
+      "title": "P13_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167808",
+      "title": "P42_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167725",
+      "title": "P20_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167682",
+      "title": "P6_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167894",
+      "title": "P15_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167765",
+      "title": "P33_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167931",
+      "title": "P26_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167728",
+      "title": "P20_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167848",
+      "title": "P47_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167811",
+      "title": "P42_BrM_ROI_8_RNA"
+    },
+    {
+      "accession": "GSM9167977",
+      "title": "P41_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168014",
+      "title": "P39_BrM_ROI_8_Protein"
+    },
+    {
+      "accession": "GSM9167685",
+      "title": "P7_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167768",
+      "title": "P32_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167805",
+      "title": "P44_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167851",
+      "title": "P1_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167934",
+      "title": "P28_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168017",
+      "title": "P40_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167997",
+      "title": "P46_Tumor_border_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167914",
+      "title": "P21_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167785",
+      "title": "P39_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167868",
+      "title": "P6_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167665",
+      "title": "No_template_control_Glioma_RNA"
+    },
+    {
+      "accession": "GSM9167748",
+      "title": "P26_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167951",
+      "title": "P32_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167788",
+      "title": "P39_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167702",
+      "title": "P12_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167831",
+      "title": "P39_BrM_ROI_9_RNA"
+    },
+    {
+      "accession": "GSM9168000",
+      "title": "P46_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167954",
+      "title": "P33_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167871",
+      "title": "P7_AjN_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167705",
+      "title": "P13_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167722",
+      "title": "P19_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167865",
+      "title": "P6_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167948",
+      "title": "P33_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168031",
+      "title": "P47_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167762",
+      "title": "P32_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167799",
+      "title": "P43_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167716",
+      "title": "P16_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167679",
+      "title": "P5_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167965",
+      "title": "P37_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167845",
+      "title": "P49_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167928",
+      "title": "P25_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167756",
+      "title": "P30_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167839",
+      "title": "P43_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167968",
+      "title": "P38_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167719",
+      "title": "P18_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167882",
+      "title": "P11_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168011",
+      "title": "P39_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167885",
+      "title": "P11_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167802",
+      "title": "P43_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167782",
+      "title": "P37_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167819",
+      "title": "P47_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167736",
+      "title": "P22_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167902",
+      "title": "P17_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167673",
+      "title": "P4_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167699",
+      "title": "P11_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167985",
+      "title": "P43_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167971",
+      "title": "P39_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167888",
+      "title": "P12_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9168008",
+      "title": "P49_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167862",
+      "title": "P5_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167822",
+      "title": "P49_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167739",
+      "title": "P23_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167905",
+      "title": "P18_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167945",
+      "title": "P32_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167742",
+      "title": "P24_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167825",
+      "title": "P50_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9168028",
+      "title": "P45_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167676",
+      "title": "P4_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167988",
+      "title": "P44_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167759",
+      "title": "P32_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167696",
+      "title": "P10_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167779",
+      "title": "P37_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167908",
+      "title": "P19_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167991",
+      "title": "P45_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167925",
+      "title": "P24_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167842",
+      "title": "P44_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167929",
+      "title": "P25_AjN_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9168012",
+      "title": "P39_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167846",
+      "title": "P49_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167743",
+      "title": "P25_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9168029",
+      "title": "P49_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167800",
+      "title": "P43_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167717",
+      "title": "P17_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167883",
+      "title": "P11_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167697",
+      "title": "P10_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167909",
+      "title": "P20_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167826",
+      "title": "P50_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167780",
+      "title": "P37_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167992",
+      "title": "P42_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167680",
+      "title": "P5_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167763",
+      "title": "P33_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167863",
+      "title": "P5_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167946",
+      "title": "P32_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9168032",
+      "title": "P47_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167949",
+      "title": "P33_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167952",
+      "title": "P32_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167700",
+      "title": "P11_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167783",
+      "title": "P38_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167989",
+      "title": "P44_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167740",
+      "title": "P24_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167823",
+      "title": "P49_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167849",
+      "title": "No_template_control_Glioma_Protein"
+    },
+    {
+      "accession": "GSM9167906",
+      "title": "P19_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167866",
+      "title": "P6_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167720",
+      "title": "P18_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167703",
+      "title": "P12_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167803",
+      "title": "P44_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167932",
+      "title": "P26_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167869",
+      "title": "P7_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167786",
+      "title": "P39_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167886",
+      "title": "P12_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168015",
+      "title": "P39_BrM_ROI_9_Protein"
+    },
+    {
+      "accession": "GSM9167969",
+      "title": "P39_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167843",
+      "title": "P44_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167926",
+      "title": "P24_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167723",
+      "title": "P19_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9168009",
+      "title": "P50_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167677",
+      "title": "P4_Glioma_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167806",
+      "title": "P45_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167889",
+      "title": "P13_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167920",
+      "title": "P22_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9168003",
+      "title": "P47_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167817",
+      "title": "P47_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167671",
+      "title": "P3_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167754",
+      "title": "P29_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167760",
+      "title": "P32_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167900",
+      "title": "P16_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167972",
+      "title": "P39_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167983",
+      "title": "P43_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167737",
+      "title": "P23_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167688",
+      "title": "P7_AjN_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167837",
+      "title": "P43_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167691",
+      "title": "P8_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167966",
+      "title": "P37_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167734",
+      "title": "P22_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167774",
+      "title": "P35_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167857",
+      "title": "P4_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168023",
+      "title": "P43_BrM_ROI_7_Protein"
+    },
+    {
+      "accession": "GSM9167820",
+      "title": "P47_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167903",
+      "title": "P18_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167986",
+      "title": "P43_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167940",
+      "title": "P30_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167814",
+      "title": "P46_AjN_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167897",
+      "title": "P15_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9168026",
+      "title": "P44_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167711",
+      "title": "P15_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167923",
+      "title": "P23_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167694",
+      "title": "P9_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167980",
+      "title": "P42_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167777",
+      "title": "P35_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167860",
+      "title": "P4_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167877",
+      "title": "P9_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167674",
+      "title": "P4_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167794",
+      "title": "P41_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167960",
+      "title": "P35_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9168006",
+      "title": "P49_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167714",
+      "title": "P15_AjN_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167917",
+      "title": "P21_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167731",
+      "title": "P21_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167943",
+      "title": "P32_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167668",
+      "title": "P1_AjN_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167751",
+      "title": "P28_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167797",
+      "title": "P42_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167757",
+      "title": "P30_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167840",
+      "title": "P43_BrM_ROI_8_RNA"
+    },
+    {
+      "accession": "GSM9167698",
+      "title": "P11_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167984",
+      "title": "P43_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167963",
+      "title": "P37_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167880",
+      "title": "P10_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167834",
+      "title": "P41_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167735",
+      "title": "P22_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167947",
+      "title": "P33_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167864",
+      "title": "P5_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167781",
+      "title": "P37_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167775",
+      "title": "P35_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167987",
+      "title": "P44_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167904",
+      "title": "P18_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167801",
+      "title": "P43_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167901",
+      "title": "P17_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167818",
+      "title": "P47_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9168030",
+      "title": "P49_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167878",
+      "title": "P9_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167858",
+      "title": "P4_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167738",
+      "title": "P23_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9168024",
+      "title": "P43_BrM_ROI_8_Protein"
+    },
+    {
+      "accession": "GSM9167941",
+      "title": "P30_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167884",
+      "title": "P11_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167967",
+      "title": "P38_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167692",
+      "title": "P8_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167672",
+      "title": "P3_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167821",
+      "title": "P48_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167838",
+      "title": "P43_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167755",
+      "title": "P29_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167675",
+      "title": "P4_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167758",
+      "title": "No_template_control_BrM_RNA"
+    },
+    {
+      "accession": "GSM9168004",
+      "title": "P47_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167841",
+      "title": "P44_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167798",
+      "title": "P42_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167881",
+      "title": "P10_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168010",
+      "title": "P50_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167718",
+      "title": "P17_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167921",
+      "title": "P23_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167712",
+      "title": "P15_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167795",
+      "title": "P42_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167924",
+      "title": "P24_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168007",
+      "title": "P49_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167695",
+      "title": "P9_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167772",
+      "title": "P35_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167964",
+      "title": "P37_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167944",
+      "title": "P32_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167955",
+      "title": "P35_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167872",
+      "title": "P7_AjN_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167669",
+      "title": "P2_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167715",
+      "title": "P16_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167861",
+      "title": "P4_Glioma_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167778",
+      "title": "P37_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167809",
+      "title": "P42_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167726",
+      "title": "P20_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167855",
+      "title": "P3_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167927",
+      "title": "P25_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168021",
+      "title": "P43_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167938",
+      "title": "P29_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168027",
+      "title": "P44_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167978",
+      "title": "P41_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167706",
+      "title": "P13_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167689",
+      "title": "P8_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167752",
+      "title": "P28_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167892",
+      "title": "P14_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167975",
+      "title": "P37_BrM_ROI_8_Protein"
+    },
+    {
+      "accession": "GSM9167746",
+      "title": "P26_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167875",
+      "title": "P8_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167958",
+      "title": "P35_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167666",
+      "title": "P1_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167789",
+      "title": "P37_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167766",
+      "title": "P33_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167709",
+      "title": "P14_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167912",
+      "title": "P20_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167995",
+      "title": "P42_BrM_ROI_8_Protein"
+    },
+    {
+      "accession": "GSM9167829",
+      "title": "P39_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167895",
+      "title": "P15_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167915",
+      "title": "P21_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167749",
+      "title": "P27_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167832",
+      "title": "P40_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167961",
+      "title": "P35_BrM_ROI_7_Protein"
+    },
+    {
+      "accession": "GSM9167792",
+      "title": "P41_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167729",
+      "title": "P20_AjN_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167812",
+      "title": "P46_BrM_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167998",
+      "title": "P46_AjN_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167769",
+      "title": "P32_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167852",
+      "title": "P1_AjN_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167981",
+      "title": "P42_BrM_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167835",
+      "title": "P41_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167918",
+      "title": "P22_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167683",
+      "title": "P6_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167753",
+      "title": "P28_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9168018",
+      "title": "P41_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167732",
+      "title": "P21_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167836",
+      "title": "P41_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167935",
+      "title": "P28_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168001",
+      "title": "P47_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167707",
+      "title": "P13_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167727",
+      "title": "P20_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167790",
+      "title": "P37_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167686",
+      "title": "P7_AjN_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167939",
+      "title": "P29_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167873",
+      "title": "P8_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167815",
+      "title": "P46_BrM_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9168002",
+      "title": "P47_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167898",
+      "title": "P15_AjN_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167919",
+      "title": "P22_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168005",
+      "title": "P48_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167922",
+      "title": "P23_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167793",
+      "title": "P41_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167710",
+      "title": "P15_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167690",
+      "title": "P8_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167670",
+      "title": "P2_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167956",
+      "title": "P35_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9168022",
+      "title": "P43_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167730",
+      "title": "P21_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167959",
+      "title": "P35_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167859",
+      "title": "P4_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167942",
+      "title": "No_template_control_BrM_Protein"
+    },
+    {
+      "accession": "GSM9167876",
+      "title": "P8_Glioma_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167773",
+      "title": "P35_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167936",
+      "title": "P28_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167856",
+      "title": "P3_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167833",
+      "title": "P40_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167962",
+      "title": "P37_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167813",
+      "title": "P46_Tumor_border_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167979",
+      "title": "P42_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167896",
+      "title": "P15_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167693",
+      "title": "P9_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9168025",
+      "title": "P44_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9168019",
+      "title": "P41_BrM_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167899",
+      "title": "P16_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167827",
+      "title": "P39_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167687",
+      "title": "P7_AjN_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167816",
+      "title": "P46_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167733",
+      "title": "P21_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167713",
+      "title": "P15_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167916",
+      "title": "P21_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167999",
+      "title": "P46_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167796",
+      "title": "P42_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167910",
+      "title": "P20_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167776",
+      "title": "P35_BrM_ROI_6_RNA"
+    },
+    {
+      "accession": "GSM9167982",
+      "title": "P42_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167701",
+      "title": "P11_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167830",
+      "title": "P39_BrM_ROI_8_RNA"
+    },
+    {
+      "accession": "GSM9167853",
+      "title": "P2_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167770",
+      "title": "P33_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9168013",
+      "title": "P39_BrM_ROI_7_Protein"
+    },
+    {
+      "accession": "GSM9167750",
+      "title": "P28_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167667",
+      "title": "P1_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167879",
+      "title": "P9_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167993",
+      "title": "P42_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167721",
+      "title": "P18_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167804",
+      "title": "P44_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167744",
+      "title": "P25_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167784",
+      "title": "P38_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167913",
+      "title": "P20_AjN_ROI_5_Protein"
+    },
+    {
+      "accession": "GSM9167867",
+      "title": "P6_Glioma_ROI_3_Protein"
+    },
+    {
+      "accession": "GSM9167996",
+      "title": "P46_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167950",
+      "title": "P33_BrM_ROI_4_Protein"
+    },
+    {
+      "accession": "GSM9167681",
+      "title": "P6_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167893",
+      "title": "P14_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167764",
+      "title": "P33_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167810",
+      "title": "P42_BrM_ROI_7_RNA"
+    },
+    {
+      "accession": "GSM9167976",
+      "title": "P41_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9168016",
+      "title": "P40_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167933",
+      "title": "P27_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167970",
+      "title": "P39_BrM_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167767",
+      "title": "P32_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167887",
+      "title": "P12_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167684",
+      "title": "P6_Glioma_ROI_4_RNA"
+    },
+    {
+      "accession": "GSM9167807",
+      "title": "P45_BrM_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167724",
+      "title": "P19_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167907",
+      "title": "P19_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167747",
+      "title": "P26_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167847",
+      "title": "P47_BrM_ROI_5_RNA"
+    },
+    {
+      "accession": "GSM9167930",
+      "title": "P26_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167761",
+      "title": "P32_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167844",
+      "title": "P45_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167678",
+      "title": "P5_Glioma_ROI_1_RNA"
+    },
+    {
+      "accession": "GSM9167973",
+      "title": "P37_BrM_ROI_6_Protein"
+    },
+    {
+      "accession": "GSM9167890",
+      "title": "P13_Glioma_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167870",
+      "title": "P7_AjN_ROI_2_Protein"
+    },
+    {
+      "accession": "GSM9167704",
+      "title": "P12_Glioma_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167990",
+      "title": "P45_BrM_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167787",
+      "title": "P39_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167850",
+      "title": "P1_Glioma_ROI_1_Protein"
+    },
+    {
+      "accession": "GSM9167824",
+      "title": "P49_BrM_ROI_3_RNA"
+    },
+    {
+      "accession": "GSM9167741",
+      "title": "P24_Glioma_ROI_2_RNA"
+    },
+    {
+      "accession": "GSM9167953",
+      "title": "P32_BrM_ROI_7_Protein"
+    }
+  ]
+}

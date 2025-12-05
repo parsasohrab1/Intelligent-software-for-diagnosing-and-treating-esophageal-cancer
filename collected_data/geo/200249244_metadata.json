@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200249244",
+  "title": "ALDH18A1promotes the tumor progression of esophageal cancer by binding to and regulating genes associated with tumorigenesis [IRIP-seq]",
+  "summary": "Esophageal cancer is a common tumor in the digestive system. Every year, approximately 300 000 people worldwide die due to esophageal cancer. As a potential RNA binding protein (RBP), ALDH18A1 binds to RNAs to regulate a series of biological processes. To reveal the effect of ALDH18A1 on gene expression and alternative splicing (AS) as well as its function in the occurrence and development of esophageal cancer, we used RNA-seq to analyze the ALDH18A1-alternative splicing events in ALDH18A1-silenced and control KYSE150 cells. The results showed that ALDH18A1 mediates global AS dysregulation in KYSE150 cells. We performed improved RNA immunoprecipitation and sequencing for ALDH18A1 and found that ALDH18A1 has extensive RNA binding activity and preferentially binds to the GUAAUCC and UAGCUGG motifs on RNAs. The ALDH18A1-bound transcripts highly overlap with AS genes, indicating that ALDH18A1 can globally regulate AS by binding to the transcripts in KYSE150 cells. The overlapped genes between ALDH18A1-bound and AS genes are mainly involved in transcriptional regulation, RNA splicing, DNA repair, and nuclear mRNA splicing through spliceosome. In this work, we determined that ALDH18A1 affects cell invasion and metastasis by binding to mRNA and controlling the expression of regulator gene and the level of AS, thus playing a role in the development of esophageal carcinogenesis. The findings enhance the understanding of ALDH18A1 as an RBP in AS and tumor regulation.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7931960",
+      "title": "Input_2"
+    },
+    {
+      "accession": "GSM7931957",
+      "title": "ALDH18A1_IP_1"
+    },
+    {
+      "accession": "GSM7931959",
+      "title": "Input_1"
+    },
+    {
+      "accession": "GSM7931958",
+      "title": "ALDH18A1_IP_2"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200301311",
+  "title": "ZNF514 promotes esophageal cancer progression by enhancing cell proliferation, migration and invasion",
+  "summary": "Esophageal cancer , a malignant tumor occurring in the upper gastrointestinal tract, is the seventh most common cancer worldwide. Zinc finger proteins, the most abundant family of transcription factors in humans, play a crucial role in the initiation and progression of various malignant tumors. However, its function in esophageal cancer remains unclear. The present study aimed to elucidate the role of ZNF514 in the development and progression of esophageal cancer, and to investigate its underlying mechanism. RNA expression and protein levels of ZNF514 were assessed using reverse transcription-quantitative PCR and western blotting . To assess functional roles, multiple cellular assays were performed, including: 5-ethynyl-2\u2019-deoxyuridine incorporation ; Cell Counting Kit-8 ; wound healing assays ; colony formation assays ; Transwell assays. Subsequently, Gene Ontology, Gene Set Enrichment Analysis, Kyoto Encyclopedia of Genes and Genomes analysis and Ingenuity Pathway Analysis were performed through transcriptomic analysis. In EC, ZNF514 exhibited high expression at both the mRNA and protein levels. Additionally, ZNF514 influenced the migration, invasion and proliferation of EC cells. Gene enrichment analyses and IPA demonstrated that ZNF514 knockdown significantly affected multiple signaling pathways, such as Fc\u03b3 receptors, the complement system,  G-protein coupled receptors-related receptors, the Ribosomal S6 kinase pathway, RAS/MEK, PI3K/AKT, STAT3, Nucleotide Binding Oligomerization Domain Containing , and NF-\u03baB pathways. The anti-cancer mechanisms induced by ZNF514 knockdown may be related to the enhancement of Fc\u03b3 receptor and complement system activation, as well as the inhibition of GPCR, RSK, RAS/MEK, PI3K/AKT, STAT3, NOD1/2 and NF-\u03baB pathways.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9080849",
+      "title": "150si-3"
+    },
+    {
+      "accession": "GSM9080846",
+      "title": "150nc-3"
+    },
+    {
+      "accession": "GSM9080844",
+      "title": "150nc-1"
+    },
+    {
+      "accession": "GSM9080847",
+      "title": "150si-1"
+    },
+    {
+      "accession": "GSM9080848",
+      "title": "150si-2"
+    },
+    {
+      "accession": "GSM9080845",
+      "title": "150nc-2"
+    }
+  ]
+}

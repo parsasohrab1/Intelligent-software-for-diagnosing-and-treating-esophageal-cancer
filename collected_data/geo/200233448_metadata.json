@@ -1,0 +1,69 @@
+{
+  "dataset_id": "200233448",
+  "title": "Eosinophils exert direct and indirect anti-tumorigenic effects in the development of esophageal squamous cell carcinoma [eos]",
+  "summary": "Eosinophils are present in several solid tumors and have context-dependent function. The role of eosinophils in the development of esophageal squamous cell cancer (ESCC), 85% of esophageal cancers worldwide, is unknown. Mice were treated with 4-nitroquinolone-1-oxide (4-NQO) for 8 weeks followed by vehicle for 8 weeks to induce esophageal squamous pre-cancer. Eosinophil depletion using three mouse models resulted in exacerbated 4-NQO tumorigenesis.  In order to study the transcriptional profiles of eosinophils specifically, we isolated eosinophils from esophageal tissue of WT mice which had been treated with 4-NQO in the pre-cancer model. Because eosinophils are not present in the esophagus normally, we isolated eosinophils from the colons of a random subset of the same mice. Additionally, we derived eosinophils from the bone marrow of a random subset of the same mice.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7428219",
+      "title": "BM2_BM_cage1_genderF_mouse6"
+    },
+    {
+      "accession": "GSM7428208",
+      "title": "ESO2_ESOPHAGUS_cage1_genderF_mouse2"
+    },
+    {
+      "accession": "GSM7428211",
+      "title": "ESO5_ESOPHAGUS_cage1_genderF_mouse6"
+    },
+    {
+      "accession": "GSM7428217",
+      "title": "COL4_COLON_cage2_genderM_mouse8"
+    },
+    {
+      "accession": "GSM7428214",
+      "title": "COL1_COLON_cage1_genderF_mouse5"
+    },
+    {
+      "accession": "GSM7428220",
+      "title": "BM3_BM_cage2_genderM_mouse7"
+    },
+    {
+      "accession": "GSM7428209",
+      "title": "ESO3_ESOPHAGUS_cage2_genderM_mouse3"
+    },
+    {
+      "accession": "GSM7428212",
+      "title": "ESO6_ESOPHAGUS_cage2_genderM_mouse7"
+    },
+    {
+      "accession": "GSM7428221",
+      "title": "BM4_BM_cage2_genderM_mouse8"
+    },
+    {
+      "accession": "GSM7428218",
+      "title": "BM1_BM_cage1_genderF_mouse5"
+    },
+    {
+      "accession": "GSM7428215",
+      "title": "COL2_COLON_cage1_genderF_mouse6"
+    },
+    {
+      "accession": "GSM7428207",
+      "title": "ESO1_ESOPHAGUS_cage1_genderF_mouse1"
+    },
+    {
+      "accession": "GSM7428216",
+      "title": "COL3_COLON_cage2_genderM_mouse7"
+    },
+    {
+      "accession": "GSM7428210",
+      "title": "ESO4_ESOPHAGUS_cage1_genderF_mouse5"
+    },
+    {
+      "accession": "GSM7428213",
+      "title": "ESO7_ESOPHAGUS_cage2_genderM_mouse8"
+    }
+  ]
+}

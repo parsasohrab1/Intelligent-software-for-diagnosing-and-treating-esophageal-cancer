@@ -1,0 +1,169 @@
+{
+  "dataset_id": "200273848",
+  "title": "Definition of a multi-omics signature for Esophageal Adenocarcinoma prognosis prediction [totalRNA-seq]",
+  "summary": "Esophageal cancer, a highly lethal tumor, contributes to 5% of all cancer deaths, with its primary subtypes being esophageal squamous cell carcinoma (ESCC) and esophageal adenocarcinoma (EAC). While most studies focus on ESCC, this study investigates EAC using single-cell RNA sequencing (scRNA-seq) to analyze CD45+ immune cells from tumors and matched non-tumor tissues in therapy-na\u00efve patients. By examining the transcriptional profiles of these immune cells and the entire transcriptome in a cohort of 23 patients, the study identifies distinct transcriptional signatures. These signatures were used to stratify a large cohort of TCGA EAC patients, revealing strong associations with prognosis and clinical outcomes. The findings suggest that these transcriptional profiles can improve prognosis accuracy post-surgery and potentially guide effective therapies, including immunotherapy, for EAC patients.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8438086",
+      "title": "Patient_16_NT"
+    },
+    {
+      "accession": "GSM8438066",
+      "title": "Patient_14_T"
+    },
+    {
+      "accession": "GSM8438083",
+      "title": "Patient_13_NT"
+    },
+    {
+      "accession": "GSM8438063",
+      "title": "Patient_11_T"
+    },
+    {
+      "accession": "GSM8438089",
+      "title": "Patient_20_NT"
+    },
+    {
+      "accession": "GSM8438060",
+      "title": "Patient_08_T"
+    },
+    {
+      "accession": "GSM8438077",
+      "title": "Patient_03_NT"
+    },
+    {
+      "accession": "GSM8438057",
+      "title": "Patient_05_T"
+    },
+    {
+      "accession": "GSM8438054",
+      "title": "Patient_01_T"
+    },
+    {
+      "accession": "GSM8438080",
+      "title": "Patient_10_NT"
+    },
+    {
+      "accession": "GSM8438061",
+      "title": "Patient_09_T"
+    },
+    {
+      "accession": "GSM8438078",
+      "title": "Patient_06_NT"
+    },
+    {
+      "accession": "GSM8438058",
+      "title": "Patient_06_T"
+    },
+    {
+      "accession": "GSM8438084",
+      "title": "Patient_14_NT"
+    },
+    {
+      "accession": "GSM8438081",
+      "title": "Patient_11_NT"
+    },
+    {
+      "accession": "GSM8438069",
+      "title": "Patient_18_T"
+    },
+    {
+      "accession": "GSM8438075",
+      "title": "Patient_24_T"
+    },
+    {
+      "accession": "GSM8438055",
+      "title": "Patient_02_T"
+    },
+    {
+      "accession": "GSM8438092",
+      "title": "Patient_23_NT"
+    },
+    {
+      "accession": "GSM8438072",
+      "title": "Patient_21_T"
+    },
+    {
+      "accession": "GSM8438079",
+      "title": "Patient_08_NT"
+    },
+    {
+      "accession": "GSM8438073",
+      "title": "Patient_22_T"
+    },
+    {
+      "accession": "GSM8438076",
+      "title": "Patient_01_NT"
+    },
+    {
+      "accession": "GSM8438093",
+      "title": "Patient_24_NT"
+    },
+    {
+      "accession": "GSM8438056",
+      "title": "Patient_03_T"
+    },
+    {
+      "accession": "GSM8438070",
+      "title": "Patient_19_T"
+    },
+    {
+      "accession": "GSM8438067",
+      "title": "Patient_15_T"
+    },
+    {
+      "accession": "GSM8438087",
+      "title": "Patient_18_NT"
+    },
+    {
+      "accession": "GSM8438064",
+      "title": "Patient_12_T"
+    },
+    {
+      "accession": "GSM8438090",
+      "title": "Patient_21_NT"
+    },
+    {
+      "accession": "GSM8438088",
+      "title": "Patient_19_NT"
+    },
+    {
+      "accession": "GSM8438068",
+      "title": "Patient_16_T"
+    },
+    {
+      "accession": "GSM8438074",
+      "title": "Patient_23_T"
+    },
+    {
+      "accession": "GSM8438091",
+      "title": "Patient_22_NT"
+    },
+    {
+      "accession": "GSM8438071",
+      "title": "Patient_20_T"
+    },
+    {
+      "accession": "GSM8438059",
+      "title": "Patient_07_T"
+    },
+    {
+      "accession": "GSM8438065",
+      "title": "Patient_13_T"
+    },
+    {
+      "accession": "GSM8438085",
+      "title": "Patient_15_NT"
+    },
+    {
+      "accession": "GSM8438062",
+      "title": "Patient_10_T"
+    },
+    {
+      "accession": "GSM8438082",
+      "title": "Patient_12_NT"
+    }
+  ]
+}

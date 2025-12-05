@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200205623",
+  "title": "Elafin as a Prognostic Marker in Esophageal Squamous Cell Carcinoma: A Pilot Study using Three-Dimensional Imag-ing and Genomic Profiling",
+  "summary": "Esophageal cancers are globally the sixth deadliest malignancy, with limited curative options. The association of high serum elafin levels, a molecule produced by epithelial cells, with esophageal squamous cell carcinoma (ESCC) risk is established, but its link to poor ESCC prognosis remains unclear. To explore this question, we first used three-dimensional confocal imaging to create a model of the spatial distribution of elafin inside locoregional ESCC tissues. Then, after analyzing data ob-tained from whole-genome microarrays for ESCC cell lines and their more invasive sublines, we performed in vitro experiments using RNA sequencing to identify possible elafin-related pathways. Three-dimensional tissue imaging showed elafin distributed as an interweaved-like fibrous structure in the stroma of tissue obtained from patients with high serum levels of elafin and poorer prognoses. By contrast, the signal was confined inside or around the tumor nest in patients who had lower serum levels and better survival. The analysis of a TCGA dataset revealed that higher levels of elafin mRNA in stage I\u2013IIIA ESCC patients were associated with shorter survival. The in vitro studies revealed that elafin promoted ESCC cell proliferation, migration, and invasion via the epithelial\u2013mesenchymal transition pathway. Thus, elafin inhibition could potentially be used therapeutically to improve survival in patients with locoregional ESCC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6215618",
+      "title": "CE81T2_PI3 cell, overexpression group"
+    },
+    {
+      "accession": "GSM6215619",
+      "title": "CE81T2-4_scr, shRNA conreol group"
+    },
+    {
+      "accession": "GSM6215617",
+      "title": "CE81T2_myc cell, overexpression control group"
+    },
+    {
+      "accession": "GSM6215620",
+      "title": "CE81T2-4_sh6, shPI3 group"
+    }
+  ]
+}

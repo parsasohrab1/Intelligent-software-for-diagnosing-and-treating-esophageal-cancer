@@ -1,0 +1,197 @@
+{
+  "dataset_id": "200212890",
+  "title": "A Pan-Cancer Single Cell Panorama of Natural Killer Cells",
+  "summary": "Natural killer (NK) cells play indispensable roles in innate immune responses against tumor progression, but their phenotypic and functional diversities in the tumor microenvironment (TME) remain unclear. Here, we performed integrated analyses on the single-cell RNA sequencing (scRNA-seq) data for NK cells across multiple cancer types. Our study provides new insights into NK cell\u2013based cancer immunity and highlights the potential clinical utilities of NK cell subsets as therapeutic targets.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6560520",
+      "title": "ESCA-P20181123"
+    },
+    {
+      "accession": "GSM6560563",
+      "title": "UCEC-P20190722"
+    },
+    {
+      "accession": "GSM6560526",
+      "title": "ESCA-P20191129"
+    },
+    {
+      "accession": "GSM6560546",
+      "title": "RC-P20191223"
+    },
+    {
+      "accession": "GSM6560523",
+      "title": "ESCA-P20190411"
+    },
+    {
+      "accession": "GSM6560543",
+      "title": "RC-P20191023"
+    },
+    {
+      "accession": "GSM6560537",
+      "title": "RC-P20181224"
+    },
+    {
+      "accession": "GSM6560557",
+      "title": "UCEC-P20181211"
+    },
+    {
+      "accession": "GSM6560554",
+      "title": "THCA-P20190730"
+    },
+    {
+      "accession": "GSM6560560",
+      "title": "UCEC-P20190312"
+    },
+    {
+      "accession": "GSM6560534",
+      "title": "PACA-P20191125"
+    },
+    {
+      "accession": "GSM6560540",
+      "title": "RC-P20190923"
+    },
+    {
+      "accession": "GSM6560538",
+      "title": "RC-P20190918"
+    },
+    {
+      "accession": "GSM6560518",
+      "title": "BC-P20190123"
+    },
+    {
+      "accession": "GSM6560561",
+      "title": "UCEC-P20190625"
+    },
+    {
+      "accession": "GSM6560521",
+      "title": "ESCA-P20190404"
+    },
+    {
+      "accession": "GSM6560558",
+      "title": "UCEC-P20190213"
+    },
+    {
+      "accession": "GSM6560541",
+      "title": "RC-P20190925"
+    },
+    {
+      "accession": "GSM6560529",
+      "title": "PACA-P20181121"
+    },
+    {
+      "accession": "GSM6560535",
+      "title": "PACA-P20191204"
+    },
+    {
+      "accession": "GSM6560555",
+      "title": "THCA-P20190816"
+    },
+    {
+      "accession": "GSM6560552",
+      "title": "THCA-P20190612"
+    },
+    {
+      "accession": "GSM6560532",
+      "title": "PACA-P20190306"
+    },
+    {
+      "accession": "GSM6560549",
+      "title": "THCA-P20190118"
+    },
+    {
+      "accession": "GSM6560553",
+      "title": "THCA-P20190621"
+    },
+    {
+      "accession": "GSM6560556",
+      "title": "UCEC-P20181122"
+    },
+    {
+      "accession": "GSM6560536",
+      "title": "RC-P20181217"
+    },
+    {
+      "accession": "GSM6560533",
+      "title": "PACA-P20190515"
+    },
+    {
+      "accession": "GSM6560547",
+      "title": "THCA-P20181226"
+    },
+    {
+      "accession": "GSM6560530",
+      "title": "PACA-P20181128"
+    },
+    {
+      "accession": "GSM6560544",
+      "title": "RC-P20191202"
+    },
+    {
+      "accession": "GSM6560564",
+      "title": "UCEC-P20190911"
+    },
+    {
+      "accession": "GSM6560550",
+      "title": "THCA-P20190122"
+    },
+    {
+      "accession": "GSM6560527",
+      "title": "OV-P20181225"
+    },
+    {
+      "accession": "GSM6560524",
+      "title": "ESCA-P20190613"
+    },
+    {
+      "accession": "GSM6560528",
+      "title": "OV-P20190304"
+    },
+    {
+      "accession": "GSM6560548",
+      "title": "THCA-P20190108"
+    },
+    {
+      "accession": "GSM6560551",
+      "title": "THCA-P20190125"
+    },
+    {
+      "accession": "GSM6560531",
+      "title": "PACA-P20190225"
+    },
+    {
+      "accession": "GSM6560525",
+      "title": "ESCA-P20191125"
+    },
+    {
+      "accession": "GSM6560519",
+      "title": "BC-P20190403"
+    },
+    {
+      "accession": "GSM6560539",
+      "title": "RC-P20190919"
+    },
+    {
+      "accession": "GSM6560545",
+      "title": "RC-P20191211"
+    },
+    {
+      "accession": "GSM6560542",
+      "title": "RC-P20191021"
+    },
+    {
+      "accession": "GSM6560522",
+      "title": "ESCA-P20190410"
+    },
+    {
+      "accession": "GSM6560562",
+      "title": "UCEC-P20190717"
+    },
+    {
+      "accession": "GSM6560559",
+      "title": "UCEC-P20190305"
+    }
+  ]
+}

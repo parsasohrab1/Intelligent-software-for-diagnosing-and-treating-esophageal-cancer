@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200179267",
+  "title": "METTL3 mediated m6A mRNA modification promotes esophageal cancer initiation and progression via Notch signaling pathway",
+  "summary": "Esophageal cancer is a lethal malignancy with high mortality rate, while the molecular mechanisms underlying esophageal cancer pathogenesis are stillis poorly understood. Here we found that the N6-methyladenosine (m6A) methyltransferase METTL3 is significantly up-regulated in esophageal squamous cell carcinoma (ESCC) and associated with poor patient prognosis. Depletion of METTL3 results in decreased ESCC growth and progression in vitro and in vivo. We further established ESCC initiation and progression models using Mettl3 conditional knockout mouse and revealed that Mettl3 mediated m6A modification is essential for promotes ESCC initiation and progression in vivo. Moreover, using METTL3 overexpression ESCC cell model and Mettl3 conditional knockin mouse model, we demonstrated the critical function of Mettl3 in promoting in vivo ESCC tumorigenesis in vitro and in vivo. Mechanistically, Mettl3 catalyzed m6A modification promotes NOTCH1 expression and the activation of Notch signaling pathway. Forced activation of Notch signaling pathway successfully rescues the growth, migration and invasion capacities of METTL3 depleted ESCC cells. Our data uncovered important mechanistical insights underlying ESCC tumorigenesis and provided molecular basis for the development of novel strategies for ESCC diagnosis and treatment.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5412776",
+      "title": "TE10_M3sh1"
+    },
+    {
+      "accession": "GSM5412777",
+      "title": "TE10_M3sh2"
+    },
+    {
+      "accession": "GSM5444541",
+      "title": "T10_m6A_IP2.fastq"
+    },
+    {
+      "accession": "GSM5444539",
+      "title": "T10_Input.fastq"
+    },
+    {
+      "accession": "GSM5444540",
+      "title": "T10_m6A_IP1.fastq"
+    },
+    {
+      "accession": "GSM5412775",
+      "title": "TE10_M3NC"
+    }
+  ]
+}

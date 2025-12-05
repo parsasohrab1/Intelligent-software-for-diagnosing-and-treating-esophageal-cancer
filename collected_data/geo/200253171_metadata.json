@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200253171",
+  "title": "Integrative analysis of the lipidome and transcriptome in Chinese Kazakh patients with esophageal squamous cell carcinoma",
+  "summary": "Esophageal squamous cell carcinoma (ESCC) is characterized as a metabolic disorder characterized by lipid metabolic reprogramming. To investigate the regional characteristics of ESCC patients in Xinjiang Province, China, and lipid metabolism, in this study, we described the characteristics of the serum lipid composition in Kazakh ESCC patients by performing an integrated analysis of the transcriptome and lipidomic data. Serum samples from 30 Kazakh ESCC patients and 30 healthy individuals were subjected to targeted lipid metabolomics analysis via UPLC\u2012MS/MS, while 3 tumor samples and matched adjacent normal tissues from 30 ESCC patients were subjected to transcriptome analysis. Compared with those in the healthy group, we observed obvious changes in the serum lipid subclass content, chain length and unsaturation in the ESCC patients. Integrated lipidomic and transcriptomic analyses revealed that unsaturated fatty acid biosynthesis, fatty acid metabolism, lipid degradation, cholesterol metabolism and the AMPK signaling pathway were enriched in tumor tissues. In addition, RT\u2013qPCR results demonstrated that genes closely related to these pathways were differentially expressed between the ESCC group and the healthy control group. Considering the key role of AMPK in lipid metabolism, we conducted a targeted lipid metabolomics analysis on AMPK-knockdown esophageal cancer cells by UPLC\u2012MS/MS. These findings suggested that AMPK might be correlated with lipid metabolism in Kazakh ESCC patients, identifying potential therapeutic targets of AMPK and other lipid metabolism-related markers against the progression of ESCC.",
+  "organism": "Homo sapiens; solid waste metagenome",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8015484",
+      "title": "Esophageal squamous cell carcinoma_tumor tissue_rep2"
+    },
+    {
+      "accession": "GSM8015487",
+      "title": "Esophageal squamous cell carcinoma_Normal tissue adjacent to cancer_rep2"
+    },
+    {
+      "accession": "GSM8015483",
+      "title": "Esophageal squamous cell carcinoma_tumor tissue_rep1"
+    },
+    {
+      "accession": "GSM8015486",
+      "title": "Esophageal squamous cell carcinoma_Normal tissue adjacent to cancer_rep1"
+    },
+    {
+      "accession": "GSM8015485",
+      "title": "Esophageal squamous cell carcinoma_tumor tissue_rep3"
+    },
+    {
+      "accession": "GSM8015488",
+      "title": "Esophageal squamous cell carcinoma_Normal tissue adjacent to cancer_rep3"
+    }
+  ]
+}

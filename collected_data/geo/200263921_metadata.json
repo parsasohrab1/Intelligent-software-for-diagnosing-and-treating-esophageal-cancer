@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200263921",
+  "title": "Profiling of exosomal microRNAs expression in culture medium of human esophageal cancer cell lines under hypoxic conditions",
+  "summary": "The purpose of this analysis is to analyze the changes that occur in microRNAs contained in exosomes released from cancer cells in the tumor hypoxic environment of esophageal squamous cell carcinoma(ESCC). We used microarrays to perform a comprehensive analysis of microRNAs in exosomes released from human ESCC cell lines under normoxic or hypoxic conditions.",
+  "organism": "synthetic construct; Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8207509",
+      "title": "T.Tn exosome normoxia"
+    },
+    {
+      "accession": "GSM8207507",
+      "title": "KYSE960 exosome normoxia"
+    },
+    {
+      "accession": "GSM8207510",
+      "title": "T.Tn exosome hypoxia"
+    },
+    {
+      "accession": "GSM8207508",
+      "title": "KYSE960 exosome hypoxia"
+    }
+  ]
+}

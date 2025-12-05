@@ -1,0 +1,1453 @@
+{
+  "dataset_id": "200156915",
+  "title": "In-depth clinical and biological exploration of DNA Damage Immune Response (DDIR) as a biomarker for oxaliplatin use in colorectal cancer",
+  "summary": "Purpose: The DNA Damage Immune Response (DDIR) assay was developed in breast cancer (BC) based on biology associated with deficiencies in homologous recombination and Fanconi Anemia (HR/FA) pathways. A positive DDIR call identifies patients likely to respond to platinum-based chemotherapies in breast and oesophageal cancers. In colorectal cancer (CRC) there is currently no biomarker to predict response to oxaliplatin. We tested the ability of the DDIR assay to predict response to oxaliplatin-based chemotherapy in CRC and characterised the biology in DDIR-positive CRC. Methods: Samples and clinical data were assessed according to DDIR status from patients who received either 5FU or FOLFOX within the FOCUS trial (n=361, stage 4), or neo-adjuvant FOLFOX in the FOxTROT trial (n=97, stage 2/3). Whole transcriptome, mutation and immunohistochemistry data of these samples were used to interrogate the biology of DDIR in CRC. Results: Contrary to our hypothesis, DDIR negative patients displayed a trend towards improved outcome for oxaliplatin-based chemotherapy compared to DDIR positive patients. DDIR positivity was associated with Microsatellite Instability (MSI) and Colorectal Molecular Subtype 1 (CMS1). Refinement of the DDIR signature, based on overlapping interferon-related chemokine signalling associated with DDIR positivity across CRC and BC cohorts, further confirmed that the DDIR assay did not have predictive value for oxaliplatin-based chemotherapy in CRC. Conclusions: DDIR positivity does not predict improved response following oxaliplatin treatment in CRC. However, data presented here suggests the potential of the DDIR assay in identifying immune-rich tumours that may benefit from immune checkpoint blockade, beyond current use of MSI status.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4747757",
+      "title": "SC00166A"
+    },
+    {
+      "accession": "GSM4747840",
+      "title": "SC00268A"
+    },
+    {
+      "accession": "GSM4747720",
+      "title": "SC00126A"
+    },
+    {
+      "accession": "GSM4747803",
+      "title": "SC00222A"
+    },
+    {
+      "accession": "GSM4747923",
+      "title": "SC00359A"
+    },
+    {
+      "accession": "GSM4747969",
+      "title": "SC00409A"
+    },
+    {
+      "accession": "GSM4748006",
+      "title": "SC00451A"
+    },
+    {
+      "accession": "GSM4747886",
+      "title": "SC00318A"
+    },
+    {
+      "accession": "GSM4748052",
+      "title": "SC00505A"
+    },
+    {
+      "accession": "GSM4747823",
+      "title": "SC00246A"
+    },
+    {
+      "accession": "GSM4747906",
+      "title": "SC00340A"
+    },
+    {
+      "accession": "GSM4747989",
+      "title": "SC00433A"
+    },
+    {
+      "accession": "GSM4747777",
+      "title": "SC00191A"
+    },
+    {
+      "accession": "GSM4747740",
+      "title": "SC00147A"
+    },
+    {
+      "accession": "GSM4747860",
+      "title": "SC00288A"
+    },
+    {
+      "accession": "GSM4748072",
+      "title": "SC00528A"
+    },
+    {
+      "accession": "GSM4747986",
+      "title": "SC00429A"
+    },
+    {
+      "accession": "GSM4747866",
+      "title": "SC00294A"
+    },
+    {
+      "accession": "GSM4747820",
+      "title": "SC00243A"
+    },
+    {
+      "accession": "GSM4748032",
+      "title": "SC00482A"
+    },
+    {
+      "accession": "GSM4748069",
+      "title": "SC00525A"
+    },
+    {
+      "accession": "GSM4747903",
+      "title": "SC00337A"
+    },
+    {
+      "accession": "GSM4747949",
+      "title": "SC00388A"
+    },
+    {
+      "accession": "GSM4747783",
+      "title": "SC00197A"
+    },
+    {
+      "accession": "GSM4747737",
+      "title": "SC00144A"
+    },
+    {
+      "accession": "GSM4747780",
+      "title": "SC00194A"
+    },
+    {
+      "accession": "GSM4747863",
+      "title": "SC00291A"
+    },
+    {
+      "accession": "GSM4747909",
+      "title": "SC00343A"
+    },
+    {
+      "accession": "GSM4747992",
+      "title": "SC00437A"
+    },
+    {
+      "accession": "GSM4748029",
+      "title": "SC00479A"
+    },
+    {
+      "accession": "GSM4747946",
+      "title": "SC00385A"
+    },
+    {
+      "accession": "GSM4747826",
+      "title": "SC00252A"
+    },
+    {
+      "accession": "GSM4747883",
+      "title": "SC00314A"
+    },
+    {
+      "accession": "GSM4748075",
+      "title": "SC00531A"
+    },
+    {
+      "accession": "GSM4747846",
+      "title": "SC00274A"
+    },
+    {
+      "accession": "GSM4747800",
+      "title": "SC00219A"
+    },
+    {
+      "accession": "GSM4747763",
+      "title": "SC00174A"
+    },
+    {
+      "accession": "GSM4748012",
+      "title": "SC00458A"
+    },
+    {
+      "accession": "GSM4748049",
+      "title": "SC00501A"
+    },
+    {
+      "accession": "GSM4747966",
+      "title": "SC00406A"
+    },
+    {
+      "accession": "GSM4747929",
+      "title": "SC00366A"
+    },
+    {
+      "accession": "GSM4747843",
+      "title": "SC00271A"
+    },
+    {
+      "accession": "GSM4748009",
+      "title": "SC00455A"
+    },
+    {
+      "accession": "GSM4747926",
+      "title": "SC00362A"
+    },
+    {
+      "accession": "GSM4747760",
+      "title": "SC00171A"
+    },
+    {
+      "accession": "GSM4747729",
+      "title": "SC00135A"
+    },
+    {
+      "accession": "GSM4747812",
+      "title": "SC00233A"
+    },
+    {
+      "accession": "GSM4748015",
+      "title": "SC00462A"
+    },
+    {
+      "accession": "GSM4747932",
+      "title": "SC00370A"
+    },
+    {
+      "accession": "GSM4747766",
+      "title": "SC00177A"
+    },
+    {
+      "accession": "GSM4747849",
+      "title": "SC00277A"
+    },
+    {
+      "accession": "GSM4747895",
+      "title": "SC00328A"
+    },
+    {
+      "accession": "GSM4747915",
+      "title": "SC00350A"
+    },
+    {
+      "accession": "GSM4747952",
+      "title": "SC00392A"
+    },
+    {
+      "accession": "GSM4748035",
+      "title": "SC00485A"
+    },
+    {
+      "accession": "GSM4747832",
+      "title": "SC00259A"
+    },
+    {
+      "accession": "GSM4747749",
+      "title": "SC00158A"
+    },
+    {
+      "accession": "GSM4747786",
+      "title": "SC00200A"
+    },
+    {
+      "accession": "GSM4747746",
+      "title": "SC00155A"
+    },
+    {
+      "accession": "GSM4747829",
+      "title": "SC00255A"
+    },
+    {
+      "accession": "GSM4747912",
+      "title": "SC00346A"
+    },
+    {
+      "accession": "GSM4747958",
+      "title": "SC00398A"
+    },
+    {
+      "accession": "GSM4747869",
+      "title": "SC00297A"
+    },
+    {
+      "accession": "GSM4747998",
+      "title": "SC00443A"
+    },
+    {
+      "accession": "GSM4747875",
+      "title": "SC00305A"
+    },
+    {
+      "accession": "GSM4748041",
+      "title": "SC00492A"
+    },
+    {
+      "accession": "GSM4748078",
+      "title": "SC00534A"
+    },
+    {
+      "accession": "GSM4747995",
+      "title": "SC00440A"
+    },
+    {
+      "accession": "GSM4748061",
+      "title": "SC00515A"
+    },
+    {
+      "accession": "GSM4747978",
+      "title": "SC00419A"
+    },
+    {
+      "accession": "GSM4747792",
+      "title": "SC00210A"
+    },
+    {
+      "accession": "GSM4747872",
+      "title": "SC00301A"
+    },
+    {
+      "accession": "GSM4747743",
+      "title": "SC00150A"
+    },
+    {
+      "accession": "GSM4747955",
+      "title": "SC00395A"
+    },
+    {
+      "accession": "GSM4747809",
+      "title": "SC00229A"
+    },
+    {
+      "accession": "GSM4748021",
+      "title": "SC00468A"
+    },
+    {
+      "accession": "GSM4747789",
+      "title": "SC00205A"
+    },
+    {
+      "accession": "GSM4747806",
+      "title": "SC00226A"
+    },
+    {
+      "accession": "GSM4748058",
+      "title": "SC00512A"
+    },
+    {
+      "accession": "GSM4747726",
+      "title": "SC00132A"
+    },
+    {
+      "accession": "GSM4748018",
+      "title": "SC00465A"
+    },
+    {
+      "accession": "GSM4747769",
+      "title": "SC00180A"
+    },
+    {
+      "accession": "GSM4747723",
+      "title": "SC00129A"
+    },
+    {
+      "accession": "GSM4748055",
+      "title": "SC00509A"
+    },
+    {
+      "accession": "GSM4747852",
+      "title": "SC00280A"
+    },
+    {
+      "accession": "GSM4747935",
+      "title": "SC00373A"
+    },
+    {
+      "accession": "GSM4747892",
+      "title": "SC00325A"
+    },
+    {
+      "accession": "GSM4747975",
+      "title": "SC00416A"
+    },
+    {
+      "accession": "GSM4747889",
+      "title": "SC00321A"
+    },
+    {
+      "accession": "GSM4748038",
+      "title": "SC00488A"
+    },
+    {
+      "accession": "GSM4747972",
+      "title": "SC00412A"
+    },
+    {
+      "accession": "GSM4748034",
+      "title": "SC00484A"
+    },
+    {
+      "accession": "GSM4747868",
+      "title": "SC00296A"
+    },
+    {
+      "accession": "GSM4747851",
+      "title": "SC00279A"
+    },
+    {
+      "accession": "GSM4747951",
+      "title": "SC00391A"
+    },
+    {
+      "accession": "GSM4747785",
+      "title": "SC00199A"
+    },
+    {
+      "accession": "GSM4747997",
+      "title": "SC00442A"
+    },
+    {
+      "accession": "GSM4747971",
+      "title": "SC00411A"
+    },
+    {
+      "accession": "GSM4747768",
+      "title": "SC00179A"
+    },
+    {
+      "accession": "GSM4748054",
+      "title": "SC00508A"
+    },
+    {
+      "accession": "GSM4747888",
+      "title": "SC00320A"
+    },
+    {
+      "accession": "GSM4747831",
+      "title": "SC00258A"
+    },
+    {
+      "accession": "GSM4747914",
+      "title": "SC00349A"
+    },
+    {
+      "accession": "GSM4747934",
+      "title": "SC00372A"
+    },
+    {
+      "accession": "GSM4747805",
+      "title": "SC00225A"
+    },
+    {
+      "accession": "GSM4748017",
+      "title": "SC00464A"
+    },
+    {
+      "accession": "GSM4747782",
+      "title": "SC00196A"
+    },
+    {
+      "accession": "GSM4747848",
+      "title": "SC00276A"
+    },
+    {
+      "accession": "GSM4747931",
+      "title": "SC00369A"
+    },
+    {
+      "accession": "GSM4748060",
+      "title": "SC00514A"
+    },
+    {
+      "accession": "GSM4747765",
+      "title": "SC00176A"
+    },
+    {
+      "accession": "GSM4747928",
+      "title": "SC00365A"
+    },
+    {
+      "accession": "GSM4747762",
+      "title": "SC00173A"
+    },
+    {
+      "accession": "GSM4747845",
+      "title": "SC00273A"
+    },
+    {
+      "accession": "GSM4748057",
+      "title": "SC00511A"
+    },
+    {
+      "accession": "GSM4747974",
+      "title": "SC00415A"
+    },
+    {
+      "accession": "GSM4747891",
+      "title": "SC00323A"
+    },
+    {
+      "accession": "GSM4747745",
+      "title": "SC00154A"
+    },
+    {
+      "accession": "GSM4747828",
+      "title": "SC00254A"
+    },
+    {
+      "accession": "GSM4748077",
+      "title": "SC00533A"
+    },
+    {
+      "accession": "GSM4748014",
+      "title": "SC00461A"
+    },
+    {
+      "accession": "GSM4747994",
+      "title": "SC00439A"
+    },
+    {
+      "accession": "GSM4747808",
+      "title": "SC00228A"
+    },
+    {
+      "accession": "GSM4748011",
+      "title": "SC00457A"
+    },
+    {
+      "accession": "GSM4747725",
+      "title": "SC00131A"
+    },
+    {
+      "accession": "GSM4747722",
+      "title": "SC00128A"
+    },
+    {
+      "accession": "GSM4747911",
+      "title": "SC00345A"
+    },
+    {
+      "accession": "GSM4747742",
+      "title": "SC00149A"
+    },
+    {
+      "accession": "GSM4747825",
+      "title": "SC00250A"
+    },
+    {
+      "accession": "GSM4747954",
+      "title": "SC00394A"
+    },
+    {
+      "accession": "GSM4748037",
+      "title": "SC00487A"
+    },
+    {
+      "accession": "GSM4747748",
+      "title": "SC00157A"
+    },
+    {
+      "accession": "GSM4747871",
+      "title": "SC00299A"
+    },
+    {
+      "accession": "GSM4748074",
+      "title": "SC00530A"
+    },
+    {
+      "accession": "GSM4747960",
+      "title": "SC00400A"
+    },
+    {
+      "accession": "GSM4747991",
+      "title": "SC00435A"
+    },
+    {
+      "accession": "GSM4747788",
+      "title": "SC00202A"
+    },
+    {
+      "accession": "GSM4748063",
+      "title": "SC00519A"
+    },
+    {
+      "accession": "GSM4747794",
+      "title": "SC00213A"
+    },
+    {
+      "accession": "GSM4747877",
+      "title": "SC00308A"
+    },
+    {
+      "accession": "GSM4747908",
+      "title": "SC00342A"
+    },
+    {
+      "accession": "GSM4747814",
+      "title": "SC00236A"
+    },
+    {
+      "accession": "GSM4747980",
+      "title": "SC00422A"
+    },
+    {
+      "accession": "GSM4747897",
+      "title": "SC00330A"
+    },
+    {
+      "accession": "GSM4748026",
+      "title": "SC00475A"
+    },
+    {
+      "accession": "GSM4748043",
+      "title": "SC00494A"
+    },
+    {
+      "accession": "GSM4748023",
+      "title": "SC00470A"
+    },
+    {
+      "accession": "GSM4747731",
+      "title": "SC00137A"
+    },
+    {
+      "accession": "GSM4747943",
+      "title": "SC00382A"
+    },
+    {
+      "accession": "GSM4747774",
+      "title": "SC00188A"
+    },
+    {
+      "accession": "GSM4747857",
+      "title": "SC00285A"
+    },
+    {
+      "accession": "GSM4748066",
+      "title": "SC00522A"
+    },
+    {
+      "accession": "GSM4747854",
+      "title": "SC00282A"
+    },
+    {
+      "accession": "GSM4747983",
+      "title": "SC00425A"
+    },
+    {
+      "accession": "GSM4747977",
+      "title": "SC00418A"
+    },
+    {
+      "accession": "GSM4747811",
+      "title": "SC00232A"
+    },
+    {
+      "accession": "GSM4747894",
+      "title": "SC00327A"
+    },
+    {
+      "accession": "GSM4747957",
+      "title": "SC00397A"
+    },
+    {
+      "accession": "GSM4747771",
+      "title": "SC00182A"
+    },
+    {
+      "accession": "GSM4747900",
+      "title": "SC00333A"
+    },
+    {
+      "accession": "GSM4747734",
+      "title": "SC00140A"
+    },
+    {
+      "accession": "GSM4747817",
+      "title": "SC00240A"
+    },
+    {
+      "accession": "GSM4747791",
+      "title": "SC00208A"
+    },
+    {
+      "accession": "GSM4747874",
+      "title": "SC00303A"
+    },
+    {
+      "accession": "GSM4747963",
+      "title": "SC00403A"
+    },
+    {
+      "accession": "GSM4748003",
+      "title": "SC00448A"
+    },
+    {
+      "accession": "GSM4747728",
+      "title": "SC00134A"
+    },
+    {
+      "accession": "GSM4747940",
+      "title": "SC00379A"
+    },
+    {
+      "accession": "GSM4747920",
+      "title": "SC00356A"
+    },
+    {
+      "accession": "GSM4748020",
+      "title": "SC00467A"
+    },
+    {
+      "accession": "GSM4747937",
+      "title": "SC00376A"
+    },
+    {
+      "accession": "GSM4747754",
+      "title": "SC00163A"
+    },
+    {
+      "accession": "GSM4747880",
+      "title": "SC00311A"
+    },
+    {
+      "accession": "GSM4747751",
+      "title": "SC00160A"
+    },
+    {
+      "accession": "GSM4748040",
+      "title": "SC00491A"
+    },
+    {
+      "accession": "GSM4747837",
+      "title": "SC00265A"
+    },
+    {
+      "accession": "GSM4747896",
+      "title": "SC00329A"
+    },
+    {
+      "accession": "GSM4748046",
+      "title": "SC00498A"
+    },
+    {
+      "accession": "GSM4747917",
+      "title": "SC00353A"
+    },
+    {
+      "accession": "GSM4747797",
+      "title": "SC00216A"
+    },
+    {
+      "accession": "GSM4748000",
+      "title": "SC00445A"
+    },
+    {
+      "accession": "GSM4748016",
+      "title": "SC00463A"
+    },
+    {
+      "accession": "GSM4747933",
+      "title": "SC00371A"
+    },
+    {
+      "accession": "GSM4747730",
+      "title": "SC00136A"
+    },
+    {
+      "accession": "GSM4747813",
+      "title": "SC00235A"
+    },
+    {
+      "accession": "GSM4747767",
+      "title": "SC00178A"
+    },
+    {
+      "accession": "GSM4747893",
+      "title": "SC00326A"
+    },
+    {
+      "accession": "GSM4747976",
+      "title": "SC00417A"
+    },
+    {
+      "accession": "GSM4747834",
+      "title": "SC00261A"
+    },
+    {
+      "accession": "GSM4747850",
+      "title": "SC00278A"
+    },
+    {
+      "accession": "GSM4748062",
+      "title": "SC00516A"
+    },
+    {
+      "accession": "GSM4747979",
+      "title": "SC00420A"
+    },
+    {
+      "accession": "GSM4747793",
+      "title": "SC00212A"
+    },
+    {
+      "accession": "GSM4748002",
+      "title": "SC00447A"
+    },
+    {
+      "accession": "GSM4747790",
+      "title": "SC00207A"
+    },
+    {
+      "accession": "GSM4747873",
+      "title": "SC00302A"
+    },
+    {
+      "accession": "GSM4747727",
+      "title": "SC00133A"
+    },
+    {
+      "accession": "GSM4747810",
+      "title": "SC00230A"
+    },
+    {
+      "accession": "GSM4747939",
+      "title": "SC00378A"
+    },
+    {
+      "accession": "GSM4747856",
+      "title": "SC00284A"
+    },
+    {
+      "accession": "GSM4748022",
+      "title": "SC00469A"
+    },
+    {
+      "accession": "GSM4747913",
+      "title": "SC00348A"
+    },
+    {
+      "accession": "GSM4747830",
+      "title": "SC00257A"
+    },
+    {
+      "accession": "GSM4747996",
+      "title": "SC00441A"
+    },
+    {
+      "accession": "GSM4748042",
+      "title": "SC00493A"
+    },
+    {
+      "accession": "GSM4747836",
+      "title": "SC00264A"
+    },
+    {
+      "accession": "GSM4747919",
+      "title": "SC00355A"
+    },
+    {
+      "accession": "GSM4748059",
+      "title": "SC00513A"
+    },
+    {
+      "accession": "GSM4747773",
+      "title": "SC00187A"
+    },
+    {
+      "accession": "GSM4748039",
+      "title": "SC00490A"
+    },
+    {
+      "accession": "GSM4747753",
+      "title": "SC00162A"
+    },
+    {
+      "accession": "GSM4747876",
+      "title": "SC00307A"
+    },
+    {
+      "accession": "GSM4747747",
+      "title": "SC00156A"
+    },
+    {
+      "accession": "GSM4747999",
+      "title": "SC00444A"
+    },
+    {
+      "accession": "GSM4747959",
+      "title": "SC00399A"
+    },
+    {
+      "accession": "GSM4747956",
+      "title": "SC00396A"
+    },
+    {
+      "accession": "GSM4747822",
+      "title": "SC00245A"
+    },
+    {
+      "accession": "GSM4747750",
+      "title": "SC00159A"
+    },
+    {
+      "accession": "GSM4747833",
+      "title": "SC00260A"
+    },
+    {
+      "accession": "GSM4747916",
+      "title": "SC00351A"
+    },
+    {
+      "accession": "GSM4748008",
+      "title": "SC00454A"
+    },
+    {
+      "accession": "GSM4747936",
+      "title": "SC00375A"
+    },
+    {
+      "accession": "GSM4748019",
+      "title": "SC00466A"
+    },
+    {
+      "accession": "GSM4747859",
+      "title": "SC00287A"
+    },
+    {
+      "accession": "GSM4747739",
+      "title": "SC00146A"
+    },
+    {
+      "accession": "GSM4747942",
+      "title": "SC00381A"
+    },
+    {
+      "accession": "GSM4748025",
+      "title": "SC00473A"
+    },
+    {
+      "accession": "GSM4748071",
+      "title": "SC00527A"
+    },
+    {
+      "accession": "GSM4747853",
+      "title": "SC00281A"
+    },
+    {
+      "accession": "GSM4747819",
+      "title": "SC00242A"
+    },
+    {
+      "accession": "GSM4747902",
+      "title": "SC00336A"
+    },
+    {
+      "accession": "GSM4747770",
+      "title": "SC00181A"
+    },
+    {
+      "accession": "GSM4748065",
+      "title": "SC00521A"
+    },
+    {
+      "accession": "GSM4747982",
+      "title": "SC00424A"
+    },
+    {
+      "accession": "GSM4747776",
+      "title": "SC00190A"
+    },
+    {
+      "accession": "GSM4747988",
+      "title": "SC00432A"
+    },
+    {
+      "accession": "GSM4747719",
+      "title": "SC00125A"
+    },
+    {
+      "accession": "GSM4748005",
+      "title": "SC00450A"
+    },
+    {
+      "accession": "GSM4747905",
+      "title": "SC00339A"
+    },
+    {
+      "accession": "GSM4747865",
+      "title": "SC00293A"
+    },
+    {
+      "accession": "GSM4747736",
+      "title": "SC00142A"
+    },
+    {
+      "accession": "GSM4748031",
+      "title": "SC00481A"
+    },
+    {
+      "accession": "GSM4747756",
+      "title": "SC00165A"
+    },
+    {
+      "accession": "GSM4747885",
+      "title": "SC00316A"
+    },
+    {
+      "accession": "GSM4747968",
+      "title": "SC00408A"
+    },
+    {
+      "accession": "GSM4748051",
+      "title": "SC00504A"
+    },
+    {
+      "accession": "GSM4747839",
+      "title": "SC00267A"
+    },
+    {
+      "accession": "GSM4747922",
+      "title": "SC00358A"
+    },
+    {
+      "accession": "GSM4747965",
+      "title": "SC00405A"
+    },
+    {
+      "accession": "GSM4747985",
+      "title": "SC00428A"
+    },
+    {
+      "accession": "GSM4748048",
+      "title": "SC00500A"
+    },
+    {
+      "accession": "GSM4747925",
+      "title": "SC00361A"
+    },
+    {
+      "accession": "GSM4747796",
+      "title": "SC00215A"
+    },
+    {
+      "accession": "GSM4748068",
+      "title": "SC00524A"
+    },
+    {
+      "accession": "GSM4747948",
+      "title": "SC00387A"
+    },
+    {
+      "accession": "GSM4747802",
+      "title": "SC00221A"
+    },
+    {
+      "accession": "GSM4747799",
+      "title": "SC00218A"
+    },
+    {
+      "accession": "GSM4747899",
+      "title": "SC00332A"
+    },
+    {
+      "accession": "GSM4748028",
+      "title": "SC00478A"
+    },
+    {
+      "accession": "GSM4747882",
+      "title": "SC00313A"
+    },
+    {
+      "accession": "GSM4747759",
+      "title": "SC00170A"
+    },
+    {
+      "accession": "GSM4748045",
+      "title": "SC00497A"
+    },
+    {
+      "accession": "GSM4747962",
+      "title": "SC00402A"
+    },
+    {
+      "accession": "GSM4747842",
+      "title": "SC00270A"
+    },
+    {
+      "accession": "GSM4747733",
+      "title": "SC00139A"
+    },
+    {
+      "accession": "GSM4747816",
+      "title": "SC00239A"
+    },
+    {
+      "accession": "GSM4747862",
+      "title": "SC00290A"
+    },
+    {
+      "accession": "GSM4747945",
+      "title": "SC00384A"
+    },
+    {
+      "accession": "GSM4748044",
+      "title": "SC00496A"
+    },
+    {
+      "accession": "GSM4747758",
+      "title": "SC00169A"
+    },
+    {
+      "accession": "GSM4747841",
+      "title": "SC00269A"
+    },
+    {
+      "accession": "GSM4747838",
+      "title": "SC00266A"
+    },
+    {
+      "accession": "GSM4747879",
+      "title": "SC00310A"
+    },
+    {
+      "accession": "GSM4747941",
+      "title": "SC00380A"
+    },
+    {
+      "accession": "GSM4748024",
+      "title": "SC00472A"
+    },
+    {
+      "accession": "GSM4747795",
+      "title": "SC00214A"
+    },
+    {
+      "accession": "GSM4747779",
+      "title": "SC00193A"
+    },
+    {
+      "accession": "GSM4747878",
+      "title": "SC00309A"
+    },
+    {
+      "accession": "GSM4748007",
+      "title": "SC00452A"
+    },
+    {
+      "accession": "GSM4747961",
+      "title": "SC00401A"
+    },
+    {
+      "accession": "GSM4747755",
+      "title": "SC00164A"
+    },
+    {
+      "accession": "GSM4747904",
+      "title": "SC00338A"
+    },
+    {
+      "accession": "GSM4747775",
+      "title": "SC00189A"
+    },
+    {
+      "accession": "GSM4747987",
+      "title": "SC00431A"
+    },
+    {
+      "accession": "GSM4747858",
+      "title": "SC00286A"
+    },
+    {
+      "accession": "GSM4748070",
+      "title": "SC00526A"
+    },
+    {
+      "accession": "GSM4747924",
+      "title": "SC00360A"
+    },
+    {
+      "accession": "GSM4747735",
+      "title": "SC00141A"
+    },
+    {
+      "accession": "GSM4747938",
+      "title": "SC00377A"
+    },
+    {
+      "accession": "GSM4747921",
+      "title": "SC00357A"
+    },
+    {
+      "accession": "GSM4748004",
+      "title": "SC00449A"
+    },
+    {
+      "accession": "GSM4747732",
+      "title": "SC00138A"
+    },
+    {
+      "accession": "GSM4747944",
+      "title": "SC00383A"
+    },
+    {
+      "accession": "GSM4747752",
+      "title": "SC00161A"
+    },
+    {
+      "accession": "GSM4747835",
+      "title": "SC00262A"
+    },
+    {
+      "accession": "GSM4748047",
+      "title": "SC00499A"
+    },
+    {
+      "accession": "GSM4747918",
+      "title": "SC00354A"
+    },
+    {
+      "accession": "GSM4747855",
+      "title": "SC00283A"
+    },
+    {
+      "accession": "GSM4747772",
+      "title": "SC00184A"
+    },
+    {
+      "accession": "GSM4747984",
+      "title": "SC00426A"
+    },
+    {
+      "accession": "GSM4747901",
+      "title": "SC00334A"
+    },
+    {
+      "accession": "GSM4748067",
+      "title": "SC00523A"
+    },
+    {
+      "accession": "GSM4748053",
+      "title": "SC00507A"
+    },
+    {
+      "accession": "GSM4747778",
+      "title": "SC00192A"
+    },
+    {
+      "accession": "GSM4747861",
+      "title": "SC00289A"
+    },
+    {
+      "accession": "GSM4748064",
+      "title": "SC00520A"
+    },
+    {
+      "accession": "GSM4747981",
+      "title": "SC00423A"
+    },
+    {
+      "accession": "GSM4747881",
+      "title": "SC00312A"
+    },
+    {
+      "accession": "GSM4747964",
+      "title": "SC00404A"
+    },
+    {
+      "accession": "GSM4747798",
+      "title": "SC00217A"
+    },
+    {
+      "accession": "GSM4747818",
+      "title": "SC00241A"
+    },
+    {
+      "accession": "GSM4747970",
+      "title": "SC00410A"
+    },
+    {
+      "accession": "GSM4747898",
+      "title": "SC00331A"
+    },
+    {
+      "accession": "GSM4748050",
+      "title": "SC00502A"
+    },
+    {
+      "accession": "GSM4747764",
+      "title": "SC00175A"
+    },
+    {
+      "accession": "GSM4747815",
+      "title": "SC00237A"
+    },
+    {
+      "accession": "GSM4748027",
+      "title": "SC00476A"
+    },
+    {
+      "accession": "GSM4748001",
+      "title": "SC00446A"
+    },
+    {
+      "accession": "GSM4747867",
+      "title": "SC00295A"
+    },
+    {
+      "accession": "GSM4747887",
+      "title": "SC00319A"
+    },
+    {
+      "accession": "GSM4748076",
+      "title": "SC00532A"
+    },
+    {
+      "accession": "GSM4747804",
+      "title": "SC00224A"
+    },
+    {
+      "accession": "GSM4747721",
+      "title": "SC00127A"
+    },
+    {
+      "accession": "GSM4747801",
+      "title": "SC00220A"
+    },
+    {
+      "accession": "GSM4747967",
+      "title": "SC00407A"
+    },
+    {
+      "accession": "GSM4747884",
+      "title": "SC00315A"
+    },
+    {
+      "accession": "GSM4747930",
+      "title": "SC00368A"
+    },
+    {
+      "accession": "GSM4748013",
+      "title": "SC00459A"
+    },
+    {
+      "accession": "GSM4747784",
+      "title": "SC00198A"
+    },
+    {
+      "accession": "GSM4747947",
+      "title": "SC00386A"
+    },
+    {
+      "accession": "GSM4747864",
+      "title": "SC00292A"
+    },
+    {
+      "accession": "GSM4747993",
+      "title": "SC00438A"
+    },
+    {
+      "accession": "GSM4747870",
+      "title": "SC00298A"
+    },
+    {
+      "accession": "GSM4747787",
+      "title": "SC00201A"
+    },
+    {
+      "accession": "GSM4747718",
+      "title": "SC00124A"
+    },
+    {
+      "accession": "GSM4747761",
+      "title": "SC00172A"
+    },
+    {
+      "accession": "GSM4747973",
+      "title": "SC00413A"
+    },
+    {
+      "accession": "GSM4747847",
+      "title": "SC00275A"
+    },
+    {
+      "accession": "GSM4747821",
+      "title": "SC00244A"
+    },
+    {
+      "accession": "GSM4747738",
+      "title": "SC00145A"
+    },
+    {
+      "accession": "GSM4748033",
+      "title": "SC00483A"
+    },
+    {
+      "accession": "GSM4747950",
+      "title": "SC00389A"
+    },
+    {
+      "accession": "GSM4747827",
+      "title": "SC00253A"
+    },
+    {
+      "accession": "GSM4747910",
+      "title": "SC00344A"
+    },
+    {
+      "accession": "GSM4747781",
+      "title": "SC00195A"
+    },
+    {
+      "accession": "GSM4747907",
+      "title": "SC00341A"
+    },
+    {
+      "accession": "GSM4748073",
+      "title": "SC00529A"
+    },
+    {
+      "accession": "GSM4747990",
+      "title": "SC00434A"
+    },
+    {
+      "accession": "GSM4748036",
+      "title": "SC00486A"
+    },
+    {
+      "accession": "GSM4747724",
+      "title": "SC00130A"
+    },
+    {
+      "accession": "GSM4748010",
+      "title": "SC00456A"
+    },
+    {
+      "accession": "GSM4747807",
+      "title": "SC00227A"
+    },
+    {
+      "accession": "GSM4747890",
+      "title": "SC00322A"
+    },
+    {
+      "accession": "GSM4747744",
+      "title": "SC00152A"
+    },
+    {
+      "accession": "GSM4748030",
+      "title": "SC00480A"
+    },
+    {
+      "accession": "GSM4747741",
+      "title": "SC00148A"
+    },
+    {
+      "accession": "GSM4747824",
+      "title": "SC00247A"
+    },
+    {
+      "accession": "GSM4747953",
+      "title": "SC00393A"
+    },
+    {
+      "accession": "GSM4747844",
+      "title": "SC00272A"
+    },
+    {
+      "accession": "GSM4747927",
+      "title": "SC00364A"
+    },
+    {
+      "accession": "GSM4748056",
+      "title": "SC00510A"
+    }
+  ]
+}

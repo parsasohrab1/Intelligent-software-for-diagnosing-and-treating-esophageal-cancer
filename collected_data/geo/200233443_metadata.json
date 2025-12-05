@@ -1,0 +1,61 @@
+{
+  "dataset_id": "200233443",
+  "title": "Eosinophils exert direct and indirect anti-tumorigenic effects in the development of esophageal squamous cell carcinoma [4NQOinDBLgata]",
+  "summary": "Eosinophils are present in several solid tumors and have context-dependent function. The role of eosinophils in the development of esophageal squamous cell cancer (ESCC), 85% of esophageal cancers worldwide, is unknown. Mice were treated with 4-nitroquinolone-1-oxide (4-NQO) for 8 weeks followed by vehicle for 8 weeks to induce esophageal squamous pre-cancer. Eosinophil depletion using three mouse models resulted in exacerbated 4-NQO tumorigenesis.  RNA-sequencing on the whole esophagus of WT and ?dblGATA mice was done in the pre-cancer model to understand how the presence of eosinophils affects the pre-cancer esophageal environment.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7428170",
+      "title": "Esophagus, KO5"
+    },
+    {
+      "accession": "GSM7428162",
+      "title": "Esophagus, WT3"
+    },
+    {
+      "accession": "GSM7428168",
+      "title": "Esophagus, KO3"
+    },
+    {
+      "accession": "GSM7428171",
+      "title": "Esophagus, KO6"
+    },
+    {
+      "accession": "GSM7428165",
+      "title": "Esophagus, WT6"
+    },
+    {
+      "accession": "GSM7428160",
+      "title": "Esophagus, WT1"
+    },
+    {
+      "accession": "GSM7428163",
+      "title": "Esophagus, WT4"
+    },
+    {
+      "accession": "GSM7428169",
+      "title": "Esophagus, KO4"
+    },
+    {
+      "accession": "GSM7428166",
+      "title": "Esophagus, KO1"
+    },
+    {
+      "accession": "GSM7428172",
+      "title": "Esophagus, KO7"
+    },
+    {
+      "accession": "GSM7428161",
+      "title": "Esophagus, WT2"
+    },
+    {
+      "accession": "GSM7428167",
+      "title": "Esophagus, KO2"
+    },
+    {
+      "accession": "GSM7428164",
+      "title": "Esophagus, WT5"
+    }
+  ]
+}

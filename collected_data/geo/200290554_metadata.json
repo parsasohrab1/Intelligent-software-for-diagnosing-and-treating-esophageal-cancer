@@ -1,0 +1,385 @@
+{
+  "dataset_id": "200290554",
+  "title": "Mapping the Molecular Signature of Progressive Multiple Sclerosis",
+  "summary": "This SuperSeries is composed of the SubSeries listed below.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8813383",
+      "title": "Control C032"
+    },
+    {
+      "accession": "GSM8813337",
+      "title": "MS MS352"
+    },
+    {
+      "accession": "GSM8816437",
+      "title": "MS MS102"
+    },
+    {
+      "accession": "GSM8813357",
+      "title": "MS MS102"
+    },
+    {
+      "accession": "GSM8813397",
+      "title": "Control C074"
+    },
+    {
+      "accession": "GSM8813360",
+      "title": "Control C096"
+    },
+    {
+      "accession": "GSM8816440",
+      "title": "MS MS263"
+    },
+    {
+      "accession": "GSM8813340",
+      "title": "Control C045"
+    },
+    {
+      "accession": "GSM8813377",
+      "title": "MS MS517"
+    },
+    {
+      "accession": "GSM8813380",
+      "title": "Control C092"
+    },
+    {
+      "accession": "GSM8816446",
+      "title": "MS MS523"
+    },
+    {
+      "accession": "GSM8813346",
+      "title": "MS MS061"
+    },
+    {
+      "accession": "GSM8813326",
+      "title": "MS MS497"
+    },
+    {
+      "accession": "GSM8813363",
+      "title": "MS MS070"
+    },
+    {
+      "accession": "GSM8813366",
+      "title": "Control PDC028"
+    },
+    {
+      "accession": "GSM8813323",
+      "title": "MS MS129"
+    },
+    {
+      "accession": "GSM8813369",
+      "title": "MS MS549"
+    },
+    {
+      "accession": "GSM8813349",
+      "title": "Control C076"
+    },
+    {
+      "accession": "GSM8813386",
+      "title": "MS MS313"
+    },
+    {
+      "accession": "GSM8813343",
+      "title": "Control C064"
+    },
+    {
+      "accession": "GSM8816443",
+      "title": "MS MS406"
+    },
+    {
+      "accession": "GSM8813389",
+      "title": "MS MS103"
+    },
+    {
+      "accession": "GSM8813372",
+      "title": "MS MS422"
+    },
+    {
+      "accession": "GSM8813355",
+      "title": "Control PDC022"
+    },
+    {
+      "accession": "GSM8813335",
+      "title": "Control PDC087"
+    },
+    {
+      "accession": "GSM8813392",
+      "title": "MS MS439"
+    },
+    {
+      "accession": "GSM8813375",
+      "title": "MS MS485"
+    },
+    {
+      "accession": "GSM8813378",
+      "title": "MS MS264"
+    },
+    {
+      "accession": "GSM8813329",
+      "title": "MS MS098"
+    },
+    {
+      "accession": "GSM8816432",
+      "title": "Control C039"
+    },
+    {
+      "accession": "GSM8813332",
+      "title": "Control C046"
+    },
+    {
+      "accession": "GSM8813395",
+      "title": "MS MS500"
+    },
+    {
+      "accession": "GSM8813398",
+      "title": "Control C094"
+    },
+    {
+      "accession": "GSM8816435",
+      "title": "MS MS049"
+    },
+    {
+      "accession": "GSM8813352",
+      "title": "Control PDC128"
+    },
+    {
+      "accession": "GSM8813364",
+      "title": "MS MS444"
+    },
+    {
+      "accession": "GSM8813381",
+      "title": "Control C084"
+    },
+    {
+      "accession": "GSM8813338",
+      "title": "Control C072"
+    },
+    {
+      "accession": "GSM8813384",
+      "title": "Control PDC034"
+    },
+    {
+      "accession": "GSM8816438",
+      "title": "MS MS162"
+    },
+    {
+      "accession": "GSM8813358",
+      "title": "MS MS301"
+    },
+    {
+      "accession": "GSM8813341",
+      "title": "MS MS383"
+    },
+    {
+      "accession": "GSM8813321",
+      "title": "MS MS542"
+    },
+    {
+      "accession": "GSM8813327",
+      "title": "Control PDC068"
+    },
+    {
+      "accession": "GSM8816441",
+      "title": "MS MS274"
+    },
+    {
+      "accession": "GSM8816444",
+      "title": "MS MS500"
+    },
+    {
+      "accession": "GSM8813361",
+      "title": "MS MS341"
+    },
+    {
+      "accession": "GSM8813344",
+      "title": "MS MS086"
+    },
+    {
+      "accession": "GSM8813330",
+      "title": "Control C028"
+    },
+    {
+      "accession": "GSM8813373",
+      "title": "MS MS094"
+    },
+    {
+      "accession": "GSM8813367",
+      "title": "MS MS216"
+    },
+    {
+      "accession": "GSM8813393",
+      "title": "Control PDC027"
+    },
+    {
+      "accession": "GSM8816447",
+      "title": "Control PDC028"
+    },
+    {
+      "accession": "GSM8813387",
+      "title": "MS MS050"
+    },
+    {
+      "accession": "GSM8813347",
+      "title": "Control PDC029"
+    },
+    {
+      "accession": "GSM8813350",
+      "title": "MS MS049"
+    },
+    {
+      "accession": "GSM8813324",
+      "title": "MS MS403"
+    },
+    {
+      "accession": "GSM8813390",
+      "title": "MS MS528"
+    },
+    {
+      "accession": "GSM8813370",
+      "title": "Control C090"
+    },
+    {
+      "accession": "GSM8813336",
+      "title": "Control PDC035"
+    },
+    {
+      "accession": "GSM8816439",
+      "title": "MS MS231"
+    },
+    {
+      "accession": "GSM8816436",
+      "title": "MS MS098"
+    },
+    {
+      "accession": "GSM8813356",
+      "title": "MS MS060"
+    },
+    {
+      "accession": "GSM8813339",
+      "title": "Control C054"
+    },
+    {
+      "accession": "GSM8813359",
+      "title": "MS MS263"
+    },
+    {
+      "accession": "GSM8813396",
+      "title": "MS MS126"
+    },
+    {
+      "accession": "GSM8813376",
+      "title": "MS MS406"
+    },
+    {
+      "accession": "GSM8816433",
+      "title": "Control C045"
+    },
+    {
+      "accession": "GSM8813353",
+      "title": "MS MS510"
+    },
+    {
+      "accession": "GSM8813333",
+      "title": "Control PDC123"
+    },
+    {
+      "accession": "GSM8816445",
+      "title": "MS MS517"
+    },
+    {
+      "accession": "GSM8813379",
+      "title": "Control PDC005"
+    },
+    {
+      "accession": "GSM8813385",
+      "title": "MS MS088"
+    },
+    {
+      "accession": "GSM8813345",
+      "title": "MS MS499"
+    },
+    {
+      "accession": "GSM8816442",
+      "title": "MS MS398"
+    },
+    {
+      "accession": "GSM8813382",
+      "title": "MS MS390"
+    },
+    {
+      "accession": "GSM8813365",
+      "title": "MS MS125"
+    },
+    {
+      "accession": "GSM8813362",
+      "title": "MS MS107"
+    },
+    {
+      "accession": "GSM8813388",
+      "title": "MS MS407"
+    },
+    {
+      "accession": "GSM8813322",
+      "title": "Control PDC085"
+    },
+    {
+      "accession": "GSM8813325",
+      "title": "MS MS547"
+    },
+    {
+      "accession": "GSM8813342",
+      "title": "MS MS430"
+    },
+    {
+      "accession": "GSM8813391",
+      "title": "MS MS470"
+    },
+    {
+      "accession": "GSM8813374",
+      "title": "MS MS448"
+    },
+    {
+      "accession": "GSM8813394",
+      "title": "Control PDC086"
+    },
+    {
+      "accession": "GSM8813354",
+      "title": "MS MS274"
+    },
+    {
+      "accession": "GSM8813348",
+      "title": "MS MS586"
+    },
+    {
+      "accession": "GSM8813368",
+      "title": "MS MS483"
+    },
+    {
+      "accession": "GSM8813328",
+      "title": "Control PDC131"
+    },
+    {
+      "accession": "GSM8813371",
+      "title": "Control PDC023"
+    },
+    {
+      "accession": "GSM8813351",
+      "title": "MS MS576"
+    },
+    {
+      "accession": "GSM8816434",
+      "title": "Control C087"
+    },
+    {
+      "accession": "GSM8813331",
+      "title": "MS MS527"
+    },
+    {
+      "accession": "GSM8813334",
+      "title": "Control C039"
+    }
+  ]
+}

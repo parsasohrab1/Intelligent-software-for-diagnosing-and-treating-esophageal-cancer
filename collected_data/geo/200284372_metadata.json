@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200284372",
+  "title": "NUDT21 lactylation reprograms alternative polyadenylation to promote cuproptosis resistance",
+  "summary": "Alternative polyadenylation (APA) serves as a critical mechanism for shaping transcriptome diversity and modulating cancer therapeutic resistance. While lactate is a well-established metabolic signal in cancer progression, its role in APA regulation remains unclear. Here, we demonstrate that L-lactate-induced lactylation of NUDT21 drives transcriptomic reprogramming through APA modulation. NUDT21 lactylation enhances its interaction with CPSF6, facilitating CFIm complex formation and inducing 3\u2032 untranslated region (UTR) lengthening of FDX1. Extension of the FDX1 3\u2032 UTR attenuates its protein output, thereby conferring resistance to cuproptosis in esophageal squamous cell carcinoma (ESCC). Furthermore, we identify AARS1 as the lactylation \u201cwriter\u201d catalyzing NUDT21 K23 lactylation, and HDAC2 as its enzymatic \u201ceraser\u201d. Clinically, elevated LDHA and NUDT21 levels correlate with reduced FDX1 expression and worse prognosis in ESCC patients. Notably, combined targeting of the lactate-NUDT21-FDX1-cuproptosis axis with the clinical LDHA inhibitor stiripentol and the copper ionophore elesclomol synergistically suppressed tumor growth. Collectively, our work identifies lactylated NUDT21 as a critical factor linking cellular metabolism to APA and proposes a promising therapeutic strategy for ESCC treatment.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8682916",
+      "title": "K30_NC-P"
+    },
+    {
+      "accession": "GSM8682915",
+      "title": "K30_lac-P"
+    },
+    {
+      "accession": "GSM8682918",
+      "title": "TE1_NC-P"
+    },
+    {
+      "accession": "GSM8682917",
+      "title": "TE1_lac-P"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "dataset_id": "200290552",
+  "title": "Mapping the Molecular Signature of Progressive Multiple Sclerosis [197191]",
+  "summary": "Multiple Sclerosis is a complex neurological disorder characterised by inflammation, demyelination, and neurodegeneration of the central nervous system. While treatments exist for relapsing-remitting multiple sclerosis, therapeutic options for the progressive forms remain limited, highlighting the need to understand their distinct pathological mechanisms. To identify subtype specific molecular signatures in patients with multiple sclerosis, bulk RNA sequencing was performed in 90 brain tissue samples from donors with relapsing-remitting, secondary progressive, and primary progressive multiple sclerosis, as well as controls without the disease. This study provides open access to transcriptomic data from multiple sclerosis tissue samples, enabling other researchers to perform independent analyses, validate findings, and generate new hypotheses.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8816446",
+      "title": "MS MS523"
+    },
+    {
+      "accession": "GSM8816438",
+      "title": "MS MS162"
+    },
+    {
+      "accession": "GSM8816435",
+      "title": "MS MS049"
+    },
+    {
+      "accession": "GSM8816432",
+      "title": "Control C039"
+    },
+    {
+      "accession": "GSM8816447",
+      "title": "Control PDC028"
+    },
+    {
+      "accession": "GSM8816444",
+      "title": "MS MS500"
+    },
+    {
+      "accession": "GSM8816441",
+      "title": "MS MS274"
+    },
+    {
+      "accession": "GSM8816433",
+      "title": "Control C045"
+    },
+    {
+      "accession": "GSM8816436",
+      "title": "MS MS098"
+    },
+    {
+      "accession": "GSM8816442",
+      "title": "MS MS398"
+    },
+    {
+      "accession": "GSM8816439",
+      "title": "MS MS231"
+    },
+    {
+      "accession": "GSM8816445",
+      "title": "MS MS517"
+    },
+    {
+      "accession": "GSM8816434",
+      "title": "Control C087"
+    },
+    {
+      "accession": "GSM8816437",
+      "title": "MS MS102"
+    },
+    {
+      "accession": "GSM8816443",
+      "title": "MS MS406"
+    },
+    {
+      "accession": "GSM8816440",
+      "title": "MS MS263"
+    }
+  ]
+}

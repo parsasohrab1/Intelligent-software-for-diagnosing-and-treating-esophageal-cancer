@@ -445,6 +445,15 @@ class EsophagealCancerSyntheticData:
                         )
                         if random.random() < 0.4:
                             findings.append("FDG-avid lymph nodes")
+                    
+                    elif modality == "MRI":
+                        findings.append(
+                            f"Esophageal wall thickening with enhancement ({np.random.uniform(1.2, 2.8):.1f} cm)"
+                        )
+                        if random.random() < 0.5:
+                            findings.append("Peri-esophageal lymphadenopathy")
+                        if random.random() < 0.3:
+                            findings.append("Invasion of adjacent structures")
 
                     imaging_record["findings"] = "; ".join(findings)
                     imaging_record["impression"] = "Findings consistent with esophageal carcinoma"
@@ -713,6 +722,10 @@ class EsophagealCancerSyntheticData:
     def save_to_database(self, dataset: Dict[str, pd.DataFrame], db: Session):
         """Save generated data to database"""
         from datetime import datetime
+        import logging
+        
+        logger = logging.getLogger(__name__)
+        logger.info("Starting to save data to database...")
 
         # Save patients
         for _, row in dataset["patients"].iterrows():
@@ -804,24 +817,38 @@ class EsophagealCancerSyntheticData:
         db.commit()
 
         # Save imaging data
+        logger.info(f"Saving {len(dataset['imaging'])} imaging records...")
+        mri_count = 0
         for _, row in dataset["imaging"].iterrows():
-            imaging = ImagingData(
-                patient_id=row["patient_id"],
-                imaging_modality=row.get("imaging_modality"),
-                findings=row.get("findings"),
-                impression=row.get("impression"),
-                tumor_length_cm=row.get("tumor_length_cm"),
-                wall_thickness_cm=row.get("wall_thickness_cm"),
-                lymph_nodes_positive=row.get("lymph_nodes_positive", 0),
-                contrast_used=row.get("contrast_used", False),
-                radiologist_id=row.get("radiologist_id"),
-                imaging_date=datetime.strptime(row.get("imaging_date"), "%Y-%m-%d").date()
-                if row.get("imaging_date")
-                else None,
-            )
-            db.add(imaging)
+            try:
+                imaging = ImagingData(
+                    patient_id=row["patient_id"],
+                    imaging_modality=row.get("imaging_modality"),
+                    findings=row.get("findings"),
+                    impression=row.get("impression"),
+                    tumor_length_cm=row.get("tumor_length_cm"),
+                    wall_thickness_cm=row.get("wall_thickness_cm"),
+                    lymph_nodes_positive=row.get("lymph_nodes_positive", 0),
+                    contrast_used=row.get("contrast_used", False),
+                    radiologist_id=row.get("radiologist_id"),
+                    imaging_date=datetime.strptime(row.get("imaging_date"), "%Y-%m-%d").date()
+                    if row.get("imaging_date")
+                    else None,
+                )
+                db.add(imaging)
+                if row.get("imaging_modality") == "MRI":
+                    mri_count += 1
+            except Exception as e:
+                logger.error(f"Error saving imaging record for patient {row.get('patient_id')}: {e}")
+                continue
 
         db.commit()
+        logger.info(f"✅ Saved {mri_count} MRI records out of {len(dataset['imaging'])} total imaging records")
+        
+        # Verify MRI records were actually saved (refresh session to see committed data)
+        db.expire_all()
+        saved_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        logger.info(f"✅ Verified: {saved_mri_count} MRI records now in database")
 
         # Save treatment data
         for _, row in dataset["treatment"].iterrows():
@@ -868,7 +895,17 @@ class EsophagealCancerSyntheticData:
             )
             db.add(qol)
 
+        # Final commit for all data
         db.commit()
-
+        db.flush()  # Ensure all changes are flushed to database
+        
+        logger.info("✅ Data saved to database successfully!")
         print("✅ Data saved to database successfully!")
+        
+        # Final verification - check all imaging modalities
+        db.expire_all()  # Refresh all objects from database
+        total_imaging = db.query(ImagingData).count()
+        total_mri_final = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        logger.info(f"✅ Final verification: {total_imaging} total imaging records, {total_mri_final} MRI records in database")
+        print(f"✅ Final verification: {total_imaging} total imaging records, {total_mri_final} MRI records in database")
 

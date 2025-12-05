@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200273481",
+  "title": "FAM134B deficiency in HK-2 cells",
+  "summary": "FAM134B, also known as RETREG1 or JK-1, was first identified in esophageal cancer and later identified as an ER autophagy receptor. The protein contains a Reticulon-homology domain(RHD) and an LC3 interaction region (LIR), where RHD is responsible for sensing and inducing ER membrane curvature, while LIR binds to LC3 on the phagocytic membrane, and the ER membrane and its contents are subsequently encapsulated into autophagosomes and transported to lysosomes for degradation. Now FAM134B, as one of the receptors involved in ER autophagy, has received more and more attention.We knocked down FAM134B in HK-2cells and researched which genes and pathways were been influenced.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8429334",
+      "title": "KO3"
+    },
+    {
+      "accession": "GSM8429331",
+      "title": "CON3"
+    },
+    {
+      "accession": "GSM8429332",
+      "title": "KO1"
+    },
+    {
+      "accession": "GSM8429329",
+      "title": "CON1"
+    },
+    {
+      "accession": "GSM8429333",
+      "title": "KO2"
+    },
+    {
+      "accession": "GSM8429330",
+      "title": "CON2"
+    }
+  ]
+}

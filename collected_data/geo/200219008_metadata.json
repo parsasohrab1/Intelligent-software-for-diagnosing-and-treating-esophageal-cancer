@@ -1,0 +1,45 @@
+{
+  "dataset_id": "200219008",
+  "title": "Cleavage of the pseudoprotease iRhom2 by the signal peptidase complex reveals an ER-to-nucleus signalling pathway",
+  "summary": "iRhoms are pseudoprotease members of the rhomboid-like superfamily and are cardinal regulators of inflammatory and growth factor signaling; they function primarily by recognizing transmembrane domains of their clients. Here, we report a mechanistically distinct nuclear function of iRhoms, showing that both human and mouse iRhom2 are non-canonical substrates of signal peptidase complex (SPC), the protease that removes signal peptides from secreted proteins. Cleavage of iRhom2 generates an N-terminal fragment that enters the nucleus and modifies the transcriptome, in part by binding C-terminal binding proteins (CtBPs). The biological significance of nuclear iRhom2 is indicated by elevated levels in skin biopsies of patients with psoriasis, tylosis with oesophageal cancer (TOC), and non-epidermolytic palmoplantar keratoderma (NEPPK); increased iRhom2 cleavage in a keratinocyte model of psoriasis; and nuclear iRhom2 promoting proliferation of keratinocytes. Overall, this work identifies an unexpected SPC-dependent ER-to-nucleus signaling pathway and demonstrates that iRhoms can mediate nuclear signaling.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6764934",
+      "title": "HEK293, 0h induction, replicate 2"
+    },
+    {
+      "accession": "GSM6764936",
+      "title": "HEK293, 3h induction, replicate 1"
+    },
+    {
+      "accession": "GSM6764933",
+      "title": "HEK293, 0h induction, replicate 1"
+    },
+    {
+      "accession": "GSM6764939",
+      "title": "HEK293, 6h induction, replicate 1"
+    },
+    {
+      "accession": "GSM6764935",
+      "title": "HEK293, 0h induction, replicate 3"
+    },
+    {
+      "accession": "GSM6764938",
+      "title": "HEK293, 3h induction, replicate 3"
+    },
+    {
+      "accession": "GSM6764937",
+      "title": "HEK293, 3h induction, replicate 2"
+    },
+    {
+      "accession": "GSM6764941",
+      "title": "HEK293, 6h induction, replicate 3"
+    },
+    {
+      "accession": "GSM6764940",
+      "title": "HEK293, 6h induction, replicate 2"
+    }
+  ]
+}

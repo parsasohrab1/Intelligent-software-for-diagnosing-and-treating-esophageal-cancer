@@ -1,0 +1,41 @@
+{
+  "dataset_id": "200248518",
+  "title": "RNA-seq analysis of chemotherapy resistance in esophageal squamous cell carcinoma",
+  "summary": "Esophageal cancer presents significant challenges due to limited treatment options and poor prognosis, particularly in advanced stages. Dysregulated long non-coding RNAs (lncRNAs) are implicated in cancer progression and treatment resistance. This study investigated the roles of dysregulated lncRNA, identified through lncRNA-seq, and its downstream target gene  in esophageal squamous cell carcinoma\uff08ESCC).",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7916297",
+      "title": "test_rep4"
+    },
+    {
+      "accession": "GSM7916300",
+      "title": "con_rep3"
+    },
+    {
+      "accession": "GSM7916294",
+      "title": "test_rep1"
+    },
+    {
+      "accession": "GSM7916295",
+      "title": "test_rep2"
+    },
+    {
+      "accession": "GSM7916298",
+      "title": "con_rep1"
+    },
+    {
+      "accession": "GSM7916301",
+      "title": "con_rep4"
+    },
+    {
+      "accession": "GSM7916296",
+      "title": "test_rep3"
+    },
+    {
+      "accession": "GSM7916299",
+      "title": "con_rep2"
+    }
+  ]
+}

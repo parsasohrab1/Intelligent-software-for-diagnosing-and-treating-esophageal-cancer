@@ -1,0 +1,105 @@
+{
+  "dataset_id": "200213241",
+  "title": "Genetic vulnerabilitis study in VHL mutant cells",
+  "summary": "VHL has been known as a tumour suppressor gene, also is an essential gene for some proteolysis-targeting chimera (PROTAC) degraders. Here by using CRISPR-cas9 genome wide screening we find that VHL mutation results in strong proliferation defect by HIF1A\u00a0. VHL MUT shows malfunction of mitochondria which can be restored by HIF1A inhibition. VHL MUT bear specific genetic vulnerabilities which are druggable and mainly HIF1A dependent. In OE33 and MCF7, additional HIF1A inhibition on VHL MUT allows a complete ARV-771 drug resistance acquisition. Our study reports the consequence of VHL mutation and HIF1A dependent druggable genetic vulnerabilities in VHL mutant renal epithelial cells and possible PROTAC resistance acquisition mechanism in breast and oesophageal cancers, provides potential therapeutic targets and strategies for early precancerous and established cancerous cells.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6576349",
+      "title": "D_C35_Rep1"
+    },
+    {
+      "accession": "GSM6576352",
+      "title": "D_C35_Rep4"
+    },
+    {
+      "accession": "GSM6576346",
+      "title": "D_C10_Rep2"
+    },
+    {
+      "accession": "GSM6576340",
+      "title": "C35_Rep4"
+    },
+    {
+      "accession": "GSM6576343",
+      "title": "C8_Rep3"
+    },
+    {
+      "accession": "GSM6576347",
+      "title": "D_C10_Rep3"
+    },
+    {
+      "accession": "GSM6576344",
+      "title": "C8_Rep4"
+    },
+    {
+      "accession": "GSM6576338",
+      "title": "C35_Rep2"
+    },
+    {
+      "accession": "GSM6576341",
+      "title": "C8_Rep1"
+    },
+    {
+      "accession": "GSM6576335",
+      "title": "C10_Rep3"
+    },
+    {
+      "accession": "GSM6576355",
+      "title": "D_C8_Rep3"
+    },
+    {
+      "accession": "GSM6576339",
+      "title": "C35_Rep3"
+    },
+    {
+      "accession": "GSM6576342",
+      "title": "C8_Rep2"
+    },
+    {
+      "accession": "GSM6576356",
+      "title": "D_C8_Rep4"
+    },
+    {
+      "accession": "GSM6576336",
+      "title": "C10_Rep4"
+    },
+    {
+      "accession": "GSM6576350",
+      "title": "D_C35_Rep2"
+    },
+    {
+      "accession": "GSM6576333",
+      "title": "C10_Rep1"
+    },
+    {
+      "accession": "GSM6576353",
+      "title": "D_C8_Rep1"
+    },
+    {
+      "accession": "GSM6576337",
+      "title": "C35_Rep1"
+    },
+    {
+      "accession": "GSM6576334",
+      "title": "C10_Rep2"
+    },
+    {
+      "accession": "GSM6576354",
+      "title": "D_C8_Rep2"
+    },
+    {
+      "accession": "GSM6576348",
+      "title": "D_C10_Rep4"
+    },
+    {
+      "accession": "GSM6576351",
+      "title": "D_C35_Rep3"
+    },
+    {
+      "accession": "GSM6576345",
+      "title": "D_C10_Rep1"
+    }
+  ]
+}

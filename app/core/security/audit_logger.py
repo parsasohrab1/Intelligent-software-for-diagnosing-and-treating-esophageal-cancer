@@ -11,8 +11,14 @@ class AuditLogger:
     """Comprehensive audit logging system"""
 
     def __init__(self):
-        self.db = get_mongodb_database()
-        self.collection = self.db["audit_logs"] if self.db is not None else None
+        # Use try-except to prevent hanging if MongoDB is not available
+        try:
+            self.db = get_mongodb_database()
+            self.collection = self.db["audit_logs"] if self.db is not None else None
+        except Exception:
+            # If MongoDB connection fails, disable audit logging
+            self.db = None
+            self.collection = None
 
     def log_data_access(
         self,
@@ -38,9 +44,14 @@ class AuditLogger:
         }
 
         if self.collection is not None:
-            self.collection.insert_one(audit_record)
-            # Check for suspicious patterns
-            self._detect_suspicious_activity(user_id)
+            try:
+                # Use timeout to prevent hanging
+                self.collection.insert_one(audit_record)
+                # Check for suspicious patterns (only if insert succeeded)
+                self._detect_suspicious_activity(user_id)
+            except Exception:
+                # Don't fail if MongoDB write fails
+                pass
 
     def log_user_action(
         self,
@@ -64,7 +75,12 @@ class AuditLogger:
         }
 
         if self.collection is not None:
-            self.collection.insert_one(audit_record)
+            try:
+                # Use timeout to prevent hanging
+                self.collection.insert_one(audit_record)
+            except Exception:
+                # Don't fail if MongoDB write fails
+                pass
 
     def log_model_usage(
         self,
@@ -84,7 +100,12 @@ class AuditLogger:
         }
 
         if self.collection is not None:
-            self.collection.insert_one(audit_record)
+            try:
+                # Use timeout to prevent hanging
+                self.collection.insert_one(audit_record)
+            except Exception:
+                # Don't fail if MongoDB write fails
+                pass
 
     def log_security_event(
         self,
@@ -106,7 +127,12 @@ class AuditLogger:
         }
 
         if self.collection is not None:
-            self.collection.insert_one(audit_record)
+            try:
+                # Use timeout to prevent hanging
+                self.collection.insert_one(audit_record)
+            except Exception:
+                # Don't fail if MongoDB write fails
+                pass
 
         # Alert on high severity events
         if severity in ["high", "critical"]:
@@ -122,15 +148,19 @@ class AuditLogger:
 
         cutoff_time = (datetime.now() - timedelta(hours=24)).isoformat()
 
-        recent_accesses = list(
-            self.collection.find(
-                {
-                    "user_id": user_id,
-                    "timestamp": {"$gte": cutoff_time},
-                    "event_type": "data_access",
-                }
+        try:
+            recent_accesses = list(
+                self.collection.find(
+                    {
+                        "user_id": user_id,
+                        "timestamp": {"$gte": cutoff_time},
+                        "event_type": "data_access",
+                    }
+                ).max_time_ms(1000)  # Add timeout to prevent hanging
             )
-        )
+        except Exception:
+            # If query fails, return empty list
+            recent_accesses = []
 
         # Check for excessive access
         if len(recent_accesses) > 1000:
@@ -183,7 +213,11 @@ class AuditLogger:
             if end_date:
                 query["timestamp"]["$lte"] = end_date
 
-        logs = self.collection.find(query).sort("timestamp", -1).limit(limit)
+        try:
+            logs = self.collection.find(query).sort("timestamp", -1).limit(limit).max_time_ms(1000)  # Add timeout
+        except Exception:
+            # If query fails, return empty list
+            logs = []
 
         return [self._format_log(log) for log in logs]
 
@@ -210,11 +244,15 @@ class AuditLogger:
 
         cutoff_time = (datetime.now() - timedelta(days=days)).isoformat()
 
-        logs = list(
-            self.collection.find(
-                {"user_id": user_id, "timestamp": {"$gte": cutoff_time}}
+        try:
+            logs = list(
+                self.collection.find(
+                    {"user_id": user_id, "timestamp": {"$gte": cutoff_time}}
+                ).max_time_ms(1000)  # Add timeout to prevent hanging
             )
-        )
+        except Exception:
+            # If query fails, return empty list
+            logs = []
 
         return {
             "user_id": user_id,

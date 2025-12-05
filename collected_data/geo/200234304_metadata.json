@@ -1,0 +1,185 @@
+{
+  "dataset_id": "200234304",
+  "title": "Co-enrichment of cancer-associated bacterial taxa is correlated with immune cell infiltrates in esophageal tumor tissue",
+  "summary": "Rates of esophageal adenocarcinoma are rising globally, with risk factors including a range of genetic and environmental factors, including obesity, tobacco smoking, TP53 mutations, and Barrett\u2019s esophagus, a proinflammatory condition which often occurs prior to developing adenocarcinoma. Interestingly, these factors also modulate the gastrointestinal microbiome.    To better understand the linkage between the microbiome, inflammation, and development of esophageal adenocarcinoma, we integrated 16S and RNA sequencing data. We found several microbial taxa enriched in tumor samples which were correlated with predicted immune cell infiltration from RNA-seq data, including a decrease in megakaryocyte-erythroid progenitor cells with a concomitant increase in platelets. These data suggest dysbiosis of the intratumoral microbiome promotes development and production of platelets, which reveal alterations in the immune microenvironment of esophageal adenocarcinoma and suggest novel therapeutic targets.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7462006",
+      "title": "10153N"
+    },
+    {
+      "accession": "GSM7462032",
+      "title": "13460N"
+    },
+    {
+      "accession": "GSM7462029",
+      "title": "13041T"
+    },
+    {
+      "accession": "GSM7462049",
+      "title": "17823N"
+    },
+    {
+      "accession": "GSM7462012",
+      "title": "11738N"
+    },
+    {
+      "accession": "GSM7462009",
+      "title": "11362N"
+    },
+    {
+      "accession": "GSM7462035",
+      "title": "13732BO"
+    },
+    {
+      "accession": "GSM7462015",
+      "title": "12291T"
+    },
+    {
+      "accession": "GSM7462041",
+      "title": "15180N"
+    },
+    {
+      "accession": "GSM7462038",
+      "title": "13922BO"
+    },
+    {
+      "accession": "GSM7462021",
+      "title": "12767BO"
+    },
+    {
+      "accession": "GSM7462018",
+      "title": "12631T"
+    },
+    {
+      "accession": "GSM7462007",
+      "title": "11267N"
+    },
+    {
+      "accession": "GSM7462044",
+      "title": "16592BF"
+    },
+    {
+      "accession": "GSM7462024",
+      "title": "12943T"
+    },
+    {
+      "accession": "GSM7462027",
+      "title": "13008N"
+    },
+    {
+      "accession": "GSM7462047",
+      "title": "17304N"
+    },
+    {
+      "accession": "GSM7462033",
+      "title": "13460T"
+    },
+    {
+      "accession": "GSM7462016",
+      "title": "12306N"
+    },
+    {
+      "accession": "GSM7462013",
+      "title": "11802BO"
+    },
+    {
+      "accession": "GSM7462030",
+      "title": "13367N"
+    },
+    {
+      "accession": "GSM7462010",
+      "title": "11362T"
+    },
+    {
+      "accession": "GSM7462036",
+      "title": "13812T"
+    },
+    {
+      "accession": "GSM7462022",
+      "title": "12841N"
+    },
+    {
+      "accession": "GSM7462042",
+      "title": "15752T"
+    },
+    {
+      "accession": "GSM7462039",
+      "title": "14303N"
+    },
+    {
+      "accession": "GSM7462019",
+      "title": "12672N"
+    },
+    {
+      "accession": "GSM7462025",
+      "title": "12997N"
+    },
+    {
+      "accession": "GSM7462031",
+      "title": "13367T"
+    },
+    {
+      "accession": "GSM7462011",
+      "title": "11455T"
+    },
+    {
+      "accession": "GSM7462048",
+      "title": "17525N"
+    },
+    {
+      "accession": "GSM7462045",
+      "title": "17206T"
+    },
+    {
+      "accession": "GSM7462028",
+      "title": "13008T"
+    },
+    {
+      "accession": "GSM7462008",
+      "title": "11267T"
+    },
+    {
+      "accession": "GSM7462014",
+      "title": "11802N"
+    },
+    {
+      "accession": "GSM7462034",
+      "title": "13622BO"
+    },
+    {
+      "accession": "GSM7462017",
+      "title": "12631N"
+    },
+    {
+      "accession": "GSM7462043",
+      "title": "16210T"
+    },
+    {
+      "accession": "GSM7462026",
+      "title": "12997T"
+    },
+    {
+      "accession": "GSM7462020",
+      "title": "12672T"
+    },
+    {
+      "accession": "GSM7462037",
+      "title": "13850N"
+    },
+    {
+      "accession": "GSM7462023",
+      "title": "12943N"
+    },
+    {
+      "accession": "GSM7462040",
+      "title": "14303T"
+    },
+    {
+      "accession": "GSM7462046",
+      "title": "17300N"
+    }
+  ]
+}

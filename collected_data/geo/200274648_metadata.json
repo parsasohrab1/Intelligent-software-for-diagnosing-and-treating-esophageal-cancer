@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200274648",
+  "title": "Identification of SIRT3 as an eraser for H3K9 lactylation by antibody-mediated proximity labeling strategy",
+  "summary": "As a novel post-translational modification of histone derived from lactate, lysine lactylation (Kla) links lactate metabolism to epigenetic regulation, playing a role in modulation of gene expression in tumor and immune microenvironment. Evidence so far indicates that HDAC1-3 can catalyze the removal of Kla. However, the regulated targets of HDACs for Kla and functional consequence remain elusive. Herein, we used an antibody-based proximity labeling approach to identify SIRT3 binding to histone H3K9la and catalytic removal of the lactylationoup. The molecular docking results further revealed the mechanism of the binding of Kla peptide to SIRT3. More importantly, SIRT3 can specifically modulate the gene transcription by regulating H3K9la, inhibiting the progression of esophageal cancer cells (ESCC). In conclusion, our work identifies the delactylase of H3K9la and reveal an H3K9la-mediated molecular mechanism catalyzed by SIRT3 for gene transcription regulation in ESCC, and our findings provide an opportunity to investigate the physiological significance of Kla and shed light on the unknown cellular mechanisms controlled by SIRT3.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8454133",
+      "title": "chipsg3"
+    },
+    {
+      "accession": "GSM8454136",
+      "title": "chipv2"
+    },
+    {
+      "accession": "GSM8454134",
+      "title": "inputsg3"
+    },
+    {
+      "accession": "GSM8454135",
+      "title": "inputV2"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200229393",
+  "title": "The mechanism of oncogenomic function of androgen receptor induced UGT2B15 in esophageal squamous cell carcinoma",
+  "summary": "Identification of genes whose expression is altered with UGT2B15 overexpression RNA-Seq in KYSE410 cell lines.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7162716",
+      "title": "KYSE410 cells, control-2"
+    },
+    {
+      "accession": "GSM7162717",
+      "title": "KYSE410 cells, U-1"
+    },
+    {
+      "accession": "GSM7162718",
+      "title": "KYSE410 cells, U-2"
+    },
+    {
+      "accession": "GSM7162715",
+      "title": "KYSE410 cells, control-1"
+    }
+  ]
+}

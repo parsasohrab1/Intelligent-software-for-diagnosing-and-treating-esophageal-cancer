@@ -1,0 +1,73 @@
+{
+  "dataset_id": "200294269",
+  "title": "The Role of Epithelial IKK\u03b2 in the Transition from Normal to Precancerous Tissue in Esophageal Epithelium",
+  "summary": "Esophageal cancer is the 6th leading cause of cancer related death with a 5-year survival rate of under 20%. Esophageal squamous cell carcinoma (ESCC) is associated with chronic inflammation and injury. Currently, little is understood about the molecular mechanisms regulating the early stages of esophageal carcinogenesis. The NF\uf06bB/IKK\uf062 pathway plays a central role in inflammation and has been implicated in ESCC. However, its functional role in the transition to esophageal precancer is unknown. To investigate this, we utilized ED-L2/Cre mice to knockout IKK\u03b2 (IKK\u03b2EEC-KO) in the esophagus. These mice and littermate controls were treated with the carcinogen 4-nitroquinoline-1-oxide (4-NQO) or a vehicle for one month. Esophagi were harvested and examined through histological, protein, flow cytometry, and RNA analyses. Histological analysis showed that 4-NQO treatment led to increased inflammation and intraepithelial CD45+ immune cells which was largely attenuated in IKK\u03b2EEC-KO mice. Total T cells, Tregs, CD4+, and CD8+ T cells showed a similar trend, while macrophages showed a reverse trend. RNAseq data showed upregulation of inflammatory pathways and downregulation in wound healing related pathways in 4-NQO treated control mice versus knockout. We also saw increased expression of the chemokine CXCL9, a T cell chemoattractant. This increase was blocked in 4-NQO treated IKK\u03b2EEC-KO mice or in mice treated with anti-IFN\uf067. Additionally, we demonstrated in vitro that IFN\uf067 upregulates CXCL9 in a NF-\u0138B dependent manner in esophageal keratinocytes. So epithelial IKK\uf062 regulates the immune landscape in the transition to precancer through IFN\uf067/CXCL9 signaling and recruitment of T cells to the esophagus.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8901285",
+      "title": "IKK\u03b2 knockout, 4-NQO, pair 4"
+    },
+    {
+      "accession": "GSM8901274",
+      "title": "control, vehicle, pair 1"
+    },
+    {
+      "accession": "GSM8901277",
+      "title": "IKK\u03b2 knockout, vehicle, pair 2"
+    },
+    {
+      "accession": "GSM8901283",
+      "title": "IKK\u03b2 knockout, vehicle, pair 3"
+    },
+    {
+      "accession": "GSM8901280",
+      "title": "IKK\u03b2 knockout, 4-NQO, pair 3"
+    },
+    {
+      "accession": "GSM8901286",
+      "title": "control, 4-NQO, pair 5"
+    },
+    {
+      "accession": "GSM8901272",
+      "title": "control, 4-NQO, pair 1"
+    },
+    {
+      "accession": "GSM8901275",
+      "title": "IKK\u03b2 knockout, vehicle, pair 1"
+    },
+    {
+      "accession": "GSM8901278",
+      "title": "control, 4-NQO, pair 2"
+    },
+    {
+      "accession": "GSM8901284",
+      "title": "control, 4-NQO, pair 4"
+    },
+    {
+      "accession": "GSM8901287",
+      "title": "IKK\u03b2 knockout, 4-NQO, pair 5"
+    },
+    {
+      "accession": "GSM8901281",
+      "title": "control, 4-NQO, pair 3"
+    },
+    {
+      "accession": "GSM8901273",
+      "title": "IKK\u03b2 knockout, 4-NQO, pair 1"
+    },
+    {
+      "accession": "GSM8901279",
+      "title": "IKK\u03b2 knockout, 4-NQO, pair 2"
+    },
+    {
+      "accession": "GSM8901276",
+      "title": "control, vehicle, pair 2"
+    },
+    {
+      "accession": "GSM8901282",
+      "title": "control, vehicle, pair 3"
+    }
+  ]
+}

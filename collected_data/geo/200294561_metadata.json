@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200294561",
+  "title": "YTHDF3 Promotes the Translation of m6A-Enriched Mitosis-Associated Genes to Attenuate the Responsiveness to Neoadjuvant Chemotherapy in Esophageal Cancer [RIP-seq]",
+  "summary": "Neoadjuvant chemotherapy (NACT) is a pivotal treatment strategy for esophageal cancer, significantly improving patient prognosis and 5-year survival rates. However, a substantial proportion of patients exhibit resistance to NACT and consequently fail to benefit from it. As NACT responsiveness is influenced by multiple distinct molecular pathways, it is essential to systematically investigate the mechanisms underlying poor therapeutic responses. In this study, we found that YTHDF3 directly enhances the m6A-dependent translation of key mitotic regulators, CDCA8 and INCENP, thereby reducing cellular sensitivity to NACT.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8911341",
+      "title": "KYSE30 Cells YTHDF3 (Input)"
+    },
+    {
+      "accession": "GSM8911342",
+      "title": "KYSE30 Cells YTHDF3 (RIP)"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200124784",
+  "title": "miRNAs were involved in the radioresistance of esophageal squamous cell carcinoma",
+  "summary": "Cancer cells associated with radioresistance are likely to give rise to local recurrence and distant metastatic relapse. However, it remains unclear whether specific miRNAs have direct roles in radioresistance and/or prognosis. In this study, we performed a human miRNA expression array analysis to identify miRNAs upregulated or downregulated in the radioresistant cells. To confirm the results, we selected several candidate miRNAs according to the fold change and function of miRNAs, and detected their expression levels in the radioresistant cells and their parental cells using qRT-PCR. Moreover, we further investigate that specific miRNAs predicts pathological response to preoperative radiotherapy in locally advanced ESCC",
+  "organism": "synthetic construct; Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM3554026",
+      "title": "KYSE-70R, biological rep1"
+    },
+    {
+      "accession": "GSM3554029",
+      "title": "KYSE-180, biological rep2"
+    },
+    {
+      "accession": "GSM3554031",
+      "title": "KYSE-180R, biological rep2"
+    },
+    {
+      "accession": "GSM3554020",
+      "title": "KYSE-30, biological rep1"
+    },
+    {
+      "accession": "GSM3554023",
+      "title": "KYSE-30R, biological rep2"
+    },
+    {
+      "accession": "GSM3554022",
+      "title": "KYSE-30R, biological rep1"
+    },
+    {
+      "accession": "GSM3554025",
+      "title": "KYSE-70, biological rep2"
+    },
+    {
+      "accession": "GSM3554028",
+      "title": "KYSE-180, biological rep1"
+    },
+    {
+      "accession": "GSM3554024",
+      "title": "KYSE-70, biological rep1"
+    },
+    {
+      "accession": "GSM3554027",
+      "title": "KYSE-70R, biological rep2"
+    },
+    {
+      "accession": "GSM3554021",
+      "title": "KYSE-30, biological rep2"
+    },
+    {
+      "accession": "GSM3554030",
+      "title": "KYSE-180R, biological rep1"
+    }
+  ]
+}

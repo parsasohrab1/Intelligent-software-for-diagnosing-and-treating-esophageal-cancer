@@ -1,0 +1,49 @@
+{
+  "dataset_id": "200233088",
+  "title": "DNA methylation profiling to determine the primary sites of metastatic cancers using formalin-fixed paraffin-embedded tissues [wgbs_set]",
+  "summary": "Accurate identification of the primary site of metastatic cancer is critical to guide the subsequent treatments. There is a significant portion of patients whose primary sites are initially classified as uncertain, and 3-9% of cancer patients are diagnosed with cancer of unknown primary (CUP) even after comprehensive diagnostic workups. Yet, a widely accepted molecular test is still not available. Here, we presented the combination of a novel DNA methylation sequencing-based method and an algorithm to predict the tissues of origin for metastatic cancers. The assay applied degraded DNA from formalin-fixed, paraffin-embedded (FFPE) tissues to generate reduced represent bisulfite sequencing libraries (FFPE-RRBS). Comparable DNA methylation metrics were obtained for the paired fresh frozen (FF) RRBS and FFPE-RRBS libraries and the FFPE-RRBS libraries of matched primary and metastatic cancer tissues. We generated and systemically evaluated 28 molecular classifiers built on four methylation evaluation methods and seven machine-learning approaches from a training data set of 498 primary cancer patients. Of those classifiers, the beta values-based (mean methylation) linear support vector (BELIVE) performed the best, achieving overall accuracies of 81-95% for identifying the primary sites of 215 metastatic cancer patients by utilizing the top-k predictions (k=1, 2, 3). The prediction accuracies ranged from 92% to 98% for 4702 patients with primary tumors in a cross-validation cohort. Lastly, BELIVE successfully identified the tissues of origin for approximately 81-93% of cases in a cohort of 68 patients initially diagnosed with CUP.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7401333",
+      "title": "Pleura FFPE sample of Esophagus cancer [ST_HZ_20230215_9_16]"
+    },
+    {
+      "accession": "GSM7401325",
+      "title": "FFPE sample of Breast cancer [ST_HZ_20230215_5_5]"
+    },
+    {
+      "accession": "GSM7401328",
+      "title": "Liver FFPE sample of Colon and rectum cancer [ST_HZ_20230215_6_12]"
+    },
+    {
+      "accession": "GSM7401334",
+      "title": "Pelvic cavity FFPE sample of Ovarian cancer [ST_HZ_20230215_9_18]"
+    },
+    {
+      "accession": "GSM7401331",
+      "title": "Hydrothorax FFPE sample of Stomach cancer [ST_HZ_20230215_8_14]"
+    },
+    {
+      "accession": "GSM7401329",
+      "title": "Ascites FFPE sample of Ovarian cancer [ST_HZ_20230215_7_19]"
+    },
+    {
+      "accession": "GSM7401326",
+      "title": "FFPE sample of Breast cancer [ST_HZ_20230215_5_6]"
+    },
+    {
+      "accession": "GSM7401332",
+      "title": "Liver FFPE sample of Lung cancer [ST_HZ_20230215_8_15]"
+    },
+    {
+      "accession": "GSM7401330",
+      "title": "Liver FFPE sample of Colon and rectum cancer [ST_HZ_20230215_7_13]"
+    },
+    {
+      "accession": "GSM7401327",
+      "title": "Lymphnode FFPE sample of Thyroid cancer [ST_HZ_20230215_6_7]"
+    }
+  ]
+}

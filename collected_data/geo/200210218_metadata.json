@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200210218",
+  "title": "Comprehensive analyses of partially methylated domains and differentially methylated regions in esophageal cancer reveal both cell-type- and cancer-specific epigenetic regulation [WGBS]",
+  "summary": "As one of the most common malignancies, esophageal cancer has two subtypes, squamous cell carcinoma (ESCC) and adenocarcinoma (EAC), arising from distinct cells-of-origin. However, distinguishing cell-type-specific molecular features from cancer-specific characteristics has been challenging. Here, we analyze whole-genome bisulfite sequencing (WGBS) data on 45 esophageal tumor and nonmalignant samples from both subtypes. We develop a novel sequence-aware method to identify large partially methylated domains (PMDs), revealing profound heterogeneity at both the methylation level (depth) and genomic distribution (breadth) of PMDs across tumor samples. We identify subtype-specific PMDs, which are associated with repressive transcription, chromatin B compartments and high somatic mutation rate. While the genomic locations of these PMDs are pre-established in normal cells, the degree of loss is significantly higher in tumors. We find that cell-type-specific deposition of H3K36me2 may underlie the genomic distribution PMDs. At a smaller genomic scale, both cell-type- and cancer-specific differentially methylated regions (DMRs) are identified for each subtype. Using binding motif analysis within these DMRs, we show that a cell-type-specific transcription factor such as HNF4A can maintain the binding sites that it establishes in normal cells, while being recruited to new binding sites with novel partners such as FOSL1 in cancer. Finally, leveraging pan-tissue single-cell and pan-cancer epigenomic datasets, we demonstrate that a substantial fraction of the cell-type-specific PMDs and DMRs identified here in esophageal cancer, are actually markers that co-occur in other cancers originating from related cell types. These findings advance our understanding of the DNA methylation dynamics at various genomic scales in normal and malignant states, providing novel mechanistic insights into cell-type- and cancer-specific epigenetic regulations. Whole-genome bisulfite sequencing (WGBS) for EAC ESO26 cell line and ESCC TE5 cell line.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM6423671",
+      "title": "TE5_WGBS"
+    },
+    {
+      "accession": "GSM6423670",
+      "title": "ESO26_WGBS"
+    }
+  ]
+}

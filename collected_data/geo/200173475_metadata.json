@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200173475",
+  "title": "Pan-cancer analysis of IFI6 and its tumor promotor effects in esophageal squamous cell carcinoma",
+  "summary": "IFI6 is one of the ISG family, which is considered to play an important role in signal transduction pathway and immune response. However, there are few reports on IFI6, and only a few studies have reported that IFI6 may play a role in the occurrence and development of some tumors. We downloaded normal tissue and tumor tissue information from GTEx, TCGA and CCLE, and used survival analysis to study the relationship between IFI6 expression and OS, DSS, etc. We found that IFI6 was expressed in a variety of tumors, and the expression of individual tumors such as LUAD was very high. In addition, we also studied the relationship between IFI6 and immune cell infiltration enrichment, tumor immune microenvironment, methylation and so on. Furthermore, the high expression level of IFI6 was verified in esophageal squamous cell carcinoma (ESCC). In ESCC cells, IFI6 overexpression significantly promoted cell proliferation and growth, and inhibited cell apoptosis. In the lncRNA sequencing analysis, we found that IFI6 could regulate the expression of multiple genes, including HNRNPC, PEMT, INTS7, and several pathways, such as  VEGF signaling pathway, and PPAR signaling pathway. Our study provides new insights into the role of IFI6 in pan-cancer. IFI6 may represent a novel target for the treatment of esophageal squamous cell carcinoma.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5268407",
+      "title": "OE_NC_1"
+    },
+    {
+      "accession": "GSM5268418",
+      "title": "sh_IFI_3"
+    },
+    {
+      "accession": "GSM5268415",
+      "title": "sh_NC_3"
+    },
+    {
+      "accession": "GSM5268410",
+      "title": "OE_IFI_1"
+    },
+    {
+      "accession": "GSM5268416",
+      "title": "sh_IFI_1"
+    },
+    {
+      "accession": "GSM5268413",
+      "title": "sh_NC_1"
+    },
+    {
+      "accession": "GSM5268417",
+      "title": "sh_IFI_2"
+    },
+    {
+      "accession": "GSM5268414",
+      "title": "sh_NC_2"
+    },
+    {
+      "accession": "GSM5268408",
+      "title": "OE_NC_2"
+    },
+    {
+      "accession": "GSM5268409",
+      "title": "OE_NC_3"
+    },
+    {
+      "accession": "GSM5268411",
+      "title": "OE_IFI_2"
+    },
+    {
+      "accession": "GSM5268412",
+      "title": "OE_IFI_3"
+    }
+  ]
+}

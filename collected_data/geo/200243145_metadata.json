@@ -1,0 +1,17 @@
+{
+  "dataset_id": "200243145",
+  "title": "Characterization of residual cancer by comparison of a pair of organoids established from a patient with ESCC before and after neoadjuvant chemotherapy (in vitro)",
+  "summary": "Neoadjuvant chemotherapy (NAC) followed by surgery is a standard approach for management of locally advanced esophageal squamous cell carcinoma (ESCC). Patients who do not respond well to NAC have a poor prognosis. Despite extensive research, the mechanisms of chemoresistance in ESCC remain largely unknown. Here, we established paired tumor organoids \u2013 designated as PreNAC-O and PostNAC-O \u2013 from one ESCC patient before and after NAC, respectively. Although the two organoids did not exhibit significant differences in proliferation, morphology or drug sensitivity in vitro, the tumorigenicity of PostNAC-O in vivo was significantly higher than that of PreNAC-O. Xenografts from PreNAC-O tended to exhibit keratinization, while those from PostNAC-O displayed conspicuous necrotic areas. The tumorigenicity of PostNAC-O xenografts during the chemotherapy was comparable to that of PreNAC-O without treatment. Furthermore, the gene expression profiles of the xenografts suggested that expression of genes involved in the EMT and/or hypoxia response might be related to the tumorigenicity of PostNAC-O. Our data suggested that the tumorigenicity of residual cancer had been enhanced, outweighing the effects of chemotherapy, rather than being attributable to intrinsic chemoresistance. Further studies are required to clarify the extent to which residual cancers share a common mechanism similar to that revealed here.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7779878",
+      "title": "EC029_in vitro"
+    },
+    {
+      "accession": "GSM7779879",
+      "title": "EC038_in vitro"
+    }
+  ]
+}

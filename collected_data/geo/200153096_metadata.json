@@ -1,0 +1,45 @@
+{
+  "dataset_id": "200153096",
+  "title": "RNAseq of Oesophageal Adenocarcinoma Cell Lines",
+  "summary": "rna sequencing of Oesophageal Adenocarcinoma Cell lines: OACP4, OE19, FLO-1, SK-GT-4, ESO26, OE33, ESO51, OACM5.1 C, JH-EsoAd1",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4634039",
+      "title": "OACP4_C"
+    },
+    {
+      "accession": "GSM4634042",
+      "title": "SK-GT-4"
+    },
+    {
+      "accession": "GSM4634045",
+      "title": "ESO-51"
+    },
+    {
+      "accession": "GSM4634044",
+      "title": "OE33"
+    },
+    {
+      "accession": "GSM4634047",
+      "title": "JH_EsoAd1"
+    },
+    {
+      "accession": "GSM4634041",
+      "title": "FLO-1"
+    },
+    {
+      "accession": "GSM4634046",
+      "title": "OAC_5.1_C"
+    },
+    {
+      "accession": "GSM4634043",
+      "title": "ESO-26"
+    },
+    {
+      "accession": "GSM4634040",
+      "title": "OE19"
+    }
+  ]
+}

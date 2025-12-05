@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200299511",
+  "title": "Effect of downregulated P4HA2 on gene expression during brachytherapy of KYSE30 cells",
+  "summary": "Lineage-specific endoplasmic reticulum-related genes and proteins are crucial for the radiosensitivity of tumor cells. Here, we report that the P4HA2 protein is a key regulator in the brachytherapy of esophageal cancer. Downregulation of P4HA2 leads to increased radiosensitivity of tumor cells, which can be rescued by exogenous P4HA2. Additionally, P4HA2 interacts with ATAD3A to regulate the sensitivity of esophageal cancer to brachytherapy, and the underlying mechanism remains unknown. In summary, our data provide a molecular framework for exploring the changes in gene lineages after P4HA2 downregulation and brachytherapy.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM9040061",
+      "title": "KYSE30 cells, shP4HA2_1,4Gy"
+    },
+    {
+      "accession": "GSM9040059",
+      "title": "KYSE30 cells,control2,0Gy"
+    },
+    {
+      "accession": "GSM9040062",
+      "title": "KYSE30 cells, shP4HA2_2,4Gy"
+    },
+    {
+      "accession": "GSM9040060",
+      "title": "KYSE30 cells, control3,0Gy"
+    },
+    {
+      "accession": "GSM9040063",
+      "title": "KYSE30 cells, shP4HA2_3,4Gy"
+    },
+    {
+      "accession": "GSM9040058",
+      "title": "KYSE30 cells, control1,0Gy"
+    }
+  ]
+}

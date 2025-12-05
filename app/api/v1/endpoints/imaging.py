@@ -129,6 +129,10 @@ async def get_mri_reports(
     logger = logging.getLogger(__name__)
     
     try:
+        # First, check total MRI count in database
+        total_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        logger.info(f"Total MRI records in database: {total_mri_count}")
+        
         # Build query with proper error handling - use left outer join to handle missing patients
         try:
             # Use outerjoin to handle cases where patient might not exist
@@ -140,6 +144,7 @@ async def get_mri_reports(
                 query = query.filter(ImagingData.patient_id == patient_id)
             
             results = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+            logger.info(f"Query returned {len(results)} MRI reports")
         except (SQLAlchemyError, OperationalError, DisconnectionError) as db_err:
             logger.error(f"Database error in MRI reports query: {db_err}")
             logger.error(traceback.format_exc())
@@ -279,6 +284,62 @@ async def get_mri_report(
         radiologist_id=image.radiologist_id,
         report_summary=report_summary
     )
+
+
+@router.get("/stats")
+async def get_imaging_stats(db: Session = Depends(get_db)):
+    """Get statistics about imaging data in database"""
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Get all imaging records first to see what we have
+        all_imaging = db.query(ImagingData).all()
+        total_count = len(all_imaging)
+        
+        # Count by modality
+        mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        endoscopy_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "Endoscopy").count()
+        ct_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "CT_Chest_Abdomen").count()
+        pet_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "PET_CT").count()
+        eus_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "EUS").count()
+        
+        # Get unique modalities to see what's actually in the database
+        unique_modalities = db.query(ImagingData.imaging_modality).distinct().all()
+        modality_list = [mod[0] for mod in unique_modalities] if unique_modalities else []
+        
+        # Get sample MRI records
+        sample_mri = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").limit(5).all()
+        sample_ids = [img.image_id for img in sample_mri]
+        
+        # Get sample of all imaging to see what modalities exist
+        sample_all = db.query(ImagingData).limit(10).all()
+        sample_modalities = [img.imaging_modality for img in sample_all]
+        
+        logger.info(f"Imaging stats: Total={total_count}, MRI={mri_count}, Endoscopy={endoscopy_count}, CT={ct_count}, PET={pet_count}, EUS={eus_count}")
+        logger.info(f"Unique modalities in DB: {modality_list}")
+        
+        return {
+            "total_imaging_records": total_count,
+            "mri_count": mri_count,
+            "endoscopy_count": endoscopy_count,
+            "ct_count": ct_count,
+            "pet_count": pet_count,
+            "eus_count": eus_count,
+            "unique_modalities": modality_list,
+            "sample_mri_ids": sample_ids,
+            "sample_modalities": sample_modalities[:10],  # First 10 modalities
+        }
+    except Exception as e:
+        logger.error(f"Error getting imaging stats: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+        return {
+            "error": str(e),
+            "total_imaging_records": 0,
+            "mri_count": 0,
+            "unique_modalities": [],
+        }
 
 
 @router.get("/imaging", response_model=List[ImagingDataResponse])

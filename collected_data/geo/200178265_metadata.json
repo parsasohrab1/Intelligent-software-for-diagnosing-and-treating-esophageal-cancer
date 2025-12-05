@@ -1,0 +1,413 @@
+{
+  "dataset_id": "200178265",
+  "title": "A molecular census of midbrain dopaminergic neurons in Parkinsons disease",
+  "summary": "Midbrain dopamine (DA) neurons in the substantia nigra pars compacta (SNpc) project widely throughout the central nervous system, playing critical roles in voluntary movements, reward processing, and working memory.  Many of these neurons are highly sensitive to neurodegeneration in Parkinson\u2019s Disease (PD), and their loss correlates strongly with the pathognomonic symptoms. To characterize these populations molecularly, we developed a protocol to enrich and transcriptionally profile DA neuron nuclei from postmortem human SNpc of both PD patients and matched controls. We identified a total of ten distinct populations, including one that was primate-specific. A single subtype, marked by the gene AGTR1, was highly susceptible to degeneration, and was enriched for expression of genes associated with PD in genetic studies, suggesting many risk loci act within this subtype to influence its neurodegeneration.  The AGTR1 subtype also showed the strongest upregulation of TP53 and its downstream targets, nominating a potential pathway of degeneration in vivo. The transcriptional characterization of differentially disease-vulnerable DA neurons in the SNpc will inform the development of laboratory models, enable the nomination of novel disease biomarkers, and guide further studies of pathogenic disease mechanisms.",
+  "organism": "Rattus norvegicus; Macaca mulatta; Homo sapiens; Tupaia belangeri",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5386699",
+      "title": "pPDsHSrSNxi2569d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386662",
+      "title": "pPDsHSrSNxi3873d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386659",
+      "title": "pPDsHSrSNxi4956d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386642",
+      "title": "pPDsHSrSNxi3345d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386679",
+      "title": "pPDsHSrSNxi5610d200429Neg"
+    },
+    {
+      "accession": "GSM5386639",
+      "title": "pPDsHSrSNxi3322d200429PosE"
+    },
+    {
+      "accession": "GSM5386685",
+      "title": "pPDsHSrSNxi4560d200429PosA"
+    },
+    {
+      "accession": "GSM5386722",
+      "title": "pPDsHSrSNxi3298d200429PosA"
+    },
+    {
+      "accession": "GSM5386705",
+      "title": "pPDsHSrSNxi2544d200429PosA"
+    },
+    {
+      "accession": "GSM5386636",
+      "title": "pPDsHSrSNxi3873d200429PosE"
+    },
+    {
+      "accession": "GSM5386682",
+      "title": "pPDsHSrSNxi3322d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386702",
+      "title": "pPDsHSrSNxi2561d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386653",
+      "title": "pPDsHSrSNxi3873d200429PosD"
+    },
+    {
+      "accession": "GSM5386650",
+      "title": "pPDsHSrSNxi4775d200429PosA"
+    },
+    {
+      "accession": "GSM5386716",
+      "title": "pPDsHSrSNxi1963d200429PosA"
+    },
+    {
+      "accession": "GSM5386696",
+      "title": "pPDsHSrSNxi6173d200429PosB"
+    },
+    {
+      "accession": "GSM5386633",
+      "title": "pPDsHSrSNxi3346d200429PosC"
+    },
+    {
+      "accession": "GSM5386670",
+      "title": "pPDsHSrSNxi4775d200429DAPIC"
+    },
+    {
+      "accession": "GSM5386713",
+      "title": "pPDsHSrSNxi3298d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386676",
+      "title": "pPDCN3839DAPIA030419"
+    },
+    {
+      "accession": "GSM5386630",
+      "title": "pPDsHSrSNxi3482d200429PosB"
+    },
+    {
+      "accession": "GSM5386673",
+      "title": "pPDsHSrSNxi4560d200429PosB"
+    },
+    {
+      "accession": "GSM5386656",
+      "title": "pPDsHSrSNxi3322d200429PosC"
+    },
+    {
+      "accession": "GSM5386719",
+      "title": "pPDCN3898DAPIB030419"
+    },
+    {
+      "accession": "GSM5386717",
+      "title": "pPDsHSrSNxi2569d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386634",
+      "title": "pPDsHSrSNxi3873d200429PosA"
+    },
+    {
+      "accession": "GSM5386693",
+      "title": "pPDsHSrSNxi2544d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386680",
+      "title": "pPDsHSrSNxi2142d200429PosA"
+    },
+    {
+      "accession": "GSM5386700",
+      "title": "pPDsHSrSNxi2561d200429PosA"
+    },
+    {
+      "accession": "GSM5386697",
+      "title": "pPDsHSrSNxi2142d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386654",
+      "title": "pPDsHSrSNxi4560d200429PosD"
+    },
+    {
+      "accession": "GSM5386694",
+      "title": "pPDsHSrSNxi1963d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386657",
+      "title": "pPDsHSrSNxi3873d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386714",
+      "title": "pPDsHSrSNxi1963d200429PosB"
+    },
+    {
+      "accession": "GSM5386631",
+      "title": "pPDsHSrSNxi3346d200429PosB"
+    },
+    {
+      "accession": "GSM5386720",
+      "title": "pPDsHSrSNxi1963d200429PosD"
+    },
+    {
+      "accession": "GSM5386637",
+      "title": "pPDsHSrSNxi3322d200429PosG"
+    },
+    {
+      "accession": "GSM5386677",
+      "title": "pPDsHSrSNxi4568d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386671",
+      "title": "pPDsHSrSNxi4560d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386674",
+      "title": "pPDsHSrSNxi4775d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386708",
+      "title": "pPDsHSrSNxi2561d200429PosB"
+    },
+    {
+      "accession": "GSM5386625",
+      "title": "pPDsRatrSNxixd200314x"
+    },
+    {
+      "accession": "GSM5386691",
+      "title": "pPDsHSrSNxi2569d200429PosA"
+    },
+    {
+      "accession": "GSM5386645",
+      "title": "pPDsHSrSNxi3482d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386688",
+      "title": "pPDsHSrSNxi3887d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386651",
+      "title": "pPDsHSrSNxi2544d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386668",
+      "title": "pPDsHSrSNxi4775d200429PosB"
+    },
+    {
+      "accession": "GSM5386665",
+      "title": "pPDsHSrSNxi4560d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386648",
+      "title": "pPDsHSrSNxi3345d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386652",
+      "title": "pPDsHSrSNxi3887d200429PosB"
+    },
+    {
+      "accession": "GSM5386711",
+      "title": "pPDCN5730DAPI22119"
+    },
+    {
+      "accession": "GSM5386628",
+      "title": "pPDCN4340DAPIA030419"
+    },
+    {
+      "accession": "GSM5386626",
+      "title": "pPDsMMrSNxiNIH1d200516DAPI"
+    },
+    {
+      "accession": "GSM5386689",
+      "title": "pPDsHSrSNxi4568d200429PosA"
+    },
+    {
+      "accession": "GSM5386672",
+      "title": "pPDsHSrSNxi3322d200429PosD"
+    },
+    {
+      "accession": "GSM5386709",
+      "title": "pPDsHSrSNxi6173d200429PosA"
+    },
+    {
+      "accession": "GSM5386669",
+      "title": "pPDsHSrSNxi3345d200429DAPIC"
+    },
+    {
+      "accession": "GSM5386649",
+      "title": "pPDsHSrSNxi3346d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386715",
+      "title": "pPDsHSrSNxi2561d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386632",
+      "title": "pPDsHSrSNxi3482d200429PosA"
+    },
+    {
+      "accession": "GSM5386695",
+      "title": "pPDsHSrSNxi4956d200429PosB"
+    },
+    {
+      "accession": "GSM5386712",
+      "title": "pPDsHSrSNxi2142d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386629",
+      "title": "pPDCN4340DAPIB030419"
+    },
+    {
+      "accession": "GSM5386692",
+      "title": "pPDsHSrSNxi1963d200429DAPIC"
+    },
+    {
+      "accession": "GSM5386643",
+      "title": "pPDsHSrSNxi3482d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386663",
+      "title": "pPDsHSrSNxi4560d200429PosE"
+    },
+    {
+      "accession": "GSM5386703",
+      "title": "pPDsHSrSNxi3322d200429PosB"
+    },
+    {
+      "accession": "GSM5386660",
+      "title": "pPDsHSrSNxi3887d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386723",
+      "title": "pPDsHSrSNxi1963d200429PosE"
+    },
+    {
+      "accession": "GSM5386706",
+      "title": "pPDsHSrSNxi2544d200429PosC"
+    },
+    {
+      "accession": "GSM5386666",
+      "title": "pPDsHSrSNxi4775d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386686",
+      "title": "pPDsHSrSNxi1963d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386640",
+      "title": "pPDsHSrSNxi3346d200429PosA"
+    },
+    {
+      "accession": "GSM5386646",
+      "title": "pPDsHSrSNxi3322d200429PosF"
+    },
+    {
+      "accession": "GSM5386687",
+      "title": "pPDsHSrSNxi2544d200429PosB"
+    },
+    {
+      "accession": "GSM5386683",
+      "title": "pPDCN5730NeuN22119"
+    },
+    {
+      "accession": "GSM5386644",
+      "title": "pPDsHSrSNxi4956d200429PosA"
+    },
+    {
+      "accession": "GSM5386641",
+      "title": "pPDCN3839DAPIB030419"
+    },
+    {
+      "accession": "GSM5386690",
+      "title": "pPDsHSrSNxi4568d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386707",
+      "title": "pPDsHSrSNxi3322d200429DAPIC"
+    },
+    {
+      "accession": "GSM5386624",
+      "title": "pPDsTreeShrewrSNxixd200314x"
+    },
+    {
+      "accession": "GSM5386710",
+      "title": "pPDsHSrSNxi3298d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386704",
+      "title": "pPDsHSrSNxi3322d200429PosH"
+    },
+    {
+      "accession": "GSM5386684",
+      "title": "pPDsHSrSNxi4568d200429PosB"
+    },
+    {
+      "accession": "GSM5386627",
+      "title": "pPDsMMrSNxiNIH1d200516Nurr"
+    },
+    {
+      "accession": "GSM5386667",
+      "title": "pPDsHSrSNxi3873d200429PosC"
+    },
+    {
+      "accession": "GSM5386681",
+      "title": "pPDsHSrSNxi4560d200429PosC"
+    },
+    {
+      "accession": "GSM5386647",
+      "title": "pPDsHSrSNxi6173d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386664",
+      "title": "pPDsHSrSNxi3887d200429PosA"
+    },
+    {
+      "accession": "GSM5386678",
+      "title": "pPDsHSrSNxi3345d200429PosA"
+    },
+    {
+      "accession": "GSM5386718",
+      "title": "pPDsHSrSNxi1963d200429PosC"
+    },
+    {
+      "accession": "GSM5386724",
+      "title": "pPDsHSrSNxi3298d200429PosB"
+    },
+    {
+      "accession": "GSM5386635",
+      "title": "pPDsHSrSNxi5610d200429Pos"
+    },
+    {
+      "accession": "GSM5386658",
+      "title": "pPDsHSrSNxi3322d200429DAPIA"
+    },
+    {
+      "accession": "GSM5386698",
+      "title": "pPDsHSrSNxi3322d200429PosA"
+    },
+    {
+      "accession": "GSM5386655",
+      "title": "pPDsHSrSNxi4956d200429DAPIB"
+    },
+    {
+      "accession": "GSM5386661",
+      "title": "pPDsHSrSNxi3873d200429PosB"
+    },
+    {
+      "accession": "GSM5386701",
+      "title": "pPDsHSrSNxi3298d200429DAPIC"
+    },
+    {
+      "accession": "GSM5386721",
+      "title": "pPDCN3898DAPIA030419"
+    },
+    {
+      "accession": "GSM5386675",
+      "title": "pPDsHSrSNxi2561d200429PosC"
+    },
+    {
+      "accession": "GSM5386638",
+      "title": "pPDsHSrSNxi3873d200429PosF"
+    }
+  ]
+}

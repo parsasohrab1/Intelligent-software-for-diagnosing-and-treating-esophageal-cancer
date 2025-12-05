@@ -84,8 +84,8 @@ export default function PatientMonitoring() {
   const loadPatients = async () => {
     try {
       const response = await api.get('/patients/', {
-        params: { limit: 10000 }, // Increase limit to get all patients
-        timeout: 30000,
+        params: { limit: 1000 }, // Reduced limit for better performance
+        timeout: 60000, // 60 seconds timeout
       })
       setPatients(response.data)
       if (response.data.length > 0 && !selectedPatient) {
@@ -101,10 +101,40 @@ export default function PatientMonitoring() {
     setLoading(true)
     setError(null)
     try {
-      const response = await api.get(`/monitoring/patients/${patientId}/monitoring`)
-      setMonitoring(response.data)
+      const response = await api.get(`/monitoring/patients/${patientId}/monitoring`, {
+        timeout: 60000, // Increased to 60 seconds
+      })
+      
+      // Handle different response structures
+      let monitoringData: PatientMonitoring | null = null
+      
+      if (response.data) {
+        if (Array.isArray(response.data)) {
+          // If array, take first item
+          monitoringData = response.data[0] || null
+        } else if (typeof response.data === 'object') {
+          monitoringData = response.data
+        }
+      }
+      
+      console.log('Patient Monitoring loaded:', monitoringData ? 'Data found' : 'No data')
+      if (monitoringData) {
+        console.log('Vital Signs:', monitoringData.vital_signs.length)
+        console.log('Lab Results:', monitoringData.lab_results.length)
+        console.log('Clinical Parameters:', monitoringData.clinical_parameters.length)
+        console.log('Imaging Results:', monitoringData.imaging_results.length)
+      }
+      
+      setMonitoring(monitoringData)
+      
+      if (!monitoringData) {
+        setError('No monitoring data available for this patient. Please ensure the patient has clinical data, lab results, or imaging data.')
+      }
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to load monitoring data')
+      console.error('Error loading monitoring data:', err)
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to load monitoring data. Please check backend connection.'
+      setError(errorMessage)
+      setMonitoring(null)
     } finally {
       setLoading(false)
     }
@@ -337,12 +367,28 @@ export default function PatientMonitoring() {
       {!monitoring && !loading && (
         <Paper sx={{ p: 4, textAlign: 'center' }}>
           <MonitorIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-          <Typography variant="h6" color="text.secondary">
-            No monitoring data available
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No Monitoring Data Available
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            Select a patient to view monitoring data
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 3 }}>
+            {selectedPatient 
+              ? 'This patient has no monitoring data. To view monitoring data, please ensure the patient has:'
+              : 'Select a patient to view monitoring data'}
           </Typography>
+          {selectedPatient && (
+            <Box sx={{ textAlign: 'left', maxWidth: 600, mx: 'auto' }}>
+              <Typography variant="body2" color="text.secondary" component="div">
+                <ul style={{ margin: 0, paddingLeft: 20 }}>
+                  <li>Clinical data (vital signs, blood pressure, heart rate, etc.)</li>
+                  <li>Lab results (blood tests, cholesterol, LDL, HDL, etc.)</li>
+                  <li>Imaging data (MRI, CT scans, etc.)</li>
+                </ul>
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Go to the "Patient Data" page to generate or import patient data with monitoring information.
+              </Typography>
+            </Box>
+          )}
         </Paper>
       )}
     </Box>

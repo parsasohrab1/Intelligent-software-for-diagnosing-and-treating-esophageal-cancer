@@ -1,0 +1,49 @@
+{
+  "dataset_id": "200157804",
+  "title": "lncRNAs and mRNAs expression data in esophageal squamous cell carcinoma(ESCC) and adjacent normal tissues",
+  "summary": "The differential expression profile of lncRNAs and mRNAs in esophageal squamous cell carcinoma in high-incidence areas of China was constructed and co-expression correlation analysis was performed. The expression profile of lncRNAs in ESCC tissues was significantly different from that in adjacent normal tissues. Co-expression analysis revealed that lncRNA may be involved in the occurrence and development of esophageal cancer, thus providing a new basis for the diagnosis and treatment of esophageal cancer.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4775275",
+      "title": "Normal_rep5 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775267",
+      "title": "Normal_rep1 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775266",
+      "title": "ESCC_rep1 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775272",
+      "title": "ESCC_rep4 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775269",
+      "title": "Normal_rep2 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775271",
+      "title": "Normal_rep3 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775268",
+      "title": "ESCC_rep2 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775274",
+      "title": "ESCC_rep5 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775270",
+      "title": "ESCC_rep3 [lncRNAs and mRNAs]"
+    },
+    {
+      "accession": "GSM4775273",
+      "title": "Normal_rep4 [lncRNAs and mRNAs]"
+    }
+  ]
+}

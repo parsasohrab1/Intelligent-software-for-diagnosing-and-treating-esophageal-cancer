@@ -1,0 +1,81 @@
+{
+  "dataset_id": "200249583",
+  "title": "A convenient platform of in vivo functional studies reveals the roles of TGFBR2 in ESCC progression and distal metastases",
+  "summary": "Genomics studies have detected numerous genetic alterations in esophageal squamous-cell carcinoma (ESCC), a highly malignant and leading mortal cancer. However, the functions of these mutations in the formation and progression of ESCC largely remain elusive, partially due to lack of feasible animal models. Here, we report a convenient platform with normal esophageal organoids, CRISPR/cas9-mediated introduction of ESCC-associated genetic alterations, and orthotopic transplantation to generate a serial of primary ESCC models in mice. With this platform, we validated that multiple frequently mutated genes, including FAT1/2/4, NOTCH2, KMT2D, EP300, and TGFBR2, as bona fide tumor suppressor genes in ESCC. Among them, TGFBR2 loss dramatically promoted tumorigenesis and multi-organ metastasis. Paradoxically, TGFBR2 deficiency led to Smad3 activation and disruption of Smad3 could partially restrain the progression of Tgfbr2 mutated tumors. Drug screening with tumor organoids revealed that pinaverium bromide, a calcium channel blocker used for irritable bowel syndrome, could repress Smad3 activity and restrain Tgfbr2 deficient ESCC in vitro and in vivo. Our studies provide a highly efficient platform to investigate the in vivo functional of ESCC-associated mutations and develop potential treatment for this miserable malignancy.",
+  "organism": "Mus musculus",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7950663",
+      "title": "RNAseq_sgTgfbr2_1_premalignant_organoids_rep2"
+    },
+    {
+      "accession": "GSM7950660",
+      "title": "RNAseq_sgScr_premalignant_organoids_rep2"
+    },
+    {
+      "accession": "GSM7950666",
+      "title": "RNAseq_sgScr_tumor_organoids_rep1"
+    },
+    {
+      "accession": "GSM7950669",
+      "title": "RNAseq_sgTgfbr2_tumor_organoids_rep1"
+    },
+    {
+      "accession": "GSM7950662",
+      "title": "RNAseq_sgTgfbr2_1_premalignant_organoids_rep1"
+    },
+    {
+      "accession": "GSM7950665",
+      "title": "RNAseq_sgTgfbr2_2_premalignant_organoids_rep2"
+    },
+    {
+      "accession": "GSM7950668",
+      "title": "RNAseq_sgScr_tumor_organoids_rep3"
+    },
+    {
+      "accession": "GSM7950674",
+      "title": "RNAseq_PB_treated_rep1"
+    },
+    {
+      "accession": "GSM7950671",
+      "title": "RNAseq_Veh_treated_rep1"
+    },
+    {
+      "accession": "GSM7950673",
+      "title": "RNAseq_Veh_treated_rep3"
+    },
+    {
+      "accession": "GSM7950667",
+      "title": "RNAseq_sgScr_tumor_organoids_rep2"
+    },
+    {
+      "accession": "GSM7950670",
+      "title": "RNAseq_sgTgfbr2_tumor_organoids_rep2"
+    },
+    {
+      "accession": "GSM7950676",
+      "title": "RNAseq_PB_treated_rep3"
+    },
+    {
+      "accession": "GSM7950659",
+      "title": "RNAseq_sgScr_premalignant_organoids_rep1"
+    },
+    {
+      "accession": "GSM7950672",
+      "title": "RNAseq_Veh_treated_rep2"
+    },
+    {
+      "accession": "GSM7950675",
+      "title": "RNAseq_PB_treated_rep2"
+    },
+    {
+      "accession": "GSM7950664",
+      "title": "RNAseq_sgTgfbr2_2_premalignant_organoids_rep1"
+    },
+    {
+      "accession": "GSM7950661",
+      "title": "RNAseq_sgScr_premalignant_organoids_rep3"
+    }
+  ]
+}

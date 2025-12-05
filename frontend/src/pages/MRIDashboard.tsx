@@ -16,6 +16,7 @@ import {
   Alert,
   Paper,
   Divider,
+  LinearProgress,
 } from '@mui/material'
 import {
   Image as ImageIcon,
@@ -24,8 +25,10 @@ import {
   Person as PersonIcon,
   LocalHospital as HospitalIcon,
   Refresh as RefreshIcon,
+  PlayArrow as PlayArrowIcon,
 } from '@mui/icons-material'
 import api from '../services/api'
+import { useNavigate } from 'react-router-dom'
 
 interface MRIReport {
   image_id: number
@@ -51,11 +54,13 @@ interface MRIReport {
 }
 
 export default function MRIDashboard() {
+  const navigate = useNavigate()
   const [mriReports, setMriReports] = useState<MRIReport[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedImage, setSelectedImage] = useState<MRIReport | null>(null)
   const [reportDialogOpen, setReportDialogOpen] = useState(false)
+  const [generating, setGenerating] = useState(false)
 
   useEffect(() => {
     loadMRIData()
@@ -74,16 +79,48 @@ export default function MRIDashboard() {
       
       // Handle reports response
       if (reportsResponse[0].status === 'fulfilled') {
-        const reportsData = reportsResponse[0].value.data
-        setMriReports(Array.isArray(reportsData) ? reportsData : [])
+        const response = reportsResponse[0].value
+        // Handle different response structures
+        let reportsData: any[] = []
+        
+        if (Array.isArray(response.data)) {
+          // Direct array response
+          reportsData = response.data
+        } else if (response.data && Array.isArray(response.data.reports)) {
+          // Wrapped in object with 'reports' key
+          reportsData = response.data.reports
+        } else if (response.data && Array.isArray(response.data.data)) {
+          // Double wrapped
+          reportsData = response.data.data
+        } else if (typeof response.data === 'object' && response.data !== null) {
+          // Try to find array in response
+          const keys = Object.keys(response.data)
+          for (const key of keys) {
+            if (Array.isArray(response.data[key])) {
+              reportsData = response.data[key]
+              break
+            }
+          }
+        }
+        
+        console.log('MRI Reports loaded:', reportsData.length, 'reports')
+        setMriReports(reportsData)
+        
+        if (reportsData.length === 0) {
+          // Don't set error, just show empty state with generate button
+          setError(null)
+        }
       } else {
-        console.warn('Failed to load MRI reports:', reportsResponse[0].reason)
+        const reason = reportsResponse[0].reason
+        console.warn('Failed to load MRI reports:', reason)
         setMriReports([])
-        setError('Error loading MRI data. Please check backend connection.')
+        const errorMessage = reason?.response?.data?.detail || reason?.message || 'Error loading MRI data. Please check backend connection.'
+        setError(errorMessage)
       }
     } catch (err: any) {
       console.error('Error loading MRI data:', err)
-      setError(err.response?.data?.detail || 'Error loading MRI data')
+      const errorMessage = err.response?.data?.detail || err.message || 'Error loading MRI data'
+      setError(errorMessage)
       setMriReports([])
     } finally {
       setLoading(false)
@@ -106,6 +143,54 @@ export default function MRIDashboard() {
     const colors = ['2563eb', 'dc2626', '059669', '7c3aed', 'ea580c']
     const color = colors[imageId % colors.length]
     return `https://via.placeholder.com/400x300/${color}/ffffff?text=MRI+Scan+${imageId}`
+  }
+
+  const handleGenerateData = async () => {
+    setGenerating(true)
+    try {
+      // Generate synthetic data with MRI imaging
+      const response = await api.post('/synthetic-data/generate', {
+        n_patients: 50,  // Generate 50 patients
+        cancer_ratio: 0.4,  // 40% with cancer
+        seed: 42,
+        save_to_db: true,  // Important: Save to database
+      }, {
+        timeout: 300000,  // 5 minutes timeout
+      })
+      
+      console.log('Data generated successfully:', response.data)
+      
+      // Check imaging stats first (optional - endpoint might not be available yet)
+      try {
+        const statsResponse = await api.get('/imaging/stats', { timeout: 5000 })
+        console.log('Imaging stats:', statsResponse.data)
+        if (statsResponse.data && statsResponse.data.mri_count === 0) {
+          console.warn('Data generated but no MRI records found in stats')
+        }
+      } catch (statsErr: any) {
+        // Endpoint might not be available - that's okay, we'll just reload
+        console.warn('Could not get imaging stats (endpoint may not be available):', statsErr.message)
+      }
+      
+      // Wait a moment for database to commit, then reload MRI data
+      await new Promise(resolve => setTimeout(resolve, 3000)) // 3 second delay (increased)
+      
+      // Reload MRI data after generation
+      await loadMRIData()
+      
+      // Show success message
+      setError(null)
+    } catch (err: any) {
+      console.error('Error generating data:', err)
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to generate data. Please try again.'
+      setError(errorMessage)
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  const handleNavigateToPatientData = () => {
+    navigate('/patient-data')
   }
 
   return (
@@ -163,11 +248,50 @@ export default function MRIDashboard() {
         <Paper sx={{ p: 4, textAlign: 'center', mt: 3 }}>
           <ImageIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            No MRI Images Found
+            No MRI Reports Found
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 3 }}>
-            No MRI images and reports are available in the database. Import or generate patient data to view MRI images and interpretation reports.
+            No MRI images and reports are available in the database.
+            <br />
+            Generate synthetic patient data with MRI imaging to get started.
           </Typography>
+          <Box display="flex" gap={2} justifyContent="center" flexWrap="wrap">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={generating ? <CircularProgress size={16} /> : <PlayArrowIcon />}
+              onClick={handleGenerateData}
+              disabled={generating}
+              sx={{ mt: 2 }}
+            >
+              {generating ? 'Generating Data...' : 'Generate MRI Data'}
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={loadMRIData}
+              disabled={generating}
+              sx={{ mt: 2 }}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="text"
+              onClick={handleNavigateToPatientData}
+              disabled={generating}
+              sx={{ mt: 2 }}
+            >
+              Go to Patient Data Page
+            </Button>
+          </Box>
+          {generating && (
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Generating synthetic data with MRI imaging. This may take a few minutes...
+              </Typography>
+              <LinearProgress sx={{ mt: 1 }} />
+            </Box>
+          )}
         </Paper>
       ) : (
         <Grid container spacing={3}>

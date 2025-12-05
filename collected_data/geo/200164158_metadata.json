@@ -1,0 +1,73 @@
+{
+  "dataset_id": "200164158",
+  "title": "The clinical significance and potential molecular mechanism of PTTG1 in esophageal squamous cell carcinoma",
+  "summary": "Esophageal squamous cell carcinoma (ESCC) is the major histological type of esophageal cancers worldwide. Transcription factor PTTG1 was seen highly expressed in a variety of tumors and was related to the degree of tumor differentiation, invasion, and metastasis. However, the clinical significance of PTTG1 had yet to be verified, and the mechanism of abnormal PTTG1 expression in ESCC was not clear. In this study, we collected eight pairs of ESCC samples and corresponding adjacent normal esophageal tissues for RNA-seq from eight ESCC patients underwent radical resection of EC. None of these ESCC patients received preoperative chemotherapy or radiotherapy.The tissue samples were stored at -80\u00b0C immediately after resection. These 8 patients included 6 males and 2 females with a median age of 60 years. RNA-seq was executed by Wuhan Seqhealth Technology Co.LTD. TRIzol reagent (Invitrogen, Carlsbad, CA, USA) was applied to extract and prepare total RNA from tumors and paired adjacent non-ESCC tissues. A total amount of 3 \u03bcg RNA per sample was used as initial material for the RNA sample preparations. Nanodrop\u2122 1000 spectrophotometer was applied to examined RNA purity. RNA concentration was determined using a Qubit\u00ae 3.0 Fluorometer. RNA integrity was determined using an RNA Nano 6000 Assay Kit and a Bioanalyzer 2100 system. Afterward, the sequencing libraries were established using the NEBNext Ultra Directional RNA Library Prep Kit for Illumina base on manufacturer\u2019s protocols. The 200 Illumina HiSeq X Ten platform was used to sequence the libraries. RNA sequencing reads were aligned to the reference of homo_sapiens.GRCh38. In the current study, we obtained the data on log2 (x + 0.001) conversion level 3 and reported RNA-seq data in transcripts per kilobase million (TPM). ",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM4998471",
+      "title": "T4"
+    },
+    {
+      "accession": "GSM4998468",
+      "title": "N21"
+    },
+    {
+      "accession": "GSM4998474",
+      "title": "T17"
+    },
+    {
+      "accession": "GSM4998477",
+      "title": "T22"
+    },
+    {
+      "accession": "GSM4998463",
+      "title": "N4"
+    },
+    {
+      "accession": "GSM4998466",
+      "title": "N17"
+    },
+    {
+      "accession": "GSM4998472",
+      "title": "T5"
+    },
+    {
+      "accession": "GSM4998469",
+      "title": "N22"
+    },
+    {
+      "accession": "GSM4998475",
+      "title": "T19"
+    },
+    {
+      "accession": "GSM4998464",
+      "title": "N5"
+    },
+    {
+      "accession": "GSM4998470",
+      "title": "T3"
+    },
+    {
+      "accession": "GSM4998467",
+      "title": "N19"
+    },
+    {
+      "accession": "GSM4998473",
+      "title": "T13"
+    },
+    {
+      "accession": "GSM4998476",
+      "title": "T21"
+    },
+    {
+      "accession": "GSM4998465",
+      "title": "N13"
+    },
+    {
+      "accession": "GSM4998462",
+      "title": "N3"
+    }
+  ]
+}

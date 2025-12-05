@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200184654",
+  "title": "Estrogen related receptor alpha drives mitochondrial biogenesis and resistance to neoadjuvant chemoradiation in esophageal cancer",
+  "summary": "Following exposure to chemoradiation, EAC cells increase their mitochondrial content and associated metabolic processes, which drives treatment resistance. Inhibition of this response using clinically applicable inhibitors of ESRRA in combination with (chemo)radiation shows promising anti-tumor activities and could be further developed for clinical use.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5594611",
+      "title": "AMC-045-EAC"
+    },
+    {
+      "accession": "GSM5594614",
+      "title": "AMC-050-EAC_R"
+    },
+    {
+      "accession": "GSM5594617",
+      "title": "AMC-076-ESC"
+    },
+    {
+      "accession": "GSM5594613",
+      "title": "AMC-050-EAC"
+    },
+    {
+      "accession": "GSM5594610",
+      "title": "AMC-043-ESC_R"
+    },
+    {
+      "accession": "GSM5594616",
+      "title": "AMC-070-EAC_R"
+    },
+    {
+      "accession": "GSM5594619",
+      "title": "AMC-161-ESC"
+    },
+    {
+      "accession": "GSM5594615",
+      "title": "AMC-070-EAC"
+    },
+    {
+      "accession": "GSM5594618",
+      "title": "AMC-076-ESC_R"
+    },
+    {
+      "accession": "GSM5594620",
+      "title": "AMC-161-ESC_R"
+    },
+    {
+      "accession": "GSM5594612",
+      "title": "AMC-045-EAC_R"
+    },
+    {
+      "accession": "GSM5594609",
+      "title": "AMC-043-ESC"
+    }
+  ]
+}

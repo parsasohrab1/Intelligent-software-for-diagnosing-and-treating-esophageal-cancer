@@ -1,0 +1,25 @@
+{
+  "dataset_id": "200275621",
+  "title": "Effects of neobractatin and trametinib on gene expression in pancreatic cancer cells",
+  "summary": "Pancreatic ductal adenocarcinoma carcinoma (PDAC) is a highly lethal disease and ranks as the seventh leading cause of cancer-related deaths worldwide. Neobractatin (NBT), a natural compound derived from Garcinia bracteate, has shown great antitumor effects and has been identified as a regulator of pyroptosis in esophageal cancer cells. The effectiveness of combining NBT with the common targeted drug trametinib in inhibiting PDAC and its underlying mechanisms remain unclear. In this study, we aimed to explore the therapeutic potential of combining NBT with trametinib in PDAC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8481200",
+      "title": "MIA PaCa-2 cells, trametinib treatment  (5 \u03bcM)"
+    },
+    {
+      "accession": "GSM8481198",
+      "title": "MIA PaCa-2 cells, control"
+    },
+    {
+      "accession": "GSM8481201",
+      "title": "MIA PaCa-2 cells, NBT treatment  (1 \u03bcM) and trametinib treatment  (5 \u03bcM)"
+    },
+    {
+      "accession": "GSM8481199",
+      "title": "MIA PaCa-2 cells, NBT treatment  (1 \u03bcM)"
+    }
+  ]
+}

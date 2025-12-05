@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200236847",
+  "title": "Epigenomic Analyses Identify FOXM1 As a Key Regulator of Anti-Tumor Immune Response in Esophageal Adenocarcinoma",
+  "summary": "We identified FOXM1 as an EAC-specific candidate transcription factor using GSEA analysis. Functionality of FOXM1 was evaluated in both EAC patient derived organoids and EAC cell lines by measuring cell proliferation, colony formation, and xenograft growth. A FOXM1 signature through the overlap of ESO26, SKGT4, and OE33 intersected ChIP-seq peaks and ESO26 siFOXM1 RNA-seq downregulated genes. Upstream transcriptional regulation of FOXM1 was evaluated with this FOXM1 gene signature and validated using pharmacological inhibition. GSEA analysis determined that immune related pathways were upregulated in ESO26 cell lines treated with siFOXM1 or in TCGA EAC patients with low FOXM1 expression. Syngeneic xenografts found increases in CD8+ T cell infiltration in FOXM1 knockdown tumors. Loss of FOXM1 led to increased secretion of CD8+ T cell Th1 chemokines which play a role in the migration of CD8+ T cells upon loss of FOXM1. Finally, the loss of FOXM1 also increased Ex-vivo cytotoxic killing of murine cancer cells.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM7577993",
+      "title": "ESO26_FOXM1 ChIIP-Seq"
+    },
+    {
+      "accession": "GSM7577996",
+      "title": "Eso26_ctl_rep2 RNA-Seq"
+    },
+    {
+      "accession": "GSM7577994",
+      "title": "SKGT4_FOXM1 ChIIP-Seq"
+    },
+    {
+      "accession": "GSM7577997",
+      "title": "Eso26_siFOXM1_rep1 RNA-Seq"
+    },
+    {
+      "accession": "GSM7577995",
+      "title": "Eso26_ctl_rep1 RNA-Seq"
+    },
+    {
+      "accession": "GSM7577998",
+      "title": "Eso26_siFOXM1_rep2 RNA-Seq"
+    }
+  ]
+}

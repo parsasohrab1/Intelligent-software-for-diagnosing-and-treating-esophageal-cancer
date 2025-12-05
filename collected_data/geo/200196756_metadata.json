@@ -1,0 +1,33 @@
+{
+  "dataset_id": "200196756",
+  "title": "Profiling transcriptional heterogeneity of epithelium, fibroblasts and immune cells in esophageal squamous cell carcinoma by single-cell RNA sequencing",
+  "summary": "We generated single-cell RNA sequencing (scRNA-seq) of 25,796 immune and 8,197 non-immune cells from three primary tumor and paired normal samples in ESCC patients. The results revealed that transcriptional signatures of malignant epithelium could be effectively distinguished from that of non-malignant epithelium by scRNA-seq data. The infiltration of myofibroblasts, one subtype of fibroblasts, might play important roles in the progression of ESCC. Diverse cell subtypes of T cells and myeloid cells were identified, including tumor-enriched HAVCR2+ CD4+ T cells with significantly exhausted signature. We also found that epithelium and myeloid cells had more frequent cell-cell communication compared with epithelium and T cells. Taken together, this study provided in-depth insights into the cellular heterogeneity of TME in ESCC and highlighted potential therapeutic targets including for immunotherapy.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM5900217",
+      "title": "sample2 tumor tissues"
+    },
+    {
+      "accession": "GSM5900220",
+      "title": "sample4 peri-tumor tissues"
+    },
+    {
+      "accession": "GSM5900218",
+      "title": "sample2 peri-tumor tissues"
+    },
+    {
+      "accession": "GSM5900215",
+      "title": "sample1 tumor tissues"
+    },
+    {
+      "accession": "GSM5900216",
+      "title": "sample1 peri-tumor tissues"
+    },
+    {
+      "accession": "GSM5900219",
+      "title": "sample4 tumor tissues"
+    }
+  ]
+}

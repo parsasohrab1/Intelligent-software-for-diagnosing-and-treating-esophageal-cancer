@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200275730",
+  "title": "Gene expression analysis of human esophageal cancer cells co-cultured with Fusobacterium nucleatum",
+  "summary": "This study analyzed changes in gene expression caused by infection with Fusobacterium nucleatum (Fn) in human esophageal cancer (EC) cells. The hypothesis was that Fn infection affects the activation of the stimulator of interferon genes (STING) signaling pathway and the expression of its downstream genes in EC cells. Results revealed interesting upregulated genes related to the STING signaling pathway in response to Fn infection.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8483601",
+      "title": "TE-6-Fn"
+    },
+    {
+      "accession": "GSM8483598",
+      "title": "TE-5"
+    },
+    {
+      "accession": "GSM8483609",
+      "title": "TE-8-Fn"
+    },
+    {
+      "accession": "GSM8483607",
+      "title": "TE-1-Fn"
+    },
+    {
+      "accession": "GSM8483604",
+      "title": "KYSE70"
+    },
+    {
+      "accession": "GSM8483608",
+      "title": "TE-8"
+    },
+    {
+      "accession": "GSM8483599",
+      "title": "TE-5-Fn"
+    },
+    {
+      "accession": "GSM8483605",
+      "title": "KYSE70-Fn"
+    },
+    {
+      "accession": "GSM8483602",
+      "title": "TE-4"
+    },
+    {
+      "accession": "GSM8483606",
+      "title": "TE-1"
+    },
+    {
+      "accession": "GSM8483603",
+      "title": "TE-4-Fn"
+    },
+    {
+      "accession": "GSM8483600",
+      "title": "TE-6"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "dataset_id": "200297369",
+  "title": "The effect of knockdown FAM111B on mRNA expression in human hepatocellular carcinoma cells",
+  "summary": "Family with sequence similarity 111 member B (FAM111B) encodes a protein with a trypsin-like cysteine/serine peptidase domain, the aberrant expression of which has been observed to contribute to malignant behavior and poor prognosis of various cancers, such as hepatocellular carcinoma (HCC), thyroid cancer, esophageal cancer, ovarian cancer, and lung adenocarcinoma. Previous studies described the role of FAM111B as a prognostic predictor or a potential protease that may degrade certain tumor suppressor. Our data demonstrated regulatory changes at the genomic transcriptional level after interfering FAM111B expression in HCC.",
+  "organism": "Homo sapiens",
+  "platform": "",
+  "samples": [
+    {
+      "accession": "GSM8989567",
+      "title": "Hep3B-KD1"
+    },
+    {
+      "accession": "GSM8989564",
+      "title": "Hep3B-NC1"
+    },
+    {
+      "accession": "GSM8989559",
+      "title": "Huh7-NC2"
+    },
+    {
+      "accession": "GSM8989562",
+      "title": "Huh7-KD2"
+    },
+    {
+      "accession": "GSM8989568",
+      "title": "Hep3B-KD2"
+    },
+    {
+      "accession": "GSM8989565",
+      "title": "Hep3B-NC2"
+    },
+    {
+      "accession": "GSM8989560",
+      "title": "Huh7-NC3"
+    },
+    {
+      "accession": "GSM8989563",
+      "title": "Huh7-KD3"
+    },
+    {
+      "accession": "GSM8989566",
+      "title": "Hep3B-NC3"
+    },
+    {
+      "accession": "GSM8989569",
+      "title": "Hep3B-KD3"
+    },
+    {
+      "accession": "GSM8989558",
+      "title": "Huh7-NC1"
+    },
+    {
+      "accession": "GSM8989561",
+      "title": "Huh7-KD1"
+    }
+  ]
+}
