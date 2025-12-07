@@ -362,6 +362,27 @@ export default function Dashboard() {
     return descriptions[stage] || 'Stage progression'
   }
 
+  const handleGenerateData = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await api.post('/patients/seed-data', {}, { timeout: 120000 })
+      console.log('Data generation response:', response.data)
+      
+      // Wait a moment for data to be committed
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Reload dashboard data
+      await fetchDashboardData()
+    } catch (err: any) {
+      console.error('Error generating data:', err)
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to generate data'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     fetchDashboardData()
   }, [])
@@ -844,15 +865,16 @@ export default function Dashboard() {
                 No Data Available
               </Typography>
               <Typography variant="body1" color="textSecondary" align="center" sx={{ mb: 3 }}>
-                Start by generating or importing patient data to see dashboard statistics.
+                Start by generating patient data to see dashboard statistics.
               </Typography>
               <Button
                 variant="contained"
                 startIcon={<ScienceIcon />}
-                onClick={() => window.location.href = '/patient-data'}
+                onClick={handleGenerateData}
+                disabled={loading}
                 sx={{ mr: 2 }}
               >
-                Generate Data
+                {loading ? 'Generating...' : 'Generate Dashboard Data'}
               </Button>
             </Box>
           </CardContent>
