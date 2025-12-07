@@ -116,6 +116,55 @@ class ModelRegistry:
             # Delete from registry
             self.collection.delete_one({"model_id": model_id})
 
+    def get_production_models(self) -> List[Dict]:
+        """Get all production models"""
+        if self.collection is None:
+            return []
+        models = self.collection.find({"status": "production"})
+        return [self._format_result(m) for m in models]
+
+    def get_production_model(self, model_type: str) -> Optional[Dict]:
+        """Get current production model for a model type"""
+        if self.collection is None:
+            return None
+        model = self.collection.find_one({
+            "model_type": model_type,
+            "status": "production"
+        })
+        return self._format_result(model) if model else None
+
+    def set_production_model(self, model_id: str):
+        """Set a model as production (and archive others of same type)"""
+        if self.collection is None:
+            return
+        
+        model = self.get_model(model_id)
+        if not model:
+            return
+        
+        model_type = model.get("model_type")
+        
+        # Archive other production models of same type
+        if model_type:
+            self.collection.update_many(
+                {
+                    "model_type": model_type,
+                    "status": "production",
+                    "model_id": {"$ne": model_id}
+                },
+                {"$set": {"status": "archived", "archived_at": datetime.now().isoformat()}}
+            )
+        
+        # Set this model as production
+        self.collection.update_one(
+            {"model_id": model_id},
+            {"$set": {
+                "status": "production",
+                "deployed_at": datetime.now().isoformat(),
+                "updated_at": datetime.now().isoformat()
+            }}
+        )
+
     def _format_result(self, result: Dict) -> Dict:
         """Format MongoDB result"""
         if "_id" in result:

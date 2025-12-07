@@ -72,38 +72,51 @@ export default function MRIDashboard() {
     try {
       const reportsResponse = await Promise.allSettled([
         api.get('/imaging/mri/reports', { 
-          params: { limit: 10000 },
-          timeout: 60000 
+          params: { limit: 100 },  // Reduced from 10000 to 100 for performance
+          timeout: 30000  // Reduced from 60000 to 30000 (30s)
         }),
       ])
       
       // Handle reports response
       if (reportsResponse[0].status === 'fulfilled') {
         const response = reportsResponse[0].value
+        console.log('MRI Reports API Response:', response)
+        console.log('MRI Reports Response Data:', response.data)
+        console.log('MRI Reports Response Data Type:', typeof response.data)
+        console.log('MRI Reports Response Data Is Array:', Array.isArray(response.data))
+        
         // Handle different response structures
         let reportsData: any[] = []
         
         if (Array.isArray(response.data)) {
           // Direct array response
           reportsData = response.data
+          console.log('Using direct array response, length:', reportsData.length)
         } else if (response.data && Array.isArray(response.data.reports)) {
           // Wrapped in object with 'reports' key
           reportsData = response.data.reports
+          console.log('Using reports key, length:', reportsData.length)
         } else if (response.data && Array.isArray(response.data.data)) {
           // Double wrapped
           reportsData = response.data.data
+          console.log('Using data.data key, length:', reportsData.length)
         } else if (typeof response.data === 'object' && response.data !== null) {
           // Try to find array in response
           const keys = Object.keys(response.data)
+          console.log('Response data keys:', keys)
           for (const key of keys) {
             if (Array.isArray(response.data[key])) {
               reportsData = response.data[key]
+              console.log(`Using key "${key}", length:`, reportsData.length)
               break
             }
           }
         }
         
         console.log('MRI Reports loaded:', reportsData.length, 'reports')
+        if (reportsData.length > 0) {
+          console.log('First report sample:', reportsData[0])
+        }
         setMriReports(reportsData)
         
         if (reportsData.length === 0) {

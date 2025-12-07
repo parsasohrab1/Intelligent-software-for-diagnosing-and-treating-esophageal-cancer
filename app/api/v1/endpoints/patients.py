@@ -1,5 +1,5 @@
 """
-Patient endpoints
+Patient endpoints with HIPAA/GDPR compliant security
 """
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -7,15 +7,29 @@ from typing import List
 from app.core.database import get_db
 from app.core.cache import CacheManager
 from app.models.patient import Patient
+from app.models.user import User
 from app.schemas.patient import PatientResponse, PatientCreate
+from app.core.security.dependencies import (
+    get_current_user_with_role,
+    check_patient_access,
+    get_masked_patient_data,
+    require_permission
+)
+from app.core.security.rbac import Permission
+from app.core.security.data_masking import DataMasking
+from app.core.security.consent_manager import ConsentManager, ConsentType
 
 router = APIRouter()
 cache_manager = CacheManager()
+data_masking = DataMasking()
 
 
 @router.get("/")
 async def get_patients(
-    skip: int = 0, limit: int = 10000, db: Session = Depends(get_db)
+    skip: int = 0,
+    limit: int = 10000,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_permission(Permission.READ_DEIDENTIFIED))
 ):
     """Get list of patients"""
     import logging
@@ -30,18 +44,24 @@ async def get_patients(
     try:
         # Query database - optimized with limit
         # Reduce default limit if not specified to improve performance
-        # Further reduce limit to prevent timeouts
-        effective_limit = min(limit, 100) if limit > 100 else limit
+        # Further reduce limit to prevent timeouts, but inform caller if truncated
+        max_allowed_limit = 100
+        effective_limit = min(limit, max_allowed_limit) if limit > max_allowed_limit else limit
+        was_truncated = limit > max_allowed_limit
         patients = db.query(Patient).offset(skip).limit(effective_limit).all()
         
         query_time = time.time() - start_time
         if query_time > 1.0:
             logger.warning(f"Patient query took {query_time:.2f}s, returned {len(patients)} patients")
         
-        # Convert to dict for response (avoid Pydantic serialization issues)
+        if was_truncated:
+            logger.warning(f"Patient query limit truncated from {limit} to {effective_limit} to prevent timeouts")
+        
+        # Convert to dict for response with data masking
         # Optimized: Use list comprehension and simplified datetime handling
         patient_list = []
         now_iso = datetime.now().isoformat()
+        consent_manager = ConsentManager(db)
         
         for p in patients:
             try:
@@ -67,7 +87,18 @@ async def get_patients(
                     "created_at": created_at_str,
                     "updated_at": updated_at_str,
                 }
-                patient_list.append(patient_dict)
+                
+                # Apply data masking based on user role and consent
+                has_consent = consent_manager.check_consent(
+                    str(p.patient_id),
+                    ConsentType.DATA_PROCESSING
+                )
+                masked_dict = data_masking.mask_patient_data(
+                    patient_dict,
+                    current_user.role,
+                    has_consent
+                )
+                patient_list.append(masked_dict)
             except Exception as conv_err:
                 # Reduced logging for performance - only log if critical
                 logger.warning(f"Error converting patient {getattr(p, 'patient_id', 'unknown')}: {str(conv_err)}")
@@ -76,6 +107,17 @@ async def get_patients(
         total_time = time.time() - start_time
         if total_time > 1.0:
             logger.warning(f"get_patients took {total_time:.2f}s total (query: {query_time:.2f}s, conversion: {total_time - query_time:.2f}s)")
+        
+        # Return with metadata if truncated to inform caller that results are incomplete
+        if was_truncated:
+            return {
+                "patients": patient_list,
+                "total_returned": len(patient_list),
+                "requested_limit": limit,
+                "effective_limit": effective_limit,
+                "truncated": True,
+                "message": f"Results limited to {effective_limit} records to prevent timeouts. Requested {limit} records."
+            }
         
         return patient_list
     except (OperationalError, DisconnectionError, SQLAlchemyError) as e:
@@ -99,60 +141,29 @@ async def get_patients(
 
 
 @router.get("/{patient_id}")
-async def get_patient(patient_id: str, db: Session = Depends(get_db)):
-    """Get patient by ID"""
-    import logging
-    import traceback
-    from datetime import datetime
+async def get_patient(
+    patient_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user_with_role)
+):
+    """
+    Get patient by ID with access control and data masking (HIPAA/GDPR compliant)
+    """
+    # Check access and get patient (includes access control and audit logging)
+    patient = check_patient_access(patient_id, current_user, db)
     
-    try:
-        # Query database
-        patient = db.query(Patient).filter(Patient.patient_id == patient_id).first()
-        if not patient:
-            raise HTTPException(status_code=404, detail="Patient not found")
-        
-        # Convert to dict for response
-        created_at_str = None
-        if patient.created_at:
-            if hasattr(patient.created_at, 'isoformat'):
-                created_at_str = patient.created_at.isoformat()
-            else:
-                created_at_str = str(patient.created_at)
-        else:
-            created_at_str = datetime.now().isoformat()
-        
-        updated_at_str = None
-        if patient.updated_at:
-            if hasattr(patient.updated_at, 'isoformat'):
-                updated_at_str = patient.updated_at.isoformat()
-            else:
-                updated_at_str = str(patient.updated_at)
-        else:
-            updated_at_str = datetime.now().isoformat()
-        
-        patient_dict = {
-            "patient_id": str(patient.patient_id) if patient.patient_id else "",
-            "age": int(patient.age) if patient.age is not None else 0,
-            "gender": str(patient.gender) if patient.gender else "",
-            "ethnicity": str(patient.ethnicity) if patient.ethnicity else None,
-            "has_cancer": bool(patient.has_cancer) if patient.has_cancer is not None else False,
-            "cancer_type": str(patient.cancer_type) if patient.cancer_type else None,
-            "cancer_subtype": str(patient.cancer_subtype) if patient.cancer_subtype else None,
-            "created_at": created_at_str,
-            "updated_at": updated_at_str,
-        }
-        
-        return patient_dict
-    except HTTPException:
-        raise
-    except Exception as e:
-        logging.error(f"Error fetching patient {patient_id}: {str(e)}")
-        logging.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Error fetching patient: {str(e)}")
+    # Get masked patient data based on role and consent
+    masked_data = get_masked_patient_data(patient, current_user, db)
+    
+    return masked_data
 
 
 @router.post("/", status_code=201)
-async def create_patient(patient: PatientCreate, db: Session = Depends(get_db)):
+async def create_patient(
+    patient: PatientCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_permission(Permission.WRITE_ALL))
+):
     """Create a new patient"""
     import logging
     import traceback
@@ -201,4 +212,3 @@ async def create_patient(patient: PatientCreate, db: Session = Depends(get_db)):
         logging.error(traceback.format_exc())
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error creating patient: {str(e)}")
-

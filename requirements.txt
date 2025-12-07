@@ -70,6 +70,18 @@ passlib[bcrypt]==1.7.4
 cryptography==41.0.7
 python-multipart==0.0.6
 
+# MLOps & CI/CD
+schedule==1.2.0  # For automated retraining scheduling
+
+# Clinical System Integration
+pynetdicom==2.0.2  # DICOM networking (PACS)
+fhir.resources==7.0.0  # FHIR resources for EHR integration
+requests==2.31.0  # For HTTP requests to EHR systems
+
+# Explainable AI
+lime==0.2.0.1  # Local Interpretable Model-agnostic Explanations
+shap==0.43.0  # SHapley Additive exPlanations (already in requirements)
+
 # Message Queue (MLOps)
 pika==1.3.2
 kafka-python==2.0.2

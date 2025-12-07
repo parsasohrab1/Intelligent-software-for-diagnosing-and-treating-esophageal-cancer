@@ -86,6 +86,13 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     ENCRYPTION_KEY: str = os.getenv("ENCRYPTION_KEY", "")
+    HASH_SALT: str = os.getenv("HASH_SALT", "inescape_salt_2024_change_in_production")
+    
+    # HIPAA/GDPR Compliance Settings
+    USE_AES256_ENCRYPTION: bool = True  # Use AES-256 for HIPAA compliance
+    DATA_RETENTION_DAYS: int = 2555  # 7 years (HIPAA requirement)
+    ENABLE_DATA_MASKING: bool = True  # Enable data masking based on role
+    REQUIRE_CONSENT_FOR_ACCESS: bool = True  # Require consent for data access
 
     # External APIs
     TCGA_API_KEY: str = ""
@@ -129,6 +136,27 @@ class Settings(BaseSettings):
     TEXT_PROCESSING_BACKEND: str = "spacy"  # Options: "spacy", "nltk"
     MAX_IMAGE_SIZE_MB: int = 50
     SUPPORTED_IMAGE_FORMATS: List[str] = ["dicom", "nifti", "png", "jpg", "jpeg", "tiff"]
+    
+    # Real-Time Processing
+    REALTIME_ENABLED: bool = True
+    REALTIME_TARGET_FPS: int = 30
+    REALTIME_MAX_LATENCY_MS: float = 200.0  # Maximum latency for endoscopy room
+    REALTIME_BUFFER_SIZE: int = 5
+    REALTIME_USE_GPU: bool = True
+    REALTIME_USE_TPU: bool = False
+    REALTIME_OPTIMIZATION_LEVEL: str = "high"  # low, medium, high
+    
+    # Clinical System Integration
+    PACS_ENABLED: bool = True
+    PACS_HOST: str = "localhost"
+    PACS_PORT: int = 11112
+    PACS_AE_TITLE: str = "INESCAPE"
+    ENDOSCOPY_ENABLED: bool = True
+    ENDOSCOPY_SYSTEM_TYPE: str = "generic"  # olympus, pentax, fujifilm, generic
+    EHR_ENABLED: bool = True
+    EHR_SYSTEM_TYPE: str = "generic_fhir"  # epic, cerner, generic_fhir
+    EHR_FHIR_BASE_URL: str = ""
+    EHR_USE_OAUTH: bool = True
 
     # CORS
     CORS_ORIGINS: List[str] = [

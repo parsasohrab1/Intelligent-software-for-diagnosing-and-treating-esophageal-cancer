@@ -895,9 +895,10 @@ class EsophagealCancerSyntheticData:
             )
             db.add(qol)
 
-        # Final commit for all data
+        # Final flush and commit for all data
+        # Flush before commit to send pending changes to database
+        db.flush()
         db.commit()
-        db.flush()  # Ensure all changes are flushed to database
         
         logger.info("✅ Data saved to database successfully!")
         print("✅ Data saved to database successfully!")

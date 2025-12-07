@@ -150,14 +150,12 @@ async def predict_risk(request: RiskPredictionRequest):
         logger = logging.getLogger(__name__)
         logger.error(f"Error predicting risk: {str(e)}")
         logger.error(traceback.format_exc())
-        # Return a graceful error response instead of crashing
-        return {
-            "error": f"Error predicting risk: {str(e)}",
-            "risk_score": 0.5,
-            "risk_level": "unknown",
-            "factors": [],
-            "recommendations": ["Unable to calculate risk. Please check patient data."]
-        }
+        # Raise HTTPException to maintain API contract - clients should handle errors explicitly
+        # Returning default values would mislead clients into treating errors as valid predictions
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error predicting risk: {str(e)}"
+        )
 
 
 @router.post("/treatment-recommendation")
@@ -305,4 +303,3 @@ async def search_clinical_trials(
         raise HTTPException(
             status_code=500, detail=f"Error searching trials: {str(e)}"
         )
-

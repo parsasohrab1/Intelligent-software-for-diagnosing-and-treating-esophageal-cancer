@@ -291,3 +291,56 @@ class ModelMonitoring:
             logger.error(f"Error getting all monitoring status: {str(e)}")
             return []
 
+    def get_recent_predictions(self, model_id: str, limit: int = 1000) -> List[Dict]:
+        """Get recent predictions for a model"""
+        if self.monitoring_collection is None:
+            return []
+        
+        try:
+            predictions = list(
+                self.monitoring_collection.find(
+                    {"model_id": model_id}
+                ).sort("timestamp", -1).limit(limit)
+            )
+            
+            return [
+                {
+                    "features": p.get("features", {}),
+                    "prediction": p.get("prediction"),
+                    "ground_truth": p.get("ground_truth"),
+                    "timestamp": p.get("timestamp"),
+                    "metadata": p.get("metadata", {})
+                }
+                for p in predictions
+            ]
+        except Exception as e:
+            logger.error(f"Error getting recent predictions: {str(e)}")
+            return []
+
+    def get_recent_performance(self, model_id: str, limit: int = 1000) -> List[Dict]:
+        """Get recent performance data (with ground truth)"""
+        if self.monitoring_collection is None:
+            return []
+        
+        try:
+            predictions = list(
+                self.monitoring_collection.find(
+                    {
+                        "model_id": model_id,
+                        "ground_truth": {"$ne": None}
+                    }
+                ).sort("timestamp", -1).limit(limit)
+            )
+            
+            return [
+                {
+                    "prediction": p.get("prediction"),
+                    "ground_truth": p.get("ground_truth"),
+                    "timestamp": p.get("timestamp")
+                }
+                for p in predictions
+            ]
+        except Exception as e:
+            logger.error(f"Error getting recent performance: {str(e)}")
+            return []
+

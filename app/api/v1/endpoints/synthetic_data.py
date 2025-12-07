@@ -70,9 +70,10 @@ async def generate_synthetic_data(
                 logger = logging.getLogger(__name__)
                 logger.info("Starting to save data to database...")
                 generator.save_to_database(dataset, db)
-                # Flush and commit to ensure data is visible
-                db.commit()
+                # Flush before commit to send pending changes to database
+                # Note: save_to_database already commits internally, but we ensure final flush
                 db.flush()
+                db.commit()
                 logger.info("Data saved and committed to database")
             except Exception as save_error:
                 # Log error but don't fail the request
@@ -165,4 +166,3 @@ async def get_generation_statistics(db: Session = Depends(get_db)):
     cache_manager.set(cache_key, stats, ttl=900)
     
     return stats
-

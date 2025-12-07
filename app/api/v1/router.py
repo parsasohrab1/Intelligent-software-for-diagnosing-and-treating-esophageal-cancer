@@ -17,6 +17,17 @@ from app.api.v1.endpoints import (
     patient_monitoring,
     mlops,
     multi_modality,
+    consent,
+    data_privacy,
+    compliance,
+    realtime,
+    integration,
+    xai,
+    imaging_enrichment,
+    treatment_response,
+    surgical_guidance,
+    multimodal_fusion,
+    few_shot_learning,
 )
 
 api_router = APIRouter()
@@ -42,4 +53,15 @@ api_router.include_router(patient_monitoring.router, prefix="/monitoring", tags=
 api_router.include_router(maintenance.router, prefix="/maintenance", tags=["maintenance"])
 api_router.include_router(mlops.router, prefix="/mlops", tags=["mlops"])
 api_router.include_router(multi_modality.router, prefix="/multi-modality", tags=["multi-modality"])
+api_router.include_router(consent.router, prefix="/consent", tags=["consent-management"])
+api_router.include_router(data_privacy.router, prefix="/data-privacy", tags=["data-privacy"])
+api_router.include_router(compliance.router, prefix="/compliance", tags=["regulatory-compliance"])
+api_router.include_router(realtime.router, prefix="/realtime", tags=["real-time-processing"])
+api_router.include_router(integration.router, prefix="/integration", tags=["clinical-integration"])
+api_router.include_router(xai.router, prefix="/xai", tags=["explainable-ai"])
+api_router.include_router(imaging_enrichment.router, prefix="/imaging-enrichment", tags=["imaging-enrichment"])
+api_router.include_router(treatment_response.router, prefix="/treatment-response", tags=["treatment-response-prediction"])
+api_router.include_router(surgical_guidance.router, prefix="/surgical-guidance", tags=["surgical-guidance"])
+api_router.include_router(multimodal_fusion.router, prefix="/multimodal-fusion", tags=["multi-modal-fusion"])
+api_router.include_router(few_shot_learning.router, prefix="/few-shot-learning", tags=["few-shot-learning"])
 
