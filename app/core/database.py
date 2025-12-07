@@ -49,7 +49,7 @@ def get_db() -> Generator:
 
 
 async def init_db():
-    """Initialize database (create tables if not exist)"""
+    """Initialize database (create tables if not exist) and seed data if empty"""
     import logging
     from sqlalchemy.exc import OperationalError
     
@@ -81,6 +81,21 @@ async def init_db():
         except Exception as create_err:
             logger.warning(f"Table creation failed: {create_err}")
             logger.warning("Tables may already exist or database is not accessible")
+        
+        # Auto-seed data if database is empty (run in background thread to not block startup)
+        import threading
+        try:
+            # Run in background thread to not block startup
+            seed_thread = threading.Thread(
+                target=_auto_seed_data_if_empty_sync,
+                daemon=True,
+                name="AutoSeedData"
+            )
+            seed_thread.start()
+            logger.info("Auto-seeding thread started (checking database in background)...")
+        except Exception as seed_err:
+            logger.warning(f"Failed to start auto-seeding thread: {seed_err}")
+            logger.warning("Dashboard may not have data. You can generate data manually.")
     except OperationalError as e:
         logger.warning(f"Database connection failed: {e}")
         logger.warning("Please make sure:")
@@ -93,4 +108,64 @@ async def init_db():
         logger.warning(f"Database initialization error: {e}")
         logger.warning("App will continue but database operations may fail")
         # Don't raise - let the app start
+
+
+def _auto_seed_data_if_empty_sync():
+    """Automatically seed data if database is empty (synchronous version)"""
+    import logging
+    from app.models.patient import Patient
+    from app.models.imaging_data import ImagingData
+    
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Check if data exists
+        db = SessionLocal()
+        try:
+            patient_count = db.query(Patient).count()
+            mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+            
+            # If we have less than 10 patients or no MRI data, generate data
+            if patient_count < 10 or mri_count < 10:
+                logger.info("=" * 60)
+                logger.info("Database is empty or has insufficient data. Auto-generating data...")
+                logger.info(f"Current: {patient_count} patients, {mri_count} MRI images")
+                logger.info("=" * 60)
+                
+                # Generate synthetic data
+                from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
+                
+                generator = EsophagealCancerSyntheticData(seed=42)
+                
+                # Generate data: 50 patients with 40% cancer ratio
+                logger.info("Generating 50 patients with 40% cancer ratio...")
+                dataset = generator.generate_all_data(
+                    n_patients=50,
+                    cancer_ratio=0.4
+                )
+                
+                # Save to database
+                logger.info("Saving data to database...")
+                generator.save_to_database(dataset, db)
+                db.commit()
+                
+                # Verify
+                new_patient_count = db.query(Patient).count()
+                new_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+                
+                logger.info("=" * 60)
+                logger.info("✅ Auto-seeding completed!")
+                logger.info(f"   Patients: {new_patient_count}")
+                logger.info(f"   MRI Images: {new_mri_count}")
+                logger.info("   Dashboard is now ready with data!")
+                logger.info("=" * 60)
+            else:
+                logger.info(f"✅ Database already has data: {patient_count} patients, {mri_count} MRI images")
+        finally:
+            db.close()
+    except Exception as e:
+        import traceback
+        logger.error(f"❌ Auto-seeding failed: {e}")
+        logger.error(traceback.format_exc())
+        # Don't raise - let the app continue
 

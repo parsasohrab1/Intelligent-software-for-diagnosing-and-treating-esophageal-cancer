@@ -108,28 +108,32 @@ async def get_patients(
         if total_time > 1.0:
             logger.warning(f"get_patients took {total_time:.2f}s total (query: {query_time:.2f}s, conversion: {total_time - query_time:.2f}s)")
         
-        # Return with metadata if truncated to inform caller that results are incomplete
-        if was_truncated:
-            return {
-                "patients": patient_list,
-                "total_returned": len(patient_list),
-                "requested_limit": limit,
-                "effective_limit": effective_limit,
-                "truncated": True,
-                "message": f"Results limited to {effective_limit} records to prevent timeouts. Requested {limit} records."
-            }
-        
-        return patient_list
+        # Always return consistent dict structure for API contract
+        return {
+            "patients": patient_list,
+            "total_returned": len(patient_list),
+            "requested_limit": limit,
+            "effective_limit": effective_limit,
+            "truncated": was_truncated,
+            "message": f"Results limited to {effective_limit} records to prevent timeouts. Requested {limit} records." if was_truncated else None
+        }
     except (OperationalError, DisconnectionError, SQLAlchemyError) as e:
-        # Database connection/operation errors - return empty list
+        # Database connection/operation errors - return consistent structure
         logger.warning(f"Database error querying patients: {str(e)}")
         try:
             db.rollback()
         except Exception:
             pass
-        return []
+        return {
+            "patients": [],
+            "total_returned": 0,
+            "requested_limit": limit,
+            "effective_limit": effective_limit,
+            "truncated": False,
+            "message": "Database error occurred"
+        }
     except Exception as e:
-        # Any other error - log and return empty list
+        # Any other error - log and return consistent structure
         logger.error(f"Error querying patients: {str(e)}")
         if logging.getLogger().isEnabledFor(logging.DEBUG):
             logger.error(traceback.format_exc())
@@ -137,7 +141,14 @@ async def get_patients(
             db.rollback()
         except Exception:
             pass
-        return []
+        return {
+            "patients": [],
+            "total_returned": 0,
+            "requested_limit": limit,
+            "effective_limit": effective_limit,
+            "truncated": False,
+            "message": "An error occurred while querying patients"
+        }
 
 
 @router.get("/{patient_id}")
@@ -212,3 +223,55 @@ async def create_patient(
         logging.error(traceback.format_exc())
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error creating patient: {str(e)}")
+
+
+@router.post("/seed-data", status_code=200)
+async def seed_dashboard_data(
+    db: Session = Depends(get_db),
+):
+    """Quick endpoint to seed dashboard data (for development)"""
+    import logging
+    from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
+    from app.models.imaging_data import ImagingData
+    
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Check existing data
+        patient_count = db.query(Patient).count()
+        mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        
+        if patient_count >= 10 and mri_count >= 10:
+            return {
+                "message": "Database already has sufficient data",
+                "patients": patient_count,
+                "mri_images": mri_count
+            }
+        
+        logger.info("Generating data for dashboard...")
+        
+        # Generate data
+        generator = EsophagealCancerSyntheticData(seed=42)
+        dataset = generator.generate_all_data(n_patients=50, cancer_ratio=0.4)
+        
+        # Save to database
+        generator.save_to_database(dataset, db)
+        db.commit()
+        
+        # Verify
+        new_patient_count = db.query(Patient).count()
+        new_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        
+        logger.info(f"Data generation completed: {new_patient_count} patients, {new_mri_count} MRI images")
+        
+        return {
+            "message": "Data generated successfully",
+            "patients": new_patient_count,
+            "mri_images": new_mri_count
+        }
+    except Exception as e:
+        logger.error(f"Error seeding data: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error seeding data: {str(e)}")
