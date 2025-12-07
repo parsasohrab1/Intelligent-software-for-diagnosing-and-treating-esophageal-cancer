@@ -225,6 +225,34 @@ async def create_patient(
         raise HTTPException(status_code=500, detail=f"Error creating patient: {str(e)}")
 
 
+@router.get("/dashboard", response_model=List[PatientResponse])
+async def get_patients_for_dashboard(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    """Get patients for dashboard (no authentication required for development)"""
+    try:
+        patients = db.query(Patient).offset(skip).limit(limit).all()
+        return [
+            PatientResponse(
+                patient_id=str(p.patient_id),
+                age=int(p.age) if p.age else 0,
+                gender=str(p.gender) if p.gender else "",
+                ethnicity=str(p.ethnicity) if p.ethnicity else None,
+                has_cancer=bool(p.has_cancer) if p.has_cancer is not None else False,
+                cancer_type=str(p.cancer_type) if p.cancer_type else None,
+                cancer_subtype=str(p.cancer_subtype) if p.cancer_subtype else None,
+            )
+            for p in patients
+        ]
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error getting patients for dashboard: {str(e)}")
+        return []
+
+
 @router.post("/seed-data", status_code=200)
 async def seed_dashboard_data(
     db: Session = Depends(get_db),

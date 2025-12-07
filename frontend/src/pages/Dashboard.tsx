@@ -99,8 +99,11 @@ export default function Dashboard() {
 
     try {
       // Fetch all data in parallel with individual timeouts
+      // Try dashboard endpoint first (no auth), fallback to regular endpoint
       const [patientsRes, datasetsRes, modelsRes, cdsRes, imagingRes] = await Promise.allSettled([
-        api.get('/patients/', { params: { limit: 100 }, timeout: 30000 }),
+        api.get('/patients/dashboard', { params: { limit: 100 }, timeout: 30000 }).catch(() => 
+          api.get('/patients/', { params: { limit: 100 }, timeout: 30000 })
+        ),
         api.get('/data-collection/metadata/statistics', { timeout: 30000 }),
         api.get('/ml-models/models', { timeout: 30000 }),
         api.get('/cds/services', { timeout: 30000 }),
