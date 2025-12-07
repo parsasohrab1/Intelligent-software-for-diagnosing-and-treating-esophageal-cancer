@@ -133,8 +133,16 @@ async def get_mri_reports(
         total_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
         logger.info(f"Total MRI records in database: {total_mri_count}")
         
-        # Build query with proper error handling - use left outer join to handle missing patients
+        # Build query with proper error handling
         try:
+            # First try simple query without join to see if we get results
+            simple_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
+            if patient_id:
+                simple_query = simple_query.filter(ImagingData.patient_id == patient_id)
+            simple_count = simple_query.count()
+            logger.info(f"Simple MRI query count (without join): {simple_count}")
+            
+            # Now try with outerjoin to get patient information
             # Use outerjoin to handle cases where patient might not exist
             query = db.query(ImagingData, Patient).outerjoin(
                 Patient, ImagingData.patient_id == Patient.patient_id
@@ -144,7 +152,21 @@ async def get_mri_reports(
                 query = query.filter(ImagingData.patient_id == patient_id)
             
             results = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
-            logger.info(f"Query returned {len(results)} MRI reports")
+            logger.info(f"Query with join returned {len(results)} MRI reports")
+            
+            # If join query returns 0 but simple query has results, there might be a join issue
+            if len(results) == 0 and simple_count > 0:
+                logger.warning(f"Join query returned 0 but simple query found {simple_count} MRI records. Trying alternative query...")
+                # Try querying ImagingData first, then getting patient separately
+                # Reset the query to avoid any cached state
+                simple_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
+                if patient_id:
+                    simple_query = simple_query.filter(ImagingData.patient_id == patient_id)
+                imaging_results = simple_query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+                logger.info(f"Alternative query returned {len(imaging_results)} MRI records")
+                # Convert to tuple format for compatibility
+                results = [(img, None) for img in imaging_results]
+                logger.info(f"Converted {len(imaging_results)} imaging results to {len(results)} tuple results")
         except (SQLAlchemyError, OperationalError, DisconnectionError) as db_err:
             logger.error(f"Database error in MRI reports query: {db_err}")
             logger.error(traceback.format_exc())
@@ -155,22 +177,64 @@ async def get_mri_reports(
             return []
         
         reports = []
-        for result in results:
+        logger.info(f"Processing {len(results)} results into reports...")
+        for idx, result in enumerate(results):
             try:
                 # Handle both tuple and single object results
                 if isinstance(result, tuple):
-                    image, patient = result
+                    if len(result) == 2:
+                        image, patient = result
+                    elif len(result) == 1:
+                        image = result[0]
+                        patient = None
+                    else:
+                        logger.warning(f"Unexpected tuple length {len(result)} at index {idx}")
+                        continue
                 else:
                     image = result
                     patient = None
                 
-                # Generate report summary
+                # Ensure we have an ImagingData object
+                if image is None:
+                    logger.warning(f"Image is None at index {idx}")
+                    continue
+                
+                # Generate comprehensive report summary including radiology and endoscopy
                 patient_id_str = str(image.patient_id) if image.patient_id else "Unknown"
-                report_summary = f"MRI scan for patient {patient_id_str}"
+                
+                # Get all imaging data for this patient (radiology and endoscopy)
+                all_imaging = db.query(ImagingData).filter(
+                    ImagingData.patient_id == image.patient_id
+                ).all()
+                
+                # Build comprehensive report
+                report_parts = [f"MRI scan for patient {patient_id_str}"]
+                
+                # Add MRI findings
                 if image.findings:
-                    report_summary += f". Findings: {image.findings[:100]}"
+                    report_parts.append(f"MRI Findings: {image.findings[:200]}")
                 if image.impression:
-                    report_summary += f". Impression: {image.impression}"
+                    report_parts.append(f"MRI Impression: {image.impression[:200]}")
+                
+                # Add radiology data (CT, PET-CT, etc.)
+                radiology_data = [img for img in all_imaging if img.imaging_modality in ["CT_Chest_Abdomen", "PET_CT", "EUS"]]
+                if radiology_data:
+                    for rad in radiology_data:
+                        if rad.findings:
+                            report_parts.append(f"{rad.imaging_modality} Findings: {rad.findings[:200]}")
+                        if rad.impression:
+                            report_parts.append(f"{rad.imaging_modality} Impression: {rad.impression[:200]}")
+                
+                # Add endoscopy data
+                endoscopy_data = [img for img in all_imaging if img.imaging_modality == "Endoscopy"]
+                if endoscopy_data:
+                    for endo in endoscopy_data:
+                        if endo.findings:
+                            report_parts.append(f"Endoscopy Findings: {endo.findings[:200]}")
+                        if endo.impression:
+                            report_parts.append(f"Endoscopy Impression: {endo.impression[:200]}")
+                
+                report_summary = ". ".join(report_parts)
                 
                 # Handle datetime conversion safely
                 imaging_date_str = None
@@ -207,11 +271,26 @@ async def get_mri_reports(
                     "data_source": data_source,
                 }
                 reports.append(report_dict)
+                logger.debug(f"Successfully converted MRI report for image_id {report_dict.get('image_id')}")
             except Exception as conv_err:
-                logger.warning(f"Error converting MRI report: {str(conv_err)}")
+                logger.warning(f"Error converting MRI report at index {idx}: {str(conv_err)}")
                 logger.warning(traceback.format_exc())
                 continue
         
+        logger.info(f"Successfully converted {len(reports)} MRI reports out of {len(results)} results")
+        if len(reports) == 0 and len(results) > 0:
+            logger.error(f"CRITICAL: {len(results)} results found but 0 reports converted! Check conversion logic.")
+        if len(reports) == 0 and total_mri_count > 0:
+            logger.error(f"CRITICAL: Database has {total_mri_count} MRI records but endpoint returned 0 reports!")
+            logger.error(f"Query parameters: skip={skip}, limit={limit}, patient_id={patient_id}")
+            # Try a direct query without any filters to see if we can get any results
+            try:
+                direct_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").limit(5).all()
+                logger.error(f"Direct query (no filters, limit=5) returned {len(direct_query)} records")
+                if len(direct_query) > 0:
+                    logger.error(f"First record sample: image_id={direct_query[0].image_id}, patient_id={direct_query[0].patient_id}, modality={direct_query[0].imaging_modality}")
+            except Exception as debug_err:
+                logger.error(f"Error in direct query debug: {debug_err}")
         return reports
     except Exception as e:
         logger.error(f"Error fetching MRI reports: {str(e)}")
@@ -255,18 +334,47 @@ async def get_mri_report(
     
     image, patient = result
     
-    # Generate detailed report summary
+    # Generate comprehensive report summary including radiology and endoscopy
     report_parts = []
+    
+    # Add MRI findings
     if image.findings:
-        report_parts.append(f"Findings: {image.findings}")
+        report_parts.append(f"MRI Findings: {image.findings}")
     if image.impression:
-        report_parts.append(f"Impression: {image.impression}")
+        report_parts.append(f"MRI Impression: {image.impression}")
     if image.tumor_length_cm:
-        report_parts.append(f"Tumor length: {image.tumor_length_cm} cm")
+        report_parts.append(f"MRI Tumor length: {image.tumor_length_cm} cm")
     if image.wall_thickness_cm:
-        report_parts.append(f"Wall thickness: {image.wall_thickness_cm} cm")
+        report_parts.append(f"MRI Wall thickness: {image.wall_thickness_cm} cm")
     if image.lymph_nodes_positive is not None:
-        report_parts.append(f"Lymph nodes positive: {image.lymph_nodes_positive}")
+        report_parts.append(f"MRI Lymph nodes positive: {image.lymph_nodes_positive}")
+    
+    # Get all imaging data for this patient (radiology and endoscopy)
+    all_imaging = db.query(ImagingData).filter(
+        ImagingData.patient_id == image.patient_id
+    ).all()
+    
+    # Add radiology data (CT, PET-CT, etc.)
+    radiology_data = [img for img in all_imaging if img.imaging_modality in ["CT_Chest_Abdomen", "PET_CT", "EUS"]]
+    if radiology_data:
+        for rad in radiology_data:
+            if rad.findings:
+                report_parts.append(f"{rad.imaging_modality} Findings: {rad.findings}")
+            if rad.impression:
+                report_parts.append(f"{rad.imaging_modality} Impression: {rad.impression}")
+            if rad.tumor_length_cm:
+                report_parts.append(f"{rad.imaging_modality} Tumor length: {rad.tumor_length_cm} cm")
+    
+    # Add endoscopy data
+    endoscopy_data = [img for img in all_imaging if img.imaging_modality == "Endoscopy"]
+    if endoscopy_data:
+        for endo in endoscopy_data:
+            if endo.findings:
+                report_parts.append(f"Endoscopy Findings: {endo.findings}")
+            if endo.impression:
+                report_parts.append(f"Endoscopy Impression: {endo.impression}")
+            if endo.tumor_length_cm:
+                report_parts.append(f"Endoscopy Tumor length: {endo.tumor_length_cm} cm")
     
     report_summary = ". ".join(report_parts) if report_parts else "No detailed findings available"
     
