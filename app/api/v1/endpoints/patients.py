@@ -230,11 +230,36 @@ async def get_patients_for_dashboard(
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
+    auto_generate: bool = True,  # Auto-generate if empty
 ):
     """Get patients for dashboard (no authentication required for development)"""
+    import logging
+    from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
+    from app.models.imaging_data import ImagingData
+    
+    logger = logging.getLogger(__name__)
+    
     try:
+        # Check if we have data
+        patient_count = db.query(Patient).count()
+        mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+        
+        # Auto-generate if empty and auto_generate is True
+        if patient_count < 10 and auto_generate:
+            logger.info(f"Database has only {patient_count} patients. Auto-generating data...")
+            try:
+                generator = EsophagealCancerSyntheticData(seed=42)
+                dataset = generator.generate_all_data(n_patients=50, cancer_ratio=0.4)
+                generator.save_to_database(dataset, db)
+                db.commit()
+                logger.info("Auto-generation completed")
+            except Exception as gen_err:
+                logger.warning(f"Auto-generation failed: {gen_err}")
+                db.rollback()
+        
+        # Query patients
         patients = db.query(Patient).offset(skip).limit(limit).all()
-        return [
+        result = [
             PatientResponse(
                 patient_id=str(p.patient_id),
                 age=int(p.age) if p.age else 0,
@@ -246,10 +271,13 @@ async def get_patients_for_dashboard(
             )
             for p in patients
         ]
+        
+        logger.info(f"Returning {len(result)} patients for dashboard")
+        return result
     except Exception as e:
-        import logging
-        logger = logging.getLogger(__name__)
         logger.error(f"Error getting patients for dashboard: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
         return []
 
 
