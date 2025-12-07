@@ -58,7 +58,7 @@ class EnrichAllPatientsRequest(BaseModel):
 async def add_radiology_data(
     request: RadiologyDataRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(Role.DOCTOR, Role.DATA_ENGINEER, Role.SYSTEM_ADMINISTRATOR))
+    current_user: User = Depends(require_role(Role.MEDICAL_ONCOLOGIST, Role.DATA_ENGINEER, Role.SYSTEM_ADMINISTRATOR))
 ):
     """
     اضافه کردن داده رادیولوژی برای یک بیمار
@@ -107,7 +107,7 @@ async def add_radiology_data(
 async def add_endoscopy_data(
     request: EndoscopyDataRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role(Role.DOCTOR, Role.DATA_ENGINEER, Role.SYSTEM_ADMINISTRATOR))
+    current_user: User = Depends(require_role(Role.MEDICAL_ONCOLOGIST, Role.DATA_ENGINEER, Role.SYSTEM_ADMINISTRATOR))
 ):
     """
     اضافه کردن داده آندوسکوپی برای یک بیمار

@@ -43,7 +43,7 @@ async def train_few_shot_model(
     query_files: List[UploadFile] = File(...),
     support_labels: List[int] = Query(...),
     query_labels: List[int] = Query(...),
-    current_user: User = Depends(require_role([Role.ADMIN, Role.DEVELOPER]))
+    current_user: User = Depends(require_role(Role.SYSTEM_ADMINISTRATOR, Role.DATA_ENGINEER))
 ):
     """
     آموزش مدل Few-Shot Learning برای زیرگونه نادر

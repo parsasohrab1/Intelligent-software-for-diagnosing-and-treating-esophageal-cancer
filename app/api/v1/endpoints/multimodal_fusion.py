@@ -225,7 +225,7 @@ async def build_fusion_model(
     embed_dim: int = Query(256),
     num_attention_heads: int = Query(8),
     num_attention_layers: int = Query(2),
-    current_user: User = Depends(require_role([Role.ADMIN, Role.DEVELOPER]))
+    current_user: User = Depends(require_role(Role.SYSTEM_ADMINISTRATOR, Role.DATA_ENGINEER))
 ):
     """
     ساخت مدل ادغام چندوجهی با پارامترهای سفارشی
