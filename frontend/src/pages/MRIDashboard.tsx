@@ -151,11 +151,22 @@ export default function MRIDashboard() {
   }
 
   const generateImagePlaceholder = (imageId: number) => {
-    // Generate a more realistic MRI placeholder
+    // Generate a data URI placeholder instead of external URL to avoid network errors
     // In production, this would be replaced with actual image URLs from storage
-    const colors = ['2563eb', 'dc2626', '059669', '7c3aed', 'ea580c']
+    const colors = ['#2563eb', '#dc2626', '#059669', '#7c3aed', '#ea580c']
     const color = colors[imageId % colors.length]
-    return `https://via.placeholder.com/400x300/${color}/ffffff?text=MRI+Scan+${imageId}`
+    
+    // Create a simple SVG placeholder as data URI (works offline, no external requests)
+    const svg = `<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="${color}"/>
+      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" dominant-baseline="middle">
+        MRI Scan #${imageId}
+      </text>
+    </svg>`
+    
+    // Use base64 encoding for better compatibility
+    const base64Svg = btoa(unescape(encodeURIComponent(svg)))
+    return `data:image/svg+xml;base64,${base64Svg}`
   }
 
   const handleGenerateData = async () => {
@@ -317,6 +328,20 @@ export default function MRIDashboard() {
                   image={generateImagePlaceholder(report.image_id)}
                   alt={`MRI Image ${report.image_id}`}
                   sx={{ objectFit: 'cover' }}
+                  onError={(e: any) => {
+                    // Fallback to a simple colored div if image fails to load
+                    e.target.style.display = 'none'
+                    const fallback = document.createElement('div')
+                    fallback.style.width = '100%'
+                    fallback.style.height = '200px'
+                    fallback.style.backgroundColor = '#2563eb'
+                    fallback.style.display = 'flex'
+                    fallback.style.alignItems = 'center'
+                    fallback.style.justifyContent = 'center'
+                    fallback.style.color = 'white'
+                    fallback.textContent = `MRI Scan #${report.image_id}`
+                    e.target.parentNode?.appendChild(fallback)
+                  }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>

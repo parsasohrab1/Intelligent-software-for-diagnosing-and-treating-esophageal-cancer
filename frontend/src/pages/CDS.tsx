@@ -128,26 +128,6 @@ export default function CDS() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch patients and CDS services on mount
-  useEffect(() => {
-    fetchPatients()
-    fetchCDSServices()
-  }, [])
-
-  // Load patient data when selected
-  useEffect(() => {
-    if (selectedPatientId) {
-      loadPatientData(selectedPatientId)
-    }
-  }, [selectedPatientId])
-
-  // Fetch 1-4 patients for graph display when Basic Patient Information step is active
-  useEffect(() => {
-    if (activeStep === 0) {
-      fetchGraphPatients()
-    }
-  }, [activeStep])
-
   const fetchPatients = async () => {
     setLoadingPatients(true)
     try {
@@ -241,20 +221,42 @@ export default function CDS() {
     }
   }
 
-  const loadPatientData = async (patientId: string) => {
+  const loadPatientData = useCallback(async (patientId: string) => {
     try {
       const patient = patients.find((p) => p.patient_id === patientId)
       if (patient) {
-        setPatientData({
-          ...patientData,
+        setPatientData((prev) => ({
+          ...prev,
           age: patient.age || 65,
           gender: patient.gender || 'Male',
-        })
+        }))
       }
     } catch (error) {
       console.error('Error loading patient data:', error)
     }
-  }
+  }, [patients])
+
+  // Fetch patients and CDS services on mount
+  useEffect(() => {
+    fetchPatients()
+    fetchCDSServices()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Load patient data when selected
+  useEffect(() => {
+    if (selectedPatientId) {
+      loadPatientData(selectedPatientId)
+    }
+  }, [selectedPatientId, loadPatientData])
+
+  // Fetch 1-4 patients for graph display when Basic Patient Information step is active
+  useEffect(() => {
+    if (activeStep === 0) {
+      fetchGraphPatients()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep])
 
   const steps = [
     {
