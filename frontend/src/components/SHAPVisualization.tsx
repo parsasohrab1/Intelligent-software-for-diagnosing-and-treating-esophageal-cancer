@@ -10,7 +10,7 @@ interface SHAPVisualizationProps {
 export default function SHAPVisualization({ explanation, prediction, riskCategory }: SHAPVisualizationProps) {
   if (!explanation) {
     return (
-      <Alert severity="info">توضیحات در دسترس نیست</Alert>
+      <Alert severity="info">Explanation not available</Alert>
     )
   }
 
@@ -69,7 +69,7 @@ export default function SHAPVisualization({ explanation, prediction, riskCategor
 
   if (featureData.length === 0) {
     return (
-      <Alert severity="info">داده‌ای برای نمایش وجود ندارد</Alert>
+      <Alert severity="info">No data available for display</Alert>
     )
   }
 
@@ -81,17 +81,17 @@ export default function SHAPVisualization({ explanation, prediction, riskCategor
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        تحلیل توضیح‌پذیری مدل (SHAP)
+        Model Explainability Analysis (SHAP)
       </Typography>
       
       {prediction !== undefined && (
         <Box sx={{ mb: 3 }}>
           <Typography variant="body1" gutterBottom>
-            <strong>پیش‌بینی ریسک:</strong> {(prediction * 100).toFixed(1)}%
+            <strong>Risk Prediction:</strong> {(prediction * 100).toFixed(1)}%
           </Typography>
           {riskCategory && (
             <Typography variant="body2" color="textSecondary">
-              دسته‌بندی: {riskCategory}
+              Category: {riskCategory}
             </Typography>
           )}
         </Box>
@@ -100,10 +100,10 @@ export default function SHAPVisualization({ explanation, prediction, riskCategor
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="subtitle1" gutterBottom>
-            اهمیت ویژگی‌ها (Feature Importance)
+            Feature Importance
           </Typography>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-            این نمودار نشان می‌دهد که کدام ویژگی‌ها بیشترین تأثیر را در پیش‌بینی داشته‌اند
+            This chart shows which features have the most impact on the prediction
           </Typography>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={featureData} layout="vertical">
@@ -128,10 +128,10 @@ export default function SHAPVisualization({ explanation, prediction, riskCategor
         <Card>
           <CardContent>
             <Typography variant="subtitle1" gutterBottom>
-              مقادیر SHAP برای این بیمار
+              SHAP Values for This Patient
             </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-              مقادیر مثبت (قرمز) ریسک را افزایش می‌دهند و مقادیر منفی (آبی) ریسک را کاهش می‌دهند
+              Positive values (red) increase risk and negative values (blue) decrease risk
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={featureData.slice(0, 8)}>
@@ -157,8 +157,8 @@ export default function SHAPVisualization({ explanation, prediction, riskCategor
 
       <Box sx={{ mt: 2 }}>
         <Typography variant="body2" color="textSecondary">
-          <strong>توضیح:</strong> این تحلیل نشان می‌دهد که چرا سیستم این پیش‌بینی را انجام داده است.
-          ویژگی‌های با مقدار بالاتر تأثیر بیشتری در نتیجه نهایی داشته‌اند.
+          <strong>Explanation:</strong> This analysis shows why the system made this prediction.
+          Features with higher values have more impact on the final result.
         </Typography>
       </Box>
     </Box>

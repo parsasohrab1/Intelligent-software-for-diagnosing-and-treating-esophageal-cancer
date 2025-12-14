@@ -23,7 +23,51 @@ from app.models import (  # noqa: F401
     treatment_data,
     lab_results,
     quality_of_life,
+    user,
 )
+
+# Import compliance models
+try:
+    from app.core.compliance.validation_documentation import (  # noqa: F401
+        ValidationProtocol,
+        ValidationTestCase,
+        ValidationExecution,
+        ValidationResult,
+    )
+    from app.core.compliance.risk_management import (  # noqa: F401
+        Risk,
+        RiskControl,
+    )
+    from app.core.compliance.regulatory_tracking import (  # noqa: F401
+        RegulatorySubmission,
+        RegulatoryRequirement,
+        RegulatoryDocument,
+    )
+    from app.core.compliance.quality_assurance import (  # noqa: F401
+        QADocument,
+        Audit,
+        CAPA,
+        NonConformance,
+    )
+    from app.core.compliance.change_control import (  # noqa: F401
+        ChangeRequest,
+        ChangeApproval,
+        DeviceHistoryRecord,
+    )
+    from app.core.compliance.software_lifecycle import (  # noqa: F401
+        SoftwareLifecycleRecord,
+        SoftwareVersion,
+        SoftwareChange,
+    )
+    from app.core.security.consent_manager import PatientConsent  # noqa: F401
+    from app.services.training.training_system import (  # noqa: F401
+        TrainingModule,
+        TrainingEnrollment,
+        TrainingQuiz,
+    )
+except ImportError as e:
+    # Some models may not be available during migration
+    pass
 
 # this is the Alembic Config object
 config = context.config

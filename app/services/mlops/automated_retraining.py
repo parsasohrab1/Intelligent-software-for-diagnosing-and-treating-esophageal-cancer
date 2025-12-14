@@ -6,9 +6,13 @@ import logging
 from typing import Dict, Optional, List
 from datetime import datetime, timedelta
 from enum import Enum
-import schedule
 import time
 import threading
+
+try:
+    import schedule
+except ImportError:
+    schedule = None
 
 from app.core.config import settings
 from app.services.mlops.cicd_pipeline import MLModelCICDPipeline
@@ -40,6 +44,10 @@ class AutomatedRetraining:
 
     def start_automated_retraining(self):
         """شروع سیستم retraining خودکار"""
+        if schedule is None:
+            logger.warning("schedule module not available, automated retraining disabled")
+            return
+            
         if self.is_running:
             logger.warning("Automated retraining is already running")
             return
@@ -66,11 +74,14 @@ class AutomatedRetraining:
     def stop_automated_retraining(self):
         """توقف سیستم retraining خودکار"""
         self.is_running = False
-        schedule.clear()
+        if schedule is not None:
+            schedule.clear()
         logger.info("Automated retraining system stopped")
 
     def _scheduler_loop(self):
         """حلقه scheduler"""
+        if schedule is None:
+            return
         while self.is_running:
             schedule.run_pending()
             time.sleep(60)  # Check every minute

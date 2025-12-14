@@ -1,5 +1,5 @@
 """
-ML Training Pipeline with experiment tracking
+ML Training Pipeline with experiment tracking and accuracy optimization
 """
 import pandas as pd
 import numpy as np
@@ -15,6 +15,9 @@ from sklearn.metrics import (
     confusion_matrix,
     classification_report,
 )
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.utils.class_weight import compute_class_weight
 import json
 import os
 
@@ -26,16 +29,34 @@ from app.services.ml_models.sklearn_models import (
 )
 from app.services.ml_models.neural_network import NeuralNetworkModel
 
+# Import accuracy optimization modules (optional - handle import errors gracefully)
+try:
+    from app.services.ml_improvements.accuracy_optimizer import (
+        AccuracyOptimizer,
+        HyperparameterTuner,
+        FeatureEngineer
+    )
+    ACCURACY_OPTIMIZATION_AVAILABLE = True
+except ImportError:
+    ACCURACY_OPTIMIZATION_AVAILABLE = False
+    AccuracyOptimizer = None
+    HyperparameterTuner = None
+    FeatureEngineer = None
+
 
 class MLTrainingPipeline:
     """ML Training Pipeline with experiment tracking"""
 
-    def __init__(self, experiment_name: str = "default"):
+    def __init__(self, experiment_name: str = "default", optimize_accuracy: bool = True):
         self.experiment_name = experiment_name
         self.models = {}
         self.experiments = []
         self.best_model = None
         self.best_score = 0.0
+        self.optimize_accuracy = optimize_accuracy and ACCURACY_OPTIMIZATION_AVAILABLE
+        self.accuracy_optimizer = AccuracyOptimizer() if (optimize_accuracy and ACCURACY_OPTIMIZATION_AVAILABLE) else None
+        self.feature_engineer = FeatureEngineer() if (optimize_accuracy and ACCURACY_OPTIMIZATION_AVAILABLE) else None
+        self.hyperparameter_tuner = HyperparameterTuner() if (optimize_accuracy and ACCURACY_OPTIMIZATION_AVAILABLE) else None
 
     def prepare_data(
         self,
@@ -44,10 +65,20 @@ class MLTrainingPipeline:
         test_size: float = 0.2,
         val_size: float = 0.1,
         random_state: int = 42,
+        preprocess: bool = True,
     ) -> Tuple[pd.DataFrame, pd.Series, pd.DataFrame, pd.Series, pd.DataFrame, pd.Series]:
-        """Prepare train/val/test split"""
+        """Prepare train/val/test split with optional preprocessing for better accuracy"""
         X = data.drop(columns=[target_column])
         y = data[target_column]
+
+        # Handle missing values
+        if preprocess and self.feature_engineer:
+            imputer = SimpleImputer(strategy='median')
+            X = pd.DataFrame(
+                imputer.fit_transform(X),
+                columns=X.columns,
+                index=X.index
+            )
 
         # Train/test split
         X_train, X_test, y_train, y_test = train_test_split(
@@ -63,6 +94,25 @@ class MLTrainingPipeline:
             stratify=y_train,
         )
 
+        # Feature scaling for better accuracy
+        if preprocess and self.feature_engineer:
+            scaler = StandardScaler()
+            X_train = pd.DataFrame(
+                scaler.fit_transform(X_train),
+                columns=X_train.columns,
+                index=X_train.index
+            )
+            X_val = pd.DataFrame(
+                scaler.transform(X_val),
+                columns=X_val.columns,
+                index=X_val.index
+            )
+            X_test = pd.DataFrame(
+                scaler.transform(X_test),
+                columns=X_test.columns,
+                index=X_test.index
+            )
+
         return X_train, y_train, X_val, y_val, X_test, y_test
 
     def train_model(
@@ -72,9 +122,16 @@ class MLTrainingPipeline:
         y_train: pd.Series,
         X_val: Optional[pd.DataFrame] = None,
         y_val: Optional[pd.Series] = None,
+        optimize: bool = True,
         **kwargs
     ) -> Dict:
-        """Train a specific model"""
+        """Train a specific model with accuracy optimization"""
+        # Get optimal hyperparameters if optimization is enabled
+        if optimize and self.hyperparameter_tuner and ACCURACY_OPTIMIZATION_AVAILABLE:
+            optimal_params = self.hyperparameter_tuner.get_optimal_hyperparameters(model_name)
+            # Merge with user-provided kwargs (user kwargs take precedence)
+            kwargs = {**optimal_params, **kwargs}
+        
         # Initialize model
         if model_name == "LogisticRegression":
             model = LogisticRegressionModel(**kwargs)
@@ -89,6 +146,22 @@ class MLTrainingPipeline:
         else:
             raise ValueError(f"Unknown model: {model_name}")
 
+        # Handle class imbalance for better accuracy
+        if optimize:
+            try:
+                classes = np.unique(y_train)
+                class_weights = compute_class_weight('balanced', classes=classes, y=y_train)
+                class_weight_dict = dict(zip(classes, class_weights))
+                
+                # Add class_weight to kwargs if model supports it
+                if hasattr(model.model, 'set_params'):
+                    try:
+                        model.model.set_params(class_weight=class_weight_dict)
+                    except:
+                        pass
+            except:
+                pass
+
         # Train
         training_history = model.train(
             X_train, y_train, X_val, y_val, **kwargs
@@ -101,6 +174,11 @@ class MLTrainingPipeline:
         if X_val is not None and y_val is not None:
             val_metrics = model.evaluate(X_val, y_val)
             training_history.update(val_metrics)
+            
+            # Add optimization info
+            if optimize:
+                training_history['optimization_enabled'] = True
+                training_history['optimal_hyperparameters'] = kwargs
 
         return training_history
 

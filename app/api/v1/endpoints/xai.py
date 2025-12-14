@@ -18,7 +18,20 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-xai_service = ExplainableAIService()
+# Lazy initialization to avoid MongoDB connection on import
+_xai_service = None
+
+def get_xai_service():
+    """Get XAI service instance (lazy initialization)"""
+    global _xai_service
+    if _xai_service is None:
+        try:
+            _xai_service = ExplainableAIService()
+        except Exception as e:
+            import logging
+            logging.warning(f"Failed to initialize XAI service: {e}")
+            _xai_service = None
+    return _xai_service
 
 
 class ExplainImageRequest(BaseModel):
@@ -62,6 +75,9 @@ async def explain_image_prediction(
             )
         
         # Generate explanation
+        xai_service = get_xai_service()
+        if xai_service is None:
+            raise HTTPException(status_code=503, detail="XAI service is not available (MongoDB may not be running)")
         result = xai_service.explain_image_prediction(
             model_id=model_id,
             image=image,
@@ -118,6 +134,9 @@ async def explain_batch_predictions(
             )
         
         # Generate explanations
+        xai_service = get_xai_service()
+        if xai_service is None:
+            raise HTTPException(status_code=503, detail="XAI service is not available (MongoDB may not be running)")
         results = xai_service.explain_batch_predictions(
             model_id=model_id,
             images=images,
@@ -169,6 +188,9 @@ async def compare_explanation_methods(
             raise HTTPException(status_code=400, detail="No valid methods provided")
         
         # Compare explanations
+        xai_service = get_xai_service()
+        if xai_service is None:
+            raise HTTPException(status_code=503, detail="XAI service is not available (MongoDB may not be running)")
         result = xai_service.compare_explanations(
             model_id=model_id,
             image=image,

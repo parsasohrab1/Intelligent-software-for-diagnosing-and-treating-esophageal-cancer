@@ -8,15 +8,27 @@ from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
 import pydicom
-from pynetdicom import AE, evt
-from pynetdicom.sop_class import (
-    PatientRootQueryRetrieveInformationModelFind,
-    PatientRootQueryRetrieveInformationModelMove,
-    CTImageStorage,
-    MRImageStorage,
-    UltrasoundImageStorage,
-    SecondaryCaptureImageStorage,
-)
+try:
+    from pynetdicom import AE, evt
+except ImportError:
+    AE = None
+    evt = None
+try:
+    from pynetdicom.sop_class import (
+        PatientRootQueryRetrieveInformationModelFind,
+        PatientRootQueryRetrieveInformationModelMove,
+        CTImageStorage,
+        MRImageStorage,
+        UltrasoundImageStorage,
+        SecondaryCaptureImageStorage,
+    )
+except ImportError:
+    PatientRootQueryRetrieveInformationModelFind = None
+    PatientRootQueryRetrieveInformationModelMove = None
+    CTImageStorage = None
+    MRImageStorage = None
+    UltrasoundImageStorage = None
+    SecondaryCaptureImageStorage = None
 
 logger = logging.getLogger(__name__)
 
@@ -49,18 +61,27 @@ class PACSIntegration:
 
     def _initialize_ae(self):
         """Initialize Application Entity"""
+        if AE is None:
+            logger.warning("pynetdicom not available, PACS integration disabled")
+            return
         try:
             self.ae = AE(ae_title=self.connection.ae_title)
             
             # Add supported storage SOP classes
-            self.ae.add_supported_context(CTImageStorage)
-            self.ae.add_supported_context(MRImageStorage)
-            self.ae.add_supported_context(UltrasoundImageStorage)
-            self.ae.add_supported_context(SecondaryCaptureImageStorage)
+            if CTImageStorage:
+                self.ae.add_supported_context(CTImageStorage)
+            if MRImageStorage:
+                self.ae.add_supported_context(MRImageStorage)
+            if UltrasoundImageStorage:
+                self.ae.add_supported_context(UltrasoundImageStorage)
+            if SecondaryCaptureImageStorage:
+                self.ae.add_supported_context(SecondaryCaptureImageStorage)
             
             # Add query/retrieve SOP classes
-            self.ae.add_requested_context(PatientRootQueryRetrieveInformationModelFind)
-            self.ae.add_requested_context(PatientRootQueryRetrieveInformationModelMove)
+            if PatientRootQueryRetrieveInformationModelFind:
+                self.ae.add_requested_context(PatientRootQueryRetrieveInformationModelFind)
+            if PatientRootQueryRetrieveInformationModelMove:
+                self.ae.add_requested_context(PatientRootQueryRetrieveInformationModelMove)
             
             logger.info(f"PACS AE initialized: {self.connection.ae_title}")
         except Exception as e:

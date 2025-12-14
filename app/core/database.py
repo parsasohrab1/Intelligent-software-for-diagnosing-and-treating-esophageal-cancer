@@ -111,10 +111,13 @@ async def init_db():
 
 
 def _auto_seed_data_if_empty_sync():
-    """Automatically seed data if database is empty (synchronous version)"""
+    """Automatically seed data if database is empty (synchronous version)
+    First tries to restore from saved snapshot, then generates new data if needed
+    """
     import logging
     from app.models.patient import Patient
     from app.models.imaging_data import ImagingData
+    from pathlib import Path
     
     logger = logging.getLogger(__name__)
     
@@ -125,14 +128,45 @@ def _auto_seed_data_if_empty_sync():
             patient_count = db.query(Patient).count()
             mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
             
-            # If we have less than 10 patients or no MRI data, generate data
+            # If we have less than 10 patients or no MRI data, try to restore from snapshot
             if patient_count < 10 or mri_count < 10:
                 logger.info("=" * 60)
-                logger.info("Database is empty or has insufficient data. Auto-generating data...")
+                logger.info("Database is empty or has insufficient data.")
                 logger.info(f"Current: {patient_count} patients, {mri_count} MRI images")
                 logger.info("=" * 60)
                 
-                # Generate synthetic data
+                # Try to restore from saved snapshot first
+                snapshot_path = Path("data_snapshot.json")
+                if snapshot_path.exists():
+                    logger.info("Found saved data snapshot. Restoring...")
+                    try:
+                        from scripts.restore_saved_data import restore_saved_data
+                        if restore_saved_data(str(snapshot_path), clear_existing=True):
+                            # Verify after restore
+                            db.expire_all()
+                            new_patient_count = db.query(Patient).count()
+                            new_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
+                            
+                            if new_patient_count >= 10 and new_mri_count >= 10:
+                                logger.info("=" * 60)
+                                logger.info("✅ Data restored from snapshot!")
+                                logger.info(f"   Patients: {new_patient_count}")
+                                logger.info(f"   MRI Images: {new_mri_count}")
+                                logger.info("   Dashboard is now ready with saved data!")
+                                logger.info("=" * 60)
+                                return
+                            else:
+                                logger.warning("Restored data insufficient. Will generate new data...")
+                        else:
+                            logger.warning("Failed to restore from snapshot. Will generate new data...")
+                    except Exception as restore_err:
+                        logger.warning(f"Error restoring from snapshot: {restore_err}")
+                        logger.warning("Will generate new data...")
+                else:
+                    logger.info("No saved snapshot found. Will generate new data...")
+                
+                # If restore failed or no snapshot, generate synthetic data
+                logger.info("Generating new synthetic data...")
                 from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
                 
                 generator = EsophagealCancerSyntheticData(seed=42)

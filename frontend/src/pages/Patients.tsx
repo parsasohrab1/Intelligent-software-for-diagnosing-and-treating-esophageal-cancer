@@ -50,9 +50,10 @@ export default function Patients() {
 
   const fetchPatients = async () => {
     try {
-      const response = await api.get('/patients/', {
+      // Use public endpoint that doesn't require authentication
+      const response = await api.get('/patients/list', {
         params: { limit: 100 },
-        timeout: 60000, // 60 seconds timeout
+        timeout: 60000, // 60 seconds timeout (increased for reliability)
       })
       // Handle both array and object responses
       if (Array.isArray(response.data)) {
@@ -64,8 +65,21 @@ export default function Patients() {
       }
     } catch (error: any) {
       console.error('Error fetching patients:', error)
-      // Set empty array on error to prevent UI issues
-      setPatients([])
+      // Try fallback to dashboard endpoint if list fails
+      try {
+        const fallbackResponse = await api.get('/patients/dashboard', {
+          params: { limit: 100 },
+          timeout: 15000,
+        })
+        if (Array.isArray(fallbackResponse.data)) {
+          setPatients(fallbackResponse.data)
+        } else {
+          setPatients([])
+        }
+      } catch (fallbackError) {
+        console.error('Fallback endpoint also failed:', fallbackError)
+        setPatients([])
+      }
     } finally {
       setLoading(false)
     }

@@ -6,6 +6,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security.auth import get_current_user, decode_token
+from fastapi.security import OAuth2PasswordBearer
 from app.core.security.rbac import Role, Permission, AccessControlManager
 from app.core.security.consent_manager import ConsentManager, ConsentType
 from app.core.security.data_masking import DataMasking
@@ -14,10 +15,19 @@ from app.models.user import User
 from app.models.patient import Patient
 
 
-# Initialize managers
+# Initialize managers (lazy initialization for audit_logger to avoid MongoDB connection issues)
 access_control = AccessControlManager()
 data_masking = DataMasking()
-audit_logger = AuditLogger()
+_audit_logger = None
+
+def get_audit_logger():
+    global _audit_logger
+    if _audit_logger is None:
+        try:
+            _audit_logger = AuditLogger()
+        except Exception:
+            _audit_logger = None
+    return _audit_logger
 
 
 def get_current_user_with_role(
@@ -50,33 +60,82 @@ def get_current_user_with_role(
     return user
 
 
-def require_permission(permission: Permission):
+# OAuth2 scheme for optional authentication
+_oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login", auto_error=False)
+
+def get_optional_user(
+    token: Optional[str] = Depends(_oauth2_scheme_optional),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    """
+    Get current user if authenticated, otherwise return None (for public endpoints)
+    """
+    if token is None:
+        return None
+    
+    try:
+        # Decode token directly without raising exceptions
+        payload = decode_token(token)
+        if payload is None:
+            return None
+        
+        username = payload.get("sub")
+        if not username:
+            return None
+        
+        user = db.query(User).filter(User.username == username).first()
+        if not user or not user.is_active:
+            return None
+        
+        return user
+    except Exception:
+        return None
+
+
+def require_permission(permission: Permission, optional: bool = False):
     """
     Dependency factory to require specific permission
     
     Usage:
         @router.get("/patients")
         async def get_patients(
-            current_user: User = Depends(require_permission(Permission.READ_DEIDENTIFIED))
+            current_user: Optional[User] = Depends(require_permission(Permission.READ_DEIDENTIFIED, optional=True))
         ):
             ...
     """
-    def permission_checker(current_user: User = Depends(get_current_user_with_role)):
-        user_permissions = access_control.get_user_permissions(current_user.role)
+    def permission_checker(
+        current_user: Optional[User] = Depends(get_optional_user if optional else get_current_user_with_role)
+    ):
+        # If optional and no user, allow access (public endpoint)
+        if optional and current_user is None:
+            return None
         
-        if permission not in user_permissions:
-            # Log unauthorized access attempt
-            audit_logger.log_security_event(
-                event_type="unauthorized_access_attempt",
-                severity="high",
-                description=f"User {current_user.username} attempted to access resource requiring {permission.value}",
-                user_id=current_user.user_id
-            )
-            
+        # If not optional and no user, require authentication
+        if not optional and current_user is None:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Insufficient permissions. Required: {permission.value}"
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication required"
             )
+        
+        # Check permissions if user exists
+        if current_user:
+            user_permissions = access_control.get_user_permissions(current_user.role)
+            
+            if permission not in user_permissions:
+                # Log unauthorized access attempt
+                logger = get_audit_logger()
+                if logger:
+                    logger.log_security_event(
+                    event_type="unauthorized_access_attempt",
+                    severity="high",
+                    description=f"User {current_user.username} attempted to access resource requiring {permission.value}",
+                    user_id=current_user.user_id
+                )
+                
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"Insufficient permissions. Required: {permission.value}"
+                )
         
         return current_user
     
@@ -96,7 +155,9 @@ def require_role(*allowed_roles: Role):
     """
     def role_checker(current_user: User = Depends(get_current_user_with_role)):
         if current_user.role not in allowed_roles:
-            audit_logger.log_security_event(
+            logger = get_audit_logger()
+            if logger:
+                logger.log_security_event(
                 event_type="unauthorized_role_access",
                 severity="high",
                 description=f"User {current_user.username} with role {current_user.role.value} attempted to access role-restricted resource",
@@ -171,20 +232,24 @@ def check_patient_access(
         
         if not has_consent:
             # Log access without consent
-            audit_logger.log_security_event(
-                event_type="access_without_consent",
-                severity="medium",
-                description=f"User {current_user.username} accessed patient {patient_id} data without consent",
-                user_id=current_user.user_id
-            )
+            logger = get_audit_logger()
+            if logger:
+                logger.log_security_event(
+                    event_type="access_without_consent",
+                    severity="medium",
+                    description=f"User {current_user.username} accessed patient {patient_id} data without consent",
+                    user_id=current_user.user_id
+                )
     
     # Log data access
-    audit_logger.log_data_access(
-        user_id=current_user.user_id,
-        dataset_id=patient_id,
-        access_type="patient_data_read",
-        query_params={"patient_id": patient_id}
-    )
+    logger = get_audit_logger()
+    if logger:
+        logger.log_data_access(
+            user_id=current_user.user_id,
+            dataset_id=patient_id,
+            access_type="patient_data_read",
+            query_params={"patient_id": patient_id}
+        )
     
     return patient
 

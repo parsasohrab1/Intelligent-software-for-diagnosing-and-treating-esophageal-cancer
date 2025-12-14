@@ -1,239 +1,228 @@
 """
-Seed Initial Data Script
+Script to seed initial data into database
 وارد کردن داده‌های اولیه به دیتابیس
 """
 import sys
 import os
 from pathlib import Path
-from datetime import datetime, date, timedelta
-import random
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import logging
+from datetime import datetime, date
 from sqlalchemy.orm import Session
-from app.core.database import SessionLocal, engine
-from app.models import (
-    Patient,
-    ClinicalData,
-    GenomicData,
-    ImagingData,
-    TreatmentData,
-    LabResult,
-    QualityOfLife,
-    User,
-)
-from app.core.security.consent_manager import PatientConsent
+
+from app.core.database import SessionLocal, engine, Base
+from app.models.user import User
+from app.models.patient import Patient
 from app.core.security.auth import get_password_hash
 from app.core.security.rbac import Role
-
-import logging
+from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def create_admin_user(db: Session):
-    """ایجاد کاربر ادمین"""
-    try:
-        # Check if admin exists
-        admin = db.query(User).filter(User.username == "admin").first()
-        if admin:
-            logger.info("Admin user already exists")
-            return admin
+def create_initial_users(db: Session):
+    """ایجاد کاربران اولیه"""
+    logger.info("Creating initial users...")
+    
+    users = [
+        {
+            "username": "admin",
+            "email": "admin@hospital.com",
+            "password": "admin123",  # باید در production تغییر کند
+            "full_name": "System Administrator",
+            "role": Role.ADMIN,
+            "is_active": True
+        },
+        {
+            "username": "doctor1",
+            "email": "doctor1@hospital.com",
+            "password": "doctor123",
+            "full_name": "Dr. John Smith",
+            "role": Role.PHYSICIAN,
+            "is_active": True
+        },
+        {
+            "username": "radiologist1",
+            "email": "radiologist1@hospital.com",
+            "password": "radio123",
+            "full_name": "Dr. Jane Doe",
+            "role": Role.RADIOLOGIST,
+            "is_active": True
+        },
+        {
+            "username": "nurse1",
+            "email": "nurse1@hospital.com",
+            "password": "nurse123",
+            "full_name": "Nurse Mary Johnson",
+            "role": Role.NURSE,
+            "is_active": True
+        },
+        {
+            "username": "researcher1",
+            "email": "researcher1@hospital.com",
+            "password": "research123",
+            "full_name": "Researcher Bob Wilson",
+            "role": Role.RESEARCHER,
+            "is_active": True
+        }
+    ]
+    
+    created_count = 0
+    for user_data in users:
+        # Check if user exists
+        existing = db.query(User).filter(User.username == user_data["username"]).first()
+        if existing:
+            logger.info(f"User {user_data['username']} already exists, skipping...")
+            continue
         
-        # Create admin user
-        admin = User(
-            username="admin",
-            email="admin@hospital.com",
-            hashed_password=get_password_hash("admin123"),
-            full_name="System Administrator",
-            role=Role.ADMIN,
-            is_active=True,
-            is_verified=True
+        user = User(
+            username=user_data["username"],
+            email=user_data["email"],
+            hashed_password=get_password_hash(user_data["password"]),
+            full_name=user_data["full_name"],
+            role=user_data["role"],
+            is_active=user_data["is_active"],
+            created_at=datetime.now()
         )
-        db.add(admin)
-        db.commit()
-        db.refresh(admin)
-        
-        logger.info("✅ Admin user created successfully!")
-        logger.info("   Username: admin")
-        logger.info("   Password: admin123")
-        logger.info("   ⚠️  Please change the password after first login!")
-        
-        return admin
-    except Exception as e:
-        logger.error(f"Error creating admin user: {str(e)}")
-        db.rollback()
-        raise
+        db.add(user)
+        created_count += 1
+        logger.info(f"Created user: {user_data['username']} ({user_data['role']})")
+    
+    db.commit()
+    logger.info(f"✅ Created {created_count} users")
+    return created_count
 
 
-def create_doctor_user(db: Session):
-    """ایجاد کاربر پزشک"""
+def seed_sample_patients(db: Session, n_patients: int = 50):
+    """وارد کردن نمونه بیماران"""
+    logger.info(f"Seeding {n_patients} sample patients...")
+    
+    # Check if patients already exist
+    existing_count = db.query(Patient).count()
+    if existing_count >= n_patients:
+        logger.info(f"Database already has {existing_count} patients, skipping...")
+        return 0
+    
+    # Generate synthetic data
+    generator = EsophagealCancerSyntheticData(seed=42)
+    dataset = generator.generate_all_data(
+        n_patients=n_patients,
+        cancer_ratio=0.4
+    )
+    
+    # Save to database
+    generator.save_to_database(dataset, db)
+    db.commit()
+    
+    new_count = db.query(Patient).count()
+    logger.info(f"✅ Seeded {new_count - existing_count} new patients")
+    return new_count - existing_count
+
+
+def seed_compliance_data(db: Session):
+    """وارد کردن داده‌های اولیه compliance"""
+    logger.info("Seeding compliance data...")
+    
+    from app.core.compliance.validation_documentation import (
+        ValidationDocumentation,
+        ValidationType,
+        ValidationStatus
+    )
+    from app.core.compliance.risk_management import (
+        RiskManagement,
+        RiskCategory,
+        SeverityLevel,
+        ProbabilityLevel
+    )
+    
+    validation_doc = ValidationDocumentation(db)
+    risk_mgmt = RiskManagement(db)
+    
+    # Create sample validation protocol
     try:
-        doctor = db.query(User).filter(User.username == "doctor").first()
-        if doctor:
-            logger.info("Doctor user already exists")
-            return doctor
-        
-        doctor = User(
-            username="doctor",
-            email="doctor@hospital.com",
-            hashed_password=get_password_hash("doctor123"),
-            full_name="Dr. John Smith",
-            role=Role.DOCTOR,
-            is_active=True,
-            is_verified=True
+        protocol = validation_doc.create_protocol(
+            validation_type=ValidationType.SOFTWARE_VALIDATION,
+            title="Initial Software Validation Protocol",
+            objective="Validate core software functionality",
+            scope="All core modules",
+            acceptance_criteria="All test cases must pass"
         )
-        db.add(doctor)
-        db.commit()
-        db.refresh(doctor)
-        
-        logger.info("✅ Doctor user created successfully!")
-        logger.info("   Username: doctor")
-        logger.info("   Password: doctor123")
-        
-        return doctor
+        logger.info(f"✅ Created validation protocol: {protocol.protocol_id}")
     except Exception as e:
-        logger.error(f"Error creating doctor user: {str(e)}")
-        db.rollback()
-        raise
-
-
-def create_sample_patients(db: Session, count: int = 5):
-    """ایجاد نمونه بیماران"""
+        logger.warning(f"Could not create validation protocol: {str(e)}")
+    
+    # Create sample risk
     try:
-        existing = db.query(Patient).count()
-        if existing >= count:
-            logger.info(f"Already have {existing} patients, skipping...")
-            return
-        
-        patients = []
-        for i in range(count):
-            patient_id = f"CAN{str(i+1).zfill(3)}"
-            
-            # Check if exists
-            if db.query(Patient).filter(Patient.patient_id == patient_id).first():
-                continue
-            
-            patient = Patient(
-                patient_id=patient_id,
-                first_name=f"Patient{i+1}",
-                last_name="Sample",
-                date_of_birth=date(1950 + random.randint(0, 30), 
-                                  random.randint(1, 12), 
-                                  random.randint(1, 28)),
-                gender=random.choice(["Male", "Female"]),
-                phone_number=f"+123456789{i}",
-                email=f"patient{i+1}@example.com",
-                address=f"{random.randint(100, 999)} Main St, City",
-                emergency_contact=f"Emergency Contact {i+1}",
-                emergency_phone=f"+123456789{i+10}",
-                insurance_provider=random.choice(["Insurance A", "Insurance B", "Insurance C"]),
-                insurance_number=f"INS{random.randint(100000, 999999)}",
-                created_at=datetime.now() - timedelta(days=random.randint(1, 365))
-            )
-            db.add(patient)
-            patients.append(patient)
-        
-        db.commit()
-        
-        for patient in patients:
-            db.refresh(patient)
-        
-        logger.info(f"✅ Created {len(patients)} sample patients")
-        return patients
-        
+        risk = risk_mgmt.identify_risk(
+            title="Data Privacy Risk",
+            description="Risk of unauthorized access to patient data",
+            category=RiskCategory.SECURITY,
+            severity=SeverityLevel.SERIOUS,
+            probability=ProbabilityLevel.OCCASIONAL,
+            identified_by="System"
+        )
+        logger.info(f"✅ Created risk: {risk.risk_number}")
     except Exception as e:
-        logger.error(f"Error creating sample patients: {str(e)}")
-        db.rollback()
-        raise
+        logger.warning(f"Could not create risk: {str(e)}")
+    
+    db.commit()
 
 
-def create_sample_clinical_data(db: Session):
-    """ایجاد داده‌های بالینی نمونه"""
+def main():
+    """Main function"""
+    print("=" * 60)
+    print("Database Initial Data Seeding")
+    print("=" * 60)
+    
+    # Create tables if not exist
+    logger.info("Creating database tables...")
     try:
-        patients = db.query(Patient).limit(3).all()
-        if not patients:
-            logger.warning("No patients found, skipping clinical data")
-            return
-        
-        for patient in patients:
-            # Check if exists
-            existing = db.query(ClinicalData).filter(
-                ClinicalData.patient_id == patient.patient_id
-            ).first()
-            if existing:
-                continue
-            
-            clinical = ClinicalData(
-                patient_id=patient.patient_id,
-                examination_date=date.today() - timedelta(days=random.randint(1, 30)),
-                height_cm=random.randint(150, 190),
-                weight_kg=random.randint(50, 100),
-                bmi=random.uniform(18.5, 35.0),
-                blood_pressure_systolic=random.randint(100, 140),
-                blood_pressure_diastolic=random.randint(60, 90),
-                heart_rate=random.randint(60, 100),
-                temperature=random.uniform(36.0, 37.5),
-                t_stage=random.choice(["T1", "T2", "T3", "T4"]),
-                n_stage=random.choice(["N0", "N1", "N2", "N3"]),
-                m_stage=random.choice(["M0", "M1"]),
-                tumor_location=random.choice(["Upper", "Middle", "Lower"]),
-                tumor_size_cm=random.uniform(1.0, 8.0),
-                performance_status=random.choice(["0", "1", "2"]),
-                comorbidities=random.choice(["None", "Hypertension", "Diabetes", "Heart Disease"])
-            )
-            db.add(clinical)
-        
-        db.commit()
-        logger.info("✅ Created sample clinical data")
-        
+        Base.metadata.create_all(bind=engine)
+        logger.info("✅ Database tables created/verified")
     except Exception as e:
-        logger.error(f"Error creating clinical data: {str(e)}")
-        db.rollback()
-
-
-def seed_initial_data():
-    """وارد کردن تمام داده‌های اولیه"""
+        logger.error(f"❌ Error creating tables: {str(e)}")
+        return
+    
+    # Create database session
     db = SessionLocal()
     
     try:
-        print("=" * 60)
-        print("Seeding Initial Data")
-        print("=" * 60)
+        # Create initial users
+        user_count = create_initial_users(db)
         
-        # Create users
-        print("\n1. Creating users...")
-        create_admin_user(db)
-        create_doctor_user(db)
+        # Seed sample patients
+        patient_count = seed_sample_patients(db, n_patients=50)
         
-        # Create sample patients
-        print("\n2. Creating sample patients...")
-        create_sample_patients(db, count=5)
-        
-        # Create sample clinical data
-        print("\n3. Creating sample clinical data...")
-        create_sample_clinical_data(db)
+        # Seed compliance data
+        seed_compliance_data(db)
         
         print("\n" + "=" * 60)
-        print("✅ Initial data seeding completed!")
+        print("✅ Initial Data Seeding Completed!")
+        print(f"   Users created: {user_count}")
+        print(f"   Patients created: {patient_count}")
+        print("=" * 60)
+        print("\nDefault credentials:")
+        print("  Admin: admin / admin123")
+        print("  Doctor: doctor1 / doctor123")
+        print("  Radiologist: radiologist1 / radio123")
+        print("  Nurse: nurse1 / nurse123")
+        print("  Researcher: researcher1 / research123")
+        print("\n⚠️  IMPORTANT: Change default passwords in production!")
         print("=" * 60)
         
-        # Summary
-        print("\n📊 Database Summary:")
-        print(f"   Users: {db.query(User).count()}")
-        print(f"   Patients: {db.query(Patient).count()}")
-        print(f"   Clinical Data: {db.query(ClinicalData).count()}")
-        
     except Exception as e:
-        logger.error(f"Error seeding data: {str(e)}")
+        logger.error(f"❌ Error seeding data: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
         db.rollback()
-        raise
     finally:
         db.close()
 
 
 if __name__ == "__main__":
-    seed_initial_data()
+    main()
 

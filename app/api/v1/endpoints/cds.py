@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field
+from functools import lru_cache
 
 from app.core.database import get_db
 from app.services.cds.risk_predictor import RiskPredictor
@@ -239,12 +240,11 @@ async def check_monitoring_alerts(request: MonitoringAlertRequest):
         )
 
 
-@router.get("/services")
-async def get_cds_services():
-    """Get list of available CDS services"""
-    # This endpoint should always work as it doesn't depend on external services
-    # Return immediately without try-except to avoid any overhead
-    services = [
+# Cache the services list since it's static data
+@lru_cache(maxsize=1)
+def _get_cds_services_list():
+    """Get CDS services list (cached)"""
+    return [
         {
             "name": "Risk Prediction",
             "id": "risk-prediction",
@@ -282,6 +282,13 @@ async def get_cds_services():
             "endpoint": "/cds/monitoring-alerts"
         }
     ]
+
+@router.get("/services")
+async def get_cds_services():
+    """Get list of available CDS services"""
+    # This endpoint should always work as it doesn't depend on external services
+    # Return immediately - optimized for speed with caching
+    services = _get_cds_services_list()
     return {"services": services, "count": len(services)}
 
 

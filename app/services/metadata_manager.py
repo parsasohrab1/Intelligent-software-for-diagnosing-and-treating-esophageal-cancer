@@ -43,6 +43,13 @@ class MetadataManager:
         limit: int = 100,
     ) -> List[Dict]:
         """Search metadata"""
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        # Limit to prevent timeouts
+        max_limit = 1000
+        effective_limit = min(limit, max_limit) if limit > max_limit else limit
+        
         search_filter = {}
 
         if query:
@@ -60,8 +67,14 @@ class MetadataManager:
 
         if self.collection is None:
             return []
-        results = self.collection.find(search_filter).limit(limit)
-        return [self._format_result(r) for r in results]
+        
+        try:
+            # Use list() to materialize cursor and prevent timeout issues
+            results = list(self.collection.find(search_filter).limit(effective_limit))
+            return [self._format_result(r) for r in results]
+        except Exception as e:
+            logger.error(f"Error searching metadata: {e}")
+            return []
 
     def update_metadata(self, dataset_id: str, updates: Dict) -> bool:
         """Update metadata"""
@@ -82,10 +95,22 @@ class MetadataManager:
 
     def get_all_metadata(self, limit: int = 1000) -> List[Dict]:
         """Get all metadata"""
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        # Limit to prevent timeouts
+        max_limit = 1000
+        effective_limit = min(limit, max_limit) if limit > max_limit else limit
+        
         if self.collection is None:
             return []
-        results = self.collection.find().limit(limit)
-        return [self._format_result(r) for r in results]
+        
+        try:
+            results = list(self.collection.find().limit(effective_limit))
+            return [self._format_result(r) for r in results]
+        except Exception as e:
+            logger.error(f"Error getting all metadata: {e}")
+            return []
 
     def get_statistics(self) -> Dict:
         """Get metadata statistics"""

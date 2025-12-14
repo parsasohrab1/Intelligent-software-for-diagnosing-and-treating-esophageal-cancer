@@ -1,19 +1,19 @@
 """
 Redis client configuration
 """
-import redis
 from typing import Optional
 
-from app.core.config import settings
-
-_redis_client: Optional[redis.Redis] = None
+_redis_client = None
 
 
-def get_redis_client() -> Optional[redis.Redis]:
+def get_redis_client():
     """Get Redis client instance"""
     global _redis_client
     if _redis_client is None:
         try:
+            import redis
+            from app.core.config import settings
+            
             _redis_client = redis.Redis(
                 host=settings.REDIS_HOST,
                 port=settings.REDIS_PORT,

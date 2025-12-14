@@ -4,7 +4,7 @@ API برای یکپارچه‌سازی با سیستم‌های کلینیک (PA
 """
 import logging
 from typing import Dict, Optional, List, Any
-from fastapi import APIRouter, Depends, HTTPException, Query, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Query, File, UploadFile, Body
 from pydantic import BaseModel, Field
 
 from app.core.security.dependencies import get_current_user_with_role, require_role
@@ -204,8 +204,8 @@ async def get_endoscopy_video_stream(
 @router.post("/endoscopy/send-analysis")
 async def send_analysis_to_endoscopy(
     procedure_id: str = Query(...),
-    analysis_result: Dict = Query(...),
-    annotations: Optional[List[Dict]] = Query(None),
+    analysis_result: Dict = Body(...),
+    annotations: Optional[List[Dict]] = Body(None),
     current_user: User = Depends(get_current_user_with_role)
 ):
     """ارسال نتیجه تحلیل به سیستم آندوسکوپی"""
@@ -297,7 +297,7 @@ async def get_ehr_patient(
 @router.post("/ehr/create-observation")
 async def create_ehr_observation(
     patient_id: str = Query(...),
-    observation_data: Dict = Query(...),
+    observation_data: Dict = Body(...),
     current_user: User = Depends(get_current_user_with_role)
 ):
     """ایجاد Observation در EHR"""
@@ -324,7 +324,7 @@ async def create_ehr_observation(
 @router.post("/ehr/create-diagnostic-report")
 async def create_ehr_diagnostic_report(
     patient_id: str = Query(...),
-    report_data: Dict = Query(...),
+    report_data: Dict = Body(...),
     current_user: User = Depends(get_current_user_with_role)
 ):
     """ایجاد Diagnostic Report در EHR"""

@@ -28,6 +28,7 @@ from app.api.v1.endpoints import (
     surgical_guidance,
     multimodal_fusion,
     few_shot_learning,
+    training,
 )
 
 api_router = APIRouter()
@@ -64,4 +65,5 @@ api_router.include_router(treatment_response.router, prefix="/treatment-response
 api_router.include_router(surgical_guidance.router, prefix="/surgical-guidance", tags=["surgical-guidance"])
 api_router.include_router(multimodal_fusion.router, prefix="/multimodal-fusion", tags=["multi-modal-fusion"])
 api_router.include_router(few_shot_learning.router, prefix="/few-shot-learning", tags=["few-shot-learning"])
+api_router.include_router(training.router, prefix="/training", tags=["training"])
 

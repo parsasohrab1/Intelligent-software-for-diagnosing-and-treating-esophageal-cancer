@@ -36,6 +36,10 @@ except ImportError:
     nn = None
     F = None
 
+# Type checking imports - use Any to avoid runtime errors when tf is None
+# At runtime, we'll use Any; type checkers can use tf.Tensor if available
+TensorType = Any
+
 
 @dataclass
 class FewShotTask:
@@ -118,7 +122,7 @@ class PrototypicalNetwork:
         self.embedding_model = Model(inputs, outputs, name='prototypical_embedding')
         return self.embedding_model
     
-    def _build_cnn_embedding(self, inputs: tf.Tensor) -> tf.Tensor:
+    def _build_cnn_embedding(self, inputs: TensorType) -> TensorType:
         """ساخت CNN embedding"""
         x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(inputs)
         x = layers.BatchNormalization()(x)
@@ -134,7 +138,7 @@ class PrototypicalNetwork:
         
         return x
     
-    def _build_resnet_embedding(self, inputs: tf.Tensor) -> tf.Tensor:
+    def _build_resnet_embedding(self, inputs: TensorType) -> TensorType:
         """ساخت ResNet-like embedding"""
         # Simplified ResNet blocks
         x = layers.Conv2D(64, (7, 7), strides=2, padding='same')(inputs)
@@ -148,7 +152,7 @@ class PrototypicalNetwork:
         
         return x
     
-    def _residual_block(self, x: tf.Tensor, filters: int) -> tf.Tensor:
+    def _residual_block(self, x: TensorType, filters: int) -> TensorType:
         """Residual block"""
         shortcut = x
         

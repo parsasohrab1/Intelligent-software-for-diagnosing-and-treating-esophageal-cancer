@@ -1,7 +1,7 @@
 """
 MLOps endpoints for model monitoring, A/B testing, messaging, CI/CD, and automated retraining
 """
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, HTTPException, Query, Depends, Body
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, Field
 
@@ -387,24 +387,28 @@ async def get_monitoring_alerts(
 
 
 # Model Versioning Endpoints
+class CreateModelVersionRequest(BaseModel):
+    """Request model for creating model version"""
+    model_id: str = Field(..., description="Model ID")
+    model_path: str = Field(..., description="Path to model file")
+    metrics: Dict[str, Any] = Field(..., description="Model metrics")
+    version_number: Optional[str] = Field(None, description="Version number (auto-generated if not provided)")
+    changelog: Optional[str] = Field(None, description="Changelog")
+
 @router.post("/versioning/create-version")
 async def create_model_version(
-    model_id: str = Query(..., description="Model ID"),
-    model_path: str = Query(..., description="Path to model file"),
-    metrics: Dict = Query(..., description="Model metrics"),
-    version_number: Optional[str] = Query(None, description="Version number (auto-generated if not provided)"),
-    changelog: Optional[str] = Query(None, description="Changelog"),
+    request: CreateModelVersionRequest,
     current_user: User = Depends(require_role(Role.SYSTEM_ADMINISTRATOR, Role.DATA_ENGINEER))
 ):
     """Create a new model version"""
     try:
         versioning = ModelVersioning()
         version = versioning.create_version(
-            model_id=model_id,
-            model_path=model_path,
-            metrics=metrics,
-            version_number=version_number,
-            changelog=changelog
+            model_id=request.model_id,
+            model_path=request.model_path,
+            metrics=request.metrics,
+            version_number=request.version_number,
+            changelog=request.changelog
         )
         
         return {

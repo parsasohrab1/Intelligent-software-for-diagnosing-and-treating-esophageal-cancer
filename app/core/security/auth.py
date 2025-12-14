@@ -15,8 +15,8 @@ from app.core.database import get_db
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# OAuth2 scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
+# OAuth2 scheme - make token optional for development
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login", auto_error=False)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -62,7 +62,7 @@ def decode_token(token: str) -> Optional[Dict]:
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+    token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ):
     """Get current authenticated user"""
     credentials_exception = HTTPException(
@@ -70,6 +70,10 @@ def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    # If no token provided, raise 401
+    if token is None:
+        raise credentials_exception
 
     payload = decode_token(token)
     if payload is None:

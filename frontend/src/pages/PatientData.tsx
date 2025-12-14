@@ -28,6 +28,7 @@ import {
   Select,
   MenuItem,
   LinearProgress,
+  Autocomplete,
 } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -86,6 +87,11 @@ interface AggregatedStats {
     files_collected: number
     last_update: string | null
   }
+  patient_statistics?: {
+    total_patients: number
+    cancer_patients: number
+    normal_patients: number
+  } | null
 }
 
 export default function PatientData() {
@@ -99,11 +105,7 @@ export default function PatientData() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
   
-  // Collect Data state
-  const [source, setSource] = useState('tcga')
-  const [query, setQuery] = useState('esophageal cancer')
-  const [collectLoading, setCollectLoading] = useState(false)
-  const [collectResult, setCollectResult] = useState<any>(null)
+  // Collect Data state (removed - no longer needed)
   
   // Collected datasets state
   const [collectedDatasets, setCollectedDatasets] = useState<any[]>([])
@@ -131,12 +133,48 @@ export default function PatientData() {
   const fetchAggregatedStats = async () => {
     setLoadingStats(true)
     try {
-      const response = await api.get('/data-collection/aggregated-statistics', {
-        timeout: 30000,
-      })
-      setAggregatedStats(response.data)
+      // Try to fetch from multiple sources
+      const [statsRes, patientsRes] = await Promise.allSettled([
+        api.get('/data-collection/aggregated-statistics', { timeout: 15000 }),
+        api.get('/patients/dashboard/stats', { timeout: 10000 }),
+      ])
+
+      let dataCollectionStats: any = null
+      let patientStats: any = null
+
+      if (statsRes.status === 'fulfilled' && statsRes.value?.data) {
+        dataCollectionStats = statsRes.value.data
+      }
+
+      if (patientsRes.status === 'fulfilled' && patientsRes.value?.data) {
+        patientStats = patientsRes.value.data
+      }
+
+      // Merge statistics
+      const mergedStats = {
+        summary: {
+          total_datasets: dataCollectionStats?.summary?.total_datasets || 0,
+          total_files: dataCollectionStats?.summary?.total_files || 0,
+          total_size_mb: dataCollectionStats?.summary?.total_size_mb || 0,
+          total_size_gb: dataCollectionStats?.summary?.total_size_gb || 0,
+          average_file_size_mb: dataCollectionStats?.summary?.average_file_size_mb || 0,
+          latest_collection_date: dataCollectionStats?.summary?.latest_collection_date || null,
+        },
+        by_source: dataCollectionStats?.by_source || { counts: {}, details: {}, metadata_counts: {} },
+        by_data_type: dataCollectionStats?.by_data_type || { file_types: {}, metadata_types: {} },
+        quality_metrics: dataCollectionStats?.quality_metrics || { average_quality_score: null, datasets_with_quality: 0 },
+        collection_activity: dataCollectionStats?.collection_activity || { sources_active: 0, files_collected: 0, last_update: null },
+        patient_statistics: patientStats ? {
+          total_patients: patientStats.total_patients || 0,
+          cancer_patients: patientStats.cancer_patients || 0,
+          normal_patients: patientStats.normal_patients || 0,
+        } : null,
+      }
+
+      setAggregatedStats(mergedStats)
     } catch (error: any) {
       console.error('Error fetching aggregated statistics:', error)
+      // Set default stats with patient data if available
       setAggregatedStats({
         summary: {
           total_datasets: 0,
@@ -150,6 +188,7 @@ export default function PatientData() {
         by_data_type: { file_types: {}, metadata_types: {} },
         quality_metrics: { average_quality_score: null, datasets_with_quality: 0 },
         collection_activity: { sources_active: 0, files_collected: 0, last_update: null },
+        patient_statistics: null,
       })
     } finally {
       setLoadingStats(false)
@@ -242,44 +281,7 @@ export default function PatientData() {
     }
   }
 
-  const handleCollect = async () => {
-    setCollectLoading(true)
-    setCollectResult(null)
-    try {
-      const response = await api.post('/data-collection/collect', {
-        source: source,
-        query: query,
-        auto_download: false,
-      }, {
-        timeout: 300000,
-      })
-      setCollectResult(response.data)
-      setTimeout(() => {
-        fetchAggregatedStats()
-        fetchCollectedDatasets()
-      }, 2000)
-    } catch (error: any) {
-      console.error('Error collecting data:', error)
-      let errorMessage = 'Failed to collect data. '
-      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
-        errorMessage += 'The operation timed out. Please check your connection and try again.'
-      } else if (error.response?.data?.detail) {
-        errorMessage += error.response.data.detail
-      } else if (error.message) {
-        errorMessage += error.message
-      }
-      setCollectResult({
-        message: 'Collection failed',
-        error: errorMessage,
-        datasets_discovered: 0,
-        datasets_processed: 0,
-        datasets_failed: 0,
-        output_files: [],
-      })
-    } finally {
-      setCollectLoading(false)
-    }
-  }
+  // handleCollect function removed - collect button no longer available
 
   const handleImportDataset = async (datasetPath: string, source?: string) => {
     setImportingDataset(datasetPath)
@@ -414,89 +416,18 @@ export default function PatientData() {
         </Grid>
       </TabPanel>
 
-      {/* Tab 2: Real Data - Merged Collect and Import */}
+      {/* Tab 2: Real Data - All Data Sources Combined */}
       <TabPanel value={tabValue} index={1}>
         <Box>
-          {/* Collection Form */}
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Collect New Data from External Sources
-              </Typography>
-              <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={12} md={4}>
-                  <FormControl fullWidth>
-                    <InputLabel>Data Source</InputLabel>
-                    <Select value={source} onChange={(e) => setSource(e.target.value)}>
-                      <MenuItem value="tcga">TCGA</MenuItem>
-                      <MenuItem value="geo">GEO</MenuItem>
-                      <MenuItem value="kaggle">Kaggle</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Search Query"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="e.g., esophageal cancer"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={2}>
-                  <Button
-                    variant="contained"
-                    startIcon={<CloudDownloadIcon />}
-                    onClick={handleCollect}
-                    disabled={collectLoading}
-                    fullWidth
-                    sx={{ height: '56px' }}
-                  >
-                    Collect
-                  </Button>
-                </Grid>
-              </Grid>
-
-              {collectLoading && (
-                <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
-                  <CircularProgress />
-                </Box>
-              )}
-
-              {collectResult && (
-                <Alert severity={collectResult.error ? "error" : "success"} sx={{ mt: 2 }}>
-                  <Typography variant="subtitle1">
-                    {collectResult.message || (collectResult.error ? 'Collection Failed' : 'Collection Successful')}
-                  </Typography>
-                  {collectResult.error ? (
-                    <Typography>{collectResult.error}</Typography>
-                  ) : (
-                    <Grid container spacing={2} sx={{ mt: 1 }}>
-                      <Grid item xs={4}>
-                        <Typography variant="body2"><strong>Discovered:</strong> {collectResult.datasets_discovered || 0}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography variant="body2"><strong>Processed:</strong> {collectResult.datasets_processed || 0}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography variant="body2"><strong>Failed:</strong> {collectResult.datasets_failed || 0}</Typography>
-                      </Grid>
-                    </Grid>
-                  )}
-                </Alert>
-              )}
-            </CardContent>
-          </Card>
-
           {/* All Collected Datasets with Full Details */}
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Box>
-                  <Typography variant="h6">All Collected Real Data</Typography>
+                  <Typography variant="h6">All Data Sources - Combined View</Typography>
                   {!loadingDatasets && collectedDatasets.length > 0 && (
                     <Typography variant="body2" color="text.secondary">
-                      Showing {collectedDatasets.length} dataset{collectedDatasets.length !== 1 ? 's' : ''} with full details
+                      Showing {collectedDatasets.length} dataset{collectedDatasets.length !== 1 ? 's' : ''} from all sources with complete details
                     </Typography>
                   )}
                 </Box>
@@ -523,7 +454,7 @@ export default function PatientData() {
                     No collected datasets found.
                   </Typography>
                   <Typography variant="body2">
-                    Use the collection form above to collect data from TCGA, GEO, Kaggle, etc.
+                    Data from all sources (TCGA, GEO, Kaggle, etc.) will appear here when available.
                   </Typography>
                   {datasetError && (
                     <Typography variant="body2" color="error" sx={{ mt: 1 }}>
@@ -539,9 +470,11 @@ export default function PatientData() {
                         <TableCell><strong>Dataset ID</strong></TableCell>
                         <TableCell><strong>Source</strong></TableCell>
                         <TableCell><strong>Title/Description</strong></TableCell>
+                        <TableCell><strong>Data Type</strong></TableCell>
                         <TableCell><strong>File Size</strong></TableCell>
                         <TableCell><strong>Modified Date</strong></TableCell>
                         <TableCell><strong>File Path</strong></TableCell>
+                        <TableCell><strong>Quality Score</strong></TableCell>
                         <TableCell align="right"><strong>Actions</strong></TableCell>
                       </TableRow>
                     </TableHead>
@@ -564,13 +497,22 @@ export default function PatientData() {
                             <Typography variant="body2">
                               {dataset.title || dataset.description || 'No title'}
                             </Typography>
-                            {dataset.data_type && (
+                            {dataset.description && dataset.title && dataset.description !== dataset.title && (
+                              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                                {dataset.description}
+                              </Typography>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {dataset.data_type ? (
                               <Chip 
                                 label={dataset.data_type} 
                                 size="small" 
-                                variant="outlined" 
-                                sx={{ mt: 0.5, fontSize: '0.7rem' }}
+                                color="primary"
+                                variant="outlined"
                               />
+                            ) : (
+                              <Typography variant="body2" color="text.secondary">N/A</Typography>
                             )}
                           </TableCell>
                           <TableCell>
@@ -583,7 +525,7 @@ export default function PatientData() {
                                 {(dataset.size_bytes / (1024 * 1024)).toFixed(2)} MB
                               </Typography>
                             ) : (
-                              'N/A'
+                              <Typography variant="body2" color="text.secondary">N/A</Typography>
                             )}
                           </TableCell>
                           <TableCell>
@@ -615,6 +557,28 @@ export default function PatientData() {
                                 {dataset.output_files?.[0] || dataset.file_path || 'N/A'}
                               </Typography>
                             </Tooltip>
+                            {dataset.output_files && dataset.output_files.length > 1 && (
+                              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                                +{dataset.output_files.length - 1} more file{dataset.output_files.length - 1 !== 1 ? 's' : ''}
+                              </Typography>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {dataset.quality_score !== undefined && dataset.quality_score !== null ? (
+                              <Box>
+                                <Typography variant="body2" fontWeight="bold">
+                                  {dataset.quality_score}/100
+                                </Typography>
+                                <LinearProgress 
+                                  variant="determinate" 
+                                  value={dataset.quality_score} 
+                                  sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
+                                  color={dataset.quality_score >= 80 ? 'success' : dataset.quality_score >= 60 ? 'warning' : 'error'}
+                                />
+                              </Box>
+                            ) : (
+                              <Typography variant="body2" color="text.secondary">N/A</Typography>
+                            )}
                           </TableCell>
                           <TableCell align="right">
                             <Tooltip title="Import to Database">
@@ -666,6 +630,54 @@ export default function PatientData() {
             </Box>
           ) : aggregatedStats ? (
             <Grid container spacing={3}>
+              {/* Patient Statistics Section */}
+              {aggregatedStats.patient_statistics && (
+                <>
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          Patient Database Statistics
+                        </Typography>
+                        <Grid container spacing={3} sx={{ mt: 1 }}>
+                          <Grid item xs={12} sm={4}>
+                            <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'primary.light', color: 'primary.contrastText' }}>
+                              <Typography variant="h4" fontWeight="bold">
+                                {aggregatedStats.patient_statistics.total_patients}
+                              </Typography>
+                              <Typography variant="body2">
+                                Total Patients
+                              </Typography>
+                            </Paper>
+                          </Grid>
+                          <Grid item xs={12} sm={4}>
+                            <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'error.light', color: 'error.contrastText' }}>
+                              <Typography variant="h4" fontWeight="bold">
+                                {aggregatedStats.patient_statistics.cancer_patients}
+                              </Typography>
+                              <Typography variant="body2">
+                                Cancer Patients
+                              </Typography>
+                            </Paper>
+                          </Grid>
+                          <Grid item xs={12} sm={4}>
+                            <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'success.light', color: 'success.contrastText' }}>
+                              <Typography variant="h4" fontWeight="bold">
+                                {aggregatedStats.patient_statistics.normal_patients}
+                              </Typography>
+                              <Typography variant="body2">
+                                Normal Patients
+                              </Typography>
+                            </Paper>
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </>
+              )}
+
+              {/* Data Collection Statistics */}
               <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardContent>
@@ -886,9 +898,383 @@ export default function PatientData() {
                 </Card>
               </Grid>
             </Grid>
-          ) : null}
+          ) : (
+            <Alert severity="info">
+              <Typography variant="body1" gutterBottom>
+                No statistics available yet.
+              </Typography>
+              <Typography variant="body2">
+                Statistics will appear here once you collect data or generate patient data.
+              </Typography>
+            </Alert>
+          )}
         </Box>
       </TabPanel>
+    </Box>
+  )
+}
+
+// Removed Combined Patient Data View Component - functionality merged into Real Data tab
+function _CombinedPatientDataViewComponent_Removed() {
+  const [patients, setPatients] = useState<any[]>([])
+  const [selectedPatientId, setSelectedPatientId] = useState<string>('')
+  const [combinedData, setCombinedData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [loadingPatients, setLoadingPatients] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchPatientsList()
+  }, [])
+
+  useEffect(() => {
+    if (selectedPatientId) {
+      fetchCombinedData(selectedPatientId)
+    }
+  }, [selectedPatientId])
+
+  const fetchPatientsList = async () => {
+    setLoadingPatients(true)
+    try {
+      const response = await api.get('/patients/list', { params: { limit: 1000 }, timeout: 15000 })
+      const patientsList = Array.isArray(response.data) ? response.data : []
+      setPatients(patientsList)
+      if (patientsList.length > 0 && !selectedPatientId) {
+        setSelectedPatientId(patientsList[0].patient_id)
+      }
+    } catch (error: any) {
+      console.error('Error fetching patients:', error)
+      setPatients([])
+    } finally {
+      setLoadingPatients(false)
+    }
+  }
+
+  const fetchCombinedData = async (patientId: string) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await api.get(`/patients/${patientId}/combined`, { timeout: 20000 })
+      setCombinedData(response.data)
+    } catch (error: any) {
+      console.error('Error fetching combined data:', error)
+      setError(error.response?.data?.detail || error.message || 'Failed to load patient data')
+      setCombinedData(null)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loadingPatients) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  return (
+    <Box>
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Select Patient to View Combined Data
+          </Typography>
+          <Autocomplete
+            options={patients}
+            getOptionLabel={(option) => `${option.patient_id} - ${option.age}yo ${option.gender}${option.has_cancer ? ' (Cancer)' : ''}`}
+            value={patients.find(p => p.patient_id === selectedPatientId) || null}
+            onChange={(_, newValue) => {
+              if (newValue) {
+                setSelectedPatientId(newValue.patient_id)
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Patient"
+                placeholder="Search by patient ID..."
+                fullWidth
+              />
+            )}
+            sx={{ mt: 2 }}
+          />
+        </CardContent>
+      </Card>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      )}
+
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+          <CircularProgress />
+        </Box>
+      ) : combinedData ? (
+        <Grid container spacing={3}>
+          {/* Patient Info */}
+          {combinedData.patient_info && (
+            <Grid item xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Patient Information
+                  </Typography>
+                  <Grid container spacing={2} sx={{ mt: 1 }}>
+                    <Grid item xs={6} md={3}>
+                      <Typography variant="body2" color="text.secondary">Patient ID</Typography>
+                      <Typography variant="body1" fontWeight="bold">{combinedData.patient_info.patient_id}</Typography>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <Typography variant="body2" color="text.secondary">Age</Typography>
+                      <Typography variant="body1">{combinedData.patient_info.age} years</Typography>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <Typography variant="body2" color="text.secondary">Gender</Typography>
+                      <Typography variant="body1">{combinedData.patient_info.gender}</Typography>
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <Typography variant="body2" color="text.secondary">Cancer Status</Typography>
+                      <Chip
+                        label={combinedData.patient_info.has_cancer ? 'Cancer' : 'Normal'}
+                        color={combinedData.patient_info.has_cancer ? 'error' : 'success'}
+                        size="small"
+                      />
+                    </Grid>
+                    {combinedData.patient_info.cancer_type && (
+                      <Grid item xs={12}>
+                        <Typography variant="body2" color="text.secondary">Cancer Type</Typography>
+                        <Typography variant="body1">{combinedData.patient_info.cancer_type}</Typography>
+                      </Grid>
+                    )}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Imaging Data */}
+          {combinedData.imaging_data && combinedData.imaging_data.length > 0 && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Imaging Data ({combinedData.imaging_data.length})
+                  </Typography>
+                  <TableContainer component={Paper} variant="outlined" sx={{ maxHeight: 400, mt: 2 }}>
+                    <Table size="small" stickyHeader>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Modality</TableCell>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Findings</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {combinedData.imaging_data.map((img: any, idx: number) => (
+                          <TableRow key={idx}>
+                            <TableCell>
+                              <Chip label={img.imaging_modality || 'N/A'} size="small" />
+                            </TableCell>
+                            <TableCell>
+                              {img.imaging_date ? new Date(img.imaging_date).toLocaleDateString() : 'N/A'}
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {img.findings || img.impression || 'N/A'}
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Lab Results */}
+          {combinedData.lab_results && combinedData.lab_results.length > 0 && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Lab Results ({combinedData.lab_results.length})
+                  </Typography>
+                  <TableContainer component={Paper} variant="outlined" sx={{ maxHeight: 400, mt: 2 }}>
+                    <Table size="small" stickyHeader>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Hemoglobin</TableCell>
+                          <TableCell>WBC</TableCell>
+                          <TableCell>CEA</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {combinedData.lab_results.map((lab: any, idx: number) => (
+                          <TableRow key={idx}>
+                            <TableCell>
+                              {lab.test_date ? new Date(lab.test_date).toLocaleDateString() : 'N/A'}
+                            </TableCell>
+                            <TableCell>{lab.hemoglobin || '-'}</TableCell>
+                            <TableCell>{lab.wbc_count || '-'}</TableCell>
+                            <TableCell>{lab.cea || '-'}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Clinical Data */}
+          {combinedData.clinical_data && combinedData.clinical_data.length > 0 && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Clinical Notes ({combinedData.clinical_data.length})
+                  </Typography>
+                  {combinedData.clinical_data.map((clinical: any, idx: number) => (
+                    <Box key={idx} sx={{ mb: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {clinical.record_date ? new Date(clinical.record_date).toLocaleDateString() : 'No date'}
+                      </Typography>
+                      {clinical.diagnosis && (
+                        <Typography variant="body2" sx={{ mt: 1, fontWeight: 'bold' }}>
+                          Diagnosis: {clinical.diagnosis}
+                        </Typography>
+                      )}
+                      {clinical.clinical_notes && (
+                        <Typography variant="body2" sx={{ mt: 1 }}>
+                          {clinical.clinical_notes}
+                        </Typography>
+                      )}
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Treatment Data */}
+          {combinedData.treatment_data && combinedData.treatment_data.length > 0 && (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Treatment History ({combinedData.treatment_data.length})
+                  </Typography>
+                  {combinedData.treatment_data.map((treatment: any, idx: number) => (
+                    <Box key={idx} sx={{ mb: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                        <Typography variant="subtitle2">
+                          {treatment.treatment_type || 'Treatment'}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {treatment.treatment_date ? new Date(treatment.treatment_date).toLocaleDateString() : 'No date'}
+                        </Typography>
+                      </Box>
+                      {treatment.treatment_details && (
+                        <Typography variant="body2">{treatment.treatment_details}</Typography>
+                      )}
+                      {treatment.response && (
+                        <Chip
+                          label={`Response: ${treatment.response}`}
+                          size="small"
+                          color={treatment.response.toLowerCase().includes('positive') ? 'success' : 'default'}
+                          sx={{ mt: 1 }}
+                        />
+                      )}
+                    </Box>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Genomic Data */}
+          {combinedData.genomic_data && combinedData.genomic_data.length > 0 && (
+            <Grid item xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Genomic Data ({combinedData.genomic_data.length})
+                  </Typography>
+                  <Grid container spacing={2} sx={{ mt: 1 }}>
+                    {combinedData.genomic_data.map((genomic: any, idx: number) => (
+                      <Grid item xs={12} md={4} key={idx}>
+                        <Paper sx={{ p: 2 }}>
+                          <Typography variant="subtitle2" color="text.secondary">
+                            {genomic.test_date ? new Date(genomic.test_date).toLocaleDateString() : 'No date'}
+                          </Typography>
+                          {genomic.pdl1_status && (
+                            <Typography variant="body2" sx={{ mt: 1 }}>
+                              PD-L1: <strong>{genomic.pdl1_status}</strong>
+                            </Typography>
+                          )}
+                          {genomic.msi_status && (
+                            <Typography variant="body2">
+                              MSI: <strong>{genomic.msi_status}</strong>
+                            </Typography>
+                          )}
+                          {genomic.mutations && (
+                            <Typography variant="body2" sx={{ mt: 1 }}>
+                              Mutations: {genomic.mutations}
+                            </Typography>
+                          )}
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Data Sources Summary */}
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Data Sources
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
+                  {combinedData.sources && combinedData.sources.length > 0 ? (
+                    combinedData.sources.map((source: string) => (
+                      <Chip key={source} label={source.replace('_', ' ').toUpperCase()} color="primary" variant="outlined" />
+                    ))
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">No data sources available</Typography>
+                  )}
+                </Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                  Last updated: {combinedData.timestamp ? new Date(combinedData.timestamp).toLocaleString() : 'N/A'}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {(!combinedData.patient_info && combinedData.imaging_data?.length === 0 && 
+            combinedData.lab_results?.length === 0 && combinedData.clinical_data?.length === 0) && (
+            <Grid item xs={12}>
+              <Alert severity="info">
+                No data found for this patient. Data may not be available from all sources.
+              </Alert>
+            </Grid>
+          )}
+        </Grid>
+      ) : selectedPatientId ? (
+        <Alert severity="info">
+          Select a patient to view combined data from all sources.
+        </Alert>
+      ) : null}
     </Box>
   )
 }

@@ -118,7 +118,7 @@ async def general_exception_handler(request: Request, exc: Exception):
     
     path = str(request.url.path)
     is_dashboard_endpoint = any([
-        "/api/v1/patients" in path,
+        "/api/v1/patients" in path and ("dashboard" in path or path.endswith("/patients/")),
         "/api/v1/data-collection/metadata/statistics" in path,
         "/api/v1/ml-models/models" in path,
         "/api/v1/imaging/mri" in path,
@@ -136,10 +136,10 @@ async def general_exception_handler(request: Request, exc: Exception):
     
     # For GET endpoints on dashboard, return empty arrays/defaults instead of 500
     if request.method == "GET" and is_dashboard_endpoint:
-        logger.warning(f"Returning empty/default response for dashboard endpoint {path} due to error")
+        logger.warning(f"Returning empty/default response for dashboard endpoint {path} due to error: {exc}")
         
         # Return appropriate empty responses for dashboard endpoints
-        if "/api/v1/patients" in path or path.endswith("/patients/"):
+        if "/api/v1/patients" in path or path.endswith("/patients/") or "/patients/dashboard" in path or "/dashboard-simple" in path:
             return JSONResponse(status_code=200, content=[])
         elif "/api/v1/data-collection/metadata/statistics" in path:
             return JSONResponse(status_code=200, content={

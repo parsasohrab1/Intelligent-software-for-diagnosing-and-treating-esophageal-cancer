@@ -13,21 +13,22 @@ _database: Optional[Database] = None
 
 
 def get_mongodb_client() -> Optional[MongoClient]:
-    """Get MongoDB client instance"""
+    """Get MongoDB client instance (non-blocking)"""
     global _client
     if _client is None:
         try:
-            # Use shorter timeouts to prevent hanging
+            # Use very short timeouts to prevent hanging on startup
             _client = MongoClient(
                 settings.MONGODB_URL,
-                serverSelectionTimeoutMS=1000,  # Reduced from 2000
-                connectTimeoutMS=1000,  # Reduced from 2000
-                socketTimeoutMS=1000,  # Add socket timeout
+                serverSelectionTimeoutMS=500,  # Very short timeout
+                connectTimeoutMS=500,  # Very short timeout
+                socketTimeoutMS=500,  # Socket timeout
+                connect=False,  # Don't connect immediately
             )
-            # Test connection with timeout protection
-            # Use ping with timeout to prevent hanging
-            _client.admin.command('ping', maxTimeMS=1000)
-        except Exception:
+            # Don't test connection here - let it fail gracefully when actually used
+        except Exception as e:
+            import logging
+            logging.warning(f"MongoDB client creation failed: {e}")
             # MongoDB not available - set to None to prevent retries
             _client = None
     return _client

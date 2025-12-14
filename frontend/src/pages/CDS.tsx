@@ -102,6 +102,9 @@ export default function CDS() {
   const [graphPatients, setGraphPatients] = useState<Patient[]>([])
   const [loadingGraphPatients, setLoadingGraphPatients] = useState(false)
   
+  // Component mount error state
+  const [componentError, setComponentError] = useState<string | null>(null)
+  
   const [patientData, setPatientData] = useState({
     age: 65,
     gender: 'Male',
@@ -128,39 +131,133 @@ export default function CDS() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
     setLoadingPatients(true)
     try {
+      console.log('CDS: Fetching patients from /patients/...')
       const response = await api.get('/patients/', {
-        params: { limit: 100 }, // Further reduced limit for better performance
-        timeout: 30000, // 30 seconds timeout (reduced since limit is smaller)
+        params: { limit: 50 }, // Reduced limit for better performance
+        timeout: 60000, // 60 seconds timeout (increased for reliability)
       })
-      const patientsData = Array.isArray(response.data) ? response.data : []
-      setPatients(patientsData)
-      if (patientsData.length > 0 && !selectedPatientId) {
-        setSelectedPatientId(patientsData[0].patient_id)
+      console.log('CDS: Patients API response:', response.data)
+      
+      // Handle different response formats
+      let patientsData: Patient[] = []
+      if (response.data) {
+        if (Array.isArray(response.data)) {
+          patientsData = response.data
+        } else if (response.data.patients && Array.isArray(response.data.patients)) {
+          patientsData = response.data.patients
+        } else if (response.data.data && Array.isArray(response.data.data)) {
+          patientsData = response.data.data
+        }
       }
+      
+      console.log('CDS: Extracted patients:', patientsData.length)
+      setPatients(patientsData)
+      setSelectedPatientId((prev) => {
+        if (patientsData.length > 0 && !prev) {
+          return patientsData[0].patient_id
+        }
+        return prev
+      })
     } catch (error: any) {
-      console.error('Error fetching patients:', error)
-      setError('Failed to load patients. Please check backend connection.')
+      console.error('CDS: Error fetching patients:', error)
+      console.error('CDS: Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+      
+      // Handle 401 (Unauthorized) differently - show informative message
+      if (error.response?.status === 401) {
+        setError('Patient data requires authentication. You can still use CDS features by entering patient information manually below.')
+      } else {
+        setError('Failed to load patients. Please check backend connection.')
+      }
       setPatients([])
     } finally {
       setLoadingPatients(false)
     }
-  }
+  }, [])
 
-  const fetchCDSServices = async () => {
+  const fetchCDSServices = useCallback(async () => {
     setLoadingServices(true)
     try {
+      console.log('CDS: Fetching services from /cds/services...')
       const response = await api.get('/cds/services', {
-        timeout: 5000, // 5 seconds timeout (very fast endpoint)
+        timeout: 30000, // 30 seconds timeout (increased for reliability)
       })
-      const services = response.data?.services || []
+      console.log('CDS: Services API response:', response.data)
+      
+      // Handle different response formats
+      let services: CDSService[] = []
+      if (response.data) {
+        if (Array.isArray(response.data)) {
+          services = response.data
+        } else if (response.data.services && Array.isArray(response.data.services)) {
+          services = response.data.services
+        } else if (response.data.data && Array.isArray(response.data.data)) {
+          services = response.data.data
+        }
+      }
+      
+      console.log('CDS: Extracted services:', services)
       setCdsServices(services)
+      
+      // If no services from API, use defaults
+      if (services.length === 0) {
+        console.warn('CDS: No services from API, using defaults')
+        const defaultServices: CDSService[] = [
+          {
+            name: 'Risk Prediction',
+            id: 'risk-prediction',
+            description: 'Predict risk of esophageal cancer development',
+            endpoint: '/cds/risk-prediction'
+          },
+          {
+            name: 'Treatment Recommendation',
+            id: 'treatment-recommendation',
+            description: 'Recommend treatment based on patient characteristics',
+            endpoint: '/cds/treatment-recommendation'
+          },
+          {
+            name: 'Prognostic Scoring',
+            id: 'prognostic-score',
+            description: 'Calculate prognostic score for patient',
+            endpoint: '/cds/prognostic-score'
+          },
+          {
+            name: 'Nanosystem Design',
+            id: 'nanosystem-design',
+            description: 'Suggest personalized nanosystem design',
+            endpoint: '/cds/nanosystem-design'
+          },
+          {
+            name: 'Clinical Trial Matching',
+            id: 'clinical-trial-match',
+            description: 'Match patient to clinical trials',
+            endpoint: '/cds/clinical-trial-match'
+          },
+          {
+            name: 'Monitoring Alerts',
+            id: 'monitoring-alerts',
+            description: 'Check for monitoring alerts',
+            endpoint: '/cds/monitoring-alerts'
+          }
+        ]
+        setCdsServices(defaultServices)
+      }
     } catch (error: any) {
-      console.error('Error fetching CDS services:', error)
+      console.error('CDS: Error fetching CDS services:', error)
+      console.error('CDS: Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+      
       // Set default services if API fails (offline mode)
-      setCdsServices([
+      const defaultServices: CDSService[] = [
         {
           name: 'Risk Prediction',
           id: 'risk-prediction',
@@ -197,13 +294,14 @@ export default function CDS() {
           description: 'Check for monitoring alerts',
           endpoint: '/cds/monitoring-alerts'
         }
-      ])
+      ]
+      setCdsServices(defaultServices)
     } finally {
       setLoadingServices(false)
     }
-  }
+  }, [])
 
-  const fetchGraphPatients = async () => {
+  const fetchGraphPatients = useCallback(async () => {
     setLoadingGraphPatients(true)
     try {
       const response = await api.get('/patients/', {
@@ -219,7 +317,7 @@ export default function CDS() {
     } finally {
       setLoadingGraphPatients(false)
     }
-  }
+  }, [])
 
   const loadPatientData = useCallback(async (patientId: string) => {
     try {
@@ -238,8 +336,49 @@ export default function CDS() {
 
   // Fetch patients and CDS services on mount
   useEffect(() => {
-    fetchPatients()
-    fetchCDSServices()
+    let isMounted = true
+    
+    const initialize = async () => {
+      try {
+        console.log('CDS: Initializing component...')
+        if (isMounted) {
+          // Use Promise.allSettled to ensure both calls complete even if one fails
+          const results = await Promise.allSettled([
+            fetchPatients().catch(err => {
+              console.error('CDS: fetchPatients failed:', err)
+              return null
+            }),
+            fetchCDSServices().catch(err => {
+              console.error('CDS: fetchCDSServices failed:', err)
+              return null
+            })
+          ])
+          console.log('CDS: Initialization complete', results)
+          
+          // Check if both failed
+          const allFailed = results.every(r => r.status === 'rejected')
+          if (allFailed && isMounted) {
+            console.warn('CDS: All initialization requests failed, but continuing anyway')
+            // Don't set componentError - let it show default/fallback data
+          }
+        }
+      } catch (error: any) {
+        console.error('CDS: Error initializing component:', error)
+        // Don't set componentError for initialization errors - let the component render with defaults
+        // Only set error if it's a critical error that prevents rendering
+      }
+    }
+    
+    // Wrap in try-catch to prevent any unhandled errors
+    try {
+      initialize()
+    } catch (error) {
+      console.error('CDS: Fatal error during initialization:', error)
+    }
+    
+    return () => {
+      isMounted = false
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -250,13 +389,23 @@ export default function CDS() {
     }
   }, [selectedPatientId, loadPatientData])
 
+  // Debug: Log state changes
+  useEffect(() => {
+    console.log('CDS: State update -', {
+      cdsServicesCount: cdsServices.length,
+      patientsCount: patients.length,
+      loadingServices,
+      loadingPatients,
+      selectedPatientId
+    })
+  }, [cdsServices, patients, loadingServices, loadingPatients, selectedPatientId])
+
   // Fetch 1-4 patients for graph display when Basic Patient Information step is active
   useEffect(() => {
     if (activeStep === 0) {
       fetchGraphPatients()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep])
+  }, [activeStep, fetchGraphPatients])
 
   const steps = [
     {
@@ -325,7 +474,28 @@ export default function CDS() {
   }
 
   return (
-    <Box p={3}>
+    <Box sx={{ width: '100%', minHeight: '100vh', p: 3 }}>
+      {/* Show error message if there's a critical error, but don't block rendering */}
+      {componentError && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setComponentError(null)}>
+          <Typography variant="h6">Error Loading Clinical Decision Support</Typography>
+          <Typography>{componentError}</Typography>
+          <Button 
+            onClick={() => {
+              setComponentError(null)
+              // Retry initialization instead of reloading
+              fetchPatients()
+              fetchCDSServices()
+            }} 
+            sx={{ mt: 1 }}
+            size="small"
+            variant="outlined"
+          >
+            Retry
+          </Button>
+        </Alert>
+      )}
+      
       <Typography variant="h4" gutterBottom>
         Clinical Decision Support
       </Typography>
@@ -333,11 +503,45 @@ export default function CDS() {
         This system helps you receive risk assessments and treatment recommendations based on patient information
       </Typography>
 
+      {/* Status Summary */}
+      <Card sx={{ mb: 3, bgcolor: 'background.default' }}>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="body2" color="text.secondary">
+                CDS Services
+              </Typography>
+              <Typography variant="h6">
+                {loadingServices ? 'Loading...' : `${cdsServices.length} available`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="body2" color="text.secondary">
+                Patients
+              </Typography>
+              <Typography variant="h6">
+                {loadingPatients ? 'Loading...' : `${patients.length} available`}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="body2" color="text.secondary">
+                Selected Patient
+              </Typography>
+              <Typography variant="h6">
+                {selectedPatientId || 'None'}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+
       {/* CDS Services Overview */}
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h6">Available CDS Services</Typography>
+            <Typography variant="h6">
+              Available CDS Services {cdsServices.length > 0 && `(${cdsServices.length})`}
+            </Typography>
             <Button
               size="small"
               startIcon={<RefreshIcon />}
@@ -350,12 +554,15 @@ export default function CDS() {
           {loadingServices ? (
             <Box display="flex" justifyContent="center" p={2}>
               <CircularProgress />
+              <Typography variant="body2" sx={{ ml: 2 }}>
+                Loading services...
+              </Typography>
             </Box>
           ) : cdsServices.length > 0 ? (
             <Grid container spacing={2}>
               {cdsServices.map((service) => (
                 <Grid item xs={12} sm={6} md={4} key={service.id}>
-                  <Card variant="outlined">
+                  <Card variant="outlined" sx={{ height: '100%' }}>
                     <CardContent>
                       <Typography variant="subtitle1" gutterBottom>
                         {service.name}
@@ -369,8 +576,18 @@ export default function CDS() {
               ))}
             </Grid>
           ) : (
-            <Alert severity="info">
-              No CDS services available. Please check backend connection.
+            <Alert severity="warning">
+              <Typography variant="body2">
+                No CDS services available. Please check backend connection.
+              </Typography>
+              <Button 
+                size="small" 
+                onClick={fetchCDSServices} 
+                sx={{ mt: 1 }}
+                variant="outlined"
+              >
+                Retry
+              </Button>
             </Alert>
           )}
         </CardContent>
@@ -393,10 +610,13 @@ export default function CDS() {
           {loadingPatients ? (
             <Box display="flex" justifyContent="center" p={2}>
               <CircularProgress />
+              <Typography variant="body2" sx={{ ml: 2 }}>
+                Loading patients...
+              </Typography>
             </Box>
           ) : patients.length > 0 ? (
             <FormControl fullWidth>
-              <InputLabel>Select Patient</InputLabel>
+              <InputLabel>Select Patient ({patients.length} available)</InputLabel>
               <Select
                 value={selectedPatientId}
                 onChange={(e) => setSelectedPatientId(e.target.value)}
@@ -411,15 +631,39 @@ export default function CDS() {
             </FormControl>
           ) : (
             <Alert severity="info">
-              No patients found. Go to Patient Data page to generate or import patient data.
+              <Typography variant="body2">
+                {error && error.includes('authentication') 
+                  ? 'Patient data requires authentication. You can still use CDS features by entering patient information manually in the Clinical Workflow tab below.'
+                  : 'No patients found. Go to Patient Data page to generate or import patient data, or enter patient information manually below.'}
+              </Typography>
+              {!error?.includes('authentication') && (
+                <Button 
+                  size="small" 
+                  onClick={fetchPatients} 
+                  sx={{ mt: 1 }}
+                  variant="outlined"
+                >
+                  Retry
+                </Button>
+              )}
             </Alert>
           )}
         </CardContent>
       </Card>
 
-      {error && (
+      {error && !error.includes('authentication') && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
           {error}
+        </Alert>
+      )}
+      {error && error.includes('authentication') && (
+        <Alert severity="info" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          <Typography variant="body2">
+            {error}
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            The CDS system can still provide risk predictions and treatment recommendations using manually entered patient data.
+          </Typography>
         </Alert>
       )}
 
@@ -640,7 +884,12 @@ export default function CDS() {
                   </Grid>
                 ) : (
                   <Alert severity="info" sx={{ mb: 3 }}>
-                    No patient data available for visualization. Generate or import patient data first.
+                    <Typography variant="body2">
+                      No patient data available for visualization. 
+                      {patients.length === 0 && error?.includes('authentication') 
+                        ? ' Patient data requires authentication. You can still use the CDS features by entering patient information manually.'
+                        : ' Generate or import patient data first, or enter patient information manually below.'}
+                    </Typography>
                   </Alert>
                 )}
 

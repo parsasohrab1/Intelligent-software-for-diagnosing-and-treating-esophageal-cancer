@@ -118,7 +118,17 @@ async def get_metadata(
     limit: int = 100,
 ):
     """Get dataset metadata"""
+    import logging
+    logger = logging.getLogger(__name__)
+    
     try:
+        # Limit the maximum allowed limit to prevent timeouts and memory issues
+        max_limit = 1000
+        effective_limit = min(limit, max_limit) if limit > max_limit else limit
+        
+        if limit > max_limit:
+            logger.warning(f"Metadata query limit reduced from {limit} to {effective_limit} to prevent timeouts")
+        
         manager = MetadataManager()
 
         if dataset_id:
@@ -127,17 +137,18 @@ async def get_metadata(
                 raise HTTPException(status_code=404, detail="Dataset not found")
             return metadata
         else:
+            # Use search_metadata with limited results
             results = manager.search_metadata(
-                query=query, source=source, limit=limit
+                query=query, source=source, limit=effective_limit
             )
-            return {"results": results, "count": len(results)}
+            return {"results": results, "count": len(results), "limit_applied": effective_limit, "original_limit": limit if limit > max_limit else None}
 
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error getting metadata: {str(e)}"
-        )
+        logger.error(f"Error getting metadata: {str(e)}", exc_info=True)
+        # Return empty results instead of 500 error for better UX
+        return {"results": [], "count": 0, "error": "Failed to load metadata. Please try with a smaller limit or check backend logs."}
 
 
 @router.get("/metadata/statistics")

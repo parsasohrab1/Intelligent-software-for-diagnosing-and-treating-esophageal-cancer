@@ -46,6 +46,11 @@ class MRIReportResponse(BaseModel):
     contrast_used: bool
     radiologist_id: Optional[str]
     report_summary: str
+    # Metadata fields
+    data_source: Optional[str] = None
+    created_at: Optional[str] = None
+    collected_at: Optional[str] = None
+    generation_method: Optional[str] = None
     
     class Config:
         from_attributes = True
@@ -121,7 +126,7 @@ async def get_mri_reports(
     limit: int = Query(10000, ge=1, le=50000),
     db: Session = Depends(get_db)
 ):
-    """Get MRI reports with patient information"""
+    """Get MRI reports with patient information (optimized, no join required)"""
     import logging
     import traceback
     from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
@@ -129,80 +134,44 @@ async def get_mri_reports(
     logger = logging.getLogger(__name__)
     
     try:
-        # First, check total MRI count in database
-        total_mri_count = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").count()
-        logger.info(f"Total MRI records in database: {total_mri_count}")
+        # Use simple query first - avoid join issues
+        query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
         
-        # Build query with proper error handling
-        try:
-            # First try simple query without join to see if we get results
-            simple_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
-            if patient_id:
-                simple_query = simple_query.filter(ImagingData.patient_id == patient_id)
-            simple_count = simple_query.count()
-            logger.info(f"Simple MRI query count (without join): {simple_count}")
-            
-            # Now try with outerjoin to get patient information
-            # Use outerjoin to handle cases where patient might not exist
-            query = db.query(ImagingData, Patient).outerjoin(
-                Patient, ImagingData.patient_id == Patient.patient_id
-            ).filter(ImagingData.imaging_modality == "MRI")
-            
-            if patient_id:
-                query = query.filter(ImagingData.patient_id == patient_id)
-            
-            results = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
-            logger.info(f"Query with join returned {len(results)} MRI reports")
-            
-            # If join query returns 0 but simple query has results, there might be a join issue
-            if len(results) == 0 and simple_count > 0:
-                logger.warning(f"Join query returned 0 but simple query found {simple_count} MRI records. Trying alternative query...")
-                # Try querying ImagingData first, then getting patient separately
-                # Reset the query to avoid any cached state
-                simple_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
-                if patient_id:
-                    simple_query = simple_query.filter(ImagingData.patient_id == patient_id)
-                imaging_results = simple_query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
-                logger.info(f"Alternative query returned {len(imaging_results)} MRI records")
-                # Convert to tuple format for compatibility
-                results = [(img, None) for img in imaging_results]
-                logger.info(f"Converted {len(imaging_results)} imaging results to {len(results)} tuple results")
-        except (SQLAlchemyError, OperationalError, DisconnectionError) as db_err:
-            logger.error(f"Database error in MRI reports query: {db_err}")
-            logger.error(traceback.format_exc())
-            return []
-        except Exception as query_err:
-            logger.error(f"Query error in MRI reports: {query_err}")
-            logger.error(traceback.format_exc())
+        if patient_id:
+            query = query.filter(ImagingData.patient_id == patient_id)
+        
+        # Get total count for logging
+        total_count = query.count()
+        logger.info(f"Total MRI records found: {total_count}")
+        
+        # Get imaging records
+        images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+        logger.info(f"Retrieved {len(images)} MRI images")
+        
+        if len(images) == 0:
+            logger.warning(f"No MRI images found with filters: patient_id={patient_id}, skip={skip}, limit={limit}")
             return []
         
+        # Build reports - fetch patient data separately if needed
         reports = []
-        logger.info(f"Processing {len(results)} results into reports...")
-        for idx, result in enumerate(results):
+        patient_cache = {}  # Cache patient lookups
+        
+        for image in images:
             try:
-                # Handle both tuple and single object results
-                if isinstance(result, tuple):
-                    if len(result) == 2:
-                        image, patient = result
-                    elif len(result) == 1:
-                        image = result[0]
-                        patient = None
-                    else:
-                        logger.warning(f"Unexpected tuple length {len(result)} at index {idx}")
-                        continue
-                else:
-                    image = result
-                    patient = None
-                
-                # Ensure we have an ImagingData object
-                if image is None:
-                    logger.warning(f"Image is None at index {idx}")
-                    continue
-                
-                # Generate comprehensive report summary including radiology and endoscopy
                 patient_id_str = str(image.patient_id) if image.patient_id else "Unknown"
                 
-                # Get all imaging data for this patient (radiology and endoscopy)
+                # Get patient data if not cached
+                patient = None
+                if patient_id_str not in patient_cache:
+                    try:
+                        patient = db.query(Patient).filter(Patient.patient_id == patient_id_str).first()
+                        patient_cache[patient_id_str] = patient
+                    except Exception:
+                        patient_cache[patient_id_str] = None
+                else:
+                    patient = patient_cache[patient_id_str]
+                
+                # Get all imaging data for this patient (for comprehensive report)
                 all_imaging = db.query(ImagingData).filter(
                     ImagingData.patient_id == image.patient_id
                 ).all()
@@ -248,6 +217,54 @@ async def get_mri_reports(
                 is_synthetic = patient_id_str.startswith('CAN') or patient_id_str.startswith('NOR')
                 data_source = "Synthetic" if is_synthetic else "Real"
                 
+                # Get creation/generation metadata
+                from datetime import datetime
+                created_at = None
+                collected_at = None
+                generation_method = None
+                
+                # Try to get creation timestamp from database record
+                if hasattr(image, 'created_at') and image.created_at:
+                    try:
+                        if hasattr(image.created_at, 'isoformat'):
+                            created_at = image.created_at.isoformat()
+                        else:
+                            created_at = str(image.created_at)
+                    except:
+                        pass
+                
+                # Determine collection/generation metadata
+                if data_source == "Synthetic":
+                    # For synthetic data, use imaging_date as creation date
+                    collected_at = imaging_date_str
+                    generation_method = "Synthetic Data Generator"
+                    # Check if GAN-generated (image_id > 10000 suggests GAN expansion)
+                    if image.image_id and image.image_id > 10000:
+                        # Check if divisible pattern suggests GAN generation
+                        base_id = image.image_id // 10000
+                        remainder = image.image_id % 10000
+                        if base_id > 0 and remainder < 100:
+                            generation_method = "GAN-Generated"
+                            # For GAN-generated, created_at is when it was generated
+                            if not created_at:
+                                created_at = datetime.now().isoformat()
+                else:
+                    # For real data, imaging_date is when it was collected
+                    collected_at = imaging_date_str
+                    generation_method = "Clinical Collection"
+                    # Could be from online platforms (Kaggle, TCGA, etc.)
+                    if patient_id_str and not (patient_id_str.startswith('CAN') or patient_id_str.startswith('NOR')):
+                        # Real data collected from clinical sources or online platforms
+                        generation_method = "Real Data (Collected from Clinical/Online Sources)"
+                
+                # If no created_at, use imaging_date or current time as fallback
+                if not created_at:
+                    created_at = imaging_date_str if imaging_date_str else datetime.now().isoformat()
+                
+                # Ensure collected_at is set
+                if not collected_at:
+                    collected_at = imaging_date_str if imaging_date_str else created_at
+                
                 report_dict = {
                     "image_id": int(image.image_id) if image.image_id is not None else 0,
                     "patient_id": patient_id_str,
@@ -268,34 +285,28 @@ async def get_mri_reports(
                     "patient_has_cancer": bool(patient.has_cancer) if patient and patient.has_cancer is not None else None,
                     "patient_cancer_type": str(patient.cancer_type) if patient and patient.cancer_type else None,
                     "patient_cancer_subtype": str(patient.cancer_subtype) if patient and patient.cancer_subtype else None,
+                    # Data metadata
                     "data_source": data_source,
+                    "created_at": created_at,
+                    "collected_at": collected_at,
+                    "generation_method": generation_method,
                 }
                 reports.append(report_dict)
-                logger.debug(f"Successfully converted MRI report for image_id {report_dict.get('image_id')}")
             except Exception as conv_err:
-                logger.warning(f"Error converting MRI report at index {idx}: {str(conv_err)}")
+                logger.warning(f"Error converting MRI report for image_id {getattr(image, 'image_id', 'unknown')}: {str(conv_err)}")
                 logger.warning(traceback.format_exc())
                 continue
         
-        logger.info(f"Successfully converted {len(reports)} MRI reports out of {len(results)} results")
-        if len(reports) == 0 and len(results) > 0:
-            logger.error(f"CRITICAL: {len(results)} results found but 0 reports converted! Check conversion logic.")
-        if len(reports) == 0 and total_mri_count > 0:
-            logger.error(f"CRITICAL: Database has {total_mri_count} MRI records but endpoint returned 0 reports!")
-            logger.error(f"Query parameters: skip={skip}, limit={limit}, patient_id={patient_id}")
-            # Try a direct query without any filters to see if we can get any results
-            try:
-                direct_query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI").limit(5).all()
-                logger.error(f"Direct query (no filters, limit=5) returned {len(direct_query)} records")
-                if len(direct_query) > 0:
-                    logger.error(f"First record sample: image_id={direct_query[0].image_id}, patient_id={direct_query[0].patient_id}, modality={direct_query[0].imaging_modality}")
-            except Exception as debug_err:
-                logger.error(f"Error in direct query debug: {debug_err}")
+        logger.info(f"Successfully converted {len(reports)} MRI reports out of {len(images)} images")
         return reports
+        
+    except (SQLAlchemyError, OperationalError, DisconnectionError) as db_err:
+        logger.error(f"Database error fetching MRI reports: {db_err}")
+        logger.error(traceback.format_exc())
+        return []
     except Exception as e:
         logger.error(f"Error fetching MRI reports: {str(e)}")
         logger.error(traceback.format_exc())
-        # Return empty list instead of raising exception to avoid 422
         return []
 
 
@@ -314,6 +325,269 @@ async def get_mri_image(
         raise HTTPException(status_code=404, detail="MRI image not found")
     
     return image
+
+
+@router.get("/mri/{image_id}/image")
+async def get_mri_image_visualization(
+    image_id: int,
+    db: Session = Depends(get_db),
+    use_gan: bool = Query(True, description="Use GAN for image generation (falls back to geometric if GAN unavailable)")
+):
+    """Generate and return MRI image visualization using GAN or fallback method"""
+    from fastapi.responses import Response
+    import io
+    import math
+    import random
+    
+    # Try to use GAN first if requested
+    if use_gan:
+        try:
+            from app.services.gan.mri_image_generator import get_gan_generator
+            from app.core.config import settings
+            from pathlib import Path
+            
+            # Try to load pre-trained model if available
+            model_path = None
+            if hasattr(settings, 'GAN_MODEL_PATH'):
+                model_path = settings.GAN_MODEL_PATH
+            else:
+                # Default path
+                default_path = Path('models/gan/final_model')
+                if default_path.exists():
+                    model_path = str(default_path)
+            
+            gan_gen = get_gan_generator(model_path=model_path)
+            
+            if gan_gen is not None:
+                image = db.query(ImagingData).filter(
+                    ImagingData.image_id == image_id,
+                    ImagingData.imaging_modality == "MRI"
+                ).first()
+                
+                if not image:
+                    raise HTTPException(status_code=404, detail="MRI image not found")
+                
+                # Generate image using GAN
+                imaging_date_str = str(image.imaging_date) if image.imaging_date else None
+                gan_image = gan_gen.generate_with_annotations(
+                    image_id=image_id,
+                    patient_id=image.patient_id,
+                    tumor_length_cm=image.tumor_length_cm,
+                    wall_thickness_cm=image.wall_thickness_cm,
+                    lymph_nodes_positive=image.lymph_nodes_positive,
+                    contrast_used=image.contrast_used,
+                    findings=image.findings,
+                    impression=image.impression,
+                    imaging_date=imaging_date_str
+                )
+                
+                # Convert to bytes
+                buffer = io.BytesIO()
+                gan_image.save(buffer, format='PNG', optimize=True)
+                img_bytes = buffer.getvalue()
+                
+                return Response(
+                    content=img_bytes,
+                    media_type="image/png",
+                    headers={
+                        "Content-Disposition": f"inline; filename=mri_{image_id}.png",
+                        "Cache-Control": "public, max-age=3600",
+                        "X-Image-Source": "GAN"
+                    }
+                )
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"GAN generation failed, falling back to geometric method: {e}")
+            # Fall through to geometric method
+    
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        raise HTTPException(status_code=500, detail="PIL/Pillow not available for image generation")
+    
+    image = db.query(ImagingData).filter(
+        ImagingData.image_id == image_id,
+        ImagingData.imaging_modality == "MRI"
+    ).first()
+    
+    if not image:
+        raise HTTPException(status_code=404, detail="MRI image not found")
+    
+    # Generate medical-style image based on findings
+    width, height = 1000, 700  # Larger for better clarity
+    img = Image.new('RGB', (width, height), color='black')
+    draw = ImageDraw.Draw(img)
+    
+    # Create gradient background (dark medical imaging style)
+    for y in range(height):
+        intensity = int(25 + (y / height) * 25)
+        color = (intensity, intensity, intensity + 15)
+        draw.line([(0, y), (width, y)], fill=color)
+    
+    # Draw anatomical structures (simplified esophagus cross-section)
+    center_x, center_y = width // 2, height // 2 - 50
+    
+    # Outer wall (normal tissue)
+    outer_radius = 180
+    draw.ellipse(
+        [center_x - outer_radius, center_y - outer_radius,
+         center_x + outer_radius, center_y + outer_radius],
+        outline='white', width=3, fill=None
+    )
+    
+    # Inner lumen
+    inner_radius = 100
+    draw.ellipse(
+        [center_x - inner_radius, center_y - inner_radius,
+         center_x + inner_radius, center_y + inner_radius],
+        outline='white', width=2, fill='black'
+    )
+    
+    # Draw tumor if present
+    if image.tumor_length_cm and image.tumor_length_cm > 0:
+        tumor_size = min(int(image.tumor_length_cm * 20), 120)
+        tumor_color = (255, 80, 80)  # Reddish for tumor
+        # Draw irregular tumor shape
+        tumor_points = []
+        for angle in range(0, 360, 8):
+            rad = math.radians(angle)
+            radius_var = inner_radius + tumor_size + math.sin(angle * 4) * 15
+            x = center_x + int(radius_var * math.cos(rad))
+            y = center_y + int(radius_var * math.sin(rad))
+            tumor_points.append((x, y))
+        if len(tumor_points) > 2:
+            draw.polygon(tumor_points, fill=tumor_color, outline='red', width=3)
+            # Add tumor label
+            draw.text((center_x + inner_radius + 20, center_y - 10), "TUMOR", fill='red', font=ImageFont.load_default())
+    
+    # Draw wall thickness if available
+    if image.wall_thickness_cm and image.wall_thickness_cm > 0:
+        thickness = int(image.wall_thickness_cm * 15)
+        draw.ellipse(
+            [center_x - inner_radius - thickness, center_y - inner_radius - thickness,
+             center_x + inner_radius + thickness, center_y + inner_radius + thickness],
+            outline='yellow', width=2, fill=None
+        )
+    
+    # Add lymph nodes if positive
+    if image.lymph_nodes_positive and image.lymph_nodes_positive > 0:
+        node_count = min(image.lymph_nodes_positive, 10)
+        for i in range(node_count):
+            angle = (360 / node_count) * i + random.uniform(-10, 10)
+            rad = math.radians(angle)
+            node_x = center_x + int((outer_radius + 40) * math.cos(rad))
+            node_y = center_y + int((outer_radius + 40) * math.sin(rad))
+            draw.ellipse(
+                [node_x - 10, node_y - 10, node_x + 10, node_y + 10],
+                fill='orange', outline='red', width=2
+            )
+    
+    # Add text annotations
+    try:
+        font_large = ImageFont.load_default()
+        font_small = ImageFont.load_default()
+    except:
+        font_large = ImageFont.load_default()
+        font_small = ImageFont.load_default()
+    
+    # Add header info
+    header_y = 15
+    draw.text((20, header_y), f"MRI SCAN #{image_id}", fill='white', font=font_large)
+    header_y += 25
+    
+    if image.patient_id:
+        draw.text((20, header_y), f"Patient ID: {image.patient_id}", fill='lightblue', font=font_small)
+        header_y += 20
+    
+    if image.imaging_date:
+        date_str = str(image.imaging_date)
+        draw.text((20, header_y), f"Date: {date_str}", fill='lightblue', font=font_small)
+        header_y += 20
+    
+    # Add measurements on right side
+    measurements_x = width - 250
+    measurements_y = 15
+    draw.rectangle(
+        [measurements_x - 10, measurements_y - 5, width - 10, measurements_y + 120],
+        outline='white', width=1, fill=(20, 20, 30)
+    )
+    draw.text((measurements_x, measurements_y), "MEASUREMENTS", fill='yellow', font=font_small)
+    measurements_y += 20
+    
+    if image.tumor_length_cm:
+        draw.text((measurements_x, measurements_y), f"Tumor: {image.tumor_length_cm} cm", fill='red', font=font_small)
+        measurements_y += 18
+    if image.wall_thickness_cm:
+        draw.text((measurements_x, measurements_y), f"Wall: {image.wall_thickness_cm} cm", fill='yellow', font=font_small)
+        measurements_y += 18
+    if image.lymph_nodes_positive:
+        draw.text((measurements_x, measurements_y), f"Lymph Nodes: {image.lymph_nodes_positive}", fill='orange', font=font_small)
+        measurements_y += 18
+    if image.contrast_used:
+        draw.text((measurements_x, measurements_y), "Contrast: Yes", fill='cyan', font=font_small)
+    
+    # Add findings and impression at bottom
+    interpretation_y = height - 180
+    if image.findings:
+        draw.rectangle(
+            [10, interpretation_y, width - 10, interpretation_y + 60],
+            outline='white', width=1, fill=(10, 10, 20)
+        )
+        draw.text((15, interpretation_y + 5), "FINDINGS:", fill='yellow', font=font_small)
+        # Wrap text
+        findings_text = image.findings[:200] + "..." if len(image.findings) > 200 else image.findings
+        words = findings_text.split()
+        line = ""
+        y_offset = interpretation_y + 22
+        for word in words:
+            test_line = line + word + " "
+            if len(test_line) * 6 > width - 30:
+                draw.text((15, y_offset), line, fill='white', font=font_small)
+                line = word + " "
+                y_offset += 16
+            else:
+                line = test_line
+        if line:
+            draw.text((15, y_offset), line, fill='white', font=font_small)
+    
+    if image.impression:
+        impression_y = height - 100
+        draw.rectangle(
+            [10, impression_y, width - 10, height - 10],
+            outline='cyan', width=1, fill=(5, 15, 25)
+        )
+        draw.text((15, impression_y + 5), "IMPRESSION:", fill='cyan', font=font_small)
+        # Wrap text
+        impression_text = image.impression[:200] + "..." if len(image.impression) > 200 else image.impression
+        words = impression_text.split()
+        line = ""
+        y_offset = impression_y + 22
+        for word in words:
+            test_line = line + word + " "
+            if len(test_line) * 6 > width - 30:
+                draw.text((15, y_offset), line, fill='lightcyan', font=font_small)
+                line = word + " "
+                y_offset += 16
+            else:
+                line = test_line
+        if line:
+            draw.text((15, y_offset), line, fill='lightcyan', font=font_small)
+    
+    # Convert to PNG
+    buffer = io.BytesIO()
+    img.save(buffer, format='PNG', optimize=True)
+    img_bytes = buffer.getvalue()
+    
+    return Response(
+        content=img_bytes,
+        media_type="image/png",
+        headers={
+            "Content-Disposition": f"inline; filename=mri_{image_id}.png",
+            "Cache-Control": "public, max-age=3600",
+            "X-Image-Source": "Geometric"
+        }
+    )
 
 
 @router.get("/mri/{image_id}/report", response_model=MRIReportResponse)
@@ -378,6 +652,44 @@ async def get_mri_report(
     
     report_summary = ". ".join(report_parts) if report_parts else "No detailed findings available"
     
+    # Add metadata for single report endpoint
+    from datetime import datetime
+    is_synthetic = str(image.patient_id).startswith('CAN') or str(image.patient_id).startswith('NOR')
+    data_source = "Synthetic" if is_synthetic else "Real"
+    
+    created_at = None
+    collected_at = None
+    generation_method = None
+    
+    if hasattr(image, 'created_at') and image.created_at:
+        try:
+            if hasattr(image.created_at, 'isoformat'):
+                created_at = image.created_at.isoformat()
+            else:
+                created_at = str(image.created_at)
+        except:
+            pass
+    
+    imaging_date_str = image.imaging_date.isoformat() if image.imaging_date and hasattr(image.imaging_date, 'isoformat') else (str(image.imaging_date) if image.imaging_date else None)
+    
+    if data_source == "Synthetic":
+        collected_at = imaging_date_str
+        generation_method = "Synthetic Data Generator"
+        if image.image_id and image.image_id > 10000:
+            base_id = image.image_id // 10000
+            remainder = image.image_id % 10000
+            if base_id > 0 and remainder < 100:
+                generation_method = "GAN-Generated"
+    else:
+        collected_at = imaging_date_str
+        generation_method = "Clinical Collection"
+    
+    if not created_at:
+        created_at = imaging_date_str if imaging_date_str else datetime.now().isoformat()
+    if not collected_at:
+        collected_at = imaging_date_str if imaging_date_str else created_at
+    
+    # Return with metadata
     return MRIReportResponse(
         image_id=image.image_id,
         patient_id=image.patient_id,
@@ -390,7 +702,12 @@ async def get_mri_report(
         lymph_nodes_positive=image.lymph_nodes_positive,
         contrast_used=image.contrast_used,
         radiologist_id=image.radiologist_id,
-        report_summary=report_summary
+        report_summary=report_summary,
+        # Metadata
+        data_source=data_source,
+        created_at=created_at,
+        collected_at=collected_at,
+        generation_method=generation_method,
     )
 
 

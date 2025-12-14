@@ -125,6 +125,10 @@ class Settings(BaseSettings):
     MODEL_DECAY_THRESHOLD: float = 0.05  # Performance degradation threshold
     MONITORING_WINDOW_SIZE: int = 1000  # Number of predictions to monitor
     MONITORING_CHECK_INTERVAL: int = 3600  # Check interval in seconds
+    
+    # GAN Model Configuration
+    GAN_MODEL_PATH: str = "models/gan/final_model"  # Path to trained GAN model weights
+    GAN_ENABLED: bool = True  # Enable GAN image generation
 
     # A/B Testing
     AB_TESTING_ENABLED: bool = True

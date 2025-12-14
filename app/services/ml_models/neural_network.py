@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional
 try:
     import tensorflow as tf
     from tensorflow import keras
-    from tensorflow.keras import layers, models
+    from tensorflow.keras import layers, models, callbacks
     TENSORFLOW_AVAILABLE = True
 except ImportError:
     TENSORFLOW_AVAILABLE = False
@@ -16,6 +16,7 @@ except ImportError:
     keras = None
     layers = None
     models = None
+    callbacks = None
 
 from app.services.ml_models.base_model import BaseMLModel
 
@@ -41,34 +42,53 @@ class NeuralNetworkModel(BaseMLModel):
         
         arch = architecture or self.architecture
 
+        # Improved architectures for better accuracy
         if arch == "simple":
             self.model = models.Sequential(
                 [
-                    layers.Dense(64, activation="relu", input_shape=(input_shape,)),
+                    layers.Dense(128, activation="relu", input_shape=(input_shape,)),
+                    layers.BatchNormalization(),
+                    layers.Dropout(0.3),
+                    layers.Dense(64, activation="relu"),
+                    layers.BatchNormalization(),
                     layers.Dropout(0.3),
                     layers.Dense(32, activation="relu"),
-                    layers.Dropout(0.3),
-                    layers.Dense(num_classes, activation="softmax"),
+                    layers.Dropout(0.2),
+                    layers.Dense(num_classes, activation="softmax" if num_classes > 2 else "sigmoid"),
                 ]
             )
         elif arch == "deep":
             self.model = models.Sequential(
                 [
-                    layers.Dense(128, activation="relu", input_shape=(input_shape,)),
+                    layers.Dense(256, activation="relu", input_shape=(input_shape,)),
+                    layers.BatchNormalization(),
+                    layers.Dropout(0.4),
+                    layers.Dense(128, activation="relu"),
+                    layers.BatchNormalization(),
                     layers.Dropout(0.3),
                     layers.Dense(64, activation="relu"),
+                    layers.BatchNormalization(),
                     layers.Dropout(0.3),
                     layers.Dense(32, activation="relu"),
-                    layers.Dropout(0.3),
-                    layers.Dense(num_classes, activation="softmax"),
+                    layers.Dropout(0.2),
+                    layers.Dense(num_classes, activation="softmax" if num_classes > 2 else "sigmoid"),
                 ]
             )
         else:
             raise ValueError(f"Unknown architecture: {arch}")
 
-        # Compile model
+        # Compile model with improved optimizer settings
+        optimizer_name = kwargs.get("optimizer", "adam")
+        learning_rate = kwargs.get("learning_rate", 0.001)
+        
+        if optimizer_name == "adam":
+            from tensorflow.keras.optimizers import Adam
+            optimizer = Adam(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999)
+        else:
+            optimizer = optimizer_name
+        
         self.model.compile(
-            optimizer=kwargs.get("optimizer", "adam"),
+            optimizer=optimizer,
             loss=kwargs.get("loss", "sparse_categorical_crossentropy"),
             metrics=["accuracy"],
         )
@@ -97,15 +117,41 @@ class NeuralNetworkModel(BaseMLModel):
         if X_val is not None and y_val is not None:
             validation_data = (X_val.values, y_val.values)
 
+        # Enhanced training with callbacks for better accuracy
+        callbacks_list = kwargs.get("callbacks", [])
+        
+        # Add early stopping and learning rate reduction if not already present
+        if TENSORFLOW_AVAILABLE:
+            if not any(isinstance(cb, keras.callbacks.EarlyStopping) for cb in callbacks_list):
+                callbacks_list.append(
+                    keras.callbacks.EarlyStopping(
+                        monitor='val_accuracy' if validation_data else 'accuracy',
+                        patience=10,
+                        restore_best_weights=True,
+                        verbose=0
+                    )
+                )
+            
+            if not any(isinstance(cb, keras.callbacks.ReduceLROnPlateau) for cb in callbacks_list):
+                callbacks_list.append(
+                    keras.callbacks.ReduceLROnPlateau(
+                        monitor='val_accuracy' if validation_data else 'accuracy',
+                        factor=0.5,
+                        patience=5,
+                        min_lr=1e-7,
+                        verbose=0
+                    )
+                )
+        
         # Train
         self.history = self.model.fit(
             X_train.values,
             y_train.values,
-            epochs=kwargs.get("epochs", 50),
+            epochs=kwargs.get("epochs", 100),
             batch_size=kwargs.get("batch_size", 32),
             validation_data=validation_data,
             verbose=kwargs.get("verbose", 1),
-            callbacks=kwargs.get("callbacks", []),
+            callbacks=callbacks_list,
         )
 
         self.is_trained = True

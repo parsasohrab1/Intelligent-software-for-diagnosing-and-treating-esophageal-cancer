@@ -61,6 +61,7 @@ interface PatientMonitoring {
   imaging_results: MonitoringParameter[]
   overall_status: 'stable' | 'monitoring_required' | 'intervention_needed' | 'critical'
   alerts: string[]
+  is_sample_data?: boolean
 }
 
 export default function PatientMonitoring() {
@@ -84,12 +85,27 @@ export default function PatientMonitoring() {
   const loadPatients = async () => {
     try {
       const response = await api.get('/patients/', {
-        params: { limit: 1000 }, // Reduced limit for better performance
+        params: { limit: 100 }, // Reduced limit for better performance
         timeout: 60000, // 60 seconds timeout
       })
-      setPatients(response.data)
-      if (response.data.length > 0 && !selectedPatient) {
-        setSelectedPatient(response.data[0].patient_id)
+      // Handle different response formats
+      let patientsData: Array<{patient_id: string, name: string | null}> = []
+      if (response.data) {
+        if (Array.isArray(response.data)) {
+          patientsData = response.data.map((p: any) => ({
+            patient_id: p.patient_id || p.id || '',
+            name: p.name || p.patient_name || null
+          }))
+        } else if (response.data.patients && Array.isArray(response.data.patients)) {
+          patientsData = response.data.patients.map((p: any) => ({
+            patient_id: p.patient_id || p.id || '',
+            name: p.name || p.patient_name || null
+          }))
+        }
+      }
+      setPatients(patientsData)
+      if (patientsData.length > 0 && !selectedPatient) {
+        setSelectedPatient(patientsData[0].patient_id)
       }
     } catch (err: any) {
       setError('Failed to load patients')
@@ -123,11 +139,26 @@ export default function PatientMonitoring() {
         console.log('Lab Results:', monitoringData.lab_results.length)
         console.log('Clinical Parameters:', monitoringData.clinical_parameters.length)
         console.log('Imaging Results:', monitoringData.imaging_results.length)
+        console.log('Full monitoring data:', monitoringData)
+      } else {
+        console.log('No monitoring data returned from API')
+        console.log('Response data:', response.data)
       }
       
       setMonitoring(monitoringData)
       
-      if (!monitoringData) {
+      // Check if we have any data at all
+      if (monitoringData) {
+        const hasAnyData = 
+          monitoringData.vital_signs.length > 0 ||
+          monitoringData.lab_results.length > 0 ||
+          monitoringData.clinical_parameters.length > 0 ||
+          monitoringData.imaging_results.length > 0
+        
+        if (!hasAnyData) {
+          setError('No monitoring data available for this patient. The patient exists but has no clinical data, lab results, or imaging data. Please generate or import patient data with monitoring information.')
+        }
+      } else {
         setError('No monitoring data available for this patient. Please ensure the patient has clinical data, lab results, or imaging data.')
       }
     } catch (err: any) {
@@ -298,6 +329,16 @@ export default function PatientMonitoring() {
 
       {monitoring && (
         <>
+          {/* Sample Data Warning */}
+          {monitoring.is_sample_data && (
+            <Alert severity="info" sx={{ mb: 3 }}>
+              <Typography variant="body2">
+                <strong>Note:</strong> This is sample/demo data. The patient has no actual monitoring data in the database. 
+                To view real data, please generate or import patient data with clinical information, lab results, and imaging data.
+              </Typography>
+            </Alert>
+          )}
+          
           {/* Overall Status */}
           <Box mb={3}>
             <Card>

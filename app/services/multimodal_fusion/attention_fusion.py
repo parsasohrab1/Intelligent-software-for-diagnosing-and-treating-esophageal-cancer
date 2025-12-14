@@ -11,7 +11,7 @@ Multi-Modal Attention Fusion Architecture
 """
 import logging
 import numpy as np
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, TYPE_CHECKING
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -40,6 +40,10 @@ except ImportError:
     torch = None
     nn = None
     F = None
+
+# Type checking imports - use Any to avoid runtime errors when tf is None
+# At runtime, we'll use Any; type checkers can use tf.Tensor if available
+TensorType = Any
 
 
 @dataclass
@@ -95,7 +99,7 @@ class CrossModalAttentionLayer:
         
         return self
     
-    def __call__(self, inputs: tf.Tensor, training: bool = True) -> tf.Tensor:
+    def __call__(self, inputs: TensorType, training: bool = True) -> TensorType:
         """Forward pass"""
         # Self-attention
         attn_output = self.attention(inputs, inputs, training=training)
@@ -406,7 +410,7 @@ class MultiModalAttentionFusion:
         
         return self.model
     
-    def _add_positional_encoding(self, embeddings: tf.Tensor) -> tf.Tensor:
+    def _add_positional_encoding(self, embeddings: TensorType) -> TensorType:
         """افزودن positional encoding"""
         batch_size = tf.shape(embeddings)[0]
         num_modalities = embeddings.shape[1]

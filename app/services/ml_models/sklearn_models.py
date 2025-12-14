@@ -19,15 +19,30 @@ class LogisticRegressionModel(BaseMLModel):
 
     def __init__(self, **kwargs):
         super().__init__("LogisticRegression", **kwargs)
-        self.model = LogisticRegression(
-            max_iter=1000, random_state=42, **kwargs
-        )
+        # Improved defaults for better accuracy
+        default_params = {
+            'max_iter': 2000,
+            'C': 1.0,
+            'penalty': 'l2',
+            'solver': 'lbfgs',
+            'class_weight': 'balanced',
+            'random_state': 42
+        }
+        default_params.update(kwargs)
+        self.model = LogisticRegression(**default_params)
 
     def build_model(self, input_shape: Optional[int] = None, **kwargs):
         """Build model"""
-        self.model = LogisticRegression(
-            max_iter=1000, random_state=42, **kwargs
-        )
+        default_params = {
+            'max_iter': 2000,
+            'C': 1.0,
+            'penalty': 'l2',
+            'solver': 'lbfgs',
+            'class_weight': 'balanced',
+            'random_state': 42
+        }
+        default_params.update(kwargs)
+        self.model = LogisticRegression(**default_params)
 
     def train(
         self,
@@ -71,19 +86,36 @@ class LogisticRegressionModel(BaseMLModel):
 class RandomForestModel(BaseMLModel):
     """Random Forest model"""
 
-    def __init__(self, n_estimators: int = 100, **kwargs):
+    def __init__(self, n_estimators: int = 200, **kwargs):
         super().__init__("RandomForest", **kwargs)
-        self.model = RandomForestClassifier(
-            n_estimators=n_estimators, random_state=42, **kwargs
-        )
+        # Improved defaults for better accuracy
+        default_params = {
+            'n_estimators': n_estimators,
+            'max_depth': 15,
+            'min_samples_split': 5,
+            'min_samples_leaf': 2,
+            'max_features': 'sqrt',
+            'class_weight': 'balanced',
+            'random_state': 42,
+            'n_jobs': -1
+        }
+        default_params.update(kwargs)
+        self.model = RandomForestClassifier(**default_params)
 
     def build_model(self, input_shape: Optional[int] = None, **kwargs):
         """Build model"""
-        self.model = RandomForestClassifier(
-            n_estimators=kwargs.get("n_estimators", 100),
-            random_state=42,
-            **{k: v for k, v in kwargs.items() if k != "n_estimators"},
-        )
+        default_params = {
+            'n_estimators': kwargs.get("n_estimators", 200),
+            'max_depth': 15,
+            'min_samples_split': 5,
+            'min_samples_leaf': 2,
+            'max_features': 'sqrt',
+            'class_weight': 'balanced',
+            'random_state': 42,
+            'n_jobs': -1
+        }
+        default_params.update({k: v for k, v in kwargs.items() if k != "n_estimators"})
+        self.model = RandomForestClassifier(**default_params)
 
     def train(
         self,
@@ -132,11 +164,42 @@ class XGBoostModel(BaseMLModel):
 
     def __init__(self, **kwargs):
         super().__init__("XGBoost", **kwargs)
-        self.model = xgb.XGBClassifier(random_state=42, **kwargs)
+        # Improved defaults for better accuracy
+        default_params = {
+            'n_estimators': 200,
+            'max_depth': 8,
+            'learning_rate': 0.05,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'min_child_weight': 3,
+            'gamma': 0.1,
+            'reg_alpha': 0.1,
+            'reg_lambda': 1.0,
+            'random_state': 42,
+            'eval_metric': 'logloss',
+            'use_label_encoder': False
+        }
+        default_params.update(kwargs)
+        self.model = xgb.XGBClassifier(**default_params)
 
     def build_model(self, input_shape: Optional[int] = None, **kwargs):
         """Build model"""
-        self.model = xgb.XGBClassifier(random_state=42, **kwargs)
+        default_params = {
+            'n_estimators': 200,
+            'max_depth': 8,
+            'learning_rate': 0.05,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'min_child_weight': 3,
+            'gamma': 0.1,
+            'reg_alpha': 0.1,
+            'reg_lambda': 1.0,
+            'random_state': 42,
+            'eval_metric': 'logloss',
+            'use_label_encoder': False
+        }
+        default_params.update(kwargs)
+        self.model = xgb.XGBClassifier(**default_params)
 
     def train(
         self,
@@ -196,11 +259,40 @@ class LightGBMModel(BaseMLModel):
 
     def __init__(self, **kwargs):
         super().__init__("LightGBM", **kwargs)
-        self.model = lgb.LGBMClassifier(random_state=42, **kwargs)
+        # Improved defaults for better accuracy
+        default_params = {
+            'n_estimators': 200,
+            'max_depth': 12,
+            'learning_rate': 0.05,
+            'num_leaves': 31,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'min_child_samples': 20,
+            'reg_alpha': 0.1,
+            'reg_lambda': 0.1,
+            'random_state': 42,
+            'verbose': -1
+        }
+        default_params.update(kwargs)
+        self.model = lgb.LGBMClassifier(**default_params)
 
     def build_model(self, input_shape: Optional[int] = None, **kwargs):
         """Build model"""
-        self.model = lgb.LGBMClassifier(random_state=42, **kwargs)
+        default_params = {
+            'n_estimators': 200,
+            'max_depth': 12,
+            'learning_rate': 0.05,
+            'num_leaves': 31,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'min_child_samples': 20,
+            'reg_alpha': 0.1,
+            'reg_lambda': 0.1,
+            'random_state': 42,
+            'verbose': -1
+        }
+        default_params.update(kwargs)
+        self.model = lgb.LGBMClassifier(**default_params)
 
     def train(
         self,

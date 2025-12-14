@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta
 
 from app.core.database import get_db
-from app.core.security.dependencies import get_current_user_with_role, require_permission
+from app.core.security.dependencies import get_current_user_with_role, require_permission, require_role
 from app.core.security.rbac import Permission, Role
 from app.core.security.consent_manager import ConsentManager, ConsentType, ConsentStatus
 from app.models.user import User

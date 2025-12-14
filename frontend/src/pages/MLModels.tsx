@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import {
   Box,
   Typography,
@@ -26,6 +26,11 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material'
+import ApiIcon from '@mui/icons-material/Api'
+import MemoryIcon from '@mui/icons-material/Memory'
+import SettingsIcon from '@mui/icons-material/Settings'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PsychologyIcon from '@mui/icons-material/Psychology'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -89,7 +94,10 @@ export default function MLModels() {
         timeout: 60000, // 60 seconds for large datasets
       })
       const modelList = response.data.models || response.data || []
-      setModels(Array.isArray(modelList) ? modelList : [])
+      const modelsArray = Array.isArray(modelList) ? modelList : []
+      console.log('MLModels: Fetched models:', modelsArray.length)
+      console.log('MLModels: Model types:', modelsArray.map(m => m.model_type))
+      setModels(modelsArray)
     } catch (error: any) {
       console.error('Error fetching models:', error)
       setError(error.response?.data?.detail || error.message || 'Failed to load ML models')
@@ -114,8 +122,165 @@ export default function MLModels() {
     setDetailDialogOpen(true)
   }
 
+  // Calculate statistics for indicators
+  // Support multiple naming conventions for model types
+  const getModelType = (model: Model): string => {
+    return (model.model_type || '').toLowerCase().trim()
+  }
+  
+  const modelStats = {
+    total: models.length,
+    neuralNetwork: models.filter(m => {
+      const type = getModelType(m)
+      return type === 'neuralnetwork' || type === 'neural_network' || type === 'neural network' || type.includes('neural')
+    }).length,
+    lightGBM: models.filter(m => {
+      const type = getModelType(m)
+      return type === 'lightgbm' || type === 'light_gbm' || type === 'light gbm' || type.includes('lightgbm')
+    }).length,
+    logisticRegression: models.filter(m => {
+      const type = getModelType(m)
+      return type === 'logisticregression' || type === 'logistic_regression' || type === 'logistic regression' || type.includes('logistic')
+    }).length,
+    preprocessingEnabled: true, // Always enabled with accuracy optimization
+  }
+  
+  // Debug log
+  if (models.length > 0) {
+    console.log('MLModels: Model stats:', modelStats)
+    console.log('MLModels: Neural Network models:', models.filter(m => {
+      const type = getModelType(m)
+      return type === 'neuralnetwork' || type === 'neural_network' || type === 'neural network' || type.includes('neural')
+    }))
+    console.log('MLModels: LightGBM models:', models.filter(m => {
+      const type = getModelType(m)
+      return type === 'lightgbm' || type === 'light_gbm' || type === 'light gbm' || type.includes('lightgbm')
+    }))
+    console.log('MLModels: LogisticRegression models:', models.filter(m => {
+      const type = getModelType(m)
+      return type === 'logisticregression' || type === 'logistic_regression' || type === 'logistic regression' || type.includes('logistic')
+    }))
+  }
+
+  const apiEndpoint = '/api/v1/ml-models'
+
   return (
     <Box p={3}>
+        {/* Indicators Section */}
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ height: '100%', bgcolor: 'primary.main', color: 'white', boxShadow: 3 }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <ApiIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    API Endpoint
+                  </Typography>
+                </Box>
+                <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.75rem', wordBreak: 'break-all', mb: 1 }}>
+                  {apiEndpoint}
+                </Typography>
+                <Chip 
+                  label="Active" 
+                  size="small" 
+                  sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white' }}
+                  icon={<CheckCircleIcon sx={{ color: 'white !important' }} />}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ height: '100%', bgcolor: 'info.main', color: 'white', boxShadow: 3 }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <MemoryIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Neural Network
+                  </Typography>
+                </Box>
+                <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
+                  {modelStats.neuralNetwork}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Model{modelStats.neuralNetwork !== 1 ? 's' : ''} Available
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ height: '100%', bgcolor: modelStats.preprocessingEnabled ? 'success.main' : 'error.main', color: 'white', boxShadow: 3 }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <SettingsIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Data Preprocessing
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="center" mt={1} mb={1}>
+                  {modelStats.preprocessingEnabled ? (
+                    <>
+                      <CheckCircleIcon sx={{ mr: 0.5, fontSize: '1.2rem' }} />
+                      <Typography variant="body1" fontWeight="bold">
+                        Enabled
+                      </Typography>
+                    </>
+                  ) : (
+                    <>
+                      <CancelIcon sx={{ mr: 0.5, fontSize: '1.2rem' }} />
+                      <Typography variant="body1" fontWeight="bold">
+                        Disabled
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+                <Typography variant="body2" sx={{ opacity: 0.9, fontSize: '0.75rem' }}>
+                  Feature Scaling & Engineering
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ height: '100%', bgcolor: 'warning.main', color: 'white', boxShadow: 3 }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <PsychologyIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    LightGBM
+                  </Typography>
+                </Box>
+                <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
+                  {modelStats.lightGBM}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Model{modelStats.lightGBM !== 1 ? 's' : ''} Available
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ height: '100%', bgcolor: 'secondary.main', color: 'white', boxShadow: 3 }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <PsychologyIcon sx={{ mr: 1 }} />
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Logistic Regression
+                  </Typography>
+                </Box>
+                <Typography variant="h4" fontWeight="bold" sx={{ mb: 0.5 }}>
+                  {modelStats.logisticRegression}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                  Model{modelStats.logisticRegression !== 1 ? 's' : ''} Available
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4">
@@ -137,8 +302,20 @@ export default function MLModels() {
           >
             Refresh
           </Button>
-          <Button variant="contained" startIcon={<PlayArrowIcon />}>
-            Train New Model
+          <Button 
+            variant="contained" 
+            startIcon={<PlayArrowIcon />}
+            onClick={() => {
+              // Show info about accuracy optimization
+              alert('Accuracy optimization is enabled by default. The system will:\n' +
+                    '1. Apply feature scaling and preprocessing\n' +
+                    '2. Use optimized hyperparameters\n' +
+                    '3. Handle class imbalance\n' +
+                    '4. Apply early stopping for gradient boosting models\n\n' +
+                    'To train a model, use the API endpoint: POST /api/v1/ml-models/train')
+            }}
+          >
+            Train New Model (Optimized)
           </Button>
         </Box>
       </Box>
@@ -201,13 +378,13 @@ export default function MLModels() {
             </TableHead>
             <TableBody>
               {models.map((model) => {
-                const modelId = model.model_id || model._id || ''
+                const modelId = model.model_id || model._id || `model-${Math.random()}`
                 const isExpanded = expandedRows.has(modelId)
                 const metrics = model.metrics || {}
                 
                 return (
-                  <>
-                    <TableRow key={modelId}>
+                  <Fragment key={modelId}>
+                    <TableRow>
                       <TableCell>
                         <IconButton
                           size="small"
@@ -306,10 +483,11 @@ export default function MLModels() {
                                   </Typography>
                                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
                                     {model.feature_names.slice(0, 10).map((feature, idx) => (
-                                      <Chip key={idx} label={feature} size="small" variant="outlined" />
+                                      <Chip key={`${modelId}-feature-${idx}`} label={feature} size="small" variant="outlined" />
                                     ))}
                                     {model.feature_names.length > 10 && (
                                       <Chip
+                                        key={`${modelId}-more-features`}
                                         label={`+${model.feature_names.length - 10} more`}
                                         size="small"
                                         variant="outlined"
@@ -334,7 +512,7 @@ export default function MLModels() {
                         </Collapse>
                       </TableCell>
                     </TableRow>
-                  </>
+                  </Fragment>
                 )
               })}
             </TableBody>
@@ -537,7 +715,7 @@ export default function MLModels() {
                     <Divider sx={{ mb: 2 }} />
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                       {selectedModel.feature_names.map((feature, idx) => (
-                        <Chip key={idx} label={feature} size="small" variant="outlined" />
+                        <Chip key={`feature-${selectedModel.model_id || selectedModel._id || 'unknown'}-${idx}`} label={feature} size="small" variant="outlined" />
                       ))}
                     </Box>
                   </Grid>

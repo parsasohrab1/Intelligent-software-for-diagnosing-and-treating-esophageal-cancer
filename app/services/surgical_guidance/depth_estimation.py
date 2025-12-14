@@ -5,7 +5,7 @@ Depth Estimation for Tumor Invasion
 import logging
 import numpy as np
 import cv2
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List, Tuple, Any
 from dataclasses import dataclass
 from datetime import datetime
 

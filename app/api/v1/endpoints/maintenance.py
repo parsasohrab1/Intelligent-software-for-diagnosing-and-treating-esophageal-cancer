@@ -15,8 +15,28 @@ from app.services.maintenance.issue_tracker import (
 from app.services.maintenance.performance_analyzer import PerformanceAnalyzer
 
 router = APIRouter()
-system_monitor = SystemMonitor()
-issue_tracker = IssueTracker()
+
+# Lazy initialization to avoid MongoDB connection issues
+_system_monitor = None
+_issue_tracker = None
+
+def get_system_monitor():
+    global _system_monitor
+    if _system_monitor is None:
+        try:
+            _system_monitor = SystemMonitor()
+        except Exception:
+            _system_monitor = None
+    return _system_monitor
+
+def get_issue_tracker():
+    global _issue_tracker
+    if _issue_tracker is None:
+        try:
+            _issue_tracker = IssueTracker()
+        except Exception:
+            _issue_tracker = None
+    return _issue_tracker
 performance_analyzer = PerformanceAnalyzer()
 access_control = AccessControlManager()
 
@@ -32,7 +52,10 @@ async def get_system_health(
     if Permission.READ_AUDIT_LOGS not in access_control.get_user_permissions(user_role):
         raise HTTPException(status_code=403, detail="Insufficient permissions")
 
-    health = system_monitor.get_system_health(hours=hours)
+    monitor = get_system_monitor()
+    if not monitor:
+        raise HTTPException(status_code=503, detail="System monitoring unavailable")
+    health = monitor.get_system_health(hours=hours)
     return health
 
 
@@ -95,7 +118,10 @@ async def create_issue(
     current_user: dict = Depends(get_current_user),
 ):
     """Create a new issue"""
-    issue_id = issue_tracker.create_issue(
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    issue_id = tracker.create_issue(
         title=title,
         description=description,
         issue_type=issue_type,
@@ -114,7 +140,10 @@ async def list_issues(
     current_user: dict = Depends(get_current_user),
 ):
     """List issues"""
-    issues = issue_tracker.list_issues(
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    issues = tracker.list_issues(
         status=status, priority=priority, issue_type=issue_type, limit=limit
     )
     return {"issues": issues, "count": len(issues)}
@@ -123,7 +152,10 @@ async def list_issues(
 @router.get("/issues/{issue_id}")
 async def get_issue(issue_id: str, current_user: dict = Depends(get_current_user)):
     """Get issue details"""
-    issue = issue_tracker.get_issue(issue_id)
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    issue = tracker.get_issue(issue_id)
     if not issue:
         raise HTTPException(status_code=404, detail="Issue not found")
     return issue
@@ -136,7 +168,10 @@ async def update_issue_status(
     current_user: dict = Depends(get_current_user),
 ):
     """Update issue status"""
-    success = issue_tracker.update_issue_status(
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    success = tracker.update_issue_status(
         issue_id, status, updated_by=current_user["payload"].get("sub")
     )
     if not success:
@@ -151,7 +186,10 @@ async def add_comment(
     current_user: dict = Depends(get_current_user),
 ):
     """Add comment to issue"""
-    success = issue_tracker.add_comment(
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    success = tracker.add_comment(
         issue_id, comment, author=current_user["payload"].get("sub")
     )
     if not success:
@@ -162,6 +200,9 @@ async def add_comment(
 @router.get("/issues/statistics")
 async def get_issue_statistics(current_user: dict = Depends(get_current_user)):
     """Get issue statistics"""
-    stats = issue_tracker.get_issue_statistics()
+    tracker = get_issue_tracker()
+    if not tracker:
+        raise HTTPException(status_code=503, detail="Issue tracking unavailable")
+    stats = tracker.get_issue_statistics()
     return stats
 

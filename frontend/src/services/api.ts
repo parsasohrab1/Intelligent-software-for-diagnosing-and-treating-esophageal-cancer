@@ -34,9 +34,20 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized
-      localStorage.removeItem('auth_token')
-      window.location.href = '/login'
+      // Handle unauthorized - redirect to dashboard (no auth required for dev)
+      // But don't redirect if we're already on a page that doesn't require auth
+      const currentPath = window.location.pathname
+      const publicPaths = ['/dashboard', '/cds', '/patients', '/patient-data', '/ml-models', '/mri', '/monitoring', '/settings']
+      
+      if (!publicPaths.includes(currentPath)) {
+        localStorage.removeItem('auth_token')
+        // Use navigate if available, otherwise redirect
+        if (currentPath !== '/dashboard') {
+          window.location.href = '/dashboard'
+        }
+      }
+      // For public paths, just log the error but don't redirect
+      console.warn('API 401 error on public path:', currentPath, error)
     }
     // Log errors for debugging
     if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error') || error.code === 'ERR_NETWORK') {

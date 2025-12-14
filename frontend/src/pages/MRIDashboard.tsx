@@ -26,6 +26,8 @@ import {
   LocalHospital as HospitalIcon,
   Refresh as RefreshIcon,
   PlayArrow as PlayArrowIcon,
+  ZoomIn as ZoomInIcon,
+  Fullscreen as FullscreenIcon,
 } from '@mui/icons-material'
 import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
@@ -51,6 +53,9 @@ interface MRIReport {
   patient_cancer_type?: string | null
   patient_cancer_subtype?: string | null
   data_source?: string
+  created_at?: string
+  collected_at?: string
+  generation_method?: string
 }
 
 export default function MRIDashboard() {
@@ -61,6 +66,8 @@ export default function MRIDashboard() {
   const [selectedImage, setSelectedImage] = useState<MRIReport | null>(null)
   const [reportDialogOpen, setReportDialogOpen] = useState(false)
   const [generating, setGenerating] = useState(false)
+  const [imageZoomed, setImageZoomed] = useState(false)
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null)
 
   useEffect(() => {
     loadMRIData()
@@ -150,23 +157,10 @@ export default function MRIDashboard() {
     }
   }
 
-  const generateImagePlaceholder = (imageId: number) => {
-    // Generate a data URI placeholder instead of external URL to avoid network errors
-    // In production, this would be replaced with actual image URLs from storage
-    const colors = ['#2563eb', '#dc2626', '#059669', '#7c3aed', '#ea580c']
-    const color = colors[imageId % colors.length]
-    
-    // Create a simple SVG placeholder as data URI (works offline, no external requests)
-    const svg = `<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
-      <rect width="400" height="300" fill="${color}"/>
-      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" dominant-baseline="middle">
-        MRI Scan #${imageId}
-      </text>
-    </svg>`
-    
-    // Use base64 encoding for better compatibility
-    const base64Svg = btoa(unescape(encodeURIComponent(svg)))
-    return `data:image/svg+xml;base64,${base64Svg}`
+  const getMRIImageUrl = (imageId: number, useGAN: boolean = true) => {
+    // Use the API endpoint to get generated MRI image
+    // GAN generates more realistic synthetic images
+    return `/api/v1/imaging/mri/${imageId}/image?use_gan=${useGAN}`
   }
 
   const handleGenerateData = async () => {
@@ -322,27 +316,61 @@ export default function MRIDashboard() {
           {mriReports.map((report) => (
             <Grid item xs={12} sm={6} md={4} key={report.image_id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={generateImagePlaceholder(report.image_id)}
-                  alt={`MRI Image ${report.image_id}`}
-                  sx={{ objectFit: 'cover' }}
-                  onError={(e: any) => {
-                    // Fallback to a simple colored div if image fails to load
-                    e.target.style.display = 'none'
-                    const fallback = document.createElement('div')
-                    fallback.style.width = '100%'
-                    fallback.style.height = '200px'
-                    fallback.style.backgroundColor = '#2563eb'
-                    fallback.style.display = 'flex'
-                    fallback.style.alignItems = 'center'
-                    fallback.style.justifyContent = 'center'
-                    fallback.style.color = 'white'
-                    fallback.textContent = `MRI Scan #${report.image_id}`
-                    e.target.parentNode?.appendChild(fallback)
-                  }}
-                />
+                <Box sx={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden', bgcolor: 'black' }}>
+                  <CardMedia
+                    component="img"
+                    image={getMRIImageUrl(report.image_id)}
+                    alt={`MRI Image ${report.image_id}`}
+                    sx={{ 
+                      objectFit: 'contain',
+                      width: '100%',
+                      height: '100%',
+                      cursor: 'pointer',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.05)'
+                      }
+                    }}
+                    onClick={() => {
+                      setSelectedImage(report)
+                      setReportDialogOpen(true)
+                    }}
+                    onError={(e: any) => {
+                      // Fallback to a simple colored div if image fails to load
+                      e.target.style.display = 'none'
+                      const fallback = document.createElement('div')
+                      fallback.style.width = '100%'
+                      fallback.style.height = '250px'
+                      fallback.style.backgroundColor = '#1a1a2e'
+                      fallback.style.display = 'flex'
+                      fallback.style.alignItems = 'center'
+                      fallback.style.justifyContent = 'center'
+                      fallback.style.color = 'white'
+                      fallback.textContent = `MRI Scan #${report.image_id}`
+                      e.target.parentNode?.appendChild(fallback)
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      bgcolor: 'rgba(0, 0, 0, 0.6)',
+                      borderRadius: 1,
+                      p: 0.5,
+                      display: 'flex',
+                      gap: 0.5
+                    }}
+                  >
+                    <ZoomInIcon 
+                      sx={{ color: 'white', fontSize: 20, cursor: 'pointer' }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setFullscreenImage(getMRIImageUrl(report.image_id))
+                      }}
+                    />
+                  </Box>
+                </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="h6" component="div">
@@ -355,16 +383,34 @@ export default function MRIDashboard() {
                     />
                   </Box>
 
-                  {/* Data Source Indicator */}
-                  {(report.data_source || report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR')) && (
-                    <Box mb={1}>
+                  {/* Data Source and Metadata Indicator */}
+                  <Box mb={1} display="flex" flexWrap="wrap" gap={1}>
+                    {(report.data_source || report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR')) && (
                       <Chip
                         label={report.data_source || (report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR') ? 'Synthetic' : 'Real')}
                         color={report.data_source === 'Synthetic' || report.patient_id.startsWith('CAN') || report.patient_id.startsWith('NOR') ? 'primary' : 'success'}
                         size="small"
                         variant="outlined"
-                        sx={{ mb: 1 }}
                       />
+                    )}
+                    {report.generation_method && (
+                      <Chip
+                        label={report.generation_method}
+                        color="info"
+                        size="small"
+                        variant="outlined"
+                      />
+                    )}
+                  </Box>
+                  
+                  {/* Data Creation/Collection Info */}
+                  {(report.created_at || report.collected_at) && (
+                    <Box mb={1}>
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        {report.collected_at && `Collected: ${new Date(report.collected_at).toLocaleDateString()}`}
+                        {report.created_at && report.collected_at && ' • '}
+                        {report.created_at && `Created: ${new Date(report.created_at).toLocaleDateString()}`}
+                      </Typography>
                     </Box>
                   )}
 
@@ -455,6 +501,33 @@ export default function MRIDashboard() {
                     </Box>
                   )}
 
+                  {/* Data Creation/Collection Info in Card */}
+                  {(report.created_at || report.collected_at || report.generation_method) && (
+                    <Box mb={1.5}>
+                      <Divider sx={{ mb: 1 }} />
+                      <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+                        Data Information:
+                      </Typography>
+                      <Box display="flex" flexDirection="column" gap={0.5}>
+                        {report.collected_at && (
+                          <Typography variant="caption" color="text.secondary">
+                            Collected: {new Date(report.collected_at).toLocaleDateString()}
+                          </Typography>
+                        )}
+                        {report.created_at && (
+                          <Typography variant="caption" color="text.secondary">
+                            Created: {new Date(report.created_at).toLocaleDateString()}
+                          </Typography>
+                        )}
+                        {report.generation_method && (
+                          <Typography variant="caption" color="text.secondary">
+                            Method: {report.generation_method}
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                  )}
+
                   <Divider sx={{ my: 1.5 }} />
 
                   <Grid container spacing={1} sx={{ mb: 2 }}>
@@ -518,8 +591,13 @@ export default function MRIDashboard() {
       <Dialog
         open={reportDialogOpen}
         onClose={() => setReportDialogOpen(false)}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
+        PaperProps={{
+          sx: {
+            maxHeight: '90vh'
+          }
+        }}
       >
         <DialogTitle>
           <Box display="flex" alignItems="center">
@@ -527,30 +605,146 @@ export default function MRIDashboard() {
             Full MRI Report - Image #{selectedImage?.image_id}
           </Box>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ overflowY: 'auto' }}>
           {selectedImage && (
             <Box>
               {/* MRI Image Display */}
-              <Box mb={3}>
-                <CardMedia
-                  component="img"
-                  height="300"
-                  image={generateImagePlaceholder(selectedImage.image_id)}
-                  alt={`MRI Image ${selectedImage.image_id}`}
-                  sx={{ objectFit: 'contain', bgcolor: 'grey.100', borderRadius: 1 }}
-                />
+              <Box mb={3} sx={{ position: 'relative' }}>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '100%',
+                    minHeight: '400px',
+                    maxHeight: '600px',
+                    bgcolor: 'black',
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                    border: '2px solid',
+                    borderColor: 'divider'
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={getMRIImageUrl(selectedImage.image_id)}
+                    alt={`MRI Image ${selectedImage.image_id}`}
+                    sx={{ 
+                      objectFit: 'contain',
+                      width: '100%',
+                      height: '100%',
+                      minHeight: '400px',
+                      maxHeight: '600px',
+                      cursor: imageZoomed ? 'zoom-out' : 'zoom-in'
+                    }}
+                    onClick={() => setImageZoomed(!imageZoomed)}
+                    onError={(e: any) => {
+                      // Fallback to a simple colored div if image fails to load
+                      e.target.style.display = 'none'
+                      const fallback = document.createElement('div')
+                      fallback.style.width = '100%'
+                      fallback.style.height = '400px'
+                      fallback.style.backgroundColor = '#1a1a2e'
+                      fallback.style.display = 'flex'
+                      fallback.style.alignItems = 'center'
+                      fallback.style.justifyContent = 'center'
+                      fallback.style.color = 'white'
+                      fallback.style.borderRadius = '4px'
+                      fallback.textContent = `MRI Scan #${selectedImage.image_id}`
+                      e.target.parentNode?.appendChild(fallback)
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      display: 'flex',
+                      gap: 1
+                    }}
+                  >
+                    <Button
+                      size="small"
+                      variant="contained"
+                      startIcon={<FullscreenIcon />}
+                      onClick={() => setFullscreenImage(getMRIImageUrl(selectedImage.image_id))}
+                      sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)', '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.9)' } }}
+                    >
+                      Fullscreen
+                    </Button>
+                  </Box>
+                </Box>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', textAlign: 'center' }}>
+                  Click image to zoom in/out • Click Fullscreen for maximum clarity
+                </Typography>
               </Box>
 
-              {/* Data Source */}
-              {(selectedImage.data_source || selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR')) && (
-                <Box mb={2}>
+              {/* Data Source and Metadata */}
+              <Box mb={2} display="flex" flexWrap="wrap" gap={1} alignItems="center">
+                {(selectedImage.data_source || selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR')) && (
                   <Chip
                     label={selectedImage.data_source || (selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR') ? 'Synthetic' : 'Real')}
                     color={selectedImage.data_source === 'Synthetic' || selectedImage.patient_id.startsWith('CAN') || selectedImage.patient_id.startsWith('NOR') ? 'primary' : 'success'}
                     variant="outlined"
                   />
-                </Box>
-              )}
+                )}
+                {selectedImage.generation_method && (
+                  <Chip
+                    label={selectedImage.generation_method}
+                    color="info"
+                    variant="outlined"
+                    size="small"
+                  />
+                )}
+              </Box>
+
+              {/* Data Creation and Collection Information */}
+              <Box mb={3}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                  Data Information
+                </Typography>
+                <Grid container spacing={2}>
+                  {selectedImage.collected_at && (
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        Collected/Gathered:
+                      </Typography>
+                      <Typography variant="body2" fontWeight="medium">
+                        {new Date(selectedImage.collected_at).toLocaleString()}
+                      </Typography>
+                    </Grid>
+                  )}
+                  {selectedImage.created_at && (
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        Created/Generated:
+                      </Typography>
+                      <Typography variant="body2" fontWeight="medium">
+                        {new Date(selectedImage.created_at).toLocaleString()}
+                      </Typography>
+                    </Grid>
+                  )}
+                  {selectedImage.imaging_date && (
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        Imaging Date:
+                      </Typography>
+                      <Typography variant="body2" fontWeight="medium">
+                        {new Date(selectedImage.imaging_date).toLocaleDateString()}
+                      </Typography>
+                    </Grid>
+                  )}
+                  {selectedImage.data_source && (
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        Data Source:
+                      </Typography>
+                      <Typography variant="body2" fontWeight="medium">
+                        {selectedImage.data_source}
+                        {selectedImage.generation_method && ` (${selectedImage.generation_method})`}
+                      </Typography>
+                    </Grid>
+                  )}
+                </Grid>
+              </Box>
 
               <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
                 Patient Information
@@ -708,7 +902,71 @@ export default function MRIDashboard() {
                 )}
               </Grid>
 
-              <Box mt={3} display="flex" gap={2}>
+              <Divider sx={{ my: 2 }} />
+
+              {/* Data Metadata Section */}
+              {(selectedImage.data_source || selectedImage.created_at || selectedImage.collected_at || selectedImage.generation_method) && (
+                <Box mt={3} mb={3}>
+                  <Typography variant="h6" gutterBottom>
+                    Data Creation & Collection Information
+                  </Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                          Data Source
+                        </Typography>
+                        <Typography variant="body1" fontWeight="bold">
+                          {selectedImage.data_source || 'Real'}
+                        </Typography>
+                        {selectedImage.generation_method && (
+                          <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
+                            Method: {selectedImage.generation_method}
+                          </Typography>
+                        )}
+                      </Paper>
+                    </Grid>
+                    {selectedImage.collected_at && (
+                      <Grid item xs={12} sm={6}>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                            Collected/Gathered
+                          </Typography>
+                          <Typography variant="body1" fontWeight="bold">
+                            {new Date(selectedImage.collected_at).toLocaleString()}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    )}
+                    {selectedImage.created_at && (
+                      <Grid item xs={12} sm={6}>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                            Created/Generated
+                          </Typography>
+                          <Typography variant="body1" fontWeight="bold">
+                            {new Date(selectedImage.created_at).toLocaleString()}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    )}
+                    {selectedImage.imaging_date && (
+                      <Grid item xs={12} sm={6}>
+                        <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                            Imaging Date
+                          </Typography>
+                          <Typography variant="body1" fontWeight="bold">
+                            {new Date(selectedImage.imaging_date).toLocaleDateString()}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Box>
+              )}
+
+              <Box mt={3} display="flex" gap={2} flexWrap="wrap">
                 <Chip
                   label={selectedImage.contrast_used ? 'With Contrast' : 'No Contrast'}
                   color={selectedImage.contrast_used ? 'primary' : 'default'}
@@ -727,6 +985,57 @@ export default function MRIDashboard() {
         <DialogActions>
           <Button onClick={() => setReportDialogOpen(false)}>Close</Button>
         </DialogActions>
+      </Dialog>
+
+      {/* Fullscreen Image Dialog */}
+      <Dialog
+        open={fullscreenImage !== null}
+        onClose={() => setFullscreenImage(null)}
+        maxWidth={false}
+        fullWidth
+        PaperProps={{
+          sx: {
+            m: 0,
+            width: '100vw',
+            height: '100vh',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            bgcolor: 'black'
+          }
+        }}
+      >
+        <DialogContent sx={{ p: 0, m: 0, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {fullscreenImage && (
+            <Box sx={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CardMedia
+                component="img"
+                image={fullscreenImage}
+                alt="Fullscreen MRI Image"
+                sx={{ 
+                  objectFit: 'contain',
+                  width: '100%',
+                  height: '100%',
+                  maxWidth: '100vw',
+                  maxHeight: '100vh'
+                }}
+              />
+              <Button
+                onClick={() => setFullscreenImage(null)}
+                sx={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  bgcolor: 'rgba(0, 0, 0, 0.7)',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.9)' }
+                }}
+                variant="contained"
+              >
+                Close
+              </Button>
+            </Box>
+          )}
+        </DialogContent>
       </Dialog>
     </Box>
   )
