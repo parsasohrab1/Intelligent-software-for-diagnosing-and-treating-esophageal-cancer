@@ -162,6 +162,27 @@ class Settings(BaseSettings):
     EHR_FHIR_BASE_URL: str = ""
     EHR_USE_OAUTH: bool = True
 
+    # Multi-level Cache Configuration
+    CACHE_ENABLED: bool = True
+    CACHE_L1_MAX_SIZE: int = 1000  # Maximum number of entries in L1 (memory) cache
+    CACHE_L1_MAX_MEMORY_MB: int = 100  # Maximum memory for L1 cache in MB
+    CACHE_DEFAULT_TTL: int = 3600  # Default TTL in seconds (1 hour)
+    CACHE_COMPRESSION_ENABLED: bool = True
+    CACHE_COMPRESSION_THRESHOLD: int = 1024  # Compress data larger than 1KB
+    CACHE_COMPRESSION_ALGORITHM: str = "gzip"  # Options: "gzip", "zlib", "none"
+    
+    # Cache Warming Configuration
+    CACHE_WARMING_ENABLED: bool = True
+    CACHE_WARMING_INTERVAL: int = 1800  # Check interval in seconds (30 minutes)
+    CACHE_WARMING_ON_STARTUP: bool = True  # Warm cache on application startup
+    
+    # Endpoint-specific cache TTLs
+    CACHE_TTL_DASHBOARD: int = 300  # 5 minutes for dashboard
+    CACHE_TTL_PATIENTS_LIST: int = 120  # 2 minutes for patients list
+    CACHE_TTL_ML_MODELS: int = 600  # 10 minutes for ML models
+    CACHE_TTL_STATISTICS: int = 900  # 15 minutes for statistics
+    CACHE_TTL_IMAGING: int = 1800  # 30 minutes for imaging data
+
     # CORS
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
