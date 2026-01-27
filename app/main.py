@@ -22,18 +22,40 @@ from fastapi import Request
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan events for the application"""
+    import logging
+    logger = logging.getLogger(__name__)
+    
     # Startup
     try:
         await init_db()
     except Exception as e:
         # Log error but don't crash the app
-        import logging
-        logger = logging.getLogger(__name__)
         logger.warning(f"Database initialization failed: {e}")
         logger.warning("App will continue but database operations may fail")
+    
+    # Initialize cache warming
+    try:
+        if getattr(settings, 'CACHE_ENABLED', True):
+            from app.services.cache_warming_service import (
+                initialize_cache_warming,
+                shutdown_cache_warming,
+            )
+            await initialize_cache_warming()
+            logger.info("Cache warming initialized successfully")
+    except Exception as e:
+        logger.warning(f"Cache warming initialization failed: {e}")
+        logger.warning("App will continue but cache warming will be disabled")
+    
     yield
+    
     # Shutdown
-    pass
+    try:
+        if getattr(settings, 'CACHE_ENABLED', True):
+            from app.services.cache_warming_service import shutdown_cache_warming
+            await shutdown_cache_warming()
+            logger.info("Cache warming shutdown complete")
+    except Exception as e:
+        logger.warning(f"Cache warming shutdown error: {e}")
 
 
 # Create FastAPI app
