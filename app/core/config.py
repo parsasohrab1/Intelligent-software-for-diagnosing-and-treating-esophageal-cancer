@@ -2,7 +2,7 @@
 Application configuration using Pydantic Settings
 """
 from pydantic_settings import BaseSettings
-from typing import List
+from typing import List, Optional
 import os
 from functools import lru_cache
 
@@ -30,6 +30,12 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "inescape_user"
     POSTGRES_PASSWORD: str = "inescape_password"
     SQLITE_DB_PATH: str = "data/inescape.db"  # SQLite database file path
+
+    # Read replica (production): optional PostgreSQL read replica URL for read-only queries
+    DATABASE_READ_REPLICA_URL: Optional[str] = None  # e.g. postgresql://user:pass@replica-host:5432/db
+
+    # Query timeout (PostgreSQL only): prevent long-running queries from hanging connections (seconds)
+    QUERY_TIMEOUT_SECONDS: int = 30
 
     @property
     def DATABASE_URL(self) -> str:

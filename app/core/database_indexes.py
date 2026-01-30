@@ -9,7 +9,7 @@ This module provides:
 """
 import logging
 from typing import Dict, List, Optional
-from sqlalchemy import text, Index, inspect
+from sqlalchemy import text, Index
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError, ProgrammingError
 

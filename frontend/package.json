@@ -10,20 +10,21 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0",
-    "@mui/material": "^5.14.20",
-    "@mui/icons-material": "^5.14.20",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.20",
+    "@mui/material": "^5.14.20",
+    "@tanstack/react-virtual": "^3.13.18",
     "axios": "^1.6.2",
-    "recharts": "^2.10.3",
-    "plotly.js": "^2.27.0",
-    "react-plotly.js": "^2.6.0",
     "date-fns": "^2.30.0",
-    "zustand": "^4.4.7",
-    "react-query": "^3.39.3"
+    "plotly.js": "^2.27.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-plotly.js": "^2.6.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.20.0",
+    "recharts": "^2.10.3",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -38,4 +39,3 @@
     "vite": "^5.0.8"
   }
 }
-

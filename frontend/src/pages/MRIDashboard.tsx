@@ -321,6 +321,7 @@ export default function MRIDashboard() {
                     component="img"
                     image={getMRIImageUrl(report.image_id)}
                     alt={`MRI Image ${report.image_id}`}
+                    loading="lazy"
                     sx={{ 
                       objectFit: 'contain',
                       width: '100%',
@@ -627,6 +628,7 @@ export default function MRIDashboard() {
                     component="img"
                     image={getMRIImageUrl(selectedImage.image_id)}
                     alt={`MRI Image ${selectedImage.image_id}`}
+                    loading="lazy"
                     sx={{ 
                       objectFit: 'contain',
                       width: '100%',
@@ -1011,6 +1013,7 @@ export default function MRIDashboard() {
                 component="img"
                 image={fullscreenImage}
                 alt="Fullscreen MRI Image"
+                loading="lazy"
                 sx={{ 
                   objectFit: 'contain',
                   width: '100%',

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from typing import Optional
 from pydantic import BaseModel, Field
 
-from app.core.database import get_db
+from app.core.database import get_db, get_read_db
 from app.services.synthetic_data_generator import EsophagealCancerSyntheticData
 from app.services.data_validator import DataValidator
 
@@ -137,12 +137,12 @@ async def validate_synthetic_data(
 
 
 @router.get("/statistics")
-async def get_generation_statistics(db: Session = Depends(get_db)):
-    """Get statistics about generated synthetic data with caching"""
+async def get_generation_statistics(db: Session = Depends(get_read_db)):
+    """Get statistics about generated synthetic data with caching (multi-level cache + compression)"""
     from app.models.patient import Patient
-    from app.core.cache import CacheManager
+    from app.core.advanced_cache import get_cache_manager
     
-    cache_manager = CacheManager()
+    cache_manager = get_cache_manager()
     cache_key = cache_manager.generate_key("synthetic_data", "statistics")
     
     # Try to get from cache

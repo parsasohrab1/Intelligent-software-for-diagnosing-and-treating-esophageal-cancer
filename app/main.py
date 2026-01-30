@@ -32,7 +32,15 @@ async def lifespan(app: FastAPI):
         # Log error but don't crash the app
         logger.warning(f"Database initialization failed: {e}")
         logger.warning("App will continue but database operations may fail")
-    
+
+    # Initialize strategic database indexes (PostgreSQL partial indexes, etc.)
+    try:
+        from app.core.database_indexes import initialize_indexes
+        await initialize_indexes()
+        logger.info("Strategic database indexes initialized")
+    except Exception as e:
+        logger.warning(f"Index initialization failed: {e}")
+
     # Initialize cache warming
     try:
         if getattr(settings, 'CACHE_ENABLED', True):
@@ -45,7 +53,16 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Cache warming initialization failed: {e}")
         logger.warning("App will continue but cache warming will be disabled")
-    
+
+    # Optional: pre-load best ML model into memory so first /predict is fast
+    try:
+        from app.api.v1.endpoints.ml_models import warm_up_best_model
+        warmed_id = warm_up_best_model()
+        if warmed_id:
+            logger.info("Model warm-up: best model %s loaded", warmed_id)
+    except Exception as e:
+        logger.debug("Model warm-up skipped: %s", e)
+
     yield
     
     # Shutdown

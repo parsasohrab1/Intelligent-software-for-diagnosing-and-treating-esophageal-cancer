@@ -1,38 +1,51 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Box } from '@mui/material'
+import { CircularProgress, Box } from '@mui/material'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
-import Dashboard from './pages/Dashboard'
-import Patients from './pages/Patients'
-import PatientData from './pages/PatientData'
-import MLModels from './pages/MLModels'
-import CDS from './pages/CDS'
-import MRIDashboard from './pages/MRIDashboard'
-import PatientMonitoring from './pages/PatientMonitoring'
-import Settings from './pages/Settings'
+
+// Code splitting: lazy load route components to reduce initial bundle
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Patients = lazy(() => import('./pages/Patients'))
+const PatientData = lazy(() => import('./pages/PatientData'))
+const MLModels = lazy(() => import('./pages/MLModels'))
+const CDS = lazy(() => import('./pages/CDS'))
+const MRIDashboard = lazy(() => import('./pages/MRIDashboard'))
+const PatientMonitoring = lazy(() => import('./pages/PatientMonitoring'))
+const Settings = lazy(() => import('./pages/Settings'))
+
+function RouteFallback() {
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight={280} p={3}>
+      <CircularProgress />
+    </Box>
+  )
+}
 
 function App() {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/patients" element={<Patients />} />
-        <Route path="/patient-data" element={<PatientData />} />
-        <Route path="/data-generation" element={<Navigate to="/patient-data" replace />} />
-        <Route path="/data-collection" element={<Navigate to="/patient-data" replace />} />
-        <Route path="/ml-models" element={<MLModels />} />
-        <Route path="/cds" element={
-          <ErrorBoundary>
-            <CDS />
-          </ErrorBoundary>
-        } />
-        <Route path="/mri" element={<MRIDashboard />} />
-        <Route path="/monitoring" element={<PatientMonitoring />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+      <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/patients" element={<Patients />} />
+          <Route path="/patient-data" element={<PatientData />} />
+          <Route path="/data-generation" element={<Navigate to="/patient-data" replace />} />
+          <Route path="/data-collection" element={<Navigate to="/patient-data" replace />} />
+          <Route path="/ml-models" element={<MLModels />} />
+          <Route path="/cds" element={
+            <ErrorBoundary>
+              <CDS />
+            </ErrorBoundary>
+          } />
+          <Route path="/mri" element={<MRIDashboard />} />
+          <Route path="/monitoring" element={<PatientMonitoring />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </Suspense>
     </Layout>
   )
 }

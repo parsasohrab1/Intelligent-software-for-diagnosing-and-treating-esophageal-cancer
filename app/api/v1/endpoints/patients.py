@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, case
 from typing import List, Optional
 from app.core.database import get_db
-from app.core.cache import CacheManager
+from app.core.advanced_cache import get_cache_manager
+from app.core.pagination import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pagination_params
 from app.models.patient import Patient
 from app.models.user import User
 from app.schemas.patient import PatientResponse, PatientCreate
@@ -23,17 +24,7 @@ from app.core.security.consent_manager import ConsentManager, ConsentType
 router = APIRouter()
 
 # Lazy initialization to avoid errors on import
-_cache_manager = None
 _data_masking = None
-
-def get_cache_manager():
-    global _cache_manager
-    if _cache_manager is None:
-        try:
-            _cache_manager = CacheManager()
-        except Exception:
-            _cache_manager = None
-    return _cache_manager
 
 def get_data_masking():
     global _data_masking
@@ -48,37 +39,32 @@ def get_data_masking():
 @router.get("/")
 async def get_patients(
     skip: int = 0,
-    limit: int = 10000,
+    limit: int = DEFAULT_PAGE_SIZE,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(require_permission(Permission.READ_DEIDENTIFIED, optional=True))
 ):
-    """Get list of patients"""
+    """Get list of patients (uniform pagination: offset/limit, max page size applied)."""
     import logging
     import traceback
     import time
     from datetime import datetime
     from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
-    
+
     start_time = time.time()
     logger = logging.getLogger(__name__)
-    
+    offset, effective_limit = pagination_params(skip, limit)
+    was_truncated = limit is not None and limit > MAX_PAGE_SIZE
+
     try:
-        # Query database - optimized with limit
-        # Reduce default limit if not specified to improve performance
-        # Further reduce limit to prevent timeouts, but inform caller if truncated
-        max_allowed_limit = 50  # Reduced from 100 to 50 for faster response
-        effective_limit = min(limit, max_allowed_limit) if limit > max_allowed_limit else limit
-        was_truncated = limit > max_allowed_limit
-        # Use optimized query with only necessary columns
-        patients = db.query(Patient).offset(skip).limit(effective_limit).all()
+        patients = db.query(Patient).offset(offset).limit(effective_limit).all()
         
         query_time = time.time() - start_time
         if query_time > 1.0:
             logger.warning(f"Patient query took {query_time:.2f}s, returned {len(patients)} patients")
         
         if was_truncated:
-            logger.warning(f"Patient query limit truncated from {limit} to {effective_limit} to prevent timeouts")
-        
+            logger.warning(f"Patient query limit capped from {limit} to {effective_limit} (max page size)")
+
         # Convert to dict for response with data masking
         # Optimized: Use list comprehension and simplified datetime handling
         patient_list = []
@@ -153,13 +139,12 @@ async def get_patients(
         return {
             "patients": patient_list,
             "total_returned": len(patient_list),
-            "requested_limit": limit,
-            "effective_limit": effective_limit,
+            "offset": offset,
+            "limit": effective_limit,
             "truncated": was_truncated,
-            "message": f"Results limited to {effective_limit} records to prevent timeouts. Requested {limit} records." if was_truncated else None
+            "message": f"Results capped to {effective_limit} (max page size). Requested {limit}." if was_truncated else None
         }
     except (OperationalError, DisconnectionError, SQLAlchemyError) as e:
-        # Database connection/operation errors - return consistent structure with empty list
         logger.warning(f"Database error querying patients: {str(e)}")
         try:
             db.rollback()
@@ -168,8 +153,8 @@ async def get_patients(
         return {
             "patients": [],
             "total_returned": 0,
-            "requested_limit": limit,
-            "effective_limit": limit,
+            "offset": offset,
+            "limit": effective_limit,
             "truncated": False,
             "message": None
         }
@@ -259,14 +244,14 @@ async def get_patients_for_dashboard(
     import logging
     import traceback
     from datetime import datetime
-    from app.core.database import SessionLocal
+    from app.core.database import SessionLocal, SessionLocalRead
     from sqlalchemy.exc import SQLAlchemyError, OperationalError
     from sqlalchemy import func
     
     logger = logging.getLogger(__name__)
     db = None
     try:
-        db = SessionLocal()
+        db = SessionLocalRead()
         # Try to create tables if they don't exist
         try:
             from app.core.database import Base
@@ -365,13 +350,13 @@ async def get_patients_list(
     import logging
     import traceback
     from datetime import datetime
-    from app.core.database import SessionLocal
+    from app.core.database import SessionLocalRead
     from sqlalchemy.exc import SQLAlchemyError, OperationalError
     
     logger = logging.getLogger(__name__)
     db = None
     try:
-        db = SessionLocal()
+        db = SessionLocalRead()
         
         # Optimized query: only select needed fields
         patients = db.query(
@@ -428,18 +413,20 @@ async def get_patient_combined_data(
     patient_id: str,
 ):
     """
-    Get all patient data from all sources combined (no authentication required for development)
-    Combines: patient info, imaging, lab results, clinical data, treatment, genomic data
+    Get all patient data from all sources combined (no authentication required for development).
+    Uses eager loading (selectinload) to avoid N+1: one query for patient + relations.
+    Combines: patient info, imaging, lab results, clinical data, treatment, genomic data, quality_of_life.
     """
     import logging
     import traceback
     from datetime import datetime
-    from app.core.database import SessionLocal
+    from app.core.database import SessionLocalRead
     from sqlalchemy.exc import SQLAlchemyError, OperationalError
-    
+    from sqlalchemy.orm import selectinload
+
     logger = logging.getLogger(__name__)
     db = None
-    
+
     result = {
         "patient_id": patient_id,
         "patient_info": None,
@@ -452,171 +439,130 @@ async def get_patient_combined_data(
         "sources": [],
         "timestamp": datetime.now().isoformat()
     }
-    
+
     try:
-        db = SessionLocal()
-        
-        # 1. Get basic patient info
-        try:
-            patient = db.query(Patient).filter(Patient.patient_id == patient_id).first()
-            if patient:
-                result["patient_info"] = {
-                    "patient_id": str(patient.patient_id or ''),
-                    "age": int(patient.age or 0),
-                    "gender": str(patient.gender or ''),
-                    "ethnicity": str(patient.ethnicity) if patient.ethnicity else None,
-                    "has_cancer": bool(patient.has_cancer) if patient.has_cancer is not None else False,
-                    "cancer_type": str(patient.cancer_type) if patient.cancer_type else None,
-                    "cancer_subtype": str(patient.cancer_subtype) if patient.cancer_subtype else None,
-                    "created_at": patient.created_at.isoformat() if patient.created_at else None,
-                    "updated_at": patient.updated_at.isoformat() if patient.updated_at else None,
-                }
-                result["sources"].append("patient_database")
-        except Exception as e:
-            logger.warning(f"Error getting patient info: {e}")
-        
-        # 2. Get imaging data
-        try:
-            from app.models.imaging_data import ImagingData
-            imaging_list = db.query(ImagingData).filter(
-                ImagingData.patient_id == patient_id
-            ).order_by(ImagingData.imaging_date.desc()).all()
-            
-            for img in imaging_list:
-                result["imaging_data"].append({
-                    "image_id": str(img.image_id) if img.image_id else None,
-                    "imaging_modality": str(img.imaging_modality) if img.imaging_modality else None,
-                    "findings": str(img.findings) if img.findings else None,
-                    "impression": str(img.impression) if img.impression else None,
-                    "tumor_length_cm": float(img.tumor_length_cm) if img.tumor_length_cm else None,
-                    "wall_thickness_cm": float(img.wall_thickness_cm) if img.wall_thickness_cm else None,
-                    "lymph_nodes_positive": int(img.lymph_nodes_positive) if img.lymph_nodes_positive else None,
-                    "imaging_date": img.imaging_date.isoformat() if img.imaging_date else None,
-                })
-            if imaging_list:
-                result["sources"].append("imaging")
-        except Exception as e:
-            logger.warning(f"Error getting imaging data: {e}")
-        
-        # 3. Get lab results
-        try:
-            from app.models.lab_results import LabResult
-            lab_list = db.query(LabResult).filter(
-                LabResult.patient_id == patient_id
-            ).order_by(LabResult.test_date.desc()).all()
-            
-            for lab in lab_list:
-                result["lab_results"].append({
-                    "test_id": str(lab.test_id) if lab.test_id else None,
-                    "test_date": lab.test_date.isoformat() if lab.test_date else None,
-                    "hemoglobin": float(lab.hemoglobin) if lab.hemoglobin else None,
-                    "wbc_count": float(lab.wbc_count) if lab.wbc_count else None,
-                    "platelet_count": float(lab.platelet_count) if lab.platelet_count else None,
-                    "creatinine": float(lab.creatinine) if lab.creatinine else None,
-                    "cea": float(lab.cea) if lab.cea else None,
-                    "ca19_9": float(lab.ca19_9) if lab.ca19_9 else None,
-                    "crp": float(lab.crp) if lab.crp else None,
-                    "albumin": float(lab.albumin) if lab.albumin else None,
-                })
-            if lab_list:
-                result["sources"].append("lab_results")
-        except Exception as e:
-            logger.warning(f"Error getting lab results: {e}")
-        
-        # 4. Get clinical data
-        try:
-            from app.models.clinical_data import ClinicalData
-            clinical_list = db.query(ClinicalData).filter(
-                ClinicalData.patient_id == patient_id
-            ).order_by(ClinicalData.record_date.desc()).all()
-            
-            for clinical in clinical_list:
-                result["clinical_data"].append({
-                    "record_id": str(clinical.record_id) if clinical.record_id else None,
-                    "record_date": clinical.record_date.isoformat() if clinical.record_date else None,
-                    "clinical_notes": str(clinical.clinical_notes) if clinical.clinical_notes else None,
-                    "symptoms": str(clinical.symptoms) if clinical.symptoms else None,
-                    "diagnosis": str(clinical.diagnosis) if clinical.diagnosis else None,
-                })
-            if clinical_list:
-                result["sources"].append("clinical_data")
-        except Exception as e:
-            logger.warning(f"Error getting clinical data: {e}")
-        
-        # 5. Get treatment data
-        try:
-            from app.models.treatment_data import TreatmentData
-            treatment_list = db.query(TreatmentData).filter(
-                TreatmentData.patient_id == patient_id
-            ).order_by(TreatmentData.treatment_date.desc()).all()
-            
-            for treatment in treatment_list:
-                result["treatment_data"].append({
-                    "treatment_id": str(treatment.treatment_id) if treatment.treatment_id else None,
-                    "treatment_date": treatment.treatment_date.isoformat() if treatment.treatment_date else None,
-                    "treatment_type": str(treatment.treatment_type) if treatment.treatment_type else None,
-                    "treatment_details": str(treatment.treatment_details) if treatment.treatment_details else None,
-                    "response": str(treatment.response) if treatment.response else None,
-                })
-            if treatment_list:
-                result["sources"].append("treatment_data")
-        except Exception as e:
-            logger.warning(f"Error getting treatment data: {e}")
-        
-        # 6. Get genomic data
-        try:
-            from app.models.genomic_data import GenomicData
-            genomic_list = db.query(GenomicData).filter(
-                GenomicData.patient_id == patient_id
-            ).order_by(GenomicData.test_date.desc()).all()
-            
-            for genomic in genomic_list:
-                result["genomic_data"].append({
-                    "genomic_id": str(genomic.genomic_id) if genomic.genomic_id else None,
-                    "test_date": genomic.test_date.isoformat() if genomic.test_date else None,
-                    "mutations": str(genomic.mutations) if genomic.mutations else None,
-                    "pdl1_status": str(genomic.pdl1_status) if genomic.pdl1_status else None,
-                    "msi_status": str(genomic.msi_status) if genomic.msi_status else None,
-                })
-            if genomic_list:
-                result["sources"].append("genomic_data")
-        except Exception as e:
-            logger.warning(f"Error getting genomic data: {e}")
-        
-        # 7. Get quality of life data
-        try:
-            from app.models.quality_of_life import QualityOfLife
-            qol_list = db.query(QualityOfLife).filter(
-                QualityOfLife.patient_id == patient_id
-            ).order_by(QualityOfLife.assessment_date.desc()).all()
-            
-            for qol in qol_list:
-                result["quality_of_life"].append({
-                    "assessment_id": str(qol.assessment_id) if qol.assessment_id else None,
-                    "assessment_date": qol.assessment_date.isoformat() if qol.assessment_date else None,
-                    "score": float(qol.score) if qol.score else None,
-                    "notes": str(qol.notes) if qol.notes else None,
-                })
-            if qol_list:
-                result["sources"].append("quality_of_life")
-        except Exception as e:
-            logger.warning(f"Error getting quality of life data: {e}")
-        
+        db = SessionLocalRead()
+
+        # Single query with eager loading to prevent N+1 (patient + imaging + clinical + lab + treatment + genomic + qol)
+        patient = (
+            db.query(Patient)
+            .options(
+                selectinload(Patient.imaging_data),
+                selectinload(Patient.clinical_data),
+                selectinload(Patient.lab_results),
+                selectinload(Patient.treatment_data),
+                selectinload(Patient.genomic_data),
+                selectinload(Patient.quality_of_life),
+            )
+            .filter(Patient.patient_id == patient_id)
+            .first()
+        )
+
+        if not patient:
+            return result
+
+        result["patient_info"] = {
+            "patient_id": str(patient.patient_id or ''),
+            "age": int(patient.age or 0),
+            "gender": str(patient.gender or ''),
+            "ethnicity": str(patient.ethnicity) if patient.ethnicity else None,
+            "has_cancer": bool(patient.has_cancer) if patient.has_cancer is not None else False,
+            "cancer_type": str(patient.cancer_type) if patient.cancer_type else None,
+            "cancer_subtype": str(patient.cancer_subtype) if patient.cancer_subtype else None,
+            "created_at": patient.created_at.isoformat() if patient.created_at else None,
+            "updated_at": patient.updated_at.isoformat() if patient.updated_at else None,
+        }
+        result["sources"].append("patient_database")
+
+        # Build lists from eagerly loaded relations (sort in Python)
+        for img in sorted(patient.imaging_data or [], key=lambda x: getattr(x, 'imaging_date', None) or '', reverse=True):
+            result["imaging_data"].append({
+                "image_id": str(img.image_id) if img.image_id else None,
+                "imaging_modality": str(img.imaging_modality) if img.imaging_modality else None,
+                "findings": str(img.findings) if img.findings else None,
+                "impression": str(img.impression) if img.impression else None,
+                "tumor_length_cm": float(img.tumor_length_cm) if img.tumor_length_cm else None,
+                "wall_thickness_cm": float(img.wall_thickness_cm) if img.wall_thickness_cm else None,
+                "lymph_nodes_positive": int(img.lymph_nodes_positive) if img.lymph_nodes_positive else None,
+                "imaging_date": img.imaging_date.isoformat() if img.imaging_date and hasattr(img.imaging_date, 'isoformat') else None,
+            })
+        if result["imaging_data"]:
+            result["sources"].append("imaging")
+
+        for lab in sorted(patient.lab_results or [], key=lambda x: getattr(x, 'test_date', None) or '', reverse=True):
+            result["lab_results"].append({
+                "test_id": str(lab.test_id) if lab.test_id else None,
+                "test_date": lab.test_date.isoformat() if lab.test_date and hasattr(lab.test_date, 'isoformat') else None,
+                "hemoglobin": float(lab.hemoglobin) if lab.hemoglobin is not None else None,
+                "wbc_count": float(lab.wbc_count) if lab.wbc_count is not None else None,
+                "platelet_count": float(lab.platelet_count) if lab.platelet_count is not None else None,
+                "creatinine": float(lab.creatinine) if lab.creatinine is not None else None,
+                "cea": float(lab.cea) if lab.cea is not None else None,
+                "ca19_9": float(lab.ca19_9) if lab.ca19_9 is not None else None,
+                "crp": float(lab.crp) if lab.crp is not None else None,
+                "albumin": float(lab.albumin) if lab.albumin is not None else None,
+            })
+        if result["lab_results"]:
+            result["sources"].append("lab_results")
+
+        for clinical in sorted(patient.clinical_data or [], key=lambda x: getattr(x, 'record_date', None) or '', reverse=True):
+            result["clinical_data"].append({
+                "record_id": str(clinical.record_id) if clinical.record_id else None,
+                "record_date": clinical.record_date.isoformat() if clinical.record_date and hasattr(clinical.record_date, 'isoformat') else None,
+                "clinical_notes": str(clinical.clinical_notes) if clinical.clinical_notes else None,
+                "symptoms": str(clinical.symptoms) if clinical.symptoms else None,
+                "diagnosis": str(clinical.diagnosis) if clinical.diagnosis else None,
+            })
+        if result["clinical_data"]:
+            result["sources"].append("clinical_data")
+
+        for treatment in sorted(patient.treatment_data or [], key=lambda x: getattr(x, 'treatment_date', None) or '', reverse=True):
+            result["treatment_data"].append({
+                "treatment_id": str(treatment.treatment_id) if treatment.treatment_id else None,
+                "treatment_date": treatment.treatment_date.isoformat() if treatment.treatment_date and hasattr(treatment.treatment_date, 'isoformat') else None,
+                "treatment_type": str(treatment.treatment_type) if treatment.treatment_type else None,
+                "treatment_details": str(treatment.treatment_details) if treatment.treatment_details else None,
+                "response": str(treatment.response) if treatment.response else None,
+            })
+        if result["treatment_data"]:
+            result["sources"].append("treatment_data")
+
+        for genomic in sorted(patient.genomic_data or [], key=lambda x: getattr(x, 'test_date', None) or '', reverse=True):
+            result["genomic_data"].append({
+                "genomic_id": str(genomic.genomic_id) if genomic.genomic_id else None,
+                "test_date": genomic.test_date.isoformat() if genomic.test_date and hasattr(genomic.test_date, 'isoformat') else None,
+                "mutations": str(genomic.mutations) if genomic.mutations else None,
+                "pdl1_status": str(genomic.pdl1_status) if genomic.pdl1_status else None,
+                "msi_status": str(genomic.msi_status) if genomic.msi_status else None,
+            })
+        if result["genomic_data"]:
+            result["sources"].append("genomic_data")
+
+        for qol in sorted(patient.quality_of_life or [], key=lambda x: getattr(x, 'assessment_date', None) or '', reverse=True):
+            result["quality_of_life"].append({
+                "assessment_id": str(qol.assessment_id) if qol.assessment_id else None,
+                "assessment_date": qol.assessment_date.isoformat() if qol.assessment_date and hasattr(qol.assessment_date, 'isoformat') else None,
+                "score": float(qol.score) if qol.score is not None else None,
+                "notes": str(qol.notes) if qol.notes else None,
+            })
+        if result["quality_of_life"]:
+            result["sources"].append("quality_of_life")
+
         return result
-        
+
     except (SQLAlchemyError, OperationalError) as db_err:
         logger.error(f"Database error in combined patient data: {db_err}")
         logger.error(traceback.format_exc())
-        return result  # Return partial data
+        return result
     except Exception as e:
         logger.error(f"Unexpected error in combined patient data: {e}")
         logger.error(traceback.format_exc())
-        return result  # Return partial data
+        return result
     finally:
         if db:
             try:
                 db.close()
-            except:
+            except Exception:
                 pass
 
 
@@ -630,7 +576,7 @@ async def get_dashboard_stats():
     import logging
     import traceback
     from datetime import datetime
-    from app.core.database import SessionLocal
+    from app.core.database import SessionLocalRead
     from sqlalchemy.exc import SQLAlchemyError, OperationalError
     
     logger = logging.getLogger(__name__)
@@ -658,7 +604,7 @@ async def get_dashboard_stats():
     
     db = None
     try:
-        db = SessionLocal()
+        db = SessionLocalRead()
         
         # Fast aggregated queries for patient stats (optimized single query)
         try:

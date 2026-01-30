@@ -1,5 +1,8 @@
 """
-Database configuration and session management
+Database configuration and session management.
+
+Supports an optional read replica (DATABASE_READ_REPLICA_URL) for production:
+read-only queries (e.g. dashboard stats, reports) use the replica when configured.
 """
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
@@ -32,17 +35,55 @@ else:
         },
     )
 
-# Session factory
+# Session factory (primary, read-write)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Read replica: separate engine and session for read-only queries (production)
+# When DATABASE_READ_REPLICA_URL is set (PostgreSQL only), use it for reports/dashboard.
+read_engine = None
+SessionLocalRead = SessionLocal  # default: use primary for reads
+
+if not settings.USE_SQLITE and getattr(settings, "DATABASE_READ_REPLICA_URL", None):
+    _replica_url = settings.DATABASE_READ_REPLICA_URL
+    if _replica_url:
+        read_engine = create_engine(
+            _replica_url,
+            pool_pre_ping=True,
+            pool_size=10,
+            max_overflow=20,
+            pool_recycle=3600,
+            pool_timeout=30,
+            echo=settings.DEBUG,
+            connect_args={
+                "connect_timeout": 10,
+                "application_name": "inescape_api_read",
+            },
+        )
+        SessionLocalRead = sessionmaker(autocommit=False, autoflush=False, bind=read_engine)
 
 # Base class for models
 Base = declarative_base()
 
 
 def get_db() -> Generator:
-    """Dependency for getting database session"""
+    """Dependency for getting database session (primary, read-write)."""
     db = SessionLocal()
     try:
+        yield db
+    finally:
+        db.close()
+
+
+def get_read_db() -> Generator:
+    """Dependency for read-only database session (uses replica when DATABASE_READ_REPLICA_URL is set)."""
+    db = SessionLocalRead()
+    try:
+        if not settings.USE_SQLITE:
+            timeout_sec = getattr(settings, "QUERY_TIMEOUT_SECONDS", 30)
+            try:
+                db.execute(text(f"SET statement_timeout = '{timeout_sec}s'"))
+            except Exception:
+                pass
         yield db
     finally:
         db.close()

@@ -144,18 +144,18 @@ class HealthCheckService:
         
         start_time = time.time()
         try:
-            from app.core.cache import CacheManager
-            
-            cache_manager = CacheManager()
+            from app.core.advanced_cache import get_cache_manager
+
+            cache_manager = get_cache_manager()
             test_key = "health_check_test"
             test_value = {"test": True, "timestamp": time.time()}
-            
+
             # Test set
             cache_manager.set(test_key, test_value, ttl=10)
-            
+
             # Test get
             cached_value = cache_manager.get(test_key)
-            
+
             if cached_value and cached_value.get("test"):
                 # Clean up
                 cache_manager.delete(test_key)

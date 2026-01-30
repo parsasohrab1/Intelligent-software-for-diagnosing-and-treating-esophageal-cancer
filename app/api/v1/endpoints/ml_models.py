@@ -13,8 +13,74 @@ from app.services.ml_training import MLTrainingPipeline
 from app.services.explainable_ai import ExplainableAI
 from app.services.model_registry import ModelRegistry
 import os
+import logging
+from typing import Tuple, Any, Optional
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
+
+# In-memory cache for loaded model objects (model_id -> (model_instance, model_info))
+_loaded_models: Dict[str, Tuple[Any, Dict]] = {}
+_MAX_LOADED_MODELS = 5  # Evict oldest if over limit (simple FIFO by keeping dict order)
+
+
+def _get_or_load_model(model_id: str) -> Tuple[Any, Dict]:
+    """Load model once and cache in memory. Returns (model_instance, model_info)."""
+    global _loaded_models
+    if model_id in _loaded_models:
+        return _loaded_models[model_id]
+
+    registry = ModelRegistry()
+    model_info = registry.get_model(model_id)
+    if not model_info:
+        raise HTTPException(status_code=404, detail="Model not found")
+
+    from app.services.ml_models.sklearn_models import (
+        LogisticRegressionModel,
+        RandomForestModel,
+        XGBoostModel,
+        LightGBMModel,
+    )
+    from app.services.ml_models.neural_network import NeuralNetworkModel
+
+    model_type = model_info.get("model_type", "RandomForest")
+    if model_type == "LogisticRegression":
+        model = LogisticRegressionModel()
+    elif model_type == "RandomForest":
+        model = RandomForestModel()
+    elif model_type == "XGBoost":
+        model = XGBoostModel()
+    elif model_type == "LightGBM":
+        model = LightGBMModel()
+    elif model_type == "NeuralNetwork":
+        model = NeuralNetworkModel()
+    else:
+        raise ValueError(f"Unknown model type: {model_type}")
+
+    model.load_model(model_info["model_path"])
+    # Evict oldest if over limit
+    if len(_loaded_models) >= _MAX_LOADED_MODELS:
+        first_key = next(iter(_loaded_models))
+        del _loaded_models[first_key]
+        logger.debug("Evicted model %s from cache", first_key)
+    _loaded_models[model_id] = (model, model_info)
+    return model, model_info
+
+
+def warm_up_best_model() -> Optional[str]:
+    """Load best model into cache at startup so first /predict is fast. Returns model_id if warmed, else None."""
+    try:
+        registry = ModelRegistry()
+        best = registry.get_best_model(metric="roc_auc")
+        if not best or not best.get("model_id"):
+            return None
+        model_id = best["model_id"]
+        _get_or_load_model(model_id)
+        logger.info("Model warm-up: loaded best model %s", model_id)
+        return model_id
+    except Exception as e:
+        logger.debug("Model warm-up skipped: %s", e)
+        return None
 
 
 class TrainModelRequest(BaseModel):
@@ -53,9 +119,12 @@ class BatchPredictRequest(BaseModel):
     """Request model for batch prediction"""
 
     model_id: str = Field(..., description="Model ID from registry")
-    data_path: str = Field(..., description="Path to data CSV file")
+    data_path: Optional[str] = Field(None, description="Path to data CSV file (optional if features_list provided)")
+    features_list: Optional[List[Dict[str, Any]]] = Field(
+        None, description="List of feature dicts for batch prediction (optional if data_path provided)"
+    )
     include_explanation: bool = Field(
-        default=False, description="Include SHAP explanation"
+        default=False, description="Include SHAP explanation for first sample only"
     )
 
 
@@ -145,38 +214,10 @@ async def train_model(request: TrainModelRequest):
 
 @router.post("/predict")
 async def predict(request: PredictRequest):
-    """Make prediction with a trained model"""
+    """Make prediction with a trained model (uses in-memory model cache)."""
     try:
-        registry = ModelRegistry()
-        model_info = registry.get_model(request.model_id)
-
-        if not model_info:
-            raise HTTPException(status_code=404, detail="Model not found")
-
-        # Load model
-        from app.services.ml_models.sklearn_models import (
-            LogisticRegressionModel,
-            RandomForestModel,
-            XGBoostModel,
-            LightGBMModel,
-        )
-        from app.services.ml_models.neural_network import NeuralNetworkModel
-
-        model_type = model_info["model_type"]
-        if model_type == "LogisticRegression":
-            model = LogisticRegressionModel()
-        elif model_type == "RandomForest":
-            model = RandomForestModel()
-        elif model_type == "XGBoost":
-            model = XGBoostModel()
-        elif model_type == "LightGBM":
-            model = LightGBMModel()
-        elif model_type == "NeuralNetwork":
-            model = NeuralNetworkModel()
-        else:
-            raise ValueError(f"Unknown model type: {model_type}")
-
-        model.load_model(model_info["model_path"])
+        model, model_info = _get_or_load_model(request.model_id)
+        model_type = model_info.get("model_type", "RandomForest")
 
         # Prepare features
         feature_df = pd.DataFrame([request.features])
@@ -228,25 +269,65 @@ async def predict(request: PredictRequest):
 
 @router.post("/predict/batch")
 async def batch_predict(request: BatchPredictRequest):
-    """Make batch predictions"""
+    """Make batch predictions (single model load, then batch inference for better GPU/CPU use)."""
     try:
-        registry = ModelRegistry()
-        model_info = registry.get_model(request.model_id)
+        if request.features_list:
+            feature_df = pd.DataFrame(request.features_list)
+        elif request.data_path and os.path.isfile(request.data_path):
+            feature_df = pd.read_csv(request.data_path)
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Provide either features_list (list of feature dicts) or a valid data_path to CSV",
+            )
 
-        if not model_info:
-            raise HTTPException(status_code=404, detail="Model not found")
+        if feature_df.empty:
+            return {"message": "Batch prediction completed", "predictions": [], "count": 0}
 
-        # Load model (similar to predict endpoint)
-        # ... (same model loading logic)
+        model, model_info = _get_or_load_model(request.model_id)
+        model_type = model_info.get("model_type", "RandomForest")
 
-        # Load data
-        data = pd.read_csv(request.data_path)
+        # Align columns with model features
+        missing_cols = set(model.feature_names) - set(feature_df.columns)
+        for col in missing_cols:
+            feature_df[col] = 0
+        feature_df = feature_df[model.feature_names]
 
-        # Make predictions
-        # ... (prediction logic)
+        # Batch predict (single model forward pass)
+        predictions = model.predict(feature_df)
+        if hasattr(model, "predict_proba"):
+            probas = model.predict_proba(feature_df)
+            proba_list = [p.tolist() if hasattr(p, "tolist") else list(p) for p in probas]
+        else:
+            proba_list = [[float(p), 1.0 - float(p)] for p in predictions]
 
-        return {"message": "Batch prediction completed", "predictions": []}
+        results = [
+            {
+                "prediction": int(pred),
+                "probability": proba_list[i] if i < len(proba_list) else [],
+            }
+            for i, pred in enumerate(predictions)
+        ]
 
+        # Optional: explanation for first sample only
+        if request.include_explanation and len(feature_df) > 0:
+            try:
+                explainer = ExplainableAI()
+                first_df = feature_df.iloc[:1]
+                results[0]["explanation"] = explainer.explain_prediction(model.model, first_df)
+            except Exception as ex:
+                logger.warning("Batch explain failed: %s", ex)
+
+        return {
+            "message": "Batch prediction completed",
+            "predictions": results,
+            "count": len(results),
+            "model_id": request.model_id,
+            "model_type": model_type,
+        }
+
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error in batch prediction: {str(e)}"
@@ -259,29 +340,22 @@ async def list_models(
     status: str = "active",
     limit: int = 10000,
 ):
-    """List all trained models with caching"""
+    """List all trained models with caching (multi-level cache + compression)"""
     import logging
-    from app.core.cache import CacheManager
+    from app.core.advanced_cache import get_cache_manager
     from datetime import datetime, timedelta
     
     logger = logging.getLogger(__name__)
-    cache_manager = None
+    cache_manager = get_cache_manager()
+    cache_key = cache_manager.generate_key("ml_models", "list", model_type=model_type, status=status, limit=limit)
     
-    # Try to initialize cache manager, but don't fail if it doesn't work
+    # Try to get from cache
     try:
-        cache_manager = CacheManager()
-        cache_key = cache_manager.generate_key("ml_models", "list", model_type=model_type, status=status, limit=limit)
-        
-        # Try to get from cache
-        try:
-            cached_result = cache_manager.get(cache_key)
-            if cached_result is not None:
-                return cached_result
-        except Exception:
-            pass
-    except Exception as cache_init_err:
-        logger.warning(f"Cache manager initialization failed: {cache_init_err}")
-        cache_manager = None
+        cached_result = cache_manager.get(cache_key)
+        if cached_result is not None:
+            return cached_result
+    except Exception:
+        pass
     
     try:
         registry = ModelRegistry()
@@ -675,10 +749,10 @@ async def list_models(
 
 @router.get("/models/{model_id}")
 async def get_model_info(model_id: str):
-    """Get model information with caching"""
-    from app.core.cache import CacheManager
+    """Get model information with caching (multi-level cache + compression)"""
+    from app.core.advanced_cache import get_cache_manager
     
-    cache_manager = CacheManager()
+    cache_manager = get_cache_manager()
     cache_key = cache_manager.generate_key("ml_models", "by_id", model_id=model_id)
     
     # Try to get from cache

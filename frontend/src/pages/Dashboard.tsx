@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useQuery } from 'react-query'
 import {
   Grid,
   Card,
@@ -79,20 +80,31 @@ interface PatientAnalysis {
   }[]
 }
 
+const defaultStats: DashboardStats = {
+  total_patients: 0,
+  cancer_patients: 0,
+  normal_patients: 0,
+  total_datasets: 0,
+  total_models: 0,
+  total_cds_services: 0,
+}
+
 export default function Dashboard() {
-  const [stats, setStats] = useState<DashboardStats>({
-    total_patients: 0,
-    cancer_patients: 0,
-    normal_patients: 0,
-    total_datasets: 0,
-    total_models: 0,
-    total_cds_services: 0,
-  })
+  const { data: statsFromQuery, isLoading: loadingStats } = useQuery(
+    ['dashboard', 'stats'],
+    () => api.get<DashboardStats>('/patients/dashboard/stats', { timeout: 60000 }).then((r) => r.data),
+    { staleTime: 2 * 60 * 1000, retry: 1 }
+  )
+  const [stats, setStats] = useState<DashboardStats>(defaultStats)
   const [patientAnalysis, setPatientAnalysis] = useState<PatientAnalysis[]>([])
   const [selectedPatient, setSelectedPatient] = useState<PatientAnalysis | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadingAnalysis, setLoadingAnalysis] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (statsFromQuery) setStats(statsFromQuery)
+  }, [statsFromQuery])
 
   const fetchDashboardData = async () => {
     setLoading(true)
@@ -100,30 +112,20 @@ export default function Dashboard() {
     setError(null)
 
     try {
-      // OPTIMIZED: Fetch stats first (fast), then patients (slower)
-      // Use Promise.allSettled with longer timeout for better reliability
-      const statsRes = await Promise.allSettled([
-        api.get('/patients/dashboard/stats', { timeout: 60000 }) // 60s timeout (increased for reliability)
-      ]).then(results => results[0]).catch(() => ({ status: 'rejected' }))
-
-      // Process stats immediately (show stats cards fast)
-      let statsData = {
-        total_patients: 0,
-        cancer_patients: 0,
-        normal_patients: 0,
-        total_datasets: 0,
-        total_models: 0,
-        total_cds_services: 0,
+      // Use cached stats from React Query when available to avoid duplicate request
+      let statsData: DashboardStats = statsFromQuery ?? defaultStats
+      if (!statsFromQuery) {
+        const statsRes = await Promise.allSettled([
+          api.get('/patients/dashboard/stats', { timeout: 60000 })
+        ]).then(results => results[0]).catch(() => ({ status: 'rejected' }))
+        if (statsRes && 'value' in statsRes && statsRes.value?.data) {
+          statsData = statsRes.value.data
+        } else if (statsRes && 'data' in statsRes && (statsRes as any).data) {
+          statsData = (statsRes as any).data
+        }
       }
-
-      if (statsRes && 'data' in statsRes && statsRes.data) {
-        statsData = statsRes.data
-      } else if (statsRes && 'value' in statsRes && statsRes.value?.data) {
-        statsData = statsRes.value.data
-      }
-
       setStats(statsData)
-      setLoading(false) // Show stats immediately
+      setLoading(!!statsFromQuery ? false : true)
 
       // Fetch patients data in parallel (for analysis)
       const patientsRes = await Promise.allSettled([

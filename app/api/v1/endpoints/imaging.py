@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import date
 
-from app.core.database import get_db
+from app.core.database import get_db, get_read_db
+from app.core.pagination import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pagination_params
 from app.models.imaging_data import ImagingData
 from app.models.patient import Patient
 from pydantic import BaseModel
@@ -60,21 +61,22 @@ class MRIReportResponse(BaseModel):
 async def get_mri_images(
     patient_id: Optional[str] = Query(None, description="Filter by patient ID"),
     skip: int = Query(0, ge=0),
-    limit: int = Query(10000, ge=1, le=50000),
-    db: Session = Depends(get_db)
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    db: Session = Depends(get_read_db)
 ):
-    """Get all MRI images"""
+    """Get all MRI images (uniform pagination: offset/limit, max page size applied)."""
     import logging
     import traceback
     from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
-    
+
+    offset, effective_limit = pagination_params(skip, limit)
     try:
         query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
-        
+
         if patient_id:
             query = query.filter(ImagingData.patient_id == patient_id)
-        
-        images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+
+        images = query.order_by(ImagingData.imaging_date.desc()).offset(offset).limit(effective_limit).all()
         
         # Convert to dict for response
         image_list = []
@@ -123,33 +125,31 @@ async def get_mri_images(
 async def get_mri_reports(
     patient_id: Optional[str] = Query(None, description="Filter by patient ID"),
     skip: int = Query(0, ge=0),
-    limit: int = Query(10000, ge=1, le=50000),
-    db: Session = Depends(get_db)
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    db: Session = Depends(get_read_db)
 ):
-    """Get MRI reports with patient information (optimized, no join required)"""
+    """Get MRI reports with patient information (uniform pagination: offset/limit)."""
     import logging
     import traceback
     from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
-    
+
     logger = logging.getLogger(__name__)
-    
+    offset, effective_limit = pagination_params(skip, limit)
+
     try:
-        # Use simple query first - avoid join issues
         query = db.query(ImagingData).filter(ImagingData.imaging_modality == "MRI")
-        
+
         if patient_id:
             query = query.filter(ImagingData.patient_id == patient_id)
-        
-        # Get total count for logging
+
         total_count = query.count()
         logger.info(f"Total MRI records found: {total_count}")
-        
-        # Get imaging records
-        images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+
+        images = query.order_by(ImagingData.imaging_date.desc()).offset(offset).limit(effective_limit).all()
         logger.info(f"Retrieved {len(images)} MRI images")
         
         if len(images) == 0:
-            logger.warning(f"No MRI images found with filters: patient_id={patient_id}, skip={skip}, limit={limit}")
+            logger.warning(f"No MRI images found with filters: patient_id={patient_id}, offset={offset}, limit={effective_limit}")
             return []
         
         # Build reports - fetch patient data separately if needed
@@ -593,7 +593,7 @@ async def get_mri_image_visualization(
 @router.get("/mri/{image_id}/report", response_model=MRIReportResponse)
 async def get_mri_report(
     image_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_read_db)
 ):
     """Get detailed MRI report for specific image"""
     result = db.query(ImagingData, Patient).join(
@@ -712,7 +712,7 @@ async def get_mri_report(
 
 
 @router.get("/stats")
-async def get_imaging_stats(db: Session = Depends(get_db)):
+async def get_imaging_stats(db: Session = Depends(get_read_db)):
     """Get statistics about imaging data in database"""
     import logging
     logger = logging.getLogger(__name__)
@@ -772,18 +772,19 @@ async def get_all_imaging(
     modality: Optional[str] = Query(None, description="Filter by imaging modality"),
     patient_id: Optional[str] = Query(None, description="Filter by patient ID"),
     skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=1000),
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
     db: Session = Depends(get_db)
 ):
-    """Get all imaging data with optional filters"""
+    """Get all imaging data with optional filters (uniform pagination: offset/limit)."""
+    offset, effective_limit = pagination_params(skip, limit)
     query = db.query(ImagingData)
-    
+
     if modality:
         query = query.filter(ImagingData.imaging_modality == modality)
-    
+
     if patient_id:
         query = query.filter(ImagingData.patient_id == patient_id)
-    
-    images = query.order_by(ImagingData.imaging_date.desc()).offset(skip).limit(limit).all()
+
+    images = query.order_by(ImagingData.imaging_date.desc()).offset(offset).limit(effective_limit).all()
     return images
 

@@ -103,18 +103,13 @@ class CacheWarmingService:
         try:
             from app.core.database import get_db
             from sqlalchemy import func
-            
-            # Get database session
+            from app.models.patient import Patient
+            from app.models.imaging_data import ImagingData
+
             db = next(get_db())
             try:
-                # Import models
-                from app.models.patient import Patient
-                from app.models.imaging import ImagingStudy
-                
-                # Get counts
-                total_patients = db.query(func.count(Patient.id)).scalar() or 0
-                total_studies = db.query(func.count(ImagingStudy.id)).scalar() or 0
-                
+                total_patients = db.query(func.count(Patient.patient_id)).scalar() or 0
+                total_studies = db.query(func.count(ImagingData.image_id)).scalar() or 0
                 return {
                     "total_patients": total_patients,
                     "total_studies": total_studies,
@@ -124,7 +119,6 @@ class CacheWarmingService:
                 db.close()
         except Exception as e:
             logger.warning(f"Failed to load dashboard stats for warming: {e}")
-            # Return default data
             return {
                 "total_patients": 0,
                 "total_studies": 0,
@@ -135,17 +129,16 @@ class CacheWarmingService:
         """Load first page of patients list"""
         try:
             from app.core.database import get_db
-            
+            from app.models.patient import Patient
+
             db = next(get_db())
             try:
-                from app.models.patient import Patient
-                
                 patients = db.query(Patient).limit(20).all()
                 return [
                     {
-                        "id": str(p.id),
-                        "name": f"{p.first_name} {p.last_name}" if hasattr(p, 'first_name') else "Unknown",
-                        "status": getattr(p, 'status', 'unknown')
+                        "id": str(p.patient_id),
+                        "name": f"Patient {p.patient_id}",
+                        "status": "cancer" if p.has_cancer else "non_cancer"
                     }
                     for p in patients
                 ]
@@ -170,12 +163,22 @@ class CacheWarmingService:
     async def _load_synthetic_stats(self) -> Dict[str, Any]:
         """Load synthetic data statistics"""
         try:
-            from app.services.synthetic_data_generator import SyntheticDataGenerator
-            
-            generator = SyntheticDataGenerator()
-            if hasattr(generator, 'get_statistics'):
-                return generator.get_statistics()
-            return {"status": "no_statistics_available"}
+            from app.core.database import get_db
+            from app.models.patient import Patient
+            from app.models.imaging_data import ImagingData
+            from sqlalchemy import func
+
+            db = next(get_db())
+            try:
+                n_patients = db.query(func.count(Patient.patient_id)).scalar() or 0
+                n_imaging = db.query(func.count(ImagingData.image_id)).scalar() or 0
+                return {
+                    "total_patients": n_patients,
+                    "total_imaging": n_imaging,
+                    "status": "ok"
+                }
+            finally:
+                db.close()
         except Exception as e:
             logger.warning(f"Failed to load synthetic stats for warming: {e}")
             return {"status": "unavailable", "error": str(e)}
@@ -183,10 +186,10 @@ class CacheWarmingService:
     async def _load_health_metrics(self) -> Dict[str, Any]:
         """Load health metrics summary"""
         try:
-            from app.core.health_check import HealthChecker
-            
-            checker = HealthChecker()
-            return checker.get_quick_status()
+            from app.core.health_check import HealthCheckService
+
+            service = HealthCheckService()
+            return service.get_readiness()
         except Exception as e:
             logger.warning(f"Failed to load health metrics for warming: {e}")
             return {"status": "unhealthy", "error": str(e)}

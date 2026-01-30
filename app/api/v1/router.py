@@ -3,7 +3,9 @@ Main API router
 """
 from fastapi import APIRouter
 from app.api.v1.endpoints import (
+    admin,
     health,
+    jobs,
     patients,
     synthetic_data,
     data_collection,
@@ -34,7 +36,9 @@ from app.api.v1.endpoints import (
 api_router = APIRouter()
 
 # Include endpoint routers
+api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
 api_router.include_router(health.router, prefix="/health", tags=["health"])
+api_router.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
 api_router.include_router(patients.router, prefix="/patients", tags=["patients"])
 api_router.include_router(

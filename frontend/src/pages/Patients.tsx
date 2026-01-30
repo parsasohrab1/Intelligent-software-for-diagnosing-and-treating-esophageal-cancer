@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef } from 'react'
+import { useQuery, useQueryClient } from 'react-query'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import {
   Box,
   Typography,
@@ -36,72 +38,51 @@ interface Patient {
   [key: string]: any
 }
 
+async function fetchPatientsList(): Promise<Patient[]> {
+  try {
+    const response = await api.get('/patients/list', {
+      params: { limit: 100 },
+      timeout: 60000,
+    })
+    if (Array.isArray(response.data)) return response.data
+    if (response.data?.patients) return response.data.patients
+    return []
+  } catch {
+    try {
+      const fallback = await api.get('/patients/dashboard', { params: { limit: 100 }, timeout: 15000 })
+      return Array.isArray(fallback.data) ? fallback.data : []
+    } catch {
+      return []
+    }
+  }
+}
+
 export default function Patients() {
-  const [patients, setPatients] = useState<Patient[]>([])
-  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generateSuccess, setGenerateSuccess] = useState(false)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    fetchPatients()
-  }, [])
-
-  const fetchPatients = async () => {
-    try {
-      // Use public endpoint that doesn't require authentication
-      const response = await api.get('/patients/list', {
-        params: { limit: 100 },
-        timeout: 60000, // 60 seconds timeout (increased for reliability)
-      })
-      // Handle both array and object responses
-      if (Array.isArray(response.data)) {
-        setPatients(response.data)
-      } else if (response.data && Array.isArray(response.data.patients)) {
-        setPatients(response.data.patients)
-      } else {
-        setPatients([])
-      }
-    } catch (error: any) {
-      console.error('Error fetching patients:', error)
-      // Try fallback to dashboard endpoint if list fails
-      try {
-        const fallbackResponse = await api.get('/patients/dashboard', {
-          params: { limit: 100 },
-          timeout: 15000,
-        })
-        if (Array.isArray(fallbackResponse.data)) {
-          setPatients(fallbackResponse.data)
-        } else {
-          setPatients([])
-        }
-      } catch (fallbackError) {
-        console.error('Fallback endpoint also failed:', fallbackError)
-        setPatients([])
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data: patients = [], isLoading: loading } = useQuery(
+    ['patients', 'list'],
+    fetchPatientsList,
+    { staleTime: 60 * 1000, retry: 1 }
+  )
 
   const handleQuickGenerate = async () => {
     setGenerating(true)
     setGenerateSuccess(false)
     try {
-      const response = await api.post('/synthetic-data/generate', {
+      await api.post('/synthetic-data/generate', {
         n_patients: 100,
         cancer_ratio: 0.4,
         seed: 42,
         save_to_db: true,
       })
-      
-      console.log('Data generation started:', response.data)
       setGenerateSuccess(true)
-      
-      // Wait a bit for the background task to complete, then refresh
       setTimeout(() => {
-        fetchPatients()
+        queryClient.invalidateQueries(['patients', 'list'])
         setGenerateSuccess(false)
       }, 3000)
     } catch (error: any) {
@@ -123,6 +104,17 @@ export default function Patients() {
       (patient.patient_id.startsWith('CAN') || patient.patient_id.startsWith('NOR') ? 'synthetic' : 'real').includes(searchLower)
     )
   })
+
+  const parentRef = useRef<HTMLDivElement>(null)
+  const useVirtual = filteredPatients.length > 80
+  const rowVirtualizer = useVirtualizer({
+    count: filteredPatients.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 53,
+    overscan: 8,
+  })
+  const virtualRows = rowVirtualizer.getVirtualItems()
+  const totalSize = rowVirtualizer.getTotalSize()
 
   if (loading) {
     return (
@@ -222,7 +214,7 @@ export default function Patients() {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{ maxHeight: 'calc(100vh - 300px)', overflowX: 'auto' }}>
+      <TableContainer ref={parentRef} component={Paper} sx={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto' }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -237,7 +229,7 @@ export default function Patients() {
               <TableCell><strong>Created Date</strong></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ position: 'relative' }}>
             {filteredPatients.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={9} align="center">
@@ -246,47 +238,67 @@ export default function Patients() {
                   </Typography>
                 </TableCell>
               </TableRow>
+            ) : useVirtual ? (
+              <>
+                <TableRow sx={{ height: totalSize, visibility: 'hidden' }}><TableCell colSpan={9} /></TableRow>
+                {virtualRows.map((virtualRow) => {
+                  const patient = filteredPatients[virtualRow.index]
+                  const isSynthetic = patient.patient_id.startsWith('CAN') || patient.patient_id.startsWith('NOR')
+                  const dataSource = isSynthetic ? 'Synthetic' : 'Real'
+                  return (
+                    <TableRow
+                      key={patient.patient_id}
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        transform: `translateY(${virtualRow.start}px)`,
+                        '&:hover': { backgroundColor: 'action.hover' },
+                      }}
+                    >
+                      <TableCell>
+                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                          {patient.patient_id}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Chip label={dataSource} color={isSynthetic ? 'primary' : 'success'} size="small" variant="outlined" />
+                      </TableCell>
+                      <TableCell>{patient.age || '-'}</TableCell>
+                      <TableCell>{patient.gender || '-'}</TableCell>
+                      <TableCell>{patient.ethnicity || '-'}</TableCell>
+                      <TableCell>
+                        <Chip label={patient.has_cancer ? 'Cancer' : 'Normal'} color={patient.has_cancer ? 'error' : 'success'} size="small" />
+                      </TableCell>
+                      <TableCell>{patient.cancer_type || '-'}</TableCell>
+                      <TableCell>{patient.cancer_subtype || '-'}</TableCell>
+                      <TableCell>{patient.created_at ? new Date(patient.created_at).toLocaleDateString() : '-'}</TableCell>
+                    </TableRow>
+                  )
+                })}
+              </>
             ) : (
               filteredPatients.map((patient) => {
-                // Determine data source based on patient_id pattern
                 const isSynthetic = patient.patient_id.startsWith('CAN') || patient.patient_id.startsWith('NOR')
                 const dataSource = isSynthetic ? 'Synthetic' : 'Real'
-                
                 return (
-                  <TableRow 
-                    key={patient.patient_id}
-                    sx={{ '&:hover': { backgroundColor: 'action.hover' } }}
-                  >
+                  <TableRow key={patient.patient_id} sx={{ '&:hover': { backgroundColor: 'action.hover' } }}>
                     <TableCell>
-                      <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                        {patient.patient_id}
-                      </Typography>
+                      <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{patient.patient_id}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Chip
-                        label={dataSource}
-                        color={isSynthetic ? 'primary' : 'success'}
-                        size="small"
-                        variant="outlined"
-                      />
+                      <Chip label={dataSource} color={isSynthetic ? 'primary' : 'success'} size="small" variant="outlined" />
                     </TableCell>
                     <TableCell>{patient.age || '-'}</TableCell>
                     <TableCell>{patient.gender || '-'}</TableCell>
                     <TableCell>{patient.ethnicity || '-'}</TableCell>
                     <TableCell>
-                      <Chip
-                        label={patient.has_cancer ? 'Cancer' : 'Normal'}
-                        color={patient.has_cancer ? 'error' : 'success'}
-                        size="small"
-                      />
+                      <Chip label={patient.has_cancer ? 'Cancer' : 'Normal'} color={patient.has_cancer ? 'error' : 'success'} size="small" />
                     </TableCell>
                     <TableCell>{patient.cancer_type || '-'}</TableCell>
                     <TableCell>{patient.cancer_subtype || '-'}</TableCell>
-                    <TableCell>
-                      {patient.created_at 
-                        ? new Date(patient.created_at).toLocaleDateString()
-                        : '-'}
-                    </TableCell>
+                    <TableCell>{patient.created_at ? new Date(patient.created_at).toLocaleDateString() : '-'}</TableCell>
                   </TableRow>
                 )
               })
