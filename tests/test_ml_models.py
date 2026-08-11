@@ -13,47 +13,65 @@ from app.services.ml_models.sklearn_models import (
 from app.services.ml_models.neural_network import NeuralNetworkModel
 
 
+class _ConcreteMLModel(BaseMLModel):
+    """Minimal concrete subclass for exercising BaseMLModel's shared (non-abstract) behavior."""
+
+    def build_model(self, input_shape=None, **kwargs):
+        self.model = "stub-model"
+
+    def train(self, X_train, y_train, X_val=None, y_val=None, **kwargs):
+        self.is_trained = True
+        return {"status": "trained"}
+
+    def predict(self, X):
+        return np.zeros(len(X))
+
+    def predict_proba(self, X):
+        return np.zeros((len(X), 2))
+
+
 class TestBaseMLModel:
     """Test base ML model class"""
-    
+
+    def test_base_model_is_abstract(self):
+        """BaseMLModel defines build_model/train/predict/predict_proba as abstract - it must not be instantiable directly"""
+        with pytest.raises(TypeError):
+            BaseMLModel(model_name="test_model")
+
     def test_base_model_initialization(self):
-        """Test base model initialization"""
-        model = BaseMLModel(model_name="test_model")
+        """Test base model initialization via a concrete subclass"""
+        model = _ConcreteMLModel(model_name="test_model")
         assert model.model is None
         assert model.model_name == "test_model"
         assert model.is_trained is False
-    
-    def test_base_model_train_not_implemented(self):
-        """Test that train raises NotImplementedError"""
-        model = BaseMLModel(model_name="test")
+
+    def test_base_model_train_sets_is_trained(self):
+        """Test that a concrete subclass's train() updates shared base-class state"""
+        model = _ConcreteMLModel(model_name="test")
         X = pd.DataFrame({'f1': [1, 3], 'f2': [2, 4]})
         y = pd.Series([0, 1])
-        
-        with pytest.raises(NotImplementedError):
-            model.train(X, y)
-    
-    def test_base_model_predict_not_implemented(self):
-        """Test that predict raises NotImplementedError"""
-        model = BaseMLModel(model_name="test")
-        X = pd.DataFrame({'f1': [1, 3], 'f2': [2, 4]})
-        
-        with pytest.raises(NotImplementedError):
-            model.predict(X)
-    
+
+        model.train(X, y)
+        assert model.is_trained is True
+
     def test_base_model_save_model(self):
         """Test that save_model works"""
-        model = BaseMLModel(model_name="test")
+        model = _ConcreteMLModel(model_name="test")
         import tempfile
         import os
-        
+
+        # NamedTemporaryFile holds an exclusive lock on Windows until closed,
+        # so grab the path and close the handle before save_model() reopens it.
         with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            model.save_model(tmp.name)
-            assert os.path.exists(tmp.name)
-            os.unlink(tmp.name)
-    
+            tmp_path = tmp.name
+
+        model.save_model(tmp_path)
+        assert os.path.exists(tmp_path)
+        os.unlink(tmp_path)
+
     def test_base_model_load_model(self):
         """Test that load_model works"""
-        model = BaseMLModel(model_name="test")
+        model = _ConcreteMLModel(model_name="test")
         import tempfile
         import pickle
         import os
@@ -67,12 +85,14 @@ class TestBaseMLModel:
         }
         
         with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            with open(tmp.name, "wb") as f:
-                pickle.dump(test_data, f)
-            
-            model.load_model(tmp.name)
-            assert model.model_name == "test"
-            os.unlink(tmp.name)
+            tmp_path = tmp.name
+
+        with open(tmp_path, "wb") as f:
+            pickle.dump(test_data, f)
+
+        model.load_model(tmp_path)
+        assert model.model_name == "test"
+        os.unlink(tmp_path)
 
 
 class TestLogisticRegressionModel:

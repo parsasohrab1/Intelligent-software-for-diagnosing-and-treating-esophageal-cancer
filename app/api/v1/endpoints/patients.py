@@ -251,7 +251,11 @@ async def get_patients_for_dashboard(
     logger = logging.getLogger(__name__)
     db = None
     try:
-        db = SessionLocalRead()
+        try:
+            db = SessionLocalRead()
+        except Exception as session_err:
+            logger.warning(f"Database session failed in dashboard: {session_err}")
+            return []
         # Try to create tables if they don't exist
         try:
             from app.core.database import Base
@@ -356,7 +360,11 @@ async def get_patients_list(
     logger = logging.getLogger(__name__)
     db = None
     try:
-        db = SessionLocalRead()
+        try:
+            db = SessionLocalRead()
+        except Exception as session_err:
+            logger.warning(f"Database session failed in patients list: {session_err}")
+            return []
         
         # Optimized query: only select needed fields
         patients = db.query(
@@ -581,17 +589,7 @@ async def get_dashboard_stats():
     
     logger = logging.getLogger(__name__)
     
-    # Try to get from cache first (5 minute cache)
-    cache_manager = get_cache_manager()
-    if cache_manager:
-        try:
-            cached = cache_manager.get("dashboard_stats")
-            if cached:
-                return cached
-        except Exception:
-            pass
-    
-    # Initialize defaults immediately
+    # Initialize defaults immediately so we can return them on any error
     result = {
         "total_patients": 0,
         "cancer_patients": 0,
@@ -602,10 +600,27 @@ async def get_dashboard_stats():
         "timestamp": datetime.now().isoformat()
     }
     
+    # Try to get from cache first (5 minute cache) - never raise if cache unavailable
+    cache_manager = None
+    try:
+        cache_manager = get_cache_manager()
+        if cache_manager:
+            try:
+                cached = cache_manager.get("dashboard_stats")
+                if cached:
+                    return cached
+            except Exception:
+                pass
+    except Exception as cache_err:
+        logger.debug("Cache unavailable for dashboard stats: %s", cache_err)
+    
     db = None
     try:
-        db = SessionLocalRead()
-        
+        try:
+            db = SessionLocalRead()
+        except Exception as session_err:
+            logger.warning(f"Database session failed in dashboard stats: {session_err}")
+            return result
         # Fast aggregated queries for patient stats (optimized single query)
         try:
             patient_stats = db.query(
@@ -662,8 +677,6 @@ async def get_dashboard_stats():
         except Exception as e:
             logger.warning(f"Error getting model count: {e}")
             # Keep default 6
-        except Exception:
-            pass  # Keep default 6
         
     except (SQLAlchemyError, OperationalError) as db_err:
         logger.warning(f"Database error in dashboard stats: {db_err}")

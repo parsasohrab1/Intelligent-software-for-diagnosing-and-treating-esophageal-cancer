@@ -9,6 +9,7 @@ from typing import Dict, Tuple
 import time
 from collections import defaultdict
 from app.core.redis_client import get_redis_client
+from app.core.config import settings
 
 
 class RateLimiter:
@@ -160,7 +161,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             window=window
         )
         
-        if not allowed:
+        if not allowed and settings.RATE_LIMIT_ENABLED:
             return JSONResponse(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 content={

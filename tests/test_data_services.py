@@ -23,7 +23,9 @@ class TestDataValidator:
         """Create sample data"""
         return pd.DataFrame({
             'age': [65, 70, 55, 80],
-            'gender': ['M', 'F', 'M', 'F'],
+            'gender': ['Male', 'Female', 'Male', 'Female'],
+            'has_cancer': [True, True, True, False],
+            'cancer_type': ['adenocarcinoma', 'adenocarcinoma', 'squamous_cell_carcinoma', None],
             'tumor_stage': ['T1', 'T2', 'T3', 'T4'],
             'survival_months': [24, 18, 12, 6]
         })
@@ -64,7 +66,9 @@ class TestFeatureEngineering:
         """Create sample data"""
         return pd.DataFrame({
             'age': [65, 70, 55, 80],
-            'gender': ['M', 'F', 'M', 'F'],
+            'gender': ['Male', 'Female', 'Male', 'Female'],
+            'has_cancer': [True, True, True, False],
+            'cancer_type': ['adenocarcinoma', 'adenocarcinoma', 'squamous_cell_carcinoma', None],
             'tumor_stage': ['T1', 'T2', 'T3', 'T4'],
             'survival_months': [24, 18, 12, 6]
         })

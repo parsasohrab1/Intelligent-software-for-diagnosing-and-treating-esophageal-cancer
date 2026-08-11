@@ -71,7 +71,10 @@ def get_db() -> Generator:
     try:
         yield db
     finally:
-        db.close()
+        try:
+            db.close()
+        except Exception:
+            pass
 
 
 def get_read_db() -> Generator:
@@ -86,7 +89,10 @@ def get_read_db() -> Generator:
                 pass
         yield db
     finally:
-        db.close()
+        try:
+            db.close()
+        except Exception:
+            pass
 
 
 async def init_db():

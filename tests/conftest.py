@@ -8,6 +8,24 @@ from sqlalchemy.orm import sessionmaker
 from unittest.mock import Mock, patch, MagicMock
 from app.main import app
 from app.core.database import Base, get_db
+from app.core.config import settings
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _disable_rate_limiting_for_tests():
+    """
+    RateLimitMiddleware keeps its request counters in a single process-wide
+    RateLimiter instance (created once when app.main is imported). Without
+    this, tests/test_rate_limiter.py deliberately exhausting the login
+    rate limit leaks 429s into every other test that hits the same
+    endpoint later in the same pytest session. Headers are still computed
+    normally; only the hard block is skipped.
+    """
+    original = settings.RATE_LIMIT_ENABLED
+    settings.RATE_LIMIT_ENABLED = False
+    yield
+    settings.RATE_LIMIT_ENABLED = original
+
 
 # Test database URL (use in-memory SQLite for tests)
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"

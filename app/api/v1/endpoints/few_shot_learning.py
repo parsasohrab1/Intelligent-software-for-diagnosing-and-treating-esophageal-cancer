@@ -124,7 +124,8 @@ async def train_few_shot_model(
 
 @router.post("/predict")
 async def predict_rare_subtype(
-    request: FewShotPredictionRequest,
+    subtype: str = Query(..., description="Rare subtype name"),
+    method: str = Query("prototypical", description="Few-shot method"),
     query_files: List[UploadFile] = File(...),
     support_files: Optional[List[UploadFile]] = File(None),
     support_labels: Optional[List[int]] = Query(None),
@@ -152,12 +153,12 @@ async def predict_rare_subtype(
         
         # Initialize service
         service = FewShotLearningService(
-            method=request.method,
+            method=method,
             use_transfer_learning=True
         )
         
         service.initialize_for_subtype(
-            subtype=request.subtype,
+            subtype=subtype,
             input_shape=(224, 224, 3),
             num_classes=2
         )
@@ -189,11 +190,11 @@ async def predict_rare_subtype(
         )
         
         return {
-            "subtype": request.subtype,
+            "subtype": subtype,
             "predictions": result["predictions"],
             "probabilities": result["probabilities"],
             "confidence": result["confidence"],
-            "method": request.method
+            "method": method
         }
         
     except HTTPException:
