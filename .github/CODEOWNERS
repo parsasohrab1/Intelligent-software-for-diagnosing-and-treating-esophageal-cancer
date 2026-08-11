@@ -1,0 +1,9 @@
+# CODEOWNERS
+#
+# As of 2026-08-11, git history shows a single contributor for this
+# entire repository, so everything defaults to that one owner. This is
+# itself the bus-factor risk documented in CONTRIBUTING.md - as soon as
+# a second maintainer joins, split ownership below by subsystem instead
+# of leaving it all on one person.
+
+* @parsasohrab1
