@@ -17,6 +17,10 @@ from app.middleware.performance_middleware import PerformanceMiddleware
 from app.core.exceptions import INEsCapeException
 from fastapi.exceptions import RequestValidationError
 from fastapi import Request
+from app.core.logging_config import configure_logging
+from app.middleware.correlation_id import CorrelationIdMiddleware
+
+configure_logging()
 
 
 @asynccontextmanager
@@ -85,6 +89,9 @@ app = FastAPI(
     openapi_url="/api/v1/openapi.json",
     lifespan=lifespan,
 )
+
+# Correlation ID middleware (first, so all other middleware/handlers can log with it)
+app.add_middleware(CorrelationIdMiddleware)
 
 # Performance monitoring middleware (first to track all requests)
 app.add_middleware(PerformanceMiddleware)
