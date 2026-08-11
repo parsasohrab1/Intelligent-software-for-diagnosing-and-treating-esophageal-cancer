@@ -119,7 +119,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:?GRAFANA_PASSWORD must be set for production deployments}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./monitoring/grafana:/etc/grafana/provisioning
