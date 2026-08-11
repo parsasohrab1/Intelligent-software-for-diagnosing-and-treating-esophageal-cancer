@@ -98,6 +98,11 @@ class Settings(BaseSettings):
     # to avoid the shared in-process limiter state leaking across unrelated tests.
     RATE_LIMIT_ENABLED: bool = True
 
+    # Distributed tracing: OpenTelemetry is only enabled when an OTLP endpoint
+    # is configured, so local dev/tests never need a collector running.
+    OTEL_EXPORTER_OTLP_ENDPOINT: str = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "")
+    OTEL_EXPORTER_OTLP_INSECURE: bool = os.getenv("OTEL_EXPORTER_OTLP_INSECURE", "true").lower() == "true"
+
     # HIPAA/GDPR Compliance Settings
     USE_AES256_ENCRYPTION: bool = True  # Use AES-256 for HIPAA compliance
     DATA_RETENTION_DAYS: int = 2555  # 7 years (HIPAA requirement)

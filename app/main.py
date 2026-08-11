@@ -19,6 +19,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi import Request
 from app.core.logging_config import configure_logging
 from app.middleware.correlation_id import CorrelationIdMiddleware
+from app.core.tracing import setup_tracing
 
 configure_logging()
 
@@ -89,6 +90,8 @@ app = FastAPI(
     openapi_url="/api/v1/openapi.json",
     lifespan=lifespan,
 )
+
+setup_tracing(app)
 
 # Correlation ID middleware (first, so all other middleware/handlers can log with it)
 app.add_middleware(CorrelationIdMiddleware)
