@@ -27,7 +27,10 @@ import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined'
 import SchoolIcon from '@mui/icons-material/School'
 import SecurityIcon from '@mui/icons-material/Security'
 import SettingsIcon from '@mui/icons-material/Settings'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useThemeMode } from '../context/ThemeModeContext'
 
 const drawerWidth = 240
 
@@ -55,6 +58,7 @@ export default function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const { mode, toggleMode } = useThemeMode()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -106,9 +110,16 @@ export default function Layout({ children }: LayoutProps) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Esophageal Cancer Management Platform
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            onClick={toggleMode}
+          >
+            {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Box

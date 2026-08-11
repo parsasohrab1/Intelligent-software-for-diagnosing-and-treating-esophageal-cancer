@@ -1,0 +1,17 @@
+{
+  "name": "INEsCape - Esophageal Cancer Management Platform",
+  "short_name": "INEsCape",
+  "description": "Research platform for esophageal cancer risk prediction, treatment support, and monitoring. Not a certified medical device.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1720",
+  "theme_color": "#1976d2",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
