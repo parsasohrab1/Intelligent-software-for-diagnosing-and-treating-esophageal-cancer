@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
+from app.schemas.jobs import JobSubmitRequest
 from app.services.job_store import (
     STATUS_DONE,
     STATUS_FAILED,
@@ -73,22 +74,16 @@ _job_store_module.register_handler("mri_processing", _handler_mri_processing)
 
 @router.post("")
 def submit_job(
-    body: Dict[str, Any],
+    request: JobSubmitRequest,
     background_tasks: BackgroundTasks,
 ) -> Dict[str, Any]:
     """
     Submit a job. Returns job_id. Poll GET /jobs/{job_id} for status and result.
     Body: { "type": "report" | "inference" | "mri_processing", "params": { ... } }
     """
-    job_type = body.get("type") or "report"
-    params = body.get("params")
-    if params is None:
-        params = {}
-    if not isinstance(params, dict):
-        raise HTTPException(status_code=400, detail="params must be an object")
-    job_id = create_job(job_type, params)
-    background_tasks.add_task(run_job, job_id, job_type, params)
-    return {"job_id": job_id, "type": job_type, "status": STATUS_PENDING}
+    job_id = create_job(request.type, request.params)
+    background_tasks.add_task(run_job, job_id, request.type, request.params)
+    return {"job_id": job_id, "type": request.type, "status": STATUS_PENDING}
 
 
 @router.get("/{job_id}")

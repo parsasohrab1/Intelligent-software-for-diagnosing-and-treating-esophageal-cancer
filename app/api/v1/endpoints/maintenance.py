@@ -13,6 +13,7 @@ from app.services.maintenance.issue_tracker import (
     IssueStatus,
 )
 from app.services.maintenance.performance_analyzer import PerformanceAnalyzer
+from app.schemas.maintenance import IssueCreateRequest, IssueCommentRequest
 
 router = APIRouter()
 
@@ -111,10 +112,7 @@ async def get_recommendations(current_user: dict = Depends(get_current_user)):
 
 @router.post("/issues")
 async def create_issue(
-    title: str,
-    description: str,
-    issue_type: IssueType,
-    priority: IssuePriority = IssuePriority.MEDIUM,
+    request: IssueCreateRequest,
     current_user: dict = Depends(get_current_user),
 ):
     """Create a new issue"""
@@ -122,10 +120,10 @@ async def create_issue(
     if not tracker:
         raise HTTPException(status_code=503, detail="Issue tracking unavailable")
     issue_id = tracker.create_issue(
-        title=title,
-        description=description,
-        issue_type=issue_type,
-        priority=priority,
+        title=request.title,
+        description=request.description,
+        issue_type=request.issue_type,
+        priority=request.priority,
         reporter=current_user["payload"].get("sub"),
     )
     return {"issue_id": issue_id, "message": "Issue created successfully"}
@@ -182,7 +180,7 @@ async def update_issue_status(
 @router.post("/issues/{issue_id}/comments")
 async def add_comment(
     issue_id: str,
-    comment: str,
+    request: IssueCommentRequest,
     current_user: dict = Depends(get_current_user),
 ):
     """Add comment to issue"""
@@ -190,7 +188,7 @@ async def add_comment(
     if not tracker:
         raise HTTPException(status_code=503, detail="Issue tracking unavailable")
     success = tracker.add_comment(
-        issue_id, comment, author=current_user["payload"].get("sub")
+        issue_id, request.comment, author=current_user["payload"].get("sub")
     )
     if not success:
         raise HTTPException(status_code=404, detail="Issue not found")

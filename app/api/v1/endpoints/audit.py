@@ -6,6 +6,7 @@ from typing import Optional
 from app.core.security.audit_logger import AuditLogger
 from app.core.security.rbac import Role, Permission
 from app.core.security.auth import get_current_user
+from app.schemas.audit import SecurityEventRequest
 
 router = APIRouter()
 audit_logger = AuditLogger()
@@ -61,16 +62,14 @@ async def get_user_activity_summary(
 
 @router.post("/logs/security-event")
 async def log_security_event(
-    event_type: str,
-    severity: str,
-    description: str,
+    request: SecurityEventRequest,
     current_user: dict = Depends(get_current_user),
 ):
     """Log a security event"""
     audit_logger.log_security_event(
-        event_type=event_type,
-        severity=severity,
-        description=description,
+        event_type=request.event_type,
+        severity=request.severity,
+        description=request.description,
         user_id=current_user["payload"].get("sub"),
     )
 
