@@ -17,6 +17,7 @@ import {
   Paper,
   Divider,
   LinearProgress,
+  IconButton,
 } from '@mui/material'
 import {
   Image as ImageIcon,
@@ -320,9 +321,11 @@ export default function MRIDashboard() {
                   <CardMedia
                     component="img"
                     image={getMRIImageUrl(report.image_id)}
-                    alt={`MRI Image ${report.image_id}`}
+                    alt={`MRI scan for patient ${report.patient_id} (image #${report.image_id})`}
                     loading="lazy"
-                    sx={{ 
+                    role="button"
+                    tabIndex={0}
+                    sx={{
                       objectFit: 'contain',
                       width: '100%',
                       height: '100%',
@@ -335,6 +338,13 @@ export default function MRIDashboard() {
                     onClick={() => {
                       setSelectedImage(report)
                       setReportDialogOpen(true)
+                    }}
+                    onKeyDown={(e: any) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setSelectedImage(report)
+                        setReportDialogOpen(true)
+                      }
                     }}
                     onError={(e: any) => {
                       // Fallback to a simple colored div if image fails to load
@@ -363,13 +373,17 @@ export default function MRIDashboard() {
                       gap: 0.5
                     }}
                   >
-                    <ZoomInIcon 
-                      sx={{ color: 'white', fontSize: 20, cursor: 'pointer' }}
+                    <IconButton
+                      size="small"
+                      aria-label={`Zoom into MRI scan for patient ${report.patient_id}`}
                       onClick={(e) => {
                         e.stopPropagation()
                         setFullscreenImage(getMRIImageUrl(report.image_id))
                       }}
-                    />
+                      sx={{ p: 0.25 }}
+                    >
+                      <ZoomInIcon sx={{ color: 'white', fontSize: 20 }} />
+                    </IconButton>
                   </Box>
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -627,9 +641,12 @@ export default function MRIDashboard() {
                   <CardMedia
                     component="img"
                     image={getMRIImageUrl(selectedImage.image_id)}
-                    alt={`MRI Image ${selectedImage.image_id}`}
+                    alt={`MRI scan for patient ${selectedImage.patient_id} (image #${selectedImage.image_id})`}
                     loading="lazy"
-                    sx={{ 
+                    role="button"
+                    tabIndex={0}
+                    aria-label={imageZoomed ? 'Zoom out of MRI image' : 'Zoom in on MRI image'}
+                    sx={{
                       objectFit: 'contain',
                       width: '100%',
                       height: '100%',
@@ -638,6 +655,12 @@ export default function MRIDashboard() {
                       cursor: imageZoomed ? 'zoom-out' : 'zoom-in'
                     }}
                     onClick={() => setImageZoomed(!imageZoomed)}
+                    onKeyDown={(e: any) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setImageZoomed(!imageZoomed)
+                      }
+                    }}
                     onError={(e: any) => {
                       // Fallback to a simple colored div if image fails to load
                       e.target.style.display = 'none'

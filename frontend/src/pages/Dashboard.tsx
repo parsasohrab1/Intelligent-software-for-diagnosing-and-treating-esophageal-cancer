@@ -711,14 +711,23 @@ export default function Dashboard() {
                 </TableHead>
                 <TableBody>
                   {patientAnalysis.map((patient) => (
-                    <TableRow 
+                    <TableRow
                       key={patient.patient_id}
-                      sx={{ 
+                      sx={{
                         cursor: 'pointer',
                         '&:hover': { backgroundColor: '#f5f5f5' },
                         backgroundColor: selectedPatient?.patient_id === patient.patient_id ? '#e3f2fd' : 'inherit',
                       }}
                       onClick={() => setSelectedPatient(patient)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Select patient ${patient.patient_id} to view details`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          setSelectedPatient(patient)
+                        }
+                      }}
                     >
                       <TableCell>{patient.patient_id}</TableCell>
                       <TableCell>{patient.age}</TableCell>

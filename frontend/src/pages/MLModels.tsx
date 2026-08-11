@@ -25,7 +25,10 @@ import {
   Collapse,
   IconButton,
   Tooltip,
+  Tabs,
+  Tab,
 } from '@mui/material'
+import { MultimodalFusionPanel, FewShotLearningPanel, AsyncJobsPanel } from '../components/MLAdvancedPanels'
 import ApiIcon from '@mui/icons-material/Api'
 import MemoryIcon from '@mui/icons-material/Memory'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -74,6 +77,7 @@ interface Model {
 }
 
 export default function MLModels() {
+  const [activeTab, setActiveTab] = useState(0)
   const [models, setModels] = useState<Model[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -166,6 +170,20 @@ export default function MLModels() {
 
   return (
     <Box p={3}>
+        <Paper sx={{ mb: 3 }}>
+          <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} variant="scrollable" scrollButtons="auto">
+            <Tab label="Standard Models" />
+            <Tab label="Multimodal Fusion" />
+            <Tab label="Few-Shot Learning" />
+            <Tab label="Async Jobs" />
+          </Tabs>
+        </Paper>
+
+        {activeTab === 1 && <MultimodalFusionPanel />}
+        {activeTab === 2 && <FewShotLearningPanel />}
+        {activeTab === 3 && <AsyncJobsPanel />}
+
+        {activeTab === 0 && (<>
         {/* Indicators Section */}
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -758,6 +776,7 @@ export default function MLModels() {
           <Button onClick={() => setDetailDialogOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
+        </>)}
     </Box>
   )
 }

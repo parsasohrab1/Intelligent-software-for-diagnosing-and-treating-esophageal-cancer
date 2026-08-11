@@ -37,7 +37,7 @@ api.interceptors.response.use(
       // Handle unauthorized - redirect to dashboard (no auth required for dev)
       // But don't redirect if we're already on a page that doesn't require auth
       const currentPath = window.location.pathname
-      const publicPaths = ['/dashboard', '/cds', '/patients', '/patient-data', '/ml-models', '/mri', '/monitoring', '/settings']
+      const publicPaths = ['/workflow', '/dashboard', '/cds', '/patients', '/patient-data', '/ml-models', '/mri', '/monitoring', '/surgical-guidance', '/treatment-response', '/training', '/compliance', '/settings']
       
       if (!publicPaths.includes(currentPath)) {
         localStorage.removeItem('auth_token')

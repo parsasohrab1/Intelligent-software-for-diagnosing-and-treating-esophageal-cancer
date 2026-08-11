@@ -184,6 +184,7 @@ export default function Patients() {
       <Box display="flex" gap={2} mb={3}>
         <TextField
           fullWidth
+          label="Search patients"
           placeholder="Search by ID, cancer type, subtype, ethnicity, gender, or data source..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
