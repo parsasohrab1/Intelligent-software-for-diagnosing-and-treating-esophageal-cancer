@@ -14,6 +14,7 @@ from app.services.cds.prognostic_scorer import PrognosticScorer
 from app.services.cds.nanosystem_designer import NanosystemDesigner
 from app.services.cds.clinical_trial_matcher import ClinicalTrialMatcher
 from app.services.cds.monitoring_alerts import MonitoringAlerts
+from app.services.cds.data_completeness import validate_cds_inputs
 from app.services.model_registry import ModelRegistry
 from app.services.explainable_ai import ExplainableAI
 import pandas as pd
@@ -71,10 +72,36 @@ class MonitoringAlertRequest(BaseModel):
     )
 
 
+class CDSValidateRequest(BaseModel):
+    """Request model for CDS input validation"""
+
+    patient_data: Dict[str, Any] = Field(..., description="Patient data")
+    cancer_data: Optional[Dict[str, Any]] = Field(None, description="Cancer data")
+    context: str = Field(
+        "full",
+        description="Validation context: risk_prediction, treatment, or full",
+    )
+
+
+@router.post("/validate-input")
+async def validate_cds_input(request: CDSValidateRequest):
+    """Validate CDS inputs and return completeness warnings without running prediction."""
+    validation = validate_cds_inputs(
+        request.patient_data,
+        request.cancer_data,
+        context=request.context,
+    )
+    return validation
+
+
 @router.post("/risk-prediction")
 async def predict_risk(request: RiskPredictionRequest):
     """Predict risk of esophageal cancer development"""
     try:
+        data_completeness = validate_cds_inputs(
+            request.patient_data, context="risk_prediction"
+        )
+
         predictor = RiskPredictor()
 
         # Use ML model if requested
@@ -143,6 +170,13 @@ async def predict_risk(request: RiskPredictionRequest):
                 # If SHAP fails, still return prediction without explanation
                 result["shap_explanation"] = {"error": f"Explanation unavailable: {str(e)}"}
 
+        result["data_completeness"] = data_completeness
+        if not data_completeness.get("prediction_reliable", True):
+            result["reliability_notice"] = (
+                "Prediction generated with incomplete input data. "
+                "Review data_completeness warnings before clinical use."
+            )
+
         return result
 
     except Exception as e:
@@ -163,10 +197,22 @@ async def predict_risk(request: RiskPredictionRequest):
 async def recommend_treatment(request: TreatmentRecommendationRequest):
     """Recommend treatment based on patient characteristics"""
     try:
+        data_completeness = validate_cds_inputs(
+            request.patient_data,
+            request.cancer_data,
+            context="treatment",
+        )
+
         recommender = TreatmentRecommender()
         recommendations = recommender.recommend_treatment(
             request.patient_data, request.cancer_data
         )
+        recommendations["data_completeness"] = data_completeness
+        if not data_completeness.get("prediction_reliable", True):
+            recommendations["reliability_notice"] = (
+                "Treatment recommendations generated with incomplete staging or patient data. "
+                "Confirm TNM and clinical fields before finalizing the plan."
+            )
         return recommendations
 
     except Exception as e:

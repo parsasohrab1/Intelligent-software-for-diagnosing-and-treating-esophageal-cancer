@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   Box,
   Typography,
@@ -33,7 +33,11 @@ import {
 } from '@mui/icons-material'
 import api from '../services/api'
 import SHAPVisualization from '../components/SHAPVisualization'
-import {
+import CDSDataCompletenessAlert, {
+  validatePatientDataClient,
+  validateCancerDataClient,
+  type CDSDataCompleteness,
+} from '../components/CDSDataCompletenessAlert'
   BarChart,
   Bar,
   PieChart,
@@ -130,6 +134,48 @@ export default function CDS() {
   const [treatmentResult, setTreatmentResult] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const patientDataCompleteness = useMemo(
+    () => validatePatientDataClient(patientData as Record<string, unknown>),
+    [patientData]
+  )
+  const cancerDataCompleteness = useMemo(
+    () => validateCancerDataClient(cancerData as Record<string, unknown>),
+    [cancerData]
+  )
+  const fullInputCompleteness = useMemo((): CDSDataCompleteness => {
+    const warnings = [
+      ...(patientDataCompleteness.warnings || []),
+      ...(cancerDataCompleteness.warnings || []),
+    ]
+    const missingRequired = [
+      ...(patientDataCompleteness.missing_required || []),
+      ...(cancerDataCompleteness.missing_required || []),
+    ]
+    const scores = [
+      patientDataCompleteness.completeness_score ?? 0,
+      cancerDataCompleteness.completeness_score ?? 0,
+    ]
+    const avg = scores.reduce((a, b) => a + b, 0) / scores.length
+    return {
+      is_complete: patientDataCompleteness.is_complete && cancerDataCompleteness.is_complete,
+      completeness_score: Math.round(avg * 100) / 100,
+      reliability: missingRequired.length > 0 ? 'low' : warnings.length > 0 ? 'moderate' : 'high',
+      missing_required: missingRequired,
+      missing_recommended: [
+        ...(patientDataCompleteness.missing_recommended || []),
+        ...(cancerDataCompleteness.missing_recommended || []),
+      ],
+      warnings,
+      prediction_reliable: missingRequired.length === 0,
+      clinical_guidance:
+        missingRequired.length > 0
+          ? 'Required clinical fields are missing. Complete them before relying on CDS output.'
+          : warnings.length > 0
+            ? 'Some recommended fields are missing; review warnings below.'
+            : 'Clinical input is complete.',
+    }
+  }, [patientDataCompleteness, cancerDataCompleteness])
 
   const fetchPatients = useCallback(async () => {
     setLoadingPatients(true)
@@ -1190,6 +1236,9 @@ export default function CDS() {
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {steps[3].description}
                 </Typography>
+
+                <CDSDataCompletenessAlert completeness={fullInputCompleteness} />
+
                 <Box display="flex" gap={2} sx={{ mb: 3 }}>
                   <Button
                     variant="contained"
@@ -1217,6 +1266,14 @@ export default function CDS() {
 
                 {riskResult && (
                   <Box sx={{ mt: 3 }}>
+                    {riskResult.data_completeness && (
+                      <CDSDataCompletenessAlert completeness={riskResult.data_completeness} />
+                    )}
+                    {riskResult.reliability_notice && (
+                      <Alert severity="warning" sx={{ mb: 2 }}>
+                        {riskResult.reliability_notice}
+                      </Alert>
+                    )}
                     <Alert 
                       severity={
                         riskResult.risk_category === 'Very High' || riskResult.risk_category === 'High' 
@@ -1368,6 +1425,14 @@ export default function CDS() {
 
                 {treatmentResult && (
                   <Box sx={{ mt: 3 }}>
+                    {treatmentResult.data_completeness && (
+                      <CDSDataCompletenessAlert completeness={treatmentResult.data_completeness} />
+                    )}
+                    {treatmentResult.reliability_notice && (
+                      <Alert severity="warning" sx={{ mb: 2 }}>
+                        {treatmentResult.reliability_notice}
+                      </Alert>
+                    )}
                     <Typography variant="h6" gutterBottom>
                       Treatment Recommendations
                     </Typography>
