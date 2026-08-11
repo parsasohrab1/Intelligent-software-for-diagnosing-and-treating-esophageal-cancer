@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "INEsCape"
     APP_VERSION: str = "1.0.0"
     ENVIRONMENT: str = "development"
-    DEBUG: bool = True
+    DEBUG: bool = False
     LOG_LEVEL: str = "INFO"
 
     # API
@@ -93,7 +93,11 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     ENCRYPTION_KEY: str = os.getenv("ENCRYPTION_KEY", "")
     HASH_SALT: str = os.getenv("HASH_SALT", "inescape_salt_2024_change_in_production")
-    
+
+    # Rate limiting: disabled automatically for the test session (see tests/conftest.py)
+    # to avoid the shared in-process limiter state leaking across unrelated tests.
+    RATE_LIMIT_ENABLED: bool = True
+
     # HIPAA/GDPR Compliance Settings
     USE_AES256_ENCRYPTION: bool = True  # Use AES-256 for HIPAA compliance
     DATA_RETENTION_DAYS: int = 2555  # 7 years (HIPAA requirement)
@@ -202,10 +206,46 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
+# Values that must never survive into production - if any of these are still
+# set when ENVIRONMENT=="production", the app refuses to start.
+_INSECURE_DEFAULTS = {
+    "SECRET_KEY": "your-secret-key-change-in-production",
+    "HASH_SALT": "inescape_salt_2024_change_in_production",
+    "STORAGE_ACCESS_KEY": "minioadmin",
+    "STORAGE_SECRET_KEY": "minioadmin",
+    "RABBITMQ_USER": "guest",
+    "RABBITMQ_PASSWORD": "guest",
+}
+
+
+def _validate_production_settings(s: "Settings") -> None:
+    """Fail fast if production is about to start with insecure defaults."""
+    if s.ENVIRONMENT != "production":
+        return
+
+    problems = [
+        field for field, insecure_value in _INSECURE_DEFAULTS.items()
+        if getattr(s, field) == insecure_value
+    ]
+    if not s.ENCRYPTION_KEY:
+        problems.append("ENCRYPTION_KEY (empty)")
+    if s.DEBUG:
+        problems.append("DEBUG (must be False)")
+
+    if problems:
+        raise RuntimeError(
+            "Refusing to start with ENVIRONMENT=production while using insecure "
+            f"default configuration for: {', '.join(problems)}. "
+            "Set proper values via environment variables before deploying."
+        )
+
+
 @lru_cache()
 def get_settings() -> Settings:
     """Get cached settings instance"""
-    return Settings()
+    s = Settings()
+    _validate_production_settings(s)
+    return s
 
 
 settings = get_settings()
