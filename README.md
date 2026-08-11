@@ -294,6 +294,14 @@ docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
 4. Push کنید (`git push origin feature/AmazingFeature`)
 5. Pull Request باز کنید
 
+## ⚠️ وضعیت واقعی و محدودیت‌های شناخته‌شده
+
+- پوشش تست‌های خودکار در حال حاضر حدود ۳۵٪ است، نه سطحی که ادعای «Production Ready» را به‌طور کامل توجیه کند.
+- مشکل ایزوله‌سازی تست‌های rate limiter به‌تازگی برطرف شده است.
+- رمزنگاری داده در حالت سکون (encryption-at-rest) فقط در سطح برخی فیلدهای حساس پیاده‌سازی شده و هنوز به همه فیلدهای حساس تعمیم نیافته است.
+- خروجی مدل به فرمت ONNX/TensorRT صرفاً در مستندات به‌عنوان گام آینده ذکر شده و هنوز پیاده‌سازی نشده است.
+- ممیزی کامل دسترس‌پذیری مطابق استاندارد WCAG انجام نشده؛ فقط یک بررسی هدفمند روی چند صفحه محدود صورت گرفته است.
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -311,5 +319,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **نسخه:** 1.0.0  
-**وضعیت:** Production Ready  
+**وضعیت:** در حال توسعه فعال - نیازمند تکمیل پوشش تست و بررسی‌های امنیتی پیش از استقرار Production  
 **آخرین به‌روزرسانی:** 2024-12-19
