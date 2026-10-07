@@ -41,6 +41,33 @@ def _hazard_ratio_cis(df: pd.DataFrame, lam: float, base: Dict[str, float]) -> D
     return out
 
 
+def exploratory_delta_c(scored: pd.DataFrame, n_boot: int = 2000, seed: int = SEED) -> Dict:
+    """POST-HOC (not pre-registered): paired stratified bootstrap of the C-index difference
+    between the model and the reference predictors."""
+    t = scored["time_days"].to_numpy(float)
+    e = scored["event"].to_numpy(int)
+    strata = scored["cohort"].to_numpy()
+    cols = {k: scored[c].to_numpy(float) for k, c in
+            (("model", "risk_score"), ("stage_only", "baseline_stage"), ("age_only", "baseline_age"))}
+    groups = [np.where(strata == c)[0] for c in np.unique(strata)]
+    rng = np.random.default_rng(seed)
+    diffs = {"vs_stage_only": [], "vs_age_only": []}
+    for _ in range(n_boot):
+        idx = np.concatenate([rng.choice(g, size=len(g), replace=True) for g in groups])
+        c = {k: sm.concordance_index(t[idx], e[idx], v[idx], strata[idx]) for k, v in cols.items()}
+        diffs["vs_stage_only"].append(c["model"] - c["stage_only"])
+        diffs["vs_age_only"].append(c["model"] - c["age_only"])
+    out = {"pre_registered": False}
+    for k, v in diffs.items():
+        v = np.array([x for x in v if not np.isnan(x)])
+        out[k] = {
+            "delta_c": float(np.mean(v)),
+            "ci95": [float(np.percentile(v, 2.5)), float(np.percentile(v, 97.5))],
+            "share_of_bootstrap_with_model_better": float((v > 0).mean()),
+        }
+    return out
+
+
 def run_loco_validation(cohort_df: pd.DataFrame, provenance: Dict, protocol_commit: Optional[str] = None):
     """Returns (results_dict, final_model)."""
     eligible, flow = apply_eligibility(cohort_df)
@@ -92,6 +119,7 @@ def run_loco_validation(cohort_df: pd.DataFrame, provenance: Dict, protocol_comm
             "complete_tnm_subset": _analyse(complete, "cohort", categories=V2_CATEGORIES) if len(complete) else None,
             "by_histology": by_histology,
         },
+        "exploratory_post_hoc": exploratory_delta_c(scored),
         "final_model": {"lambda": final.lam, "hazard_ratios": hrs, "training_summary": final.training_summary},
         "verdict": evaluate_criteria(pooled, per_cohort, require_stage_baseline=True),
     }

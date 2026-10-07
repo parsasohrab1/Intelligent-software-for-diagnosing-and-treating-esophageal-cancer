@@ -1,0 +1,751 @@
+{
+  "generated_at": "2026-10-07T19:35:02+00:00",
+  "protocol": "docs/validation/VALIDATION_PROTOCOL_v2.md",
+  "protocol_commit": "7ec9a6b",
+  "model": "Ridge Cox PH (Breslow), leave-one-cohort-out",
+  "criteria": {
+    "A1_c_index_pooled_min": 0.6,
+    "A2_c_index_ci_lower_gt": 0.5,
+    "A3_c_index_each_cohort_min": 0.55,
+    "A4_auc_3y_pooled_min": 0.6,
+    "A5_logrank_p_max": 0.05,
+    "A6_calibration_1y_abs_error_max": 0.15,
+    "A7_not_worse_than_age_baseline": true,
+    "A8_not_worse_than_stage_by": 0.01
+  },
+  "provenance": {
+    "TCGA-ESCA": {
+      "source": "NCI GDC (TCGA-ESCA)",
+      "url": "https://api.gdc.cancer.gov/cases",
+      "retrieved_at": "2026-10-07T19:34:38+00:00",
+      "raw_sha256": "f24eeaa1b965f55902a10b47207b0c5c5411f263a65b3f4bdc37a889fbf3a9aa",
+      "raw_bytes": 1277329,
+      "data_release": "Data Release 46.0 - August 10, 2026",
+      "access": "open"
+    },
+    "GSE53624": {
+      "source": "NCBI GEO GSE53624",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE53nnn/GSE53624/matrix/GSE53624_series_matrix.txt.gz",
+      "retrieved_at": "2026-10-07T19:34:38+00:00",
+      "raw_sha256": "76d7c22f6109e092cc03db5b602aada29116cb4c80996ffdf4e991337740ce77",
+      "raw_bytes": 443371,
+      "access": "open",
+      "note": "Clinical characteristics block only (expression matrix not downloaded)."
+    },
+    "ICGC-ESCC": {
+      "source": "cBioPortal escc_icgc (ICGC, Nature 2014)",
+      "url": "https://www.cbioportal.org/api/studies/escc_icgc",
+      "retrieved_at": "2026-10-07T19:34:38+00:00",
+      "raw_sha256": "1f9fc02014ab7e2770fc9b2416d6d4245962287d5d0aa7066ab264373fb95ef8",
+      "raw_bytes": 683112,
+      "access": "open"
+    }
+  },
+  "participant_flow": {
+    "TCGA-ESCA": {
+      "n_source": 185,
+      "excluded_invalid_follow_up_time": 1,
+      "excluded_missing_vital_status": 0,
+      "n_eligible": 184,
+      "n_events": 76
+    },
+    "GSE53624": {
+      "n_source": 119,
+      "excluded_invalid_follow_up_time": 0,
+      "excluded_missing_vital_status": 0,
+      "n_eligible": 119,
+      "n_events": 73
+    },
+    "ICGC-ESCC": {
+      "n_source": 88,
+      "excluded_invalid_follow_up_time": 0,
+      "excluded_missing_vital_status": 0,
+      "n_eligible": 88,
+      "n_events": 41
+    }
+  },
+  "loco_folds": {
+    "TCGA-ESCA": {
+      "trained_on": [
+        "GSE53624",
+        "ICGC-ESCC"
+      ],
+      "n_train": 207,
+      "lambda": 100.0,
+      "lambda_cv_mean_c_index": {
+        "0.1": 0.6230498458882322,
+        "1.0": 0.6228774144150857,
+        "10.0": 0.6234135892145614,
+        "100.0": 0.628180985154227
+      },
+      "hazard_ratios": {
+        "age": 1.008782751558219,
+        "male": 0.9858324178298472,
+        "t_ord": 1.076224041121842,
+        "n_ord": 1.2511609145584253,
+        "m1": 1.0,
+        "eac": 1.0,
+        "tnm_missing": 1.0
+      }
+    },
+    "GSE53624": {
+      "trained_on": [
+        "ICGC-ESCC",
+        "TCGA-ESCA"
+      ],
+      "n_train": 272,
+      "lambda": 1.0,
+      "lambda_cv_mean_c_index": {
+        "0.1": 0.6578683363362037,
+        "1.0": 0.6589383952648814,
+        "10.0": 0.6531483352508748,
+        "100.0": 0.6437684026315844
+      },
+      "hazard_ratios": {
+        "age": 0.9994802313317406,
+        "male": 1.3783912008384374,
+        "t_ord": 1.2904369979276145,
+        "n_ord": 1.5567452871191898,
+        "m1": 3.4187747744282078,
+        "eac": 1.0746054786398662,
+        "tnm_missing": 1.6034943899018443
+      }
+    },
+    "ICGC-ESCC": {
+      "trained_on": [
+        "GSE53624",
+        "TCGA-ESCA"
+      ],
+      "n_train": 303,
+      "lambda": 0.1,
+      "lambda_cv_mean_c_index": {
+        "0.1": 0.6269519677446395,
+        "1.0": 0.6258376892309309,
+        "10.0": 0.6228660859863501,
+        "100.0": 0.6198345897900368
+      },
+      "hazard_ratios": {
+        "age": 1.0094528926381823,
+        "male": 1.138657812671168,
+        "t_ord": 1.1141063734440955,
+        "n_ord": 1.4028701767982559,
+        "m1": 3.4810762782818787,
+        "eac": 1.063319798870941,
+        "tnm_missing": 1.6729021509915727
+      }
+    }
+  },
+  "per_cohort": {
+    "TCGA-ESCA": {
+      "n": 184,
+      "events": 76,
+      "median_follow_up_months": 18.20123203285421,
+      "model": {
+        "c_index": 0.6329444891391794,
+        "ci95": {
+          "lower": 0.5637112398510531,
+          "upper": 0.6987007563546523,
+          "n_valid": 2000
+        }
+      },
+      "baseline_stage_only": {
+        "c_index": 0.6032448377581121
+      },
+      "baseline_age_only": {
+        "c_index": 0.5426387771520514
+      },
+      "auc_1y": {
+        "auc": 0.6749887539361223,
+        "n_cases": 38,
+        "n_controls": 117
+      },
+      "auc_3y": {
+        "auc": 0.6854575163398693,
+        "n_cases": 68,
+        "n_controls": 18
+      },
+      "risk_groups": [
+        {
+          "category": "Low",
+          "n": 54,
+          "events": 12,
+          "km_survival_1y": 0.8983433149257213,
+          "km_survival_3y": 0.6808583616615347
+        },
+        {
+          "category": "Intermediate",
+          "n": 71,
+          "events": 35,
+          "km_survival_1y": 0.7494773215595849,
+          "km_survival_3y": 0.37373950641896736
+        },
+        {
+          "category": "High",
+          "n": 59,
+          "events": 29,
+          "km_survival_1y": 0.6858361010693842,
+          "km_survival_3y": 0.26112225595324556
+        }
+      ],
+      "n_distinct_risk_scores": 147,
+      "permutation_p_c_index": 0.000999000999000999,
+      "logrank": {
+        "chi2": 13.051671628171503,
+        "df": 2,
+        "p_value": 0.0014650940888773507
+      },
+      "calibration": {
+        "km_survival_1y": 0.7721659394658104,
+        "mean_pred_survival_1y": 0.8120775834406266,
+        "abs_error_1y": 0.03991164397481628,
+        "km_survival_5y": 0.19676073256330875,
+        "mean_pred_survival_5y": 0.41214744924746854,
+        "km_survival_3y": 0.42399619138221406,
+        "mean_pred_survival_3y": 0.4886191556567096
+      }
+    },
+    "GSE53624": {
+      "n": 119,
+      "events": 73,
+      "median_follow_up_months": 62.8666666666667,
+      "model": {
+        "c_index": 0.5884525008392077,
+        "ci95": {
+          "lower": 0.5127403484259002,
+          "upper": 0.6563069512298793,
+          "n_valid": 2000
+        }
+      },
+      "baseline_stage_only": {
+        "c_index": 0.5867740852635113
+      },
+      "baseline_age_only": {
+        "c_index": 0.5704934541792548
+      },
+      "auc_1y": {
+        "auc": 0.5837468982630273,
+        "n_cases": 26,
+        "n_controls": 93
+      },
+      "auc_3y": {
+        "auc": 0.6352272727272728,
+        "n_cases": 64,
+        "n_controls": 55
+      },
+      "risk_groups": [
+        {
+          "category": "Low",
+          "n": 37,
+          "events": 19,
+          "km_survival_1y": 0.8108108108108109,
+          "km_survival_3y": 0.594594594594595
+        },
+        {
+          "category": "Intermediate",
+          "n": 45,
+          "events": 26,
+          "km_survival_1y": 0.7999999999999999,
+          "km_survival_3y": 0.4666666666666667
+        },
+        {
+          "category": "High",
+          "n": 37,
+          "events": 28,
+          "km_survival_1y": 0.7297297297297299,
+          "km_survival_3y": 0.3243243243243246
+        }
+      ],
+      "n_distinct_risk_scores": 105,
+      "permutation_p_c_index": 0.004995004995004995,
+      "logrank": {
+        "chi2": 5.485587060384095,
+        "df": 2,
+        "p_value": 0.06439021939255721
+      },
+      "calibration": {
+        "km_survival_1y": 0.7815126050420171,
+        "mean_pred_survival_1y": 0.8044170225886598,
+        "abs_error_1y": 0.02290441754664263,
+        "km_survival_5y": 0.39495798319327763,
+        "mean_pred_survival_5y": 0.19896264231790564,
+        "km_survival_3y": 0.4621848739495803,
+        "mean_pred_survival_3y": 0.46154706406720186
+      }
+    },
+    "ICGC-ESCC": {
+      "n": 88,
+      "events": 41,
+      "median_follow_up_months": 39.06,
+      "model": {
+        "c_index": 0.6332294507206856,
+        "ci95": {
+          "lower": 0.5465272865841924,
+          "upper": 0.724534063942166,
+          "n_valid": 2000
+        }
+      },
+      "baseline_stage_only": {
+        "c_index": 0.6149201402415271
+      },
+      "baseline_age_only": {
+        "c_index": 0.5087650954421503
+      },
+      "auc_1y": {
+        "auc": 0.6512474012474012,
+        "n_cases": 13,
+        "n_controls": 74
+      },
+      "auc_3y": {
+        "auc": 0.6993382961124897,
+        "n_cases": 39,
+        "n_controls": 31
+      },
+      "risk_groups": [
+        {
+          "category": "Low",
+          "n": 45,
+          "events": 14,
+          "km_survival_1y": 0.91005291005291,
+          "km_survival_3y": 0.6756206882217952
+        },
+        {
+          "category": "Intermediate",
+          "n": 30,
+          "events": 16,
+          "km_survival_1y": 0.8333333333333334,
+          "km_survival_3y": 0.5088815789473684
+        },
+        {
+          "category": "High",
+          "n": 13,
+          "events": 11,
+          "km_survival_1y": 0.6923076923076923,
+          "km_survival_3y": NaN
+        }
+      ],
+      "n_distinct_risk_scores": 73,
+      "permutation_p_c_index": 0.003996003996003996,
+      "logrank": {
+        "chi2": 14.773458704863371,
+        "df": 2,
+        "p_value": 0.000619418543870747
+      },
+      "calibration": {
+        "km_survival_1y": 0.8510405257393211,
+        "mean_pred_survival_1y": 0.8165521824960749,
+        "abs_error_1y": 0.03448834324324623,
+        "km_survival_5y": NaN,
+        "mean_pred_survival_5y": 0.40004104909660576,
+        "km_survival_3y": 0.5360206931677959,
+        "mean_pred_survival_3y": 0.5014968606593837
+      }
+    }
+  },
+  "pooled_stratified": {
+    "n": 391,
+    "events": 190,
+    "median_follow_up_months": 40.64,
+    "model": {
+      "c_index": 0.6164049302383783,
+      "ci95": {
+        "lower": 0.5718657651237306,
+        "upper": 0.659236511949433,
+        "n_valid": 2000
+      }
+    },
+    "baseline_stage_only": {
+      "c_index": 0.5989801664268285
+    },
+    "baseline_age_only": {
+      "c_index": 0.5475818056685228
+    },
+    "auc_1y": {
+      "auc": 0.643879376437516,
+      "n_cases": 77,
+      "n_controls": 284
+    },
+    "auc_3y": {
+      "auc": 0.6585755081471527,
+      "n_cases": 171,
+      "n_controls": 104
+    },
+    "risk_groups": [
+      {
+        "category": "Low",
+        "n": 136,
+        "events": 45,
+        "km_survival_1y": 0.8772858367575815,
+        "km_survival_3y": 0.648083720105868
+      },
+      {
+        "category": "Intermediate",
+        "n": 146,
+        "events": 77,
+        "km_survival_1y": 0.7831063191353523,
+        "km_survival_3y": 0.44472044376102926
+      },
+      {
+        "category": "High",
+        "n": 109,
+        "events": 68,
+        "km_survival_1y": 0.6993084554179295,
+        "km_survival_3y": 0.2615357342195383
+      }
+    ],
+    "n_distinct_risk_scores": 325,
+    "permutation_p_c_index": 0.000999000999000999,
+    "logrank": {
+      "chi2": 28.56799694446638,
+      "df": 2,
+      "p_value": 6.259480401583441e-07
+    },
+    "calibration": {
+      "km_survival_1y": 0.7930010693266818,
+      "mean_pred_survival_1y": 0.8107531792858835,
+      "abs_error_1y": 0.017752109959201734,
+      "km_survival_5y": 0.36373758951859747,
+      "mean_pred_survival_5y": 0.3445404026032386,
+      "km_survival_3y": 0.46741620573714515,
+      "mean_pred_survival_3y": 0.4832781304420904
+    }
+  },
+  "sensitivity": {
+    "naive_pooled_c_index": 0.5586829169752878,
+    "complete_tnm_subset": {
+      "n": 351,
+      "events": 169,
+      "median_follow_up_months": 41.75770020533881,
+      "model": {
+        "c_index": 0.6155386306532663,
+        "ci95": {
+          "lower": 0.566360609075705,
+          "upper": 0.6635449204719964,
+          "n_valid": 2000
+        }
+      },
+      "baseline_stage_only": {
+        "c_index": 0.6187185929648241
+      },
+      "baseline_age_only": {
+        "c_index": 0.5486416457286433
+      },
+      "auc_1y": {
+        "auc": 0.6317476383265856,
+        "n_cases": 65,
+        "n_controls": 265
+      },
+      "auc_3y": {
+        "auc": 0.6536979262249955,
+        "n_cases": 151,
+        "n_controls": 101
+      },
+      "risk_groups": [
+        {
+          "category": "Low",
+          "n": 131,
+          "events": 43,
+          "km_survival_1y": 0.8740034714209751,
+          "km_survival_3y": 0.6494250440350325
+        },
+        {
+          "category": "Intermediate",
+          "n": 129,
+          "events": 67,
+          "km_survival_1y": 0.8049835940308772,
+          "km_survival_3y": 0.47364411154376856
+        },
+        {
+          "category": "High",
+          "n": 91,
+          "events": 59,
+          "km_survival_1y": 0.7134994985814773,
+          "km_survival_3y": 0.2690212489487695
+        }
+      ],
+      "n_distinct_risk_scores": 298,
+      "permutation_p_c_index": 0.000999000999000999,
+      "logrank": {
+        "chi2": 26.062120949364957,
+        "df": 2,
+        "p_value": 2.1912016309437773e-06
+      },
+      "calibration": {
+        "km_survival_1y": 0.8071498232293463,
+        "mean_pred_survival_1y": 0.8126373157965946,
+        "abs_error_1y": 0.005487492567248342,
+        "km_survival_5y": 0.3830706523752429,
+        "mean_pred_survival_5y": 0.3409148681225167,
+        "km_survival_3y": 0.4864195738801337,
+        "mean_pred_survival_3y": 0.4866484754574134
+      }
+    },
+    "by_histology": {
+      "EAC": {
+        "n": 89,
+        "events": 45,
+        "median_follow_up_months": 28.97741273100616,
+        "model": {
+          "c_index": 0.5646146616541353
+        },
+        "baseline_stage_only": {
+          "c_index": 0.6017387218045113
+        },
+        "baseline_age_only": {
+          "c_index": 0.4781484962406015
+        },
+        "auc_1y": {
+          "auc": 0.6083099906629318,
+          "n_cases": 21,
+          "n_controls": 51
+        },
+        "auc_3y": {
+          "auc": 0.7083333333333334,
+          "n_cases": 40,
+          "n_controls": 12
+        },
+        "risk_groups": [
+          {
+            "category": "Low",
+            "n": 15,
+            "events": 5,
+            "km_survival_1y": 0.9285714285714286,
+            "km_survival_3y": 0.6331168831168831
+          },
+          {
+            "category": "Intermediate",
+            "n": 33,
+            "events": 20,
+            "km_survival_1y": 0.689516129032258,
+            "km_survival_3y": 0.38700226814516137
+          },
+          {
+            "category": "High",
+            "n": 41,
+            "events": 20,
+            "km_survival_1y": 0.7075325590702052,
+            "km_survival_3y": 0.27649359568765725
+          }
+        ],
+        "n_distinct_risk_scores": 74,
+        "logrank": {
+          "chi2": 4.126281891897842,
+          "df": 2,
+          "p_value": 0.12705427190789512
+        },
+        "calibration": {
+          "km_survival_1y": 0.7371554802939304,
+          "mean_pred_survival_1y": 0.7987664973028771,
+          "abs_error_1y": 0.06161101700894667,
+          "km_survival_5y": 0.20236212954217958,
+          "mean_pred_survival_5y": 0.3845003261981658,
+          "km_survival_3y": 0.39348191855423803,
+          "mean_pred_survival_3y": 0.46186308329812753
+        }
+      },
+      "ESCC": {
+        "n": 302,
+        "events": 145,
+        "median_follow_up_months": 43.37,
+        "model": {
+          "c_index": 0.6165746945210879
+        },
+        "baseline_stage_only": {
+          "c_index": 0.5984430429641309
+        },
+        "baseline_age_only": {
+          "c_index": 0.5578931809223492
+        },
+        "auc_1y": {
+          "auc": 0.6276099511328298,
+          "n_cases": 56,
+          "n_controls": 233
+        },
+        "auc_3y": {
+          "auc": 0.6527465795384929,
+          "n_cases": 131,
+          "n_controls": 92
+        },
+        "risk_groups": [
+          {
+            "category": "Low",
+            "n": 121,
+            "events": 40,
+            "km_survival_1y": 0.8724895739729502,
+            "km_survival_3y": 0.6507832679622068
+          },
+          {
+            "category": "Intermediate",
+            "n": 113,
+            "events": 57,
+            "km_survival_1y": 0.8078585392481331,
+            "km_survival_3y": 0.4599316225287069
+          },
+          {
+            "category": "High",
+            "n": 68,
+            "events": 48,
+            "km_survival_1y": 0.7011877828054296,
+            "km_survival_3y": 0.2543488971859365
+          }
+        ],
+        "n_distinct_risk_scores": 256,
+        "logrank": {
+          "chi2": 24.739021871032804,
+          "df": 2,
+          "p_value": 4.2460945134741544e-06
+        },
+        "calibration": {
+          "km_survival_1y": 0.8092195083735768,
+          "mean_pred_survival_1y": 0.8142856782808754,
+          "abs_error_1y": 0.005066169907298579,
+          "km_survival_5y": 0.39518900484536806,
+          "mean_pred_survival_5y": 0.3327641337292369,
+          "km_survival_3y": 0.4868188786840641,
+          "mean_pred_survival_3y": 0.4895891873818674
+        }
+      }
+    }
+  },
+  "exploratory_post_hoc": {
+    "pre_registered": false,
+    "vs_stage_only": {
+      "delta_c": 0.017396962788989074,
+      "ci95": [
+        -0.024167947807625705,
+        0.0562971171527352
+      ],
+      "share_of_bootstrap_with_model_better": 0.8045
+    },
+    "vs_age_only": {
+      "delta_c": 0.0680506899917629,
+      "ci95": [
+        0.01121316997883788,
+        0.13054784577938938
+      ],
+      "share_of_bootstrap_with_model_better": 0.99
+    }
+  },
+  "final_model": {
+    "lambda": 0.1,
+    "hazard_ratios": {
+      "age": {
+        "hr": 1.0075688351217325,
+        "ci95": [
+          0.9905016693677235,
+          1.0205448016898664
+        ]
+      },
+      "male": {
+        "hr": 1.0911875180463653,
+        "ci95": [
+          0.7273993320961945,
+          1.5935705313135733
+        ]
+      },
+      "t_ord": {
+        "hr": 1.154976933084627,
+        "ci95": [
+          0.9711004797974031,
+          1.4456190574387846
+        ]
+      },
+      "n_ord": {
+        "hr": 1.4796093520523375,
+        "ci95": [
+          1.243977972612679,
+          1.7397947501780842
+        ]
+      },
+      "m1": {
+        "hr": 3.652699924345758,
+        "ci95": [
+          1.8586077674488535,
+          8.38222545490266
+        ]
+      },
+      "eac": {
+        "hr": 1.1369773161027568,
+        "ci95": [
+          0.779329864788254,
+          1.7074582866163464
+        ]
+      },
+      "tnm_missing": {
+        "hr": 1.6605978467593372,
+        "ci95": [
+          0.9885311086801638,
+          3.1419966133743316
+        ]
+      }
+    },
+    "training_summary": {
+      "n": 391,
+      "events": 190,
+      "converged": true,
+      "lambda_selection": {
+        "best_lambda": 0.1,
+        "cv_mean_c_index": {
+          "0.1": 0.6384778704304997,
+          "1.0": 0.63789268759963,
+          "10.0": 0.6294061336951396,
+          "100.0": 0.6269149265198012
+        }
+      }
+    }
+  },
+  "verdict": {
+    "checks": {
+      "A1": {
+        "desc": "pooled C-index >= 0.6",
+        "value": 0.6164049302383783,
+        "pass": true
+      },
+      "A2": {
+        "desc": "CI95 lower bound > 0.5",
+        "value": 0.5718657651237306,
+        "pass": true
+      },
+      "A3": {
+        "desc": "C-index >= 0.55 in EVERY cohort",
+        "value": {
+          "TCGA-ESCA": 0.6329444891391794,
+          "GSE53624": 0.5884525008392077,
+          "ICGC-ESCC": 0.6332294507206856
+        },
+        "pass": true
+      },
+      "A4": {
+        "desc": "pooled AUC(3y) >= 0.6",
+        "value": 0.6585755081471527,
+        "pass": true
+      },
+      "A5": {
+        "desc": "log-rank p < 0.05",
+        "value": 6.259480401583441e-07,
+        "pass": true
+      },
+      "A6": {
+        "desc": "|pred - KM| 1-year survival <= 0.15",
+        "value": 0.017752109959201734,
+        "pass": true
+      },
+      "A7": {
+        "desc": "model C-index >= age-only baseline C-index",
+        "value": {
+          "model": 0.6164049302383783,
+          "age_only": 0.5475818056685228
+        },
+        "pass": true
+      },
+      "A8": {
+        "desc": "model C-index >= AJCC-stage-only baseline - 0.01",
+        "value": {
+          "model": 0.6164049302383783,
+          "stage_only": 0.5989801664268285
+        },
+        "pass": true
+      }
+    },
+    "all_passed": true
+  }
+}

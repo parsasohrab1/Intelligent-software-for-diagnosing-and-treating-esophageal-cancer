@@ -220,7 +220,7 @@ def render_markdown(
     L = []
     L.append(f"# {title}\n")
     L.append(f"> تولید خودکار: `{r['generated_at']}` — پروتکل: [`{protocol_file}`]({protocol_file})"
-             f" (commit `{r.get('protocol_commit') or 'n/a'}`). اعداد زیر مستقیماً از اجرای `scripts/run_real_data_validation.py` آمده‌اند.\n")
+             f" (commit `{r.get('protocol_commit') or 'n/a'}`). اعداد زیر مستقیماً از اجرای اسکریپت اعتبارسنجی (`scripts/run_real_data_validation*.py`) آمده‌اند.\n")
     L.append(f"## نتیجهٔ کلی: {'✅ PASS — همهٔ معیارهای از پیش‌تعیین‌شده برقرار است' if v['all_passed'] else '❌ FAIL — حداقل یک معیار از پیش‌تعیین‌شده برقرار نیست'}\n")
     L.append("| معیار | شرح | مقدار | نتیجه |\n|---|---|---|---|")
     for k, c in v["checks"].items():
@@ -252,7 +252,9 @@ def render_markdown(
             out.append(f" · permutation p (C-index) = {_f(a['permutation_p_c_index'],4)}")
         cal = a["calibration"]
         out.append(f"\n\nکالیبراسیون: بقای ۱ ساله KM = {_f(cal['km_survival_1y'])} در برابر میانگین پیش‌بینی مدل = {_f(cal['mean_pred_survival_1y'])} "
-                   f"(|خطا| = {_f(cal['abs_error_1y'])}) · ۵ ساله (صرفاً اطلاعاتی): KM = {_f(cal['km_survival_5y'])}، مدل = {_f(cal['mean_pred_survival_5y'])}\n")
+                   f"(|خطا| = {_f(cal['abs_error_1y'])})"
+                   + (f" · ۳ ساله (اطلاعاتی): KM = {_f(cal['km_survival_3y'])}، مدل = {_f(cal['mean_pred_survival_3y'])}" if "km_survival_3y" in cal else "")
+                   + f" · ۵ ساله (صرفاً اطلاعاتی): KM = {_f(cal['km_survival_5y'])}، مدل = {_f(cal['mean_pred_survival_5y'])}\n")
         if a["risk_groups"]:
             out.append("| گروه ریسک مدل | n | مرگ | بقای ۱ ساله KM | بقای ۳ ساله KM |\n|---|---|---|---|---|")
             for g in a["risk_groups"]:
