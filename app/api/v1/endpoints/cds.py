@@ -15,11 +15,18 @@ from app.services.cds.nanosystem_designer import NanosystemDesigner
 from app.services.cds.clinical_trial_matcher import ClinicalTrialMatcher
 from app.services.cds.monitoring_alerts import MonitoringAlerts
 from app.services.cds.data_completeness import validate_cds_inputs
+from app.services.cds.cox_prognostic_model import load_default_model
 from app.services.model_registry import ModelRegistry
 from app.services.explainable_ai import ExplainableAI
 import pandas as pd
 
 router = APIRouter()
+
+LEGACY_SCORER_VALIDATION_NOTICE = (
+    "The rule-based prognostic score FAILED retrospective validation on 391 real patients "
+    "(pooled C-index 0.550; AJCC stage alone reaches 0.599; 1-year survival miscalibrated). "
+    "Use /cds/prognostic-score-v2. See docs/validation/REAL_DATA_VALIDATION_REPORT.md."
+)
 
 
 class RiskPredictionRequest(BaseModel):
@@ -229,8 +236,32 @@ async def calculate_prognostic_score(request: PrognosticScoreRequest):
         score = scorer.calculate_prognostic_score(
             request.patient_data, request.cancer_data
         )
+        score["validation_notice"] = LEGACY_SCORER_VALIDATION_NOTICE
         return score
 
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error calculating prognostic score: {str(e)}"
+        )
+
+
+@router.post("/prognostic-score-v2")
+async def calculate_prognostic_score_v2(request: PrognosticScoreRequest):
+    """Prognosis from the data-driven Cox model validated on real patient cohorts.
+
+    Returns 1- and 3-year survival probabilities and a risk group. Every response
+    carries the validation evidence and its limits; 5-year survival is intentionally
+    not provided because it did not validate.
+    """
+    try:
+        model = load_default_model()
+        result = model.predict_patient(request.patient_data, request.cancer_data)
+        result["data_completeness"] = validate_cds_inputs(
+            request.patient_data, request.cancer_data, context="treatment"
+        )
+        return result
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error calculating prognostic score: {str(e)}"

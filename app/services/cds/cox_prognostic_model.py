@@ -9,17 +9,29 @@ Features are fixed up-front (no data-driven feature selection):
     age (standardised), male, t_ord (T1-4), n_ord (N0-3), m1, eac, tnm_missing
 """
 import json
-from typing import Dict, List, Optional, Sequence
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Sequence
 
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 
+from app.services.real_data.normalize import (
+    histology_from_text,
+    normalize_m,
+    normalize_n,
+    normalize_sex,
+    normalize_t,
+)
 from app.services.validation.survival_metrics import concordance_index
 
 FEATURES = ["age", "male", "t_ord", "n_ord", "m1", "eac", "tnm_missing"]
 LAMBDA_GRID = (0.1, 1.0, 10.0, 100.0)
 YEAR = 365.25
+DEFAULT_MODEL_PATH = Path(__file__).with_name("prognostic_cox_v2.json")
+# 5-year survival is deliberately NOT exposed: calibration at 5y was inconsistent
+# across held-out cohorts in the pre-registered validation (see report).
+VALIDATED_HORIZONS_YEARS = (1, 3)
 
 
 def build_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -73,6 +85,7 @@ class CoxPrognosticModel:
         self.base_cumhaz: Optional[np.ndarray] = None
         self.risk_cutoffs: Optional[List[float]] = None  # tertile cut-points of the linear predictor
         self.training_summary: Dict = {}
+        self.validation: Optional[Dict[str, Any]] = None  # attached by scripts/export_validated_model.py
 
     # -- design matrix --------------------------------------------------
     def _design(self, df: pd.DataFrame) -> np.ndarray:
@@ -172,6 +185,7 @@ class CoxPrognosticModel:
             "base_cumhaz": self.base_cumhaz.tolist(),
             "risk_cutoffs": self.risk_cutoffs,
             "training_summary": self.training_summary,
+            "validation": self.validation,
         }
 
     @classmethod
@@ -185,6 +199,7 @@ class CoxPrognosticModel:
         m.base_cumhaz = np.asarray(d["base_cumhaz"], float)
         m.risk_cutoffs = d["risk_cutoffs"]
         m.training_summary = d.get("training_summary", {})
+        m.validation = d.get("validation")
         return m
 
     def save(self, path) -> None:
@@ -195,3 +210,68 @@ class CoxPrognosticModel:
     def load(cls, path) -> "CoxPrognosticModel":
         with open(path, encoding="utf-8") as fh:
             return cls.from_dict(json.load(fh))
+
+    # -- single-patient API ---------------------------------------------
+    @staticmethod
+    def patient_frame(patient_data: Dict[str, Any], cancer_data: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+        """Map the CDS request vocabulary onto the unified cohort columns."""
+        patient_data, cancer_data = patient_data or {}, cancer_data or {}
+        hist_text = (
+            cancer_data.get("histology")
+            or patient_data.get("histology")
+            or cancer_data.get("cancer_type")
+            or patient_data.get("cancer_type")
+            or cancer_data.get("cancer_subtype")
+            or patient_data.get("cancer_subtype")
+        )
+        row = {
+            "age": patient_data.get("age"),
+            "sex": normalize_sex(patient_data.get("gender") or patient_data.get("sex")),
+            "histology": histology_from_text(hist_text),
+            "t_stage": normalize_t(cancer_data.get("t_stage")),
+            "n_stage": normalize_n(cancer_data.get("n_stage")),
+            "m_stage": normalize_m(cancer_data.get("m_stage")),
+        }
+        return pd.DataFrame([row])
+
+    def predict_patient(self, patient_data: Dict[str, Any], cancer_data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        df = self.patient_frame(patient_data, cancer_data)
+        lp = float(self.linear_predictor(df)[0])
+        row = df.iloc[0]
+        imputed = []
+        if pd.isna(pd.to_numeric(row["age"], errors="coerce")):
+            imputed.append("age")
+        for col, name in (("t_stage", "T stage"), ("n_stage", "N stage"), ("m_stage", "M stage")):
+            if not row[col]:
+                imputed.append(name)
+        if not row["sex"]:
+            imputed.append("sex")
+        if not row["histology"]:
+            imputed.append("histology")
+        return {
+            "model_id": "cox_v2",
+            "linear_predictor": round(lp, 4),
+            "risk_group": str(self.risk_group(np.array([lp]))[0]),
+            "survival": {
+                f"{y}_year": round(float(self.predict_survival(df, y * YEAR)[0]), 4)
+                for y in VALIDATED_HORIZONS_YEARS
+            },
+            "inputs_missing_or_imputed": imputed,
+            "validation": self.validation,
+        }
+
+
+_default_model: Optional[CoxPrognosticModel] = None
+
+
+def load_default_model() -> CoxPrognosticModel:
+    """Load (and cache) the validated model shipped with the product."""
+    global _default_model
+    if _default_model is None:
+        if not DEFAULT_MODEL_PATH.exists():
+            raise FileNotFoundError(
+                f"{DEFAULT_MODEL_PATH.name} not found. It is only created by "
+                "scripts/export_validated_model.py after the pre-registered validation passes."
+            )
+        _default_model = CoxPrognosticModel.load(DEFAULT_MODEL_PATH)
+    return _default_model

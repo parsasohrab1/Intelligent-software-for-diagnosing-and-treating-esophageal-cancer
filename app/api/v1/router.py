@@ -32,6 +32,7 @@ from app.api.v1.endpoints import (
     few_shot_learning,
     training,
     workflow,
+    real_data,
 )
 
 api_router = APIRouter()
@@ -72,4 +73,5 @@ api_router.include_router(multimodal_fusion.router, prefix="/multimodal-fusion",
 api_router.include_router(few_shot_learning.router, prefix="/few-shot-learning", tags=["few-shot-learning"])
 api_router.include_router(training.router, prefix="/training", tags=["training"])
 api_router.include_router(workflow.router, prefix="/workflow", tags=["clinical-workflow"])
+api_router.include_router(real_data.router, prefix="/real-data", tags=["real-data-validation"])
 
