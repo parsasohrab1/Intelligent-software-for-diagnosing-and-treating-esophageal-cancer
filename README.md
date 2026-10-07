@@ -302,6 +302,13 @@ docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d
 - خروجی مدل به فرمت ONNX/TensorRT صرفاً در مستندات به‌عنوان گام آینده ذکر شده و هنوز پیاده‌سازی نشده است.
 - ممیزی کامل دسترس‌پذیری مطابق استاندارد WCAG انجام نشده؛ فقط یک بررسی هدفمند روی چند صفحه محدود صورت گرفته است.
 
+### اعتبارسنجی با داده‌های واقعی و بلوغ فناوری (TRL)
+
+- **ماژول پیش‌آگهی (`/cds/prognostic-score-v2`)** روی ۳۹۱ بیمار واقعی (TCGA-ESCA، GSE53624، ICGC-ESCC) با پروتکل از پیش‌ثبت‌شده و طرح leave-one-cohort-out اعتبارسنجی شد: C-index تجمیعی **۰٫۶۱۶**؛ هر ۸ معیار پذیرش برقرار. جزئیات: [`docs/validation/`](docs/validation/REAL_DATA_VALIDATION_REPORT_v2.md).
+- امتیاز قدیمی rule-based (`/cds/prognostic-score`) در همان اعتبارسنجی **رد شد** (C-index ۰٫۵۵۰؛ مرحله‌بندی AJCC به‌تنهایی ۰٫۵۹۹) و دیگر نباید استفاده شود.
+- برتری مدل جدید بر مرحله‌بندی AJCC **اثبات نشده**؛ بقای ۵ ساله اعتبارسنجی نشد؛ اعتبارسنجی retrospective است و جایگزین مطالعهٔ prospective یا تأیید رگولاتوری نیست.
+- **TRL:** ماژول پیش‌آگهی = ۵ (تعریف تطبیق‌یافته)، **کل محصول = ۴** (ریسک ابتلا، توصیهٔ درمان و تصویربرداری هنوز داده واقعی ندارند). ارزیابی کامل: [`docs/TRL_ASSESSMENT.md`](docs/TRL_ASSESSMENT.md). فهرست منابع داده واقعی: `GET /api/v1/real-data/catalog`.
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
