@@ -53,7 +53,12 @@ def score_patients(df: pd.DataFrame, scorer: Optional[PrognosticScorer] = None) 
     out["risk_category"] = cats
     out["pred_survival_1y"] = p1
     out["pred_survival_5y"] = p5
-    # baselines (higher = worse). Missing values are imputed with the cohort-pooled median.
+    return add_baselines(out)
+
+
+def add_baselines(out: pd.DataFrame) -> pd.DataFrame:
+    """Reference predictors (higher = worse). Missing values imputed with the pooled median."""
+    out = out.copy()
     stage_ord = out["stage_group"].map(stage_group_to_ordinal).astype(float)
     out["baseline_stage"] = stage_ord.fillna(stage_ord.median())
     out["baseline_age"] = out["age"].fillna(out["age"].median())
@@ -73,9 +78,12 @@ def _cindex_block(sub: pd.DataFrame, col: str, strata=None, boot: bool = True) -
     return block
 
 
-def _km_group_table(sub: pd.DataFrame) -> list:
+V1_CATEGORIES = ("Favorable", "Moderate", "Poor")
+
+
+def _km_group_table(sub: pd.DataFrame, categories=V1_CATEGORIES) -> list:
     rows = []
-    for cat in ["Favorable", "Moderate", "Poor"]:
+    for cat in categories:
         g = sub[sub["risk_category"] == cat]
         if len(g) == 0:
             continue
@@ -91,7 +99,7 @@ def _km_group_table(sub: pd.DataFrame) -> list:
     return rows
 
 
-def _analyse(sub: pd.DataFrame, strata: Optional[str], boot: bool = True) -> Dict:
+def _analyse(sub: pd.DataFrame, strata: Optional[str], boot: bool = True, categories=V1_CATEGORIES) -> Dict:
     t, e, s = sub["time_days"], sub["event"].astype(int), (None if strata is None else sub[strata].values)
     res = {
         "n": int(len(sub)),
@@ -102,7 +110,7 @@ def _analyse(sub: pd.DataFrame, strata: Optional[str], boot: bool = True) -> Dic
         "baseline_age_only": _cindex_block(sub, "baseline_age", strata, boot=False),
         "auc_1y": sm.time_dependent_auc(t, e, sub["risk_score"], YEAR, s),
         "auc_3y": sm.time_dependent_auc(t, e, sub["risk_score"], 3 * YEAR, s),
-        "risk_groups": _km_group_table(sub),
+        "risk_groups": _km_group_table(sub, categories),
         "n_distinct_risk_scores": int(sub["risk_score"].nunique()),
     }
     if boot:
@@ -119,10 +127,13 @@ def _analyse(sub: pd.DataFrame, strata: Optional[str], boot: bool = True) -> Dic
         "km_survival_5y": km5,  # informational only (Amendment 1)
         "mean_pred_survival_5y": float(sub["pred_survival_5y"].mean()),
     }
+    if "pred_survival_3y" in sub:
+        res["calibration"]["km_survival_3y"] = sm.km_survival_at(t, e, 3 * YEAR)
+        res["calibration"]["mean_pred_survival_3y"] = float(sub["pred_survival_3y"].mean())
     return res
 
 
-def evaluate_criteria(pooled: Dict, per_cohort: Dict) -> Dict:
+def evaluate_criteria(pooled: Dict, per_cohort: Dict, require_stage_baseline: bool = False) -> Dict:
     c = CRITERIA
     c_idx = pooled["model"]["c_index"]
     ci_lo = pooled["model"]["ci95"]["lower"]
@@ -147,6 +158,13 @@ def evaluate_criteria(pooled: Dict, per_cohort: Dict) -> Dict:
             "pass": c_idx >= pooled["baseline_age_only"]["c_index"],
         },
     }
+    if require_stage_baseline:
+        stage_c = pooled["baseline_stage_only"]["c_index"]
+        checks["A8"] = {
+            "desc": "model C-index >= AJCC-stage-only baseline - 0.01",
+            "value": {"model": c_idx, "stage_only": stage_c},
+            "pass": c_idx >= stage_c - 0.01,
+        }
     for v in checks.values():
         v["pass"] = bool(v["pass"])
     return {"checks": checks, "all_passed": all(v["pass"] for v in checks.values())}
@@ -193,11 +211,15 @@ def _f(x, nd=3):
     return "—" if x is None or (isinstance(x, float) and np.isnan(x)) else f"{x:.{nd}f}"
 
 
-def render_markdown(r: Dict) -> str:
+def render_markdown(
+    r: Dict,
+    title: str = "گزارش اعتبارسنجی با داده‌های واقعی — `PrognosticScorer`",
+    protocol_file: str = "VALIDATION_PROTOCOL.md",
+) -> str:
     p, v = r["pooled_stratified"], r["verdict"]
     L = []
-    L.append("# گزارش اعتبارسنجی با داده‌های واقعی — `PrognosticScorer`\n")
-    L.append(f"> تولید خودکار: `{r['generated_at']}` — پروتکل: [`VALIDATION_PROTOCOL.md`](VALIDATION_PROTOCOL.md)"
+    L.append(f"# {title}\n")
+    L.append(f"> تولید خودکار: `{r['generated_at']}` — پروتکل: [`{protocol_file}`]({protocol_file})"
              f" (commit `{r.get('protocol_commit') or 'n/a'}`). اعداد زیر مستقیماً از اجرای `scripts/run_real_data_validation.py` آمده‌اند.\n")
     L.append(f"## نتیجهٔ کلی: {'✅ PASS — همهٔ معیارهای از پیش‌تعیین‌شده برقرار است' if v['all_passed'] else '❌ FAIL — حداقل یک معیار از پیش‌تعیین‌شده برقرار نیست'}\n")
     L.append("| معیار | شرح | مقدار | نتیجه |\n|---|---|---|---|")
@@ -255,8 +277,8 @@ def render_markdown(r: Dict) -> str:
     return "\n".join(L)
 
 
-def save_results(results: Dict, md_path, json_path) -> None:
+def save_results(results: Dict, md_path, json_path, **render_kwargs) -> None:
     with open(json_path, "w", encoding="utf-8") as fh:
         json.dump(results, fh, ensure_ascii=False, indent=2, default=lambda o: None if (isinstance(o, float) and np.isnan(o)) else str(o))
     with open(md_path, "w", encoding="utf-8") as fh:
-        fh.write(render_markdown(results))
+        fh.write(render_markdown(results, **render_kwargs))
